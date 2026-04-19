@@ -293,10 +293,10 @@ def get_analisis_partido(local_input, visitante_input):
         "top3": top3,
         "ultimos_local": ultimos_local,
         "ultimos_visitante": ultimos_visitante,
-        "tiros_arco_local": round(float(stats_a.get("tiros_arco_favor", 0) or 0), 2),
-        "tiros_arco_visitante": round(float(stats_b.get("tiros_arco_favor", 0) or 0), 2),
-        "tiros_total_local": round(float(stats_a.get("tiros_total_favor", 0) or 0), 2),
-        "tiros_total_visitante": round(float(stats_b.get("tiros_total_favor", 0) or 0), 2),
+        "tiros_arco_local": round(float(stats_a.get("tiros_arco_favor", 0) or 0) if str(stats_a.get("tiros_arco_favor", 0)) != "nan" else 0, 2),
+        "tiros_arco_visitante": 0 if not stats_b.get(\"tiros_arco_favor\") else round(float(str(stats_b.get(\"tiros_arco_favor\")).replace(\"nan\",\"0\")), 2),
+        "tiros_total_local": 0 if not stats_a.get(\"tiros_total_favor\") else round(float(str(stats_a.get(\"tiros_total_favor\")).replace(\"nan\",\"0\")), 2),
+        "tiros_total_visitante": 0 if not stats_b.get(\"tiros_total_favor\") else round(float(str(stats_b.get(\"tiros_total_favor\")).replace(\"nan\",\"0\")), 2),
     }, None
 def get_jugadores_partido(fixture_id, liga_nombre=None):
     from player_model import analizar_jugadores_partido
@@ -335,4 +335,6 @@ def get_jugadores_partido(fixture_id, liga_nombre=None):
         })
 
     return resultado, None
+
+
 
