@@ -304,6 +304,7 @@ def get_analisis_partido(local_input, visitante_input):
         "stats_local_10": _stats_n_equipo(df, local, 10),
         "stats_visitante_5": _stats_n_equipo(df, visitante, 5),
         "stats_visitante_10": _stats_n_equipo(df, visitante, 10),
+        "cuotas": get_cuotas_partido(local, visitante, liga),
         "stats_local_temporada": _stats_temporada_actual(df, local),
         "stats_visitante_temporada": _stats_temporada_actual(df, visitante),
         "tiros_arco_local": 0,
@@ -454,4 +455,56 @@ def _stats_temporada_actual(df, equipo):
             "victorias": v, "empates": e, "derrotas": d, "n_partidos": len(ps)
         }
     except: return None
+
+
+def get_cuotas_partido(local, visitante, liga_nombre):
+    import requests
+    ODDS_API_KEY = "016ac8cef97435449ec8f235ada4cbad"
+    LIGAS_ODDS = {
+        "Premier League": "soccer_epl",
+        "La Liga": "soccer_spain_la_liga",
+        "Serie A": "soccer_italy_serie_a",
+        "Bundesliga": "soccer_germany_bundesliga",
+        "Ligue 1": "soccer_france_ligue_one",
+        "Champions League": "soccer_uefa_champs_league",
+        "Europa League": "soccer_uefa_europa_league",
+        "Primeira Liga": "soccer_portugal_primeira_liga",
+        "Eredivisie": "soccer_netherlands_eredivisie",
+        "MLS": "soccer_usa_mls",
+        "Liga MX": "soccer_mexico_ligamx",
+        "Brasileirao": "soccer_brazil_campeonato",
+        "Liga Profesional Argentina": "soccer_argentina_primera_division",
+    }
+    sport_key = LIGAS_ODDS.get(liga_nombre)
+    if not sport_key:
+        return []
+    try:
+        url = f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds/"
+        params = {"apiKey": ODDS_API_KEY, "regions": "eu", "markets": "h2h", "oddsFormat": "decimal"}
+        resp = requests.get(url, params=params, timeout=10)
+        if resp.status_code != 200:
+            return []
+        data = resp.json()
+        local_lower = local.lower()
+        visitante_lower = visitante.lower()
+        for partido in data:
+            home = partido.get("home_team", "").lower()
+            away = partido.get("away_team", "").lower()
+            if (local_lower[:6] in home or home[:6] in local_lower) and \
+               (visitante_lower[:6] in away or away[:6] in visitante_lower):
+                cuotas = []
+                for bm in partido.get("bookmakers", [])[:5]:
+                    for market in bm.get("markets", []):
+                        if market["key"] == "h2h":
+                            outcomes = {o["name"].lower(): o["price"] for o in market["outcomes"]}
+                            cuotas.append({
+                                "casa": bm["title"],
+                                "local": outcomes.get(partido["home_team"].lower(), 0),
+                                "empate": outcomes.get("draw", 0),
+                                "visitante": outcomes.get(partido["away_team"].lower(), 0),
+                            })
+                return cuotas
+        return []
+    except Exception:
+        return []
 
