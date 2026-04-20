@@ -377,3 +377,37 @@ def get_jugadores_partido(fixture_id, liga_nombre=None):
 
 
 
+
+def _stats_n_equipo(df, equipo, n):
+    import numpy as np
+    from football_model import obtener_partidos_equipo
+    try:
+        ps = obtener_partidos_equipo(df, equipo, n=n)
+        if ps.empty:
+            return None
+        gf_list, gc_list, cf_list, tf_list, ta_list = [], [], [], [], []
+        v = e = d = 0
+        for _, r in ps.iterrows():
+            es_local = r["equipo_local"] == equipo
+            gf = float(r["goles_local"] if es_local else r["goles_visitante"] or 0)
+            gc = float(r["goles_visitante"] if es_local else r["goles_local"] or 0)
+            gf_list.append(gf); gc_list.append(gc)
+            if gf > gc: v += 1
+            elif gf == gc: e += 1
+            else: d += 1
+            try:
+                cf = float(r["corners_local"] if es_local else r["corners_visitante"] or 0)
+                tf = float(r["tarjetas_local"] if es_local else r["tarjetas_visitante"] or 0)
+                ta = float(r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"] or 0)
+                cf_list.append(cf); tf_list.append(tf); ta_list.append(ta)
+            except: pass
+        return {
+            "goles_favor": round(float(np.mean(gf_list)), 2) if gf_list else 0,
+            "goles_contra": round(float(np.mean(gc_list)), 2) if gc_list else 0,
+            "corners_favor": round(float(np.mean(cf_list)), 2) if cf_list else 0,
+            "tarjetas_favor": round(float(np.mean(tf_list)), 2) if tf_list else 0,
+            "tiros_arco_favor": round(float(np.mean(ta_list)), 2) if ta_list else 0,
+            "victorias": v, "empates": e, "derrotas": d, "n_partidos": len(ps)
+        }
+    except: return None
+
