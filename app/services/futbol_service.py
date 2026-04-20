@@ -304,8 +304,8 @@ def get_analisis_partido(local_input, visitante_input):
         "stats_local_10": _stats_n_equipo(df, local, 10),
         "stats_visitante_5": _stats_n_equipo(df, visitante, 5),
         "stats_visitante_10": _stats_n_equipo(df, visitante, 10),
-        "stats_local_temporada": _stats_n_equipo(df, local, 999),
-        "stats_visitante_temporada": _stats_n_equipo(df, visitante, 999),
+        "stats_local_temporada": _stats_temporada_actual(df, local),
+        "stats_visitante_temporada": _stats_temporada_actual(df, visitante),
         "tiros_arco_local": 0,
         "stats_local": {
             "goles_favor": round(stats_a["goles_favor"], 2),
@@ -389,6 +389,44 @@ def _stats_n_equipo(df, equipo, n):
     from football_model import obtener_partidos_equipo
     try:
         ps = obtener_partidos_equipo(df, equipo, n=n)
+        if ps.empty:
+            return None
+        gf_list, gc_list, cf_list, tf_list, ta_list = [], [], [], [], []
+        v = e = d = 0
+        for _, r in ps.iterrows():
+            es_local = r["equipo_local"] == equipo
+            gf = float(r["goles_local"] if es_local else r["goles_visitante"] or 0)
+            gc = float(r["goles_visitante"] if es_local else r["goles_local"] or 0)
+            gf_list.append(gf); gc_list.append(gc)
+            if gf > gc: v += 1
+            elif gf == gc: e += 1
+            else: d += 1
+            try:
+                cf = float(r["corners_local"] if es_local else r["corners_visitante"] or 0)
+                tf = float(r["tarjetas_local"] if es_local else r["tarjetas_visitante"] or 0)
+                ta = float(r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"] or 0)
+                cf_list.append(cf); tf_list.append(tf); ta_list.append(ta)
+            except: pass
+        return {
+            "goles_favor": round(float(np.mean(gf_list)), 2) if gf_list else 0,
+            "goles_contra": round(float(np.mean(gc_list)), 2) if gc_list else 0,
+            "corners_favor": round(float(np.mean(cf_list)), 2) if cf_list else 0,
+            "tarjetas_favor": round(float(np.mean(tf_list)), 2) if tf_list else 0,
+            "tiros_arco_favor": round(float(np.mean(ta_list)), 2) if ta_list else 0,
+            "victorias": v, "empates": e, "derrotas": d, "n_partidos": len(ps)
+        }
+    except: return None
+
+
+def _stats_temporada_actual(df, equipo):
+    import numpy as np
+    from football_model import obtener_partidos_equipo
+    from datetime import datetime
+    try:
+        hoy = datetime.now()
+        inicio_temp = f"{hoy.year if hoy.month >= 8 else hoy.year - 1}-07-01"
+        ps = obtener_partidos_equipo(df, equipo, n=999)
+        ps = ps[ps["fecha"] >= inicio_temp]
         if ps.empty:
             return None
         gf_list, gc_list, cf_list, tf_list, ta_list = [], [], [], [], []
