@@ -294,6 +294,32 @@ def get_analisis_partido(local_input, visitante_input):
         "ultimos_local": ultimos_local,
         "ultimos_visitante": ultimos_visitante,
         "tiros_arco_local": 0,
+        "stats_local": {
+            "goles_favor": round(stats_a["goles_favor"], 2),
+            "goles_contra": round(stats_a["goles_contra"], 2),
+            "corners_favor": round(stats_a["corners_favor"], 2),
+            "corners_contra": round(stats_a["corners_contra"], 2),
+            "tarjetas_favor": round(stats_a["tarjetas_favor"], 2),
+            "tiros_arco_favor": round(float(stats_a.get("tiros_arco_favor") or 0), 2),
+            "tiros_total_favor": round(float(stats_a.get("tiros_total_favor") or 0), 2),
+            "victorias": stats_a["victorias"],
+            "empates": stats_a["empates"],
+            "derrotas": stats_a["derrotas"],
+            "n_partidos": stats_a["n_partidos"],
+        },
+        "stats_visitante": {
+            "goles_favor": round(stats_b["goles_favor"], 2),
+            "goles_contra": round(stats_b["goles_contra"], 2),
+            "corners_favor": round(stats_b["corners_favor"], 2),
+            "corners_contra": round(stats_b["corners_contra"], 2),
+            "tarjetas_favor": round(stats_b["tarjetas_favor"], 2),
+            "tiros_arco_favor": round(float(stats_b.get("tiros_arco_favor") or 0), 2),
+            "tiros_total_favor": round(float(stats_b.get("tiros_total_favor") or 0), 2),
+            "victorias": stats_b["victorias"],
+            "empates": stats_b["empates"],
+            "derrotas": stats_b["derrotas"],
+            "n_partidos": stats_b["n_partidos"],
+        },
         "tiros_arco_visitante": 0,
         "tiros_total_local": 0,
         "tiros_total_visitante": 0,
@@ -335,6 +361,7 @@ def get_jugadores_partido(fixture_id, liga_nombre=None):
         })
 
     return resultado, None
+
 
 
 
