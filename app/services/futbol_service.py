@@ -239,7 +239,7 @@ def get_analisis_partido(local_input, visitante_input):
     ultimos_local = []
     ultimos_visitante = []
     try:
-        pl = obtener_partidos_equipo(df, local, n=5)
+        pl = obtener_partidos_equipo(df, local, n=10)
         for _, r in pl.iterrows():
             gl = int(r["goles_local"])
             gv = int(r["goles_visitante"])
@@ -256,7 +256,7 @@ def get_analisis_partido(local_input, visitante_input):
     except Exception:
         pass
     try:
-        pv = obtener_partidos_equipo(df, visitante, n=5)
+        pv = obtener_partidos_equipo(df, visitante, n=10)
         for _, r in pv.iterrows():
             gl = int(r["goles_local"])
             gv = int(r["goles_visitante"])
@@ -368,6 +368,7 @@ def get_jugadores_partido(fixture_id, liga_nombre=None):
         })
 
     return resultado, None
+
 
 
 
