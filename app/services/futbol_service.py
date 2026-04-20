@@ -300,6 +300,10 @@ def get_analisis_partido(local_input, visitante_input):
         "top3": top3,
         "ultimos_local": ultimos_local,
         "ultimos_visitante": ultimos_visitante,
+        "stats_local_5": _stats_n_equipo(df, local, 5),
+        "stats_local_10": _stats_n_equipo(df, local, 10),
+        "stats_visitante_5": _stats_n_equipo(df, visitante, 5),
+        "stats_visitante_10": _stats_n_equipo(df, visitante, 10),
         "tiros_arco_local": 0,
         "stats_local": {
             "goles_favor": round(stats_a["goles_favor"], 2),
