@@ -1,3 +1,10 @@
+def _safe(v):
+    try:
+        f = float(v)
+        return 0.0 if f != f else round(f, 2)
+    except:
+        return 0.0
+
 import os
 import sys
 import pandas as pd
@@ -300,8 +307,8 @@ def get_analisis_partido(local_input, visitante_input):
             "corners_favor": round(stats_a["corners_favor"], 2),
             "corners_contra": round(stats_a["corners_contra"], 2),
             "tarjetas_favor": round(stats_a["tarjetas_favor"], 2),
-            "tiros_arco_favor": round(float(stats_a.get("tiros_arco_favor") or 0), 2),
-            "tiros_total_favor": round(float(stats_a.get("tiros_total_favor") or 0), 2),
+            "tiros_arco_favor": _safe(stats_a.get("tiros_arco_favor")),
+            "tiros_total_favor": _safe(stats_a.get("tiros_total_favor")),
             "victorias": stats_a["victorias"],
             "empates": stats_a["empates"],
             "derrotas": stats_a["derrotas"],
@@ -313,8 +320,8 @@ def get_analisis_partido(local_input, visitante_input):
             "corners_favor": round(stats_b["corners_favor"], 2),
             "corners_contra": round(stats_b["corners_contra"], 2),
             "tarjetas_favor": round(stats_b["tarjetas_favor"], 2),
-            "tiros_arco_favor": round(float(stats_b.get("tiros_arco_favor") or 0), 2),
-            "tiros_total_favor": round(float(stats_b.get("tiros_total_favor") or 0), 2),
+            "tiros_arco_favor": _safe(stats_b.get("tiros_arco_favor")),
+            "tiros_total_favor": _safe(stats_b.get("tiros_total_favor")),
             "victorias": stats_b["victorias"],
             "empates": stats_b["empates"],
             "derrotas": stats_b["derrotas"],
@@ -361,6 +368,8 @@ def get_jugadores_partido(fixture_id, liga_nombre=None):
         })
 
     return resultado, None
+
+
 
 
 
