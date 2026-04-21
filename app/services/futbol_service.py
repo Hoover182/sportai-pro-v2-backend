@@ -480,7 +480,7 @@ def get_cuotas_partido(local, visitante, liga_nombre):
         return []
     try:
         url = f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds/"
-        params = {"apiKey": ODDS_API_KEY, "regions": "eu", "markets": "h2h", "oddsFormat": "decimal"}
+        params = {"apiKey": ODDS_API_KEY, "regions": "eu", "markets": "h2h,totals", "oddsFormat": "decimal"}
         resp = requests.get(url, params=params, timeout=10)
         if resp.status_code != 200:
             return []
@@ -507,4 +507,6 @@ def get_cuotas_partido(local, visitante, liga_nombre):
         return []
     except Exception:
         return []
+
+
 
