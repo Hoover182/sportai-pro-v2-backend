@@ -480,7 +480,12 @@ def get_cuotas_partido(local, visitante, liga_nombre):
         return []
     try:
         url = f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds/"
-        params = {"apiKey": ODDS_API_KEY, "regions": "eu", "markets": "h2h,totals", "oddsFormat": "decimal"}
+        params = {
+            "apiKey": ODDS_API_KEY,
+            "regions": "eu",
+            "markets": "h2h,totals",
+            "oddsFormat": "decimal",
+        }
         resp = requests.get(url, params=params, timeout=10)
         if resp.status_code != 200:
             return []
@@ -492,21 +497,38 @@ def get_cuotas_partido(local, visitante, liga_nombre):
             away = partido.get("away_team", "").lower()
             if (local_lower[:6] in home or home[:6] in local_lower) and \
                (visitante_lower[:6] in away or away[:6] in visitante_lower):
+                home_team_lower = partido["home_team"].lower()
+                away_team_lower = partido["away_team"].lower()
                 cuotas = []
-                for bm in partido.get("bookmakers", [])[:5]:
+                for bm in partido.get("bookmakers", [])[:10]:
+                    casa_data = {
+                        "casa": bm["title"],
+                        "local": 0,
+                        "empate": 0,
+                        "visitante": 0,
+                        "totals": {},
+                    }
                     for market in bm.get("markets", []):
                         if market["key"] == "h2h":
                             outcomes = {o["name"].lower(): o["price"] for o in market["outcomes"]}
-                            cuotas.append({
-                                "casa": bm["title"],
-                                "local": outcomes.get(partido["home_team"].lower(), 0),
-                                "empate": outcomes.get("draw", 0),
-                                "visitante": outcomes.get(partido["away_team"].lower(), 0),
-                            })
+                            casa_data["local"] = outcomes.get(home_team_lower, 0)
+                            casa_data["empate"] = outcomes.get("draw", 0)
+                            casa_data["visitante"] = outcomes.get(away_team_lower, 0)
+                        elif market["key"] == "totals":
+                            for o in market["outcomes"]:
+                                punto = str(o.get("point", ""))
+                                if not punto:
+                                    continue
+                                if punto not in casa_data["totals"]:
+                                    casa_data["totals"][punto] = {"over": 0, "under": 0}
+                                nombre = o.get("name", "").lower()
+                                if nombre == "over":
+                                    casa_data["totals"][punto]["over"] = o["price"]
+                                elif nombre == "under":
+                                    casa_data["totals"][punto]["under"] = o["price"]
+                    if casa_data["local"] > 0 or casa_data["totals"]:
+                        cuotas.append(casa_data)
                 return cuotas
         return []
     except Exception:
         return []
-
-
-
