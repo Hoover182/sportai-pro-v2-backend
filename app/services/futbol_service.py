@@ -533,13 +533,39 @@ def get_cuotas_partido(local, visitante, liga_nombre):
     except Exception:
         return []
 
+# Cache global para value bets (TTL 30 min)
+_VB_CACHE = {"timestamp": 0, "data": []}
+_VB_TTL_SEGUNDOS = 30 * 60
+
+
 def get_value_bets_hoy():
-    """Recorre partidos de hoy con cuotas y devuelve top errores de cuota."""
+    """Recorre partidos de los proximos 7 dias con cuotas y devuelve top errores de cuota.
+    Cachea el resultado por 30 minutos para evitar recalcular en cada request.
+    """
+    import time
+    from datetime import datetime, timedelta
+
+    # Verificar cache
+    ahora = time.time()
+    if (ahora - _VB_CACHE["timestamp"]) < _VB_TTL_SEGUNDOS and _VB_CACHE["data"]:
+        return _VB_CACHE["data"]
+
     df = cargar_df()
     if df.empty:
         return []
-    partidos = obtener_partidos_hoy_futbol(df)
+
+    # Filtrar partidos entre hoy y +7 dias (sin resultado todavia)
+    hoy = datetime.now()
+    limite = hoy + timedelta(days=7)
+    df_fechas = df.copy()
+    df_fechas["fecha_dt"] = pd.to_datetime(df_fechas["fecha"], errors="coerce")
+    partidos = df_fechas[
+        (df_fechas["fecha_dt"] >= hoy.replace(hour=0, minute=0, second=0, microsecond=0))
+        & (df_fechas["fecha_dt"] <= limite)
+    ]
     if partidos.empty:
+        _VB_CACHE["timestamp"] = ahora
+        _VB_CACHE["data"] = []
         return []
 
     LIGAS_CON_CUOTAS = {
@@ -548,24 +574,31 @@ def get_value_bets_hoy():
         "MLS", "Liga MX", "Brasileirao", "Liga Profesional Argentina",
     }
 
-    # Umbrales
     VALOR_MIN = 5.0
     PROB_MIN = 30.0
     CUOTA_MIN = 1.30
     CUOTA_MAX = 6.0
     MAX_POR_PARTIDO = 3
-    MAX_TOTAL = 30
+    MAX_TOTAL = 50
+
+    # Deduplicar partidos por (local, visitante, liga) para no procesar duplicados
+    partidos_unicos = partidos.drop_duplicates(subset=["equipo_local", "equipo_visitante", "liga"])
 
     resultado = []
-    for _, row in partidos.iterrows():
+    for _, row in partidos_unicos.iterrows():
         liga = row["liga"]
         if liga not in LIGAS_CON_CUOTAS:
             continue
         local = row["equipo_local"]
         visitante = row["equipo_visitante"]
-        hora = ""
+
+        fecha_str = ""
+        hora_str = ""
         try:
-            hora = str(row["fecha"].time())[:5] if hasattr(row["fecha"], "time") else ""
+            fdt = row["fecha_dt"]
+            if pd.notna(fdt):
+                fecha_str = fdt.strftime("%Y-%m-%d")
+                hora_str = fdt.strftime("%H:%M")
         except Exception:
             pass
 
@@ -625,7 +658,8 @@ def get_value_bets_hoy():
                     "liga": liga,
                     "local": local,
                     "visitante": visitante,
-                    "hora": hora,
+                    "fecha": fecha_str,
+                    "hora": hora_str,
                     "casa": casa["casa"],
                     "mercado": o["mercado"],
                     "cuota": round(cuota, 2),
@@ -633,19 +667,23 @@ def get_value_bets_hoy():
                     "valor": round(valor, 1),
                 })
 
-        # Top N por partido (deduplica mismo mercado entre casas, queda mejor cuota)
         candidatos_partido.sort(key=lambda x: x["valor"], reverse=True)
         vistos = set()
         seleccionados = []
         for c in candidatos_partido:
-            key = c["mercado"]
-            if key in vistos:
+            if c["mercado"] in vistos:
                 continue
-            vistos.add(key)
+            vistos.add(c["mercado"])
             seleccionados.append(c)
             if len(seleccionados) >= MAX_POR_PARTIDO:
                 break
         resultado.extend(seleccionados)
 
     resultado.sort(key=lambda x: x["valor"], reverse=True)
-    return resultado[:MAX_TOTAL]
+    resultado = resultado[:MAX_TOTAL]
+
+    # Guardar en cache
+    _VB_CACHE["timestamp"] = ahora
+    _VB_CACHE["data"] = resultado
+    return resultado
+
