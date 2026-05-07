@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter
+from fastapi import APIRouter
 from app.services import futbol_service
 
 router = APIRouter()
@@ -32,3 +32,8 @@ async def jugadores(fixture_id: int, liga: str = None):
         return {"jugadores": resultado}
     except Exception as e:
         return {"error": str(e)}
+
+@router.get("/value-bets-hoy")
+async def value_bets_hoy():
+    value_bets = futbol_service.get_value_bets_hoy()
+    return {"value_bets": value_bets}

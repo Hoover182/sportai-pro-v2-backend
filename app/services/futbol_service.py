@@ -532,3 +532,120 @@ def get_cuotas_partido(local, visitante, liga_nombre):
         return []
     except Exception:
         return []
+
+def get_value_bets_hoy():
+    """Recorre partidos de hoy con cuotas y devuelve top errores de cuota."""
+    df = cargar_df()
+    if df.empty:
+        return []
+    partidos = obtener_partidos_hoy_futbol(df)
+    if partidos.empty:
+        return []
+
+    LIGAS_CON_CUOTAS = {
+        "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
+        "Champions League", "Europa League", "Primeira Liga", "Eredivisie",
+        "MLS", "Liga MX", "Brasileirao", "Liga Profesional Argentina",
+    }
+
+    # Umbrales
+    VALOR_MIN = 5.0
+    PROB_MIN = 30.0
+    CUOTA_MIN = 1.30
+    CUOTA_MAX = 6.0
+    MAX_POR_PARTIDO = 3
+    MAX_TOTAL = 30
+
+    resultado = []
+    for _, row in partidos.iterrows():
+        liga = row["liga"]
+        if liga not in LIGAS_CON_CUOTAS:
+            continue
+        local = row["equipo_local"]
+        visitante = row["equipo_visitante"]
+        hora = ""
+        try:
+            hora = str(row["fecha"].time())[:5] if hasattr(row["fecha"], "time") else ""
+        except Exception:
+            pass
+
+        sim, stats_a, stats_b = simular(df, local, visitante)
+        if sim is None:
+            continue
+
+        cuotas = get_cuotas_partido(local, visitante, liga)
+        if not cuotas:
+            continue
+
+        prob_local = round(sim["prob_local"] * 100, 1)
+        prob_empate = round(sim["prob_empate"] * 100, 1)
+        prob_visitante = round(sim["prob_visitante"] * 100, 1)
+        goles_ou = {
+            str(k): {"over": round(v["over"] * 100, 1), "under": round(v["under"] * 100, 1)}
+            for k, v in sim["goles_ou"].items()
+        }
+
+        candidatos_partido = []
+        for casa in cuotas:
+            opciones = [
+                {"mercado": f"{local} gana", "cuota": casa.get("local", 0), "probIA": prob_local},
+                {"mercado": "Empate", "cuota": casa.get("empate", 0), "probIA": prob_empate},
+                {"mercado": f"{visitante} gana", "cuota": casa.get("visitante", 0), "probIA": prob_visitante},
+            ]
+            totals = casa.get("totals") or {}
+            for punto, vals in totals.items():
+                ou = goles_ou.get(punto)
+                if not ou:
+                    continue
+                if vals.get("over"):
+                    opciones.append({
+                        "mercado": f"Over {punto} goles",
+                        "cuota": vals["over"],
+                        "probIA": ou["over"],
+                    })
+                if vals.get("under"):
+                    opciones.append({
+                        "mercado": f"Under {punto} goles",
+                        "cuota": vals["under"],
+                        "probIA": ou["under"],
+                    })
+
+            for o in opciones:
+                cuota = o["cuota"]
+                probIA = o["probIA"]
+                if not cuota or cuota < CUOTA_MIN or cuota > CUOTA_MAX:
+                    continue
+                if probIA < PROB_MIN:
+                    continue
+                prob_implicita = (1 / cuota) * 100
+                valor = probIA - prob_implicita
+                if valor < VALOR_MIN:
+                    continue
+                candidatos_partido.append({
+                    "liga": liga,
+                    "local": local,
+                    "visitante": visitante,
+                    "hora": hora,
+                    "casa": casa["casa"],
+                    "mercado": o["mercado"],
+                    "cuota": round(cuota, 2),
+                    "probIA": probIA,
+                    "valor": round(valor, 1),
+                })
+
+        # Top N por partido (deduplica mismo mercado entre casas, queda mejor cuota)
+        candidatos_partido.sort(key=lambda x: x["valor"], reverse=True)
+        vistos = set()
+        seleccionados = []
+        for c in candidatos_partido:
+            key = c["mercado"]
+            if key in vistos:
+                continue
+            vistos.add(key)
+            seleccionados.append(c)
+            if len(seleccionados) >= MAX_POR_PARTIDO:
+                break
+        resultado.extend(seleccionados)
+
+    resultado.sort(key=lambda x: x["valor"], reverse=True)
+    return resultado[:MAX_TOTAL]
