@@ -338,51 +338,85 @@ def get_analisis_partido(local_input, visitante_input):
         "tiros_total_local": 0,
         "tiros_total_visitante": 0,
     }, None
-def get_jugadores_partido(fixture_id, liga_nombre=None):
-    from player_model import analizar_jugadores_partido
-    import sys, os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'app', 'services'))
+def get_jugadores_partido(local_input, visitante_input):
+    """Devuelve jugadores agrupados por equipo: 5 atacantes y 5 defensivos por equipo."""
+    from player_model import obtener_jugadores_partido, obtener_fixture_id
 
-    liga_id = None
-    temporada = None
+    df = cargar_df()
+    if df.empty:
+        return None, "No hay datos disponibles"
 
-    if liga_nombre:
-        liga_id, temporada = get_temporada(liga_nombre)
+    local = obtener_equipo_por_nombre(df, local_input)
+    visitante = obtener_equipo_por_nombre(df, visitante_input)
+    if local is None:
+        return None, f"Equipo no encontrado: {local_input}"
+    if visitante is None:
+        return None, f"Equipo no encontrado: {visitante_input}"
 
+    # Buscar liga del partido
+    try:
+        liga_series = df[
+            ((df["equipo_local"] == local) & (df["equipo_visitante"] == visitante)) |
+            ((df["equipo_local"] == visitante) & (df["equipo_visitante"] == local))
+        ]["liga"]
+        if liga_series.empty:
+            liga_series = df[
+                (df["equipo_local"] == local) | (df["equipo_visitante"] == local)
+            ]["liga"]
+        liga = liga_series.iloc[0] if not liga_series.empty else None
+    except Exception:
+        liga = None
+
+    if not liga:
+        return None, "Liga no encontrada para el partido"
+
+    liga_id, temporada = get_temporada(liga)
     if not liga_id:
-        return [], "Liga no encontrada"
+        return None, f"No se pudo resolver liga_id para {liga}"
+
+    # Buscar fixture_id en el CSV o via API
+    fixture_id = None
+    try:
+        partido_row = df[
+            ((df["equipo_local"] == local) & (df["equipo_visitante"] == visitante)) |
+            ((df["equipo_local"] == visitante) & (df["equipo_visitante"] == local))
+        ].sort_values("fecha", ascending=False)
+        if not partido_row.empty and "fixture_id" in partido_row.columns:
+            fid = partido_row.iloc[0]["fixture_id"]
+            if fid and not pd.isna(fid):
+                fixture_id = int(fid)
+    except Exception:
+        pass
+
+    if not fixture_id:
+        try:
+            fecha_partido = datetime.now().strftime("%Y-%m-%d")
+            fixture_id = obtener_fixture_id(liga_id, temporada, local, visitante, fecha_partido, df)
+        except Exception as e:
+            return None, f"No se pudo obtener fixture_id: {e}"
+
+    if not fixture_id:
+        return None, "Fixture no encontrado en la API"
 
     try:
-        jugadores = analizar_jugadores_partido(fixture_id, liga_id, temporada)
+        data = obtener_jugadores_partido(fixture_id, liga_id, temporada)
     except Exception as e:
-        return [], str(e)
+        return None, str(e)
 
-    resultado = []
-    for j in jugadores:
-        resultado.append({
-            "nombre": j["nombre"],
-            "equipo": j["equipo"],
-            "posicion": j["posicion"],
-            "posicion_tipo": j["posicion_tipo"],
-            "partidos": j["partidos"],
-            "goles_pg": j["goles_pg"],
-            "asist_pg": j["asist_pg"],
-            "tiros_arco": {str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)} for k, v in j["tiros_arco"].items()},
-            "tiros_total": {str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)} for k, v in j["tiros_total"].items()},
-            "asistencias": {str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)} for k, v in j["asistencias"].items()},
-            "tarjetas": {str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)} for k, v in j["tarjetas"].items()},
-            "faltas": {str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)} for k, v in j["faltas"].items()},
-        })
+    if not data:
+        return None, "Sin datos de jugadores para este partido"
 
-    return resultado, None
+    # Devolver dict estructurado: {local: {atacantes, defensivos}, visitante: {atacantes, defensivos}}
+    equipos_ordenados = {}
+    for nombre_equipo, secciones in data.items():
+        equipos_ordenados[nombre_equipo] = secciones
 
-
-
-
-
-
-
-
+    return {
+        "liga": liga,
+        "local": local,
+        "visitante": visitante,
+        "equipos": equipos_ordenados,
+    }, None
 
 
 def _stats_n_equipo(df, equipo, n):

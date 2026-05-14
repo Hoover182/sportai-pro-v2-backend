@@ -23,13 +23,13 @@ async def partido(local: str, visitante: str):
     except Exception as e:
         return {"error": str(e)}
 
-@router.get("/jugadores/{fixture_id}")
-async def jugadores(fixture_id: int, liga: str = None):
+@router.get("/jugadores/{local}/{visitante}")
+async def jugadores(local: str, visitante: str):
     try:
-        resultado, error = futbol_service.get_jugadores_partido(fixture_id, liga)
+        resultado, error = futbol_service.get_jugadores_partido(local, visitante)
         if error:
             return {"error": error}
-        return {"jugadores": resultado}
+        return resultado
     except Exception as e:
         return {"error": str(e)}
 
