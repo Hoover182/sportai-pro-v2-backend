@@ -189,8 +189,9 @@ def _agregar_simulaciones_defensa(j):
 
 def obtener_jugadores_partido(fixture_id, liga_id, temporada):
     """
-    Devuelve dict estructurado por equipo con 5 atacantes y 5 defensivos cada uno.
-    Formato: {equipo_local: {atacantes:[], defensivos:[]}, equipo_visitante: {...}}
+    Devuelve TODOS los jugadores del partido (sin limite, sin separar ataque/defensa).
+    Cada jugador trae TODAS las stats: tiros arco, totales, asistencias, fuera juego, tarjetas, faltas.
+    Formato: {equipo_local: {jugadores: [...]}, equipo_visitante: {jugadores: [...]}}
     """
     data_fixture = api_get("fixtures", params={"id": fixture_id})
     equipos_info = []
@@ -214,25 +215,34 @@ def obtener_jugadores_partido(fixture_id, liga_id, temporada):
         nombre_equipo = equipo["nombre"]
 
         squad = obtener_squad_equipo(team_id, liga_id, temporada)
-        todos = []
+        jugadores_equipo = []
         for p in squad:
             j = _procesar_jugador(p, nombre_equipo)
             if j:
-                todos.append(j)
+                # Combinar TODAS las stats: ataque + defensa
+                jugador_completo = {
+                    "nombre":      j["nombre"],
+                    "posicion":    j["posicion"],
+                    "posicion_tipo": j["posicion_tipo"],
+                    "partidos":    j["partidos"],
+                    "minutos":     j["minutos"],
+                    "goles_pg":    j["goles_pg"],
+                    "asist_pg":    j["asist_pg"],
+                    "tarjetas_pg": j["tarjetas_pg"],
+                    "faltas_pg":   j["faltas_pg"],
+                    "tiros_arco":  simular_jugador(j["_tiros_arco_media"],  [0.5, 1.5, 2.5, 3.5]),
+                    "tiros_total": simular_jugador(j["_tiros_total_media"], [0.5, 1.5, 2.5, 3.5]),
+                    "asistencias": simular_jugador(j["_asist_media"],       [0.5, 1.5, 2.5]),
+                    "fuera_juego": simular_jugador(j["_fuera_juego_media"], [0.5, 1.5]),
+                    "tarjetas":    simular_jugador(j["_tarjetas_media"],    [0.5, 1.5]),
+                    "faltas":      simular_jugador(j["_faltas_media"],      [0.5, 1.5, 2.5, 3.5]),
+                }
+                jugadores_equipo.append(jugador_completo)
 
-        atacantes_pool = [j for j in todos if j["posicion_tipo"] in ["delantero", "medio"]]
-        defensivos_pool = [j for j in todos if j["posicion_tipo"] == "defensa"]
+        # Ordenar por minutos (titulares primero) para que el listado sea util
+        jugadores_equipo.sort(key=lambda x: x["minutos"], reverse=True)
 
-        atacantes_pool.sort(key=lambda x: x["_score_ataque"], reverse=True)
-        defensivos_pool.sort(key=lambda x: x["_score_defensa"], reverse=True)
-
-        top_atacantes  = atacantes_pool[:MAX_JUGADORES_POR_SECCION]
-        top_defensivos = defensivos_pool[:MAX_JUGADORES_POR_SECCION]
-
-        resultado[nombre_equipo] = {
-            "atacantes":  [_agregar_simulaciones_ataque(j)  for j in top_atacantes],
-            "defensivos": [_agregar_simulaciones_defensa(j) for j in top_defensivos],
-        }
+        resultado[nombre_equipo] = {"jugadores": jugadores_equipo}
 
     return resultado
 
