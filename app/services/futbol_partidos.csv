@@ -14407,7 +14407,7 @@
 2026-04-30T19:00:00,1540871.0,FT,Europa League,SC Braga,SC Freiburg,2,1,3,1,2,3,6,2,13.0,10.0
 2026-04-30T22:00:00,1535274.0,FT,Copa Libertadores,Independ. Rivadavia,Deportivo La Guaira,4,1,4,2,1,0,5,2,13.0,5.0
 2026-04-30T22:00:00,1535267.0,FT,Copa Libertadores,Bolívar,Fluminense,2,0,2,1,2,3,7,1,14.0,6.0
-2026-04-30T22:00:00,1535185.0,FT,Copa Sudamericana,Vasco DA Gama,Olimpia,3,0,4,6,3,1,8,2,16.0,13.0
+2026-04-30T22:00:00,1535185.0,FT,Copa Sudamericana,Vasco DA Gama,Olimpia,3,0,4,6,3,1,8,2,16.0,14.0
 2026-04-30T22:00:00,1535174.0,FT,Copa Sudamericana,Carabobo FC,Blooming,2,0,6,5,2,3,9,3,20.0,14.0
 2026-05-01T00:00:00,1511568.0,FT,Copa Chile,Union Espanola,Curico Unido,2,0,0,0,0,0,0,0,0.0,0.0
 2026-05-01T00:00:00,1535269.0,FT,Copa Libertadores,Corinthians,Penarol,2,0,5,4,0,2,4,2,15.0,9.0
@@ -14503,16 +14503,16 @@
 2026-05-02T23:15:00,1490254.0,FT,MLS,Inter Miami,Orlando City SC,3,4,10,2,4,3,10,9,26.0,13.0
 2026-05-02T23:30:00,1492240.0,FT,Brasileirao,Atletico Paranaense,Gremio,0,0,7,3,2,2,5,0,11.0,7.0
 2026-05-02T23:30:00,1490255.0,FT,MLS,Philadelphia Union,Nashville SC,0,0,5,2,1,1,4,1,16.0,8.0
-2026-05-02T23:30:00,1490258.0,FT,MLS,New York Red Bulls,FC Dallas,0,2,8,4,0,2,0,6,9.0,12.0
-2026-05-02T23:30:00,1490257.0,FT,MLS,Atlanta United FC,CF Montreal,3,1,3,2,4,3,5,5,18.0,11.0
-2026-05-02T23:30:00,1490259.0,FT,MLS,New England Revolution,Charlotte,1,0,3,5,3,4,4,4,14.0,9.0
 2026-05-02T23:30:00,1490256.0,FT,MLS,Columbus Crew,Minnesota United FC,2,3,4,6,2,2,4,7,13.0,12.0
+2026-05-02T23:30:00,1490257.0,FT,MLS,Atlanta United FC,CF Montreal,3,1,3,2,4,3,5,5,18.0,11.0
+2026-05-02T23:30:00,1490258.0,FT,MLS,New York Red Bulls,FC Dallas,0,2,8,4,0,2,0,6,9.0,12.0
+2026-05-02T23:30:00,1490259.0,FT,MLS,New England Revolution,Charlotte,1,0,3,5,3,4,4,4,14.0,9.0
 2026-05-03T00:00:00,1492243.0,FT,Brasileirao,Cruzeiro,Atletico-MG,1,3,5,1,4,7,2,4,14.0,6.0
 2026-05-03T00:00:00,1511564.0,FT,Copa Chile,Rangers de Talca,D. Puerto Montt,0,1,0,0,0,0,0,0,0.0,0.0
 2026-05-03T00:00:00,1519344.0,FT,Liga Pro Ecuador,Barcelona SC,Manta FC,1,1,6,2,2,2,4,3,16.0,4.0
 2026-05-03T00:15:00,1491946.0,FT,Liga Profesional Argentina,Platense,Estudiantes L.P.,0,2,7,5,1,1,7,8,19.0,16.0
-2026-05-03T00:30:00,1490261.0,FT,MLS,Houston Dynamo,Colorado Rapids,1,0,6,5,3,3,5,2,9.0,4.0
 2026-05-03T00:30:00,1490260.0,FT,MLS,Chicago Fire,FC Cincinnati,2,3,10,1,1,3,10,4,33.0,10.0
+2026-05-03T00:30:00,1490261.0,FT,MLS,Houston Dynamo,Colorado Rapids,1,0,6,5,3,3,5,2,9.0,4.0
 2026-05-03T01:00:00,1542912.0,FT,Liga MX,Tigres UANL,Guadalajara Chivas,3,1,4,4,4,1,9,1,16.0,12.0
 2026-05-03T01:00:00,1512590.0,FT,Primera Division Peru,Alianza Lima,UCV Moquegua,2,1,1,0,2,2,6,2,16.0,7.0
 2026-05-03T01:30:00,1490262.0,FT,MLS,San Diego,Los Angeles FC,2,2,2,3,3,1,3,4,8.0,9.0
@@ -14611,8 +14611,8 @@
 2026-05-04T18:00:00,1436185.0,FT,Pro League Arabia,Al-Ittihad FC,Al Kholood,0,0,6,2,2,1,5,3,13.0,10.0
 2026-05-04T18:45:00,1378211.0,FT,Serie A,AS Roma,Fiorentina,4,0,4,5,2,2,7,1,14.0,4.0
 2026-05-04T19:00:00,1391156.0,FT,La Liga,Sevilla,Real Sociedad,1,0,3,3,2,1,5,0,19.0,6.0
-2026-05-04T19:00:00,1379314.0,FT,Premier League,Everton,Manchester City,3,3,5,9,4,1,6,4,14.0,20.0
-2026-05-04T19:15:00,1396524.0,FT,Primeira Liga,Sporting CP,Guimaraes,5,1,1,7,0,3,10,5,14.0,13.0
+2026-05-04T19:00:00,1379314.0,FT,Premier League,Everton,Manchester City,3,3,5,9,4,1,6,4,14.0,21.0
+2026-05-04T19:15:00,1396524.0,FT,Primeira Liga,Sporting CP,Guimaraes,5,1,1,7,0,2,10,5,14.0,13.0
 2026-05-04T20:00:00,1491944.0,FT,Liga Profesional Argentina,Gimnasia M.,Defensa Y Justicia,2,1,2,7,2,2,3,4,8.0,11.0
 2026-05-04T22:00:00,1511565.0,FT,Copa Chile,San Luis,Union San Felipe,4,0,0,0,0,0,0,0,0.0,0.0
 2026-05-04T22:15:00,1491952.0,FT,Liga Profesional Argentina,Velez Sarsfield,Newells Old Boys,1,1,7,4,2,5,3,5,14.0,9.0
@@ -14635,113 +14635,477 @@
 2026-05-06T00:00:00,1535297.0,FT,Copa Libertadores,UCV,Independiente del Valle,2,0,1,10,1,2,4,7,8.0,28.0
 2026-05-06T00:30:00,1535282.0,FT,Copa Libertadores,Always Ready,Lanus,4,0,2,5,2,1,10,4,24.0,7.0
 2026-05-06T00:30:00,1535200.0,FT,Copa Sudamericana,Puerto Cabello,Cienciano,3,0,4,2,2,2,4,2,15.0,15.0
-2026-05-06T00:30:00,1535201.0,FT,Copa Sudamericana,Deportivo Recoleta,Santos,1,1,6,5,4,1,2,3,6.0,17.0
-2026-05-06T02:00:00,1535193.0,HT,Copa Sudamericana,Deportivo Cuenca,San Lorenzo,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T16:45:00,1543734.0,NS,Eredivisie,Almere City FC,De Graafschap,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T17:00:00,1537055.0,NS,Copa Belgica,Zulte-Waregem W,Genk W,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T18:00:00,1436156.0,NS,Pro League Arabia,Al-Ahli Jeddah,Al-Fateh,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T19:00:00,1540844.0,NS,Champions League,Bayern München,Paris Saint Germain,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T22:00:00,1535290.0,NS,Copa Libertadores,Deportivo La Guaira,Bolívar,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T22:00:00,1535285.0,NS,Copa Libertadores,Cusco,Estudiantes L.P.,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T22:00:00,1535186.0,NS,Copa Sudamericana,A. Italiano,Vasco DA Gama,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-06T22:00:00,1535198.0,NS,Copa Sudamericana,Atletico Torque,Palestino,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T00:00:00,1535197.0,NS,Copa Sudamericana,Macara,Tigre,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T00:00:00,1535188.0,NS,Copa Sudamericana,Barracas Central,Olimpia,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T00:30:00,1535288.0,NS,Copa Libertadores,Independ. Rivadavia,Fluminense,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T00:30:00,1535294.0,NS,Copa Libertadores,Santa Fe,Corinthians,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T00:30:00,1535191.0,NS,Copa Sudamericana,Botafogo,Racing Club,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T02:00:00,1535286.0,NS,Copa Libertadores,Deportes Tolima,Club Nacional,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T02:00:00,1535296.0,NS,Copa Libertadores,U. Catolica,Cruzeiro,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T02:00:00,1535187.0,NS,Copa Sudamericana,Alianza Atletico,America de Cali,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T14:00:00,1533629.0,NS,Premier League Egipto,El Geish,Ghazl El Mehalla,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T17:00:00,1533630.0,NS,Premier League Egipto,Haras El Hodood,Masr,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T17:00:00,1533631.0,NS,Premier League Egipto,National Bank of Egypt,Ismaily SC,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T18:00:00,1436201.0,NS,Pro League Arabia,Al Shabab,Al-Nassr,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T19:00:00,1540881.0,NS,Conference League,Crystal Palace,Shakhtar Donetsk,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T19:00:00,1540882.0,NS,Conference League,Strasbourg,Rayo Vallecano,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T19:00:00,1540873.0,NS,Europa League,Aston Villa,Nottingham Forest,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T19:00:00,1540874.0,NS,Europa League,SC Freiburg,SC Braga,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T22:00:00,1535292.0,NS,Copa Libertadores,Platense,Penarol,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T22:00:00,1535291.0,NS,Copa Libertadores,Mirassol,LDU de Quito,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T22:00:00,1535199.0,NS,Copa Sudamericana,O'Higgins,Sao Paulo,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-07T22:00:00,1535190.0,NS,Copa Sudamericana,Boston River,Millonarios,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T00:00:00,1535284.0,NS,Copa Libertadores,Coquimbo Unido,Universitario,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-06T00:30:00,1535201.0,FT,Copa Sudamericana,Deportivo Recoleta,Santos,1,1,6,5,4,1,2,3,5.0,17.0
+2026-05-06T02:00:00,1535193.0,FT,Copa Sudamericana,Deportivo Cuenca,San Lorenzo,0,0,3,5,4,1,3,4,12.0,15.0
+2026-05-06T16:45:00,1543734.0,FT,Eredivisie,Almere City FC,De Graafschap,3,1,0,0,0,0,0,0,0.0,0.0
+2026-05-06T17:00:00,1537055.0,FT,Copa Belgica,Zulte-Waregem W,Genk W,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-06T18:00:00,1436156.0,FT,Pro League Arabia,Al-Ahli Jeddah,Al-Fateh,3,1,2,2,0,2,9,5,20.0,12.0
+2026-05-06T19:00:00,1540844.0,FT,Champions League,Bayern München,Paris Saint Germain,1,1,1,8,3,3,6,7,18.0,15.0
+2026-05-06T22:00:00,1535290.0,FT,Copa Libertadores,Deportivo La Guaira,Bolívar,1,1,6,7,4,3,6,4,12.0,12.0
+2026-05-06T22:00:00,1535285.0,FT,Copa Libertadores,Cusco,Estudiantes L.P.,1,1,3,3,1,3,8,2,14.0,10.0
+2026-05-06T22:00:00,1535186.0,FT,Copa Sudamericana,A. Italiano,Vasco DA Gama,1,2,5,6,3,4,3,9,10.0,20.0
+2026-05-06T22:00:00,1535198.0,FT,Copa Sudamericana,Atletico Torque,Palestino,1,0,0,4,4,4,3,3,9.0,13.0
+2026-05-07T00:00:00,1544251.0,FT,Copa Colombia,Patriotas,Chico,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-07T00:00:00,1535197.0,FT,Copa Sudamericana,Macara,Tigre,2,2,8,5,4,3,2,6,15.0,16.0
+2026-05-07T00:00:00,1535188.0,FT,Copa Sudamericana,Barracas Central,Olimpia,1,2,3,5,4,5,6,10,19.0,21.0
+2026-05-07T00:30:00,1535288.0,FT,Copa Libertadores,Independ. Rivadavia,Fluminense,1,1,6,2,2,4,3,2,15.0,11.0
+2026-05-07T00:30:00,1535294.0,FT,Copa Libertadores,Santa Fe,Corinthians,1,1,4,6,4,0,7,3,15.0,12.0
+2026-05-07T00:30:00,1535191.0,FT,Copa Sudamericana,Botafogo,Racing Club,2,1,5,4,3,3,4,5,12.0,13.0
+2026-05-07T02:00:00,1535286.0,FT,Copa Libertadores,Deportes Tolima,Club Nacional,3,0,10,3,3,2,9,2,19.0,8.0
+2026-05-07T02:00:00,1535296.0,FT,Copa Libertadores,U. Catolica,Cruzeiro,0,0,5,2,2,2,5,1,13.0,11.0
+2026-05-07T02:00:00,1535187.0,FT,Copa Sudamericana,Alianza Atletico,America de Cali,0,2,5,4,2,2,6,4,15.0,12.0
+2026-05-07T14:00:00,1533629.0,FT,Premier League Egipto,El Geish,Ghazl El Mehalla,1,0,2,4,3,0,4,1,9.0,7.0
+2026-05-07T17:00:00,1533630.0,FT,Premier League Egipto,Haras El Hodood,Masr,1,2,17,2,2,4,3,2,20.0,10.0
+2026-05-07T17:00:00,1533631.0,FT,Premier League Egipto,National Bank of Egypt,Ismaily SC,0,0,6,2,0,1,6,2,23.0,4.0
+2026-05-07T18:00:00,1436201.0,FT,Pro League Arabia,Al Shabab,Al-Nassr,2,4,2,8,2,1,3,5,10.0,15.0
+2026-05-07T19:00:00,1540881.0,FT,Conference League,Crystal Palace,Shakhtar Donetsk,2,1,1,5,0,1,5,6,11.0,17.0
+2026-05-07T19:00:00,1540882.0,FT,Conference League,Strasbourg,Rayo Vallecano,0,1,5,6,2,3,3,8,11.0,22.0
+2026-05-07T19:00:00,1540873.0,FT,Europa League,Aston Villa,Nottingham Forest,4,0,6,3,0,2,10,2,18.0,7.0
+2026-05-07T19:00:00,1540874.0,FT,Europa League,SC Freiburg,SC Braga,3,1,4,8,0,4,8,5,19.0,14.0
+2026-05-07T21:00:00,1544252.0,FT,Copa Colombia,Jaguares,Real Soacha,1,2,0,0,0,0,0,0,0.0,0.0
+2026-05-07T22:00:00,1544253.0,FT,Copa Colombia,Llaneros,Depor FC,3,0,0,0,0,0,0,0,0.0,0.0
+2026-05-07T22:00:00,1535292.0,FT,Copa Libertadores,Platense,Penarol,1,1,4,3,2,6,3,4,13.0,8.0
+2026-05-07T22:00:00,1535291.0,FT,Copa Libertadores,Mirassol,LDU de Quito,2,0,7,0,0,3,8,2,15.0,6.0
+2026-05-07T22:00:00,1535199.0,FT,Copa Sudamericana,O'Higgins,Sao Paulo,0,0,8,2,3,2,2,1,16.0,7.0
+2026-05-07T22:00:00,1535190.0,FT,Copa Sudamericana,Boston River,Millonarios,2,4,2,9,4,0,4,10,8.0,29.0
+2026-05-07T23:00:00,1544254.0,FT,Copa Colombia,Ind. Yumbo,Deportivo Pereira,1,1,0,0,0,0,0,0,0.0,0.0
+2026-05-08T00:00:00,1535284.0,FT,Copa Libertadores,Coquimbo Unido,Universitario,2,1,9,3,1,3,4,2,10.0,9.0
 2026-05-08T00:30:00,1535287.0,NS,Copa Libertadores,Independiente Medellin,Flamengo,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T00:30:00,1535192.0,NS,Copa Sudamericana,Carabobo FC,River Plate,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T00:30:00,1535189.0,NS,Copa Sudamericana,Blooming,RB Bragantino,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T02:00:00,1535289.0,NS,Copa Libertadores,Junior,Cerro Porteno,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T14:00:00,1533633.0,NS,Premier League Egipto,Petrojet,Wadi Degla,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T14:00:00,1533632.0,NS,Premier League Egipto,El Mokawloon,El Gouna FC,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T17:00:00,1533635.0,NS,Premier League Egipto,Future FC,Al Ittihad,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T17:00:00,1533634.0,NS,Premier League Egipto,Kahraba Ismailia,Pharco,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T18:30:00,1388597.0,NS,Bundesliga,Borussia Dortmund,Eintracht Frankfurt,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T18:45:00,1387989.0,NS,Ligue 1,Lens,Nantes,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T18:45:00,1536954.0,NS,Pro League Belgica,Standard Liege,OH Leuven,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T18:45:00,1378222.0,NS,Serie A,Torino,Sassuolo,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T19:00:00,1391163.0,NS,La Liga,Levante,Osasuna,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T20:00:00,1512598.0,NS,Primera Division Peru,UTC Cajamarca,FC Cajamarca,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-08T22:30:00,1544122.0,NS,Primera Division Uruguay,Wanderers,Liverpool Montevideo,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T00:00:00,1511572.0,NS,Copa Chile,Deportes Iquique,Rangers de Talca,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T00:00:00,1511574.0,NS,Copa Chile,D. Puerto Montt,Magallanes,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T00:00:00,1519358.0,NS,Liga Pro Ecuador,Orense SC,Leones del Norte,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-08T00:30:00,1535192.0,FT,Copa Sudamericana,Carabobo FC,River Plate,1,2,2,6,3,6,1,7,7.0,15.0
+2026-05-08T00:30:00,1535189.0,FT,Copa Sudamericana,Blooming,RB Bragantino,0,6,2,3,3,1,2,15,5.0,23.0
+2026-05-08T01:00:00,1544255.0,FT,Copa Colombia,Bucaramanga,Real Santander,5,0,0,0,0,0,0,0,0.0,0.0
+2026-05-08T02:00:00,1535289.0,FT,Copa Libertadores,Junior,Cerro Porteno,0,1,10,2,2,2,2,3,16.0,12.0
+2026-05-08T14:00:00,1533633.0,FT,Premier League Egipto,Petrojet,Wadi Degla,2,2,2,11,1,2,7,4,10.0,17.0
+2026-05-08T14:00:00,1533632.0,FT,Premier League Egipto,El Mokawloon,El Gouna FC,1,0,6,3,1,3,6,0,14.0,6.0
+2026-05-08T17:00:00,1533635.0,FT,Premier League Egipto,Future FC,Al Ittihad,0,0,4,4,0,0,3,3,16.0,9.0
+2026-05-08T17:00:00,1533634.0,FT,Premier League Egipto,Kahraba Ismailia,Pharco,0,0,9,3,3,2,2,1,15.0,9.0
+2026-05-08T18:30:00,1388597.0,FT,Bundesliga,Borussia Dortmund,Eintracht Frankfurt,3,2,6,2,3,0,8,4,12.0,9.0
+2026-05-08T18:45:00,1387989.0,FT,Ligue 1,Lens,Nantes,1,0,8,3,2,1,5,3,14.0,15.0
+2026-05-08T18:45:00,1536954.0,FT,Pro League Belgica,Standard Liege,OH Leuven,2,1,3,7,0,2,4,2,13.0,12.0
+2026-05-08T18:45:00,1378222.0,FT,Serie A,Torino,Sassuolo,2,1,7,5,4,2,4,7,18.0,13.0
+2026-05-08T19:00:00,1391163.0,FT,La Liga,Levante,Osasuna,3,2,15,1,2,0,12,3,35.0,5.0
+2026-05-08T20:00:00,1544257.0,FT,Copa Colombia,Fortaleza FC,Leones FC,4,1,0,0,0,0,0,0,0.0,0.0
+2026-05-08T20:00:00,1544256.0,FT,Copa Colombia,Popayan,Alianza Valledupar,1,1,0,0,0,0,0,0,0.0,0.0
+2026-05-08T20:00:00,1512598.0,FT,Primera Division Peru,UTC Cajamarca,FC Cajamarca,1,2,8,3,2,3,3,3,10.0,9.0
+2026-05-08T22:30:00,1544122.0,FT,Primera Division Uruguay,Wanderers,Liverpool Montevideo,1,0,0,0,0,0,0,0,0.0,0.0
+2026-05-09T00:00:00,1511572.0,FT,Copa Chile,Deportes Iquique,Rangers de Talca,1,1,0,0,0,0,0,0,0.0,0.0
+2026-05-09T00:00:00,1511574.0,FT,Copa Chile,D. Puerto Montt,Magallanes,2,0,0,0,0,0,0,0,0.0,0.0
+2026-05-09T00:00:00,1519358.0,FT,Liga Pro Ecuador,Orense SC,Leones del Norte,2,0,7,4,4,4,10,1,19.0,7.0
 2026-05-09T00:10:00,1540051.0,NS,Copa Argentina,Banfield,San Martin Tucuman,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T11:30:00,1537047.0,NS,Copa Belgica,OH Leuven W,Anderlecht W,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T11:30:00,1537059.0,NS,Copa Belgica,Westerlo W,Genk W,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T11:30:00,1379323.0,NS,Premier League,Liverpool,Chelsea,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T12:00:00,1391162.0,NS,La Liga,Elche,Alaves,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T13:00:00,1378214.0,NS,Serie A,Cagliari,Udinese,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T13:30:00,1388600.0,NS,Bundesliga,1899 Hoffenheim,Werder Bremen,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T13:30:00,1388596.0,NS,Bundesliga,FC Augsburg,Borussia Mönchengladbach,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T13:30:00,1388603.0,NS,Bundesliga,VfB Stuttgart,Bayer Leverkusen,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T13:30:00,1388602.0,NS,Bundesliga,RB Leipzig,FC St. Pauli,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:00:00,1537048.0,NS,Copa Belgica,Club Brugge W,Standard Liege W,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:00:00,1537060.0,NS,Copa Belgica,Zulte-Waregem W,Gent W,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:00:00,1379322.0,NS,Premier League,Fulham,Bournemouth,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:00:00,1379319.0,NS,Premier League,Brighton,Wolves,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:00:00,1379326.0,NS,Premier League,Sunderland,Manchester United,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:00:00,1536976.0,NS,Pro League Belgica,Zulte Waregem,Dender,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:00:00,1536977.0,NS,Pro League Belgica,RAAL La Louvière,Cercle Brugge,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T14:15:00,1391168.0,NS,La Liga,Sevilla,Espanyol,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-09T11:30:00,1537047.0,FT,Copa Belgica,OH Leuven W,Anderlecht W,1,1,0,0,0,0,0,0,0.0,0.0
+2026-05-09T11:30:00,1537059.0,FT,Copa Belgica,Westerlo W,Genk W,0,3,0,0,0,0,0,0,0.0,0.0
+2026-05-09T11:30:00,1379323.0,FT,Premier League,Liverpool,Chelsea,1,1,5,2,2,4,3,3,8.0,6.0
+2026-05-09T12:00:00,1391162.0,FT,La Liga,Elche,Alaves,1,1,7,3,3,6,5,4,16.0,12.0
+2026-05-09T13:00:00,1378214.0,FT,Serie A,Cagliari,Udinese,0,2,8,4,1,1,5,6,22.0,9.0
+2026-05-09T13:30:00,1388600.0,FT,Bundesliga,1899 Hoffenheim,Werder Bremen,1,0,8,3,1,2,4,2,15.0,11.0
+2026-05-09T13:30:00,1388596.0,FT,Bundesliga,FC Augsburg,Borussia Mönchengladbach,3,1,3,2,2,2,10,4,15.0,16.0
+2026-05-09T13:30:00,1388603.0,FT,Bundesliga,VfB Stuttgart,Bayer Leverkusen,3,1,7,6,2,1,9,5,20.0,6.0
+2026-05-09T13:30:00,1388602.0,FT,Bundesliga,RB Leipzig,FC St. Pauli,2,1,3,5,2,0,5,3,13.0,8.0
+2026-05-09T14:00:00,1537048.0,FT,Copa Belgica,Club Brugge W,Standard Liege W,2,1,0,0,0,0,0,0,0.0,0.0
+2026-05-09T14:00:00,1537060.0,FT,Copa Belgica,Zulte-Waregem W,Gent W,4,1,0,0,0,0,0,0,0.0,0.0
+2026-05-09T14:00:00,1379322.0,FT,Premier League,Fulham,Bournemouth,0,1,11,2,4,2,2,5,14.0,10.0
+2026-05-09T14:00:00,1379319.0,FT,Premier League,Brighton,Wolves,3,0,7,1,1,2,6,1,14.0,5.0
+2026-05-09T14:00:00,1379326.0,FT,Premier League,Sunderland,Manchester United,0,0,6,7,0,3,4,1,15.0,11.0
+2026-05-09T14:00:00,1536976.0,FT,Pro League Belgica,Zulte Waregem,Dender,2,1,9,2,1,5,6,5,19.0,10.0
+2026-05-09T14:00:00,1536977.0,FT,Pro League Belgica,RAAL La Louvière,Cercle Brugge,4,1,6,5,1,2,6,6,13.0,13.0
+2026-05-09T14:15:00,1391168.0,FT,La Liga,Sevilla,Espanyol,2,1,4,6,5,5,6,5,21.0,10.0
 2026-05-09T14:30:00,1543678.0,NS,Eredivisie,Willem II,Waalwijk,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T15:55:00,1436196.0,NS,Pro League Arabia,Al Khaleej Saihat,Al-Ettifaq,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T16:00:00,1378217.0,NS,Serie A,Lazio,Inter,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T16:15:00,1436192.0,NS,Pro League Arabia,Al Najma,Al-Hazm,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T16:15:00,1542944.0,NS,Pro League Belgica,Beerschot VA,Lommel United,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T16:30:00,1388604.0,NS,Bundesliga,VfL Wolfsburg,Bayern München,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T16:30:00,1511575.0,NS,Copa Chile,Recoleta,Deportes Santa Cruz,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T16:30:00,1391160.0,NS,La Liga,Atletico Madrid,Celta Vigo,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T16:30:00,1379324.0,NS,Premier League,Manchester City,Brentford,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1490267.0,NS,MLS,Toronto FC,Inter Miami,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394723.0,NS,Super Lig Turquia,Beşiktaş,Trabzonspor,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394722.0,NS,Super Lig Turquia,Başakşehir,Samsunspor,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394729.0,NS,Super Lig Turquia,Konyaspor,Fenerbahçe,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394725.0,NS,Super Lig Turquia,Galatasaray,Antalyaspor,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394727.0,NS,Super Lig Turquia,Göztepe,Gaziantep FK,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394721.0,NS,Super Lig Turquia,Alanyaspor,Kayserispor,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394726.0,NS,Super Lig Turquia,Gençlerbirliği S.K.,Kasımpaşa,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394724.0,NS,Super Lig Turquia,Eyüpspor,Rizespor,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T17:00:00,1394728.0,NS,Super Lig Turquia,Kocaelispor,Fatih Karagümrük,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-09T15:55:00,1436196.0,FT,Pro League Arabia,Al Khaleej Saihat,Al-Ettifaq,0,5,4,4,1,2,2,15,6.0,19.0
+2026-05-09T16:00:00,1378217.0,FT,Serie A,Lazio,Inter,0,3,5,1,2,1,5,5,9.0,14.0
+2026-05-09T16:15:00,1436192.0,FT,Pro League Arabia,Al Najma,Al-Hazm,2,2,1,7,2,3,2,6,6.0,17.0
+2026-05-09T16:15:00,1542944.0,FT,Pro League Belgica,Beerschot VA,Lommel United,1,3,11,2,2,1,12,3,23.0,7.0
+2026-05-09T16:30:00,1388604.0,FT,Bundesliga,VfL Wolfsburg,Bayern München,0,1,6,3,1,0,5,9,17.0,16.0
+2026-05-09T16:30:00,1511575.0,FT,Copa Chile,Recoleta,Deportes Santa Cruz,1,0,0,0,0,0,0,0,0.0,0.0
+2026-05-09T16:30:00,1391160.0,FT,La Liga,Atletico Madrid,Celta Vigo,0,1,10,0,1,2,4,1,20.0,3.0
+2026-05-09T16:30:00,1379324.0,FT,Premier League,Manchester City,Brentford,3,0,10,2,4,2,10,2,25.0,4.0
+2026-05-09T17:00:00,1490267.0,FT,MLS,Toronto FC,Inter Miami,2,4,4,4,1,2,5,7,13.0,11.0
+2026-05-09T17:00:00,1394723.0,FT,Super Lig Turquia,Beşiktaş,Trabzonspor,1,2,6,3,1,2,5,6,21.0,10.0
+2026-05-09T17:00:00,1394722.0,FT,Super Lig Turquia,Başakşehir,Samsunspor,3,0,2,5,2,2,6,1,19.0,9.0
+2026-05-09T17:00:00,1394729.0,FT,Super Lig Turquia,Konyaspor,Fenerbahçe,0,3,6,2,3,2,2,11,10.0,23.0
+2026-05-09T17:00:00,1394725.0,FT,Super Lig Turquia,Galatasaray,Antalyaspor,4,2,6,1,4,3,9,2,23.0,8.0
+2026-05-09T17:00:00,1394727.0,FT,Super Lig Turquia,Göztepe,Gaziantep FK,2,1,8,7,2,2,6,2,19.0,14.0
+2026-05-09T17:00:00,1394721.0,FT,Super Lig Turquia,Alanyaspor,Kayserispor,3,1,1,7,2,2,8,9,13.0,19.0
+2026-05-09T17:00:00,1394726.0,FT,Super Lig Turquia,Gençlerbirliği S.K.,Kasımpaşa,3,2,5,4,4,10,8,4,14.0,10.0
+2026-05-09T17:00:00,1394724.0,FT,Super Lig Turquia,Eyüpspor,Rizespor,4,0,3,6,0,0,6,4,11.0,14.0
+2026-05-09T17:00:00,1394728.0,FT,Super Lig Turquia,Kocaelispor,Fatih Karagümrük,0,1,3,3,2,0,0,1,8.0,6.0
 2026-05-09T18:00:00,1543735.0,NS,Eredivisie,De Graafschap,Almere City FC,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T18:00:00,1512603.0,NS,Primera Division Peru,UCV Moquegua,ADT,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T18:00:00,1436198.0,NS,Pro League Arabia,Al-Fayha,Al-Qadisiyah FC,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T18:30:00,1519359.0,NS,Liga Pro Ecuador,Tecnico Universitario,Delfin SC,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T18:30:00,1490266.0,NS,MLS,Chicago Fire,New York Red Bulls,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T18:30:00,1544123.0,NS,Primera Division Uruguay,Danubio,Albion FC,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T18:45:00,1536997.0,NS,Pro League Belgica,Club Brugge KV,St. Truiden,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T18:45:00,1378218.0,NS,Serie A,Lecce,Juventus,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T19:00:00,1492253.0,NS,Brasileirao,Coritiba,Internacional,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T19:00:00,1511573.0,NS,Copa Chile,Deportes Temuco,Union Espanola,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T19:00:00,1391166.0,NS,La Liga,Real Sociedad,Real Betis,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T19:30:00,1544176.0,NS,Liga Profesional Argentina,Talleres Cordoba,Belgrano Cordoba,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T20:15:00,1512602.0,NS,Primera Division Peru,Atletico Grau,Cienciano,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T20:30:00,1490268.0,NS,MLS,CF Montreal,Orlando City SC,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T20:45:00,1505073.0,NS,Division Profesional Paraguay,2 de Mayo,Rubio NU,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T21:00:00,1492254.0,NS,Brasileirao,Fluminense,Vitoria,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T21:00:00,1519354.0,NS,Liga Pro Ecuador,Guayaquil City FC,Deportivo Cuenca,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T21:30:00,1519352.0,NS,Liga Pro Ecuador,Aucas,Universidad Catolica,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T21:30:00,1544124.0,NS,Primera Division Uruguay,Central Espanol,Racing Montevideo,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T22:00:00,1544177.0,NS,Liga Profesional Argentina,Boca Juniors,Huracan,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T23:00:00,1505076.0,NS,Division Profesional Paraguay,Nacional Asuncion,Sportivo Trinidense,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T23:30:00,1490269.0,NS,MLS,Atlanta United FC,Los Angeles Galaxy,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T23:30:00,1490271.0,NS,MLS,New England Revolution,Philadelphia Union,0,0,0,0,0,0,0,0,0.0,0.0
-2026-05-09T23:30:00,1490270.0,NS,MLS,Charlotte,FC Cincinnati,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-09T18:00:00,1512603.0,FT,Primera Division Peru,UCV Moquegua,ADT,2,2,3,0,3,5,7,4,11.0,10.0
+2026-05-09T18:00:00,1436198.0,FT,Pro League Arabia,Al-Fayha,Al-Qadisiyah FC,1,2,3,3,1,2,5,2,12.0,15.0
+2026-05-09T18:30:00,1519359.0,FT,Liga Pro Ecuador,Tecnico Universitario,Delfin SC,4,0,7,3,1,2,6,5,12.0,7.0
+2026-05-09T18:30:00,1490266.0,FT,MLS,Chicago Fire,New York Red Bulls,1,3,6,3,1,3,4,4,15.0,9.0
+2026-05-09T18:30:00,1544123.0,FT,Primera Division Uruguay,Danubio,Albion FC,0,1,0,0,0,0,0,0,0.0,0.0
+2026-05-09T18:45:00,1536997.0,FT,Pro League Belgica,Club Brugge KV,St. Truiden,2,0,6,2,0,1,11,2,24.0,7.0
+2026-05-09T18:45:00,1378218.0,FT,Serie A,Lecce,Juventus,0,1,1,7,1,1,3,6,8.0,15.0
+2026-05-09T19:00:00,1492253.0,FT,Brasileirao,Coritiba,Internacional,2,2,3,8,1,3,3,4,8.0,22.0
+2026-05-09T19:00:00,1511573.0,FT,Copa Chile,Deportes Temuco,Union Espanola,0,1,0,0,0,0,0,0,0.0,0.0
+2026-05-09T19:00:00,1391166.0,FT,La Liga,Real Sociedad,Real Betis,2,2,4,3,2,3,6,6,14.0,14.0
+2026-05-09T19:30:00,1544176.0,FT,Liga Profesional Argentina,Talleres Cordoba,Belgrano Cordoba,0,1,8,3,4,5,2,3,16.0,14.0
+2026-05-09T20:15:00,1512602.0,FT,Primera Division Peru,Atletico Grau,Cienciano,1,2,3,5,2,5,6,8,14.0,18.0
+2026-05-09T20:30:00,1490268.0,FT,MLS,CF Montreal,Orlando City SC,2,0,11,3,0,2,5,3,23.0,8.0
+2026-05-09T20:45:00,1505073.0,FT,Division Profesional Paraguay,2 de Mayo,Rubio NU,2,0,2,5,1,0,3,8,9.0,12.0
+2026-05-09T21:00:00,1492254.0,FT,Brasileirao,Fluminense,Vitoria,2,2,6,3,4,2,5,3,12.0,10.0
+2026-05-09T21:00:00,1544223.0,FT,Liga Colombia,Internacional de Bogota,Atletico Nacional,1,2,6,3,4,2,4,6,14.0,13.0
+2026-05-09T21:00:00,1519354.0,FT,Liga Pro Ecuador,Guayaquil City FC,Deportivo Cuenca,0,1,3,2,1,2,3,5,8.0,13.0
+2026-05-09T21:30:00,1519352.0,FT,Liga Pro Ecuador,Aucas,Universidad Catolica,2,1,5,3,1,0,6,2,14.0,4.0
+2026-05-09T21:30:00,1544124.0,FT,Primera Division Uruguay,Central Espanol,Racing Montevideo,2,0,0,0,0,0,0,0,0.0,0.0
+2026-05-09T22:00:00,1544258.0,FT,Copa Colombia,Orsomarso,Cucuta,1,1,0,0,0,0,0,0,0.0,0.0
+2026-05-09T22:00:00,1544177.0,AET,Liga Profesional Argentina,Boca Juniors,Huracan,2,3,17,1,1,5,11,4,36.0,8.0
+2026-05-09T23:00:00,1505076.0,FT,Division Profesional Paraguay,Nacional Asuncion,Sportivo Trinidense,2,1,4,0,2,1,6,2,15.0,7.0
+2026-05-09T23:10:00,1544224.0,FT,Liga Colombia,Deportes Tolima,Deportivo Pasto,1,0,6,6,0,3,5,4,10.0,10.0
+2026-05-09T23:30:00,1490269.0,FT,MLS,Atlanta United FC,Los Angeles Galaxy,1,2,6,5,3,1,3,6,14.0,10.0
+2026-05-09T23:30:00,1490270.0,FT,MLS,Charlotte,FC Cincinnati,2,2,7,4,1,4,3,5,12.0,13.0
+2026-05-09T23:30:00,1490271.0,FT,MLS,New England Revolution,Philadelphia Union,2,1,9,3,0,3,2,2,10.0,11.0
+2026-05-10T00:00:00,1492251.0,FT,Brasileirao,Bahia,Cruzeiro,1,2,6,8,3,4,3,7,8.0,20.0
+2026-05-10T00:00:00,1511576.0,FT,Copa Chile,Santiago Wanderers,Cobreloa,5,1,0,0,0,0,0,0,0.0,0.0
+2026-05-10T00:00:00,1519355.0,FT,Liga Pro Ecuador,Independiente del Valle,Barcelona SC,1,0,6,1,2,3,4,1,15.0,8.0
+2026-05-10T00:30:00,1544178.0,NS,Liga Profesional Argentina,Argentinos JRS,Lanus,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-10T00:30:00,1544179.0,FT,Liga Profesional Argentina,Independ. Rivadavia,Union Santa Fe,1,2,5,5,1,2,3,6,17.0,10.0
+2026-05-10T00:30:00,1490272.0,FT,MLS,FC Dallas,Real Salt Lake,3,1,4,7,2,3,4,2,11.0,9.0
+2026-05-10T01:00:00,1512597.0,FT,Primera Division Peru,Alianza Lima,Sporting Cristal,1,1,1,2,2,3,7,4,15.0,9.0
+2026-05-10T01:07:00,1542916.0,FT,Liga MX,Guadalajara Chivas,Tigres UANL,2,0,13,1,1,3,5,3,29.0,5.0
+2026-05-10T01:15:00,1544178.0,FT,Liga Profesional Argentina,Argentinos JRS,Lanus,2,0,3,2,3,4,8,3,16.0,9.0
+2026-05-10T01:15:00,1490273.0,FT,MLS,Nashville SC,DC United,2,2,8,7,3,2,7,6,16.0,12.0
+2026-05-10T01:20:00,1544225.0,FT,Liga Colombia,America de Cali,Santa Fe,1,1,2,2,1,1,5,5,11.0,12.0
+2026-05-10T01:30:00,1490274.0,FT,MLS,Colorado Rapids,St. Louis City,0,1,11,1,3,5,2,1,10.0,10.0
+2026-05-10T02:30:00,1490275.0,FT,MLS,Seattle Sounders,San Diego,1,1,8,2,3,2,5,5,26.0,15.0
+2026-05-10T02:30:00,1490276.0,FT,MLS,San Jose Earthquakes,Vancouver Whitecaps,1,1,2,4,4,1,3,5,7.0,16.0
+2026-05-10T02:30:00,1490277.0,FT,MLS,Portland Timbers,Sporting Kansas City,6,0,4,4,1,5,6,3,16.0,11.0
+2026-05-10T03:15:00,1542917.0,FT,Liga MX,Cruz Azul,Atlas,1,0,6,6,0,2,5,5,9.0,18.0
+2026-05-10T10:30:00,1378223.0,FT,Serie A,Hellas Verona,Como,0,1,7,7,1,1,3,4,11.0,11.0
+2026-05-10T11:30:00,1536996.0,FT,Pro League Belgica,Gent,Anderlecht,1,1,4,2,3,3,3,5,15.0,8.0
+2026-05-10T12:00:00,1391164.0,FT,La Liga,Mallorca,Villarreal,1,1,5,4,2,0,8,2,18.0,7.0
+2026-05-10T13:00:00,1379320.0,FT,Premier League,Burnley,Aston Villa,2,2,2,8,1,1,6,7,15.0,18.0
+2026-05-10T13:00:00,1379321.0,FT,Premier League,Crystal Palace,Everton,2,2,5,10,0,2,8,6,21.0,13.0
+2026-05-10T13:00:00,1379325.0,FT,Premier League,Nottingham Forest,Newcastle,1,1,2,1,2,0,6,6,17.0,16.0
+2026-05-10T13:00:00,1378216.0,FT,Serie A,Fiorentina,Genoa,0,0,4,3,0,0,1,3,13.0,9.0
+2026-05-10T13:00:00,1378215.0,FT,Serie A,Cremonese,Pisa,3,0,7,1,0,4,6,0,10.0,0.0
+2026-05-10T13:30:00,1388599.0,FT,Bundesliga,Hamburger SV,SC Freiburg,3,2,2,4,2,2,5,3,14.0,5.0
+2026-05-10T14:00:00,1544125.0,FT,Primera Division Uruguay,Defensor Sporting,Juventud,1,2,0,0,0,0,0,0,0.0,0.0
+2026-05-10T14:00:00,1536955.0,FT,Pro League Belgica,Antwerp,Charleroi,0,1,4,3,2,3,1,2,18.0,12.0
+2026-05-10T14:15:00,1391159.0,FT,La Liga,Athletic Club,Valencia,0,1,13,5,2,3,4,3,14.0,7.0
+2026-05-10T14:45:00,1381160.0,NS,Eredivisie,NAC Breda,Heerenveen,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-10T14:45:00,1381155.0,FT,Eredivisie,Ajax,Utrecht,1,2,4,7,2,2,6,6,15.0,14.0
+2026-05-10T14:45:00,1381156.0,FT,Eredivisie,Excelsior,FC Volendam,1,1,5,0,1,3,2,2,8.0,8.0
+2026-05-10T14:45:00,1381159.0,FT,Eredivisie,Groningen,NEC Nijmegen,2,1,5,6,2,1,7,3,11.0,12.0
+2026-05-10T14:45:00,1381161.0,FT,Eredivisie,Fortuna Sittard,PEC Zwolle,3,2,6,5,0,1,4,3,12.0,8.0
+2026-05-10T14:45:00,1381157.0,FT,Eredivisie,Feyenoord,AZ Alkmaar,1,1,7,3,1,0,5,3,10.0,13.0
+2026-05-10T14:45:00,1381158.0,FT,Eredivisie,GO Ahead Eagles,PSV Eindhoven,1,4,8,4,0,0,4,10,11.0,24.0
+2026-05-10T14:45:00,1381163.0,FT,Eredivisie,Twente,Sparta Rotterdam,4,0,9,2,0,2,13,1,26.0,9.0
+2026-05-10T14:45:00,1381162.0,FT,Eredivisie,Telstar,Heracles,3,0,6,7,1,3,7,1,12.0,7.0
+2026-05-10T15:30:00,1388598.0,FT,Bundesliga,1. FC Köln,1. FC Heidenheim,1,3,6,4,2,2,7,5,18.0,11.0
+2026-05-10T15:30:00,1379328.0,FT,Premier League,West Ham,Arsenal,0,1,4,3,3,4,3,4,9.0,15.0
+2026-05-10T16:00:00,1378221.0,FT,Serie A,Parma,AS Roma,2,3,3,6,4,0,3,7,11.0,15.0
+2026-05-10T16:05:00,1436195.0,FT,Pro League Arabia,Al Riyadh,Al-Fateh,1,0,5,2,3,4,4,6,14.0,11.0
+2026-05-10T16:30:00,1511569.0,FT,Copa Chile,Antofagasta,San Luis,3,1,0,0,0,0,0,0,0.0,0.0
+2026-05-10T16:30:00,1511570.0,FT,Copa Chile,Deportes Copiapo,Union San Felipe,2,1,0,0,0,0,0,0,0.0,0.0
+2026-05-10T16:30:00,1391167.0,FT,La Liga,Oviedo,Getafe,0,0,1,9,2,3,4,4,8.0,22.0
+2026-05-10T16:30:00,1536998.0,FT,Pro League Belgica,Union St. Gilloise,KV Mechelen,3,0,3,3,1,1,6,1,14.0,5.0
+2026-05-10T17:00:00,1396525.0,FT,Primeira Liga,AVS,FC Porto,3,1,3,7,2,2,5,4,9.0,20.0
+2026-05-10T17:15:00,1536956.0,FT,Pro League Belgica,Genk,KVC Westerlo,3,0,6,3,1,2,4,4,16.0,15.0
+2026-05-10T17:30:00,1388601.0,FT,Bundesliga,FSV Mainz 05,Union Berlin,1,3,7,8,2,1,3,9,14.0,16.0
+2026-05-10T17:30:00,1539630.0,NS,Copa Egipto,Pyramids FC,Masr,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-10T17:30:00,1539630.0,FT,Copa Egipto,Masr,Pyramids FC,1,2,0,0,0,0,0,0,0.0,0.0
+2026-05-10T18:00:00,1544180.0,FT,Liga Profesional Argentina,Rosario Central,Independiente,3,1,2,3,2,2,6,4,14.0,6.0
+2026-05-10T18:00:00,1512605.0,FT,Primera Division Peru,Sport Huancayo,Juan Pablo II College,2,1,7,5,1,2,7,1,15.0,3.0
+2026-05-10T18:00:00,1436193.0,FT,Pro League Arabia,Al-Ittihad FC,Damac,2,1,9,1,0,1,7,8,16.0,15.0
+2026-05-10T18:45:00,1378219.0,FT,Serie A,AC Milan,Atalanta,2,3,2,2,3,3,9,5,20.0,9.0
+2026-05-10T19:00:00,1492250.0,FT,Brasileirao,Atletico-MG,Botafogo,1,1,6,4,0,2,7,5,17.0,18.0
+2026-05-10T19:00:00,1492257.0,FT,Brasileirao,Remo,Palmeiras,1,1,5,17,1,2,4,5,15.0,18.0
+2026-05-10T19:00:00,1391161.0,FT,La Liga,Barcelona,Real Madrid,2,0,4,8,2,4,7,1,10.0,8.0
+2026-05-10T19:00:00,1387986.0,FT,Ligue 1,Angers,Strasbourg,1,1,0,2,2,2,4,6,11.0,15.0
+2026-05-10T19:00:00,1387992.0,FT,Ligue 1,Paris Saint Germain,Stade Brestois 29,1,0,13,2,0,0,6,2,23.0,3.0
+2026-05-10T19:00:00,1387991.0,FT,Ligue 1,Monaco,Lille,0,1,5,2,1,3,3,2,7.0,7.0
+2026-05-10T19:00:00,1387993.0,FT,Ligue 1,Rennes,Paris FC,2,1,8,2,0,2,5,1,14.0,11.0
+2026-05-10T19:00:00,1387994.0,FT,Ligue 1,Toulouse,Lyon,2,1,7,8,6,2,6,3,14.0,18.0
+2026-05-10T19:00:00,1387987.0,FT,Ligue 1,Auxerre,Nice,2,1,10,1,1,0,4,6,12.0,10.0
+2026-05-10T19:00:00,1387988.0,FT,Ligue 1,Le Havre,Marseille,0,1,3,0,4,2,2,3,10.0,8.0
+2026-05-10T19:00:00,1387990.0,FT,Ligue 1,Metz,Lorient,0,4,7,4,2,2,2,7,8.0,14.0
+2026-05-10T19:00:00,1544126.0,FT,Primera Division Uruguay,Atletico Torque,Progreso,2,1,0,0,0,0,0,0,0.0,0.0
+2026-05-10T19:30:00,1396526.0,FT,Primeira Liga,Alverca,Estoril,1,1,4,4,3,2,1,3,8.0,11.0
+2026-05-10T20:00:00,1544261.0,FT,Copa Colombia,Águilas Doradas,Jaguares,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-10T20:00:00,1544181.0,FT,Liga Profesional Argentina,Estudiantes L.P.,Racing Club,0,1,1,4,2,5,4,2,13.0,8.0
+2026-05-10T20:15:00,1512599.0,FT,Primera Division Peru,Comerciantes Unidos,FBC Melgar,1,1,3,3,1,2,6,3,17.0,12.0
+2026-05-10T20:30:00,1519353.0,FT,Liga Pro Ecuador,Emelec,Libertad,1,1,11,1,2,2,5,5,24.0,9.0
+2026-05-10T20:30:00,1490278.0,FT,MLS,New York City FC,Columbus Crew,3,0,3,8,0,1,6,2,9.0,11.0
+2026-05-10T20:45:00,1505077.0,FT,Division Profesional Paraguay,Club Sp. San Lorenzo,Olimpia,1,0,0,0,0,0,0,0,0.0,0.0
+2026-05-10T21:30:00,1492258.0,FT,Brasileirao,Santos,RB Bragantino,2,0,7,3,1,4,3,3,9.0,11.0
+2026-05-10T21:30:00,1492252.0,FT,Brasileirao,Corinthians,Sao Paulo,3,2,7,7,4,4,6,4,15.0,7.0
+2026-05-10T21:30:00,1492256.0,FT,Brasileirao,Mirassol,Chapecoense-sc,1,1,8,1,1,5,4,4,22.0,11.0
+2026-05-10T22:00:00,1544182.0,NS,Liga Profesional Argentina,River Plate,San Lorenzo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-10T22:30:00,1492255.0,FT,Brasileirao,Gremio,Flamengo,0,1,0,6,1,3,3,5,6.0,20.0
+2026-05-10T22:30:00,1512600.0,FT,Primera Division Peru,Cusco,Club Deportivo Los Chankas,1,1,5,4,2,3,7,7,18.0,14.0
+2026-05-10T22:30:00,1544127.0,FT,Primera Division Uruguay,Club Nacional,Cerro,4,0,0,0,0,0,0,0,0.0,0.0
+2026-05-10T23:00:00,1505078.0,FT,Division Profesional Paraguay,Sportivo Luqueno,Libertad Asuncion,2,3,2,3,2,0,5,5,13.0,13.0
+2026-05-10T23:00:00,1542918.0,FT,Liga MX,CF Pachuca,Toluca,2,0,1,6,2,0,4,3,13.0,17.0
+2026-05-10T23:00:00,1490279.0,FT,MLS,Minnesota United FC,Austin,2,2,3,4,5,2,5,5,18.0,12.0
+2026-05-10T23:10:00,1544226.0,FT,Liga Colombia,Once Caldas,Junior,0,1,4,2,1,6,6,3,22.0,9.0
+2026-05-10T23:10:00,1519356.0,FT,Liga Pro Ecuador,Manta FC,Macara,0,1,4,7,0,0,1,3,7.0,6.0
+2026-05-10T23:30:00,1492259.0,FT,Brasileirao,Vasco DA Gama,Atletico Paranaense,1,0,4,3,4,1,6,3,16.0,9.0
+2026-05-11T00:30:00,1544183.0,FT,Liga Profesional Argentina,Velez Sarsfield,Gimnasia L.P.,0,1,17,0,2,5,5,3,27.0,7.0
+2026-05-11T01:00:00,1490280.0,FT,MLS,Los Angeles FC,Houston Dynamo,1,4,10,3,4,3,6,6,19.0,12.0
+2026-05-11T01:15:00,1542919.0,FT,Liga MX,U.N.A.M. - Pumas,Club America,3,3,3,16,3,1,5,6,10.0,22.0
+2026-05-11T12:30:00,1381160.0,FT,Eredivisie,NAC Breda,Heerenveen,2,0,7,3,1,1,4,2,19.0,13.0
+2026-05-11T16:50:00,1436191.0,FT,Pro League Arabia,NEOM,Al Shabab,2,1,2,6,1,2,5,6,9.0,13.0
+2026-05-11T18:00:00,1512601.0,FT,Primera Division Peru,Deportivo Garcilaso,Alianza Atletico,2,1,7,2,3,1,7,5,14.0,13.0
+2026-05-11T18:00:00,1436199.0,FT,Pro League Arabia,Al Taawon,Al-Ahli Jeddah,1,2,7,1,2,4,4,4,15.0,9.0
+2026-05-11T18:45:00,1378220.0,FT,Serie A,Napoli,Bologna,2,3,7,1,1,4,5,4,14.0,10.0
+2026-05-11T19:00:00,1391165.0,FT,La Liga,Rayo Vallecano,Girona,1,1,9,5,1,1,5,5,18.0,9.0
+2026-05-11T19:00:00,1379327.0,FT,Premier League,Tottenham,Leeds,1,1,14,2,3,1,3,4,16.0,11.0
+2026-05-11T19:15:00,1396527.0,FT,Primeira Liga,Benfica,SC Braga,2,2,8,2,1,4,8,2,24.0,5.0
+2026-05-11T19:15:00,1396532.0,FT,Primeira Liga,Tondela,Moreirense,2,0,1,8,1,3,3,2,14.0,10.0
+2026-05-11T19:15:00,1396533.0,FT,Primeira Liga,Guimaraes,Casa Pia,0,1,6,4,2,1,2,5,15.0,11.0
+2026-05-11T19:15:00,1396530.0,FT,Primeira Liga,Rio Ave,Sporting CP,1,4,5,6,5,2,3,5,12.0,16.0
+2026-05-11T19:15:00,1396531.0,FT,Primeira Liga,Santa Clara,Nacional,2,0,4,6,1,2,1,1,12.0,12.0
+2026-05-11T19:15:00,1396529.0,FT,Primeira Liga,GIL Vicente,Arouca,1,3,6,2,2,1,5,6,15.0,13.0
+2026-05-11T19:15:00,1396528.0,FT,Primeira Liga,Estrela,Famalicao,0,0,3,10,3,1,1,4,4.0,15.0
+2026-05-11T20:00:00,1544260.0,NS,Copa Colombia,Millonarios,Llaneros,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-11T20:00:00,1544259.0,FT,Copa Colombia,Depor FC,Patriotas,1,1,0,0,0,0,0,0,0.0,0.0
+2026-05-11T20:00:00,1544128.0,FT,Primera Division Uruguay,Deportivo Maldonado,Boston River,2,1,0,0,0,0,0,0,0.0,0.0
+2026-05-11T20:45:00,1505074.0,FT,Division Profesional Paraguay,Sportivo Ameliano,Deportivo Recoleta,3,2,6,5,3,2,8,3,19.0,9.0
+2026-05-11T21:00:00,1544263.0,FT,Copa Colombia,Independiente Medellin,Fortaleza FC,1,0,0,0,0,0,0,0,0.0,0.0
+2026-05-11T23:00:00,1544262.0,FT,Copa Colombia,Deportivo Cali,Bucaramanga,2,0,0,0,0,0,0,0,0.0,0.0
+2026-05-11T23:00:00,1505075.0,FT,Division Profesional Paraguay,Cerro Porteno,Club Guarani,0,0,3,3,1,2,2,1,9.0,5.0
+2026-05-11T23:30:00,1544129.0,FT,Primera Division Uruguay,Cerro Largo,Penarol,2,3,0,0,0,0,0,0,0.0,0.0
+2026-05-12T00:00:00,1511571.0,FT,Copa Chile,Curico Unido,San Marcos de Arica,2,2,0,0,0,0,0,0,0.0,0.0
+2026-05-12T00:00:00,1519357.0,FT,Liga Pro Ecuador,Mushuc Runa SC,LDU de Quito,1,3,5,6,3,4,1,5,17.0,14.0
+2026-05-12T01:00:00,1544260.0,FT,Copa Colombia,Millonarios,Llaneros,1,0,0,0,0,0,0,0,0.0,0.0
+2026-05-12T01:30:00,1512604.0,FT,Primera Division Peru,Sport Boys,Universitario,0,0,3,2,3,0,5,0,17.0,7.0
+2026-05-12T14:00:00,1533636.0,FT,Premier League Egipto,El Gouna FC,Kahraba Ismailia,0,1,2,2,2,1,2,2,9.0,12.0
+2026-05-12T14:00:00,1533637.0,FT,Premier League Egipto,Pharco,Future FC,0,1,2,4,1,0,2,5,6.0,11.0
+2026-05-12T16:20:00,1436197.0,FT,Pro League Arabia,Al Kholood,Al Okhdood,0,0,4,5,2,4,2,3,14.0,5.0
+2026-05-12T17:00:00,1391171.0,FT,La Liga,Celta Vigo,Levante,2,3,4,4,0,2,6,6,12.0,14.0
+2026-05-12T17:00:00,1533638.0,FT,Premier League Egipto,Wadi Degla,Ismaily SC,2,1,2,0,2,3,4,3,10.0,9.0
+2026-05-12T18:00:00,1391170.0,FT,La Liga,Real Betis,Elche,2,1,7,1,3,2,7,2,16.0,8.0
+2026-05-12T18:00:00,1436194.0,FT,Pro League Arabia,Al-Nassr,Al-Hilal Saudi FC,1,1,5,3,4,3,4,4,9.0,7.0
+2026-05-12T18:30:00,1544684.0,FT,Ligue 1,RED Star FC 93,Rodez,2,3,2,3,3,1,4,5,8.0,12.0
+2026-05-12T19:00:00,1544264.0,FT,Copa Colombia,Leones FC,Orsomarso,2,0,0,0,0,0,0,0,0.0,0.0
+2026-05-12T19:30:00,1391175.0,FT,La Liga,Osasuna,Atletico Madrid,1,2,8,4,6,5,5,4,23.0,5.0
+2026-05-12T20:00:00,1544266.0,FT,Copa Colombia,Real Santander,Popayan,0,3,0,0,0,0,0,0,0.0,0.0
+2026-05-12T22:00:00,1544849.0,FT,Liga Profesional Argentina,Belgrano Cordoba,Union Santa Fe,2,0,4,7,0,4,8,4,17.0,12.0
+2026-05-12T22:30:00,1537014.0,FT,Copa do Brasil,Internacional,Athletic Club,3,2,3,5,1,0,6,3,14.0,14.0
+2026-05-12T23:20:00,1544227.0,FT,Liga Colombia,Atletico Nacional,Internacional de Bogota,7,1,9,3,0,1,15,5,22.0,16.0
+2026-05-13T00:30:00,1537015.0,FT,Copa do Brasil,Fluminense,Operario-PR,2,1,5,1,3,5,8,5,22.0,13.0
+2026-05-13T00:30:00,1537016.0,FT,Copa do Brasil,Cruzeiro,Goias,1,0,14,9,1,3,9,1,19.0,11.0
+2026-05-13T00:30:00,1544850.0,AET,Liga Profesional Argentina,Argentinos JRS,Huracan,1,0,9,2,2,6,4,4,18.0,11.0
+2026-05-13T01:30:00,1544228.0,FT,Liga Colombia,Santa Fe,America de Cali,4,0,2,2,3,3,6,3,13.0,10.0
+2026-05-13T14:00:00,1533640.0,FT,Premier League Egipto,Haras El Hodood,El Mokawloon,0,0,4,1,2,3,0,0,15.0,10.0
+2026-05-13T14:00:00,1533639.0,FT,Premier League Egipto,Masr,Ghazl El Mehalla,3,2,2,5,1,1,3,3,12.0,11.0
+2026-05-13T17:00:00,1391178.0,FT,La Liga,Villarreal,Sevilla,2,3,6,4,2,1,4,5,6.0,13.0
+2026-05-13T17:00:00,1391172.0,FT,La Liga,Espanyol,Athletic Club,2,0,8,9,0,0,5,4,12.0,11.0
+2026-05-13T17:00:00,1387951.0,FT,Ligue 1,Stade Brestois 29,Strasbourg,1,2,5,4,0,1,6,5,21.0,10.0
+2026-05-13T17:00:00,1533641.0,FT,Premier League Egipto,Al Ittihad,El Geish,1,0,5,7,3,1,6,5,11.0,18.0
+2026-05-13T17:00:00,1533642.0,FT,Premier League Egipto,National Bank of Egypt,Petrojet,2,3,11,4,3,0,3,3,19.0,13.0
+2026-05-13T17:30:00,1542692.0,FT,Turkiye Kupasi,Gençlerbirliği S.K.,Trabzonspor,1,2,0,0,0,0,0,0,0.0,0.0
+2026-05-13T19:00:00,1544265.0,FT,Copa Colombia,Real Soacha,Ind. Yumbo,2,0,0,0,0,0,0,0,0.0,0.0
+2026-05-13T19:00:00,1542548.0,FT,Coppa Italia,Lazio,Inter,0,2,1,3,3,4,2,3,8.0,11.0
+2026-05-13T19:00:00,1387952.0,FT,Ligue 1,Lens,Paris Saint Germain,0,2,6,3,0,1,10,3,25.0,10.0
+2026-05-13T19:00:00,1379275.0,FT,Premier League,Manchester City,Crystal Palace,3,0,9,4,0,2,4,2,15.0,6.0
+2026-05-13T19:30:00,1391169.0,FT,La Liga,Alaves,Barcelona,1,0,6,4,1,2,3,0,9.0,8.0
+2026-05-13T19:30:00,1391173.0,FT,La Liga,Getafe,Mallorca,3,1,4,3,3,4,4,2,6.0,9.0
+2026-05-13T21:45:00,1544851.0,1H,Liga Profesional Argentina,Rosario Central,Racing Club,2,1,0,0,0,0,0,0,0.0,0.0
+2026-05-13T22:00:00,1537009.0,FT,Copa do Brasil,Vasco DA Gama,Paysandu,2,2,6,4,2,1,8,4,23.0,9.0
+2026-05-13T22:00:00,1537012.0,FT,Copa do Brasil,Juventude,Sao Paulo,3,1,6,3,2,1,8,2,24.0,4.0
+2026-05-13T22:30:00,1537018.0,FT,Copa do Brasil,Coritiba,Santos,0,2,4,2,1,5,1,2,13.0,7.0
+2026-05-13T23:00:00,1544229.0,FT,Liga Colombia,Deportivo Pasto,Deportes Tolima,0,2,9,2,0,2,1,4,9.0,12.0
+2026-05-13T23:15:00,1490281.0,FT,MLS,Charlotte,New York City FC,0,1,8,1,4,5,2,1,5.0,4.0
+2026-05-13T23:30:00,1537011.0,FT,Copa do Brasil,Mirassol,RB Bragantino,2,1,2,4,0,0,3,4,11.0,15.0
+2026-05-13T23:30:00,1490282.0,FT,MLS,FC Cincinnati,Inter Miami,3,5,1,8,2,3,3,6,10.0,17.0
+2026-05-13T23:30:00,1490283.0,FT,MLS,Orlando City SC,Philadelphia Union,4,3,2,10,1,3,6,7,12.0,26.0
+2026-05-13T23:30:00,1490284.0,FT,MLS,New York Red Bulls,Columbus Crew,3,2,3,2,3,2,6,4,13.0,12.0
+2026-05-13T23:30:00,1490285.0,FT,MLS,New England Revolution,Nashville SC,0,3,6,7,2,3,2,4,8.0,8.0
+2026-05-13T23:30:00,1490286.0,FT,MLS,CF Montreal,Portland Timbers,2,2,6,9,4,1,8,3,23.0,14.0
+2026-05-13T23:30:00,1490287.0,FT,MLS,DC United,Chicago Fire,1,3,7,8,0,5,6,8,13.0,15.0
+2026-05-14T00:30:00,1537010.0,FT,Copa do Brasil,Remo,Bahia,2,1,7,8,2,4,5,7,8.0,11.0
+2026-05-14T00:30:00,1537013.0,FT,Copa do Brasil,Jacuipense,Palmeiras,1,4,2,7,2,0,1,9,3.0,25.0
+2026-05-14T00:30:00,1490288.0,FT,MLS,St. Louis City,Los Angeles FC,2,1,2,8,3,3,2,4,8.0,16.0
+2026-05-14T00:30:00,1490289.0,FT,MLS,Sporting Kansas City,Los Angeles Galaxy,3,1,4,8,1,2,7,7,15.0,18.0
+2026-05-14T00:30:00,1490290.0,FT,MLS,FC Dallas,Vancouver Whitecaps,2,3,5,6,3,4,3,6,8.0,16.0
+2026-05-14T00:30:00,1490291.0,FT,MLS,Minnesota United FC,Colorado Rapids,0,1,5,5,5,4,2,2,12.0,5.0
+2026-05-14T00:45:00,1544852.0,FT,Liga Profesional Argentina,River Plate,Gimnasia L.P.,2,0,7,5,1,4,8,6,18.0,12.0
+2026-05-14T01:15:00,1544230.0,FT,Liga Colombia,Junior,Once Caldas,2,2,5,11,8,3,5,6,9.0,19.0
+2026-05-14T01:30:00,1490292.0,FT,MLS,Seattle Sounders,San Jose Earthquakes,3,2,9,6,0,2,9,3,23.0,11.0
+2026-05-14T01:30:00,1490293.0,FT,MLS,San Diego,Austin,5,0,6,2,1,0,10,3,22.0,8.0
+2026-05-14T01:30:00,1490294.0,FT,MLS,Real Salt Lake,Houston Dynamo,3,0,4,1,0,1,2,4,9.0,15.0
+2026-05-14T02:00:00,1544853.0,FT,Liga MX,Cruz Azul,Guadalajara Chivas,2,2,5,1,5,3,4,5,15.0,15.0
+2026-05-14T15:55:00,1438974.0,NS,Pro League Arabia,Al-Fateh,Al Najma,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T17:00:00,1391177.0,NS,La Liga,Valencia,Rayo Vallecano,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T18:00:00,1391174.0,NS,La Liga,Girona,Real Sociedad,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T18:00:00,1436207.0,NS,Pro League Arabia,Al-Qadisiyah FC,Al-Hazm,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T18:00:00,1436202.0,NS,Pro League Arabia,Al-Ettifaq,Al-Ittihad FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T19:30:00,1391176.0,NS,La Liga,Real Madrid,Oviedo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T20:00:00,1505080.0,NS,Division Profesional Paraguay,Libertad Asuncion,2 de Mayo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T21:00:00,1537021.0,NS,Copa do Brasil,Chapecoense-sc,Botafogo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T22:00:00,1537023.0,NS,Copa do Brasil,Atletico Goianiense,Atletico Paranaense,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T22:00:00,1537020.0,NS,Copa do Brasil,Confiança,Gremio,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T22:30:00,1537019.0,NS,Copa do Brasil,Corinthians,Barra,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-14T23:00:00,1537017.0,NS,Copa do Brasil,CRB,Fortaleza EC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T00:30:00,1537008.0,NS,Copa do Brasil,Vitoria,Flamengo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T01:00:00,1544854.0,NS,Liga MX,CF Pachuca,U.N.A.M. - Pumas,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T12:30:00,1505081.0,NS,Division Profesional Paraguay,Olimpia,Deportivo Recoleta,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T16:15:00,1436200.0,NS,Pro League Arabia,Damac,Al-Fayha,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T17:00:00,1394736.0,NS,Super Lig Turquia,Rizespor,Beşiktaş,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T18:00:00,1436206.0,NS,Pro League Arabia,Al Taawon,Al Riyadh,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T18:30:00,1544972.0,NS,Ligue 1,Saint Etienne,Rodez,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T18:45:00,1536959.0,NS,Pro League Belgica,OH Leuven,Antwerp,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T19:00:00,1379330.0,NS,Premier League,Aston Villa,Liverpool,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T20:00:00,1505082.0,NS,Division Profesional Paraguay,Rubio NU,Nacional Asuncion,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T20:00:00,1505084.0,NS,Division Profesional Paraguay,Sportivo Trinidense,Cerro Porteno,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T20:00:00,1512610.0,NS,Primera Division Peru,FC Cajamarca,Sporting Cristal,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T21:30:00,1519362.0,NS,Liga Pro Ecuador,LDU de Quito,Tecnico Universitario,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T23:00:00,1544268.0,NS,Copa Colombia,Patriotas,Millonarios,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-15T23:00:00,1544920.0,NS,Primera Division Uruguay,Atletico Torque,Club Nacional,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T00:00:00,1519364.0,NS,Liga Pro Ecuador,Libertad,Deportivo Cuenca,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T00:00:00,1505442.0,NS,Primera Division Chile,Palestino,D. La Serena,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T00:00:00,1505437.0,NS,Primera Division Chile,Coquimbo Unido,A. Italiano,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T01:00:00,1544273.0,NS,Copa Colombia,Orsomarso,Independiente Medellin,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T01:00:00,1512614.0,NS,Primera Division Peru,Universitario,Atletico Grau,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T11:30:00,1537049.0,NS,Copa Belgica,Club Brugge W,OH Leuven W,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388606.0,NS,Bundesliga,Bayern München,1. FC Köln,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388609.0,NS,Bundesliga,SC Freiburg,RB Leipzig,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388613.0,NS,Bundesliga,Werder Bremen,Borussia Dortmund,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388607.0,NS,Bundesliga,Borussia Mönchengladbach,1899 Hoffenheim,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388605.0,NS,Bundesliga,Bayer Leverkusen,Hamburger SV,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388608.0,NS,Bundesliga,Eintracht Frankfurt,VfB Stuttgart,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388610.0,NS,Bundesliga,1. FC Heidenheim,FSV Mainz 05,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388612.0,NS,Bundesliga,Union Berlin,FC Augsburg,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T13:30:00,1388611.0,NS,Bundesliga,FC St. Pauli,VfL Wolfsburg,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T14:00:00,1537061.0,NS,Copa Belgica,Zulte-Waregem W,Westerlo W,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T14:00:00,1542889.0,NS,FA Cup,Chelsea,Manchester City,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T14:00:00,1536958.0,NS,Pro League Belgica,Charleroi,KVC Westerlo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T14:00:00,1394733.0,NS,Super Lig Turquia,Fatih Karagümrük,Alanyaspor,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T14:30:00,1396539.0,NS,Primeira Liga,FC Porto,Santa Clara,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T14:30:00,1396540.0,NS,Primeira Liga,Moreirense,AVS,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T15:00:00,1544921.0,NS,Primera Division Uruguay,Boston River,Cerro,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T16:05:00,1436205.0,NS,Pro League Arabia,Al-Hilal Saudi FC,NEOM,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T16:05:00,1436203.0,NS,Pro League Arabia,Al Okhdood,Al Khaleej Saihat,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T16:15:00,1536957.0,NS,Pro League Belgica,Standard Liege,Genk,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T16:30:00,1511580.0,NS,Copa Chile,Magallanes,Recoleta,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T17:00:00,1396535.0,NS,Primeira Liga,SC Braga,Estrela,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T17:00:00,1396541.0,NS,Primeira Liga,Nacional,Guimaraes,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T17:00:00,1396534.0,NS,Primeira Liga,Arouca,Tondela,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T17:00:00,1396536.0,NS,Primeira Liga,Casa Pia,Rio Ave,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T17:00:00,1394732.0,NS,Super Lig Turquia,Gaziantep FK,Başakşehir,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T17:00:00,1394737.0,NS,Super Lig Turquia,Samsunspor,Göztepe,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T17:30:00,1537063.0,NS,Copa Belgica,Gent W,Genk W,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T18:00:00,1512609.0,NS,Primera Division Peru,FBC Melgar,Sport Huancayo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T18:00:00,1544922.0,NS,Primera Division Uruguay,Juventud,Progreso,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T18:00:00,1436204.0,NS,Pro League Arabia,Al-Ahli Jeddah,Al Kholood,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T18:45:00,1537001.0,NS,Pro League Belgica,St. Truiden,Gent,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T19:00:00,1511578.0,NS,Copa Chile,Cobreloa,Deportes Copiapo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T19:00:00,1511581.0,NS,Copa Chile,Union San Felipe,Rangers de Talca,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T19:00:00,1519365.0,NS,Liga Pro Ecuador,Macara,Independiente del Valle,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T19:30:00,1396542.0,NS,Primeira Liga,Sporting CP,GIL Vicente,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T19:30:00,1396537.0,NS,Primeira Liga,Estoril,Benfica,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T19:30:00,1396538.0,NS,Primeira Liga,Famalicao,Alverca,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T20:15:00,1505079.0,NS,Division Profesional Paraguay,Club Guarani,Sportivo Ameliano,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T20:15:00,1512611.0,NS,Primera Division Peru,Juan Pablo II College,Alianza Atletico,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T20:30:00,1544267.0,NS,Copa Colombia,Chico,Depor FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T20:30:00,1544269.0,NS,Copa Colombia,Alianza Valledupar,Real Santander,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T20:30:00,1544271.0,NS,Copa Colombia,Cucuta,Leones FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T20:30:00,1490299.0,NS,MLS,CF Montreal,Chicago Fire,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T21:30:00,1492267.0,NS,Brasileirao,Internacional,Vasco DA Gama,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T21:30:00,1492261.0,NS,Brasileirao,Atletico-MG,Mirassol,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T21:30:00,1511579.0,NS,Copa Chile,Curico Unido,Santiago Wanderers,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T21:30:00,1519367.0,NS,Liga Pro Ecuador,Universidad Catolica,Delfin SC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T21:30:00,1505441.0,NS,Primera Division Chile,O'Higgins,Universidad de Concepcion,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T21:30:00,1544923.0,NS,Primera Division Uruguay,Penarol,Liverpool Montevideo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T22:00:00,1492266.0,NS,Brasileirao,Fluminense,Sao Paulo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T22:45:00,1512607.0,NS,Primera Division Peru,Cienciano,Alianza Lima,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T23:30:00,1490295.0,NS,MLS,Philadelphia Union,Columbus Crew,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T23:30:00,1490296.0,NS,MLS,Orlando City SC,Atlanta United FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T23:30:00,1490297.0,NS,MLS,New York Red Bulls,New York City FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T23:30:00,1490298.0,NS,MLS,Charlotte,Toronto FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T23:30:00,1490300.0,NS,MLS,New England Revolution,Minnesota United FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-16T23:30:00,1490301.0,NS,MLS,DC United,St. Louis City,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T00:00:00,1492268.0,NS,Brasileirao,Palmeiras,Cruzeiro,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T00:00:00,1519360.0,NS,Liga Pro Ecuador,Barcelona SC,Aucas,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T00:00:00,1505440.0,NS,Primera Division Chile,Deportes Limache,U. Catolica,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T00:30:00,1490302.0,NS,MLS,Houston Dynamo,Vancouver Whitecaps,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T00:30:00,1490303.0,NS,MLS,Austin,Sporting Kansas City,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T01:07:00,1544855.0,NS,Liga MX,Guadalajara Chivas,Cruz Azul,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T01:15:00,1490304.0,NS,MLS,Seattle Sounders,Los Angeles Galaxy,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T01:30:00,1490305.0,NS,MLS,Real Salt Lake,Colorado Rapids,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T01:30:00,1490306.0,NS,MLS,San Diego,FC Cincinnati,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T01:30:00,1512613.0,NS,Primera Division Peru,Sport Boys,Cusco,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T02:30:00,1490307.0,NS,MLS,San Jose Earthquakes,FC Dallas,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T10:30:00,1378227.0,NS,Serie A,Genoa,AC Milan,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T10:30:00,1378229.0,NS,Serie A,Juventus,Fiorentina,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T10:30:00,1378231.0,NS,Serie A,AS Roma,Lazio,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T10:30:00,1378230.0,NS,Serie A,Pisa,Napoli,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T10:30:00,1378226.0,NS,Serie A,Como,Parma,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T11:30:00,1379336.0,NS,Premier League,Manchester United,Nottingham Forest,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T11:30:00,1537000.0,NS,Pro League Belgica,Anderlecht,KV Mechelen,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381172.0,NS,Eredivisie,PEC Zwolle,Feyenoord,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381169.0,NS,Eredivisie,PSV Eindhoven,Twente,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381164.0,NS,Eredivisie,AZ Alkmaar,NAC Breda,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381167.0,NS,Eredivisie,Heracles,Groningen,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381171.0,NS,Eredivisie,Utrecht,Fortuna Sittard,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381166.0,NS,Eredivisie,Heerenveen,Ajax,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381168.0,NS,Eredivisie,NEC Nijmegen,GO Ahead Eagles,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381165.0,NS,Eredivisie,FC Volendam,Telstar,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T12:30:00,1381170.0,NS,Eredivisie,Sparta Rotterdam,Excelsior,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T13:00:00,1537050.0,NS,Copa Belgica,Standard Liege W,Anderlecht W,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T13:00:00,1544924.0,NS,Primera Division Uruguay,Central Espanol,Defensor Sporting,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T13:00:00,1378228.0,NS,Serie A,Inter,Hellas Verona,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1492269.0,NS,Brasileirao,Santos,Coritiba,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1379338.0,NS,Premier League,Wolves,Fulham,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1379334.0,NS,Premier League,Everton,Sunderland,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1379332.0,NS,Premier League,Brentford,Crystal Palace,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1379335.0,NS,Premier League,Leeds,Brighton,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1533643.0,NS,Premier League Egipto,National Bank of Egypt,El Gouna FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1544682.0,NS,Pro League Belgica,Lommel United,Dender,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T14:00:00,1394735.0,NS,Super Lig Turquia,Kayserispor,Konyaspor,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T15:00:00,1512606.0,NS,Primera Division Peru,ADT,Comerciantes Unidos,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T16:00:00,1378224.0,NS,Serie A,Atalanta,Bologna,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T16:30:00,1379337.0,NS,Premier League,Newcastle,West Ham,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T16:30:00,1505439.0,NS,Primera Division Chile,Huachipato,Union La Calera,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T16:30:00,1536999.0,NS,Pro League Belgica,Club Brugge KV,Union St. Gilloise,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391180.0,NS,La Liga,Atletico Madrid,Girona,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391179.0,NS,La Liga,Athletic Club,Celta Vigo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391188.0,NS,La Liga,Sevilla,Real Madrid,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391183.0,NS,La Liga,Levante,Mallorca,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391186.0,NS,La Liga,Real Sociedad,Valencia,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391187.0,NS,La Liga,Oviedo,Alaves,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391184.0,NS,La Liga,Osasuna,Espanyol,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391185.0,NS,La Liga,Rayo Vallecano,Villarreal,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1391182.0,NS,La Liga,Elche,Getafe,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1533644.0,NS,Premier League Egipto,Ismaily SC,Masr,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1533645.0,NS,Premier League Egipto,Petrojet,Future FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1394731.0,NS,Super Lig Turquia,Fenerbahçe,Eyüpspor,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1394738.0,NS,Super Lig Turquia,Trabzonspor,Gençlerbirliği S.K.,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1394734.0,NS,Super Lig Turquia,Kasımpaşa,Galatasaray,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T17:00:00,1394730.0,NS,Super Lig Turquia,Antalyaspor,Kocaelispor,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T18:00:00,1519363.0,NS,Liga Pro Ecuador,Leones del Norte,Mushuc Runa SC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T18:00:00,1544925.0,NS,Primera Division Uruguay,Racing Montevideo,Cerro Largo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T18:00:00,1436160.0,NS,Pro League Arabia,Al Shabab,Al-Ittihad FC,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T18:15:00,1512608.0,NS,Primera Division Peru,Deportivo Garcilaso,UTC Cajamarca,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T18:45:00,1378232.0,NS,Serie A,Sassuolo,Lecce,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T18:45:00,1378225.0,NS,Serie A,Cagliari,Torino,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T18:45:00,1378233.0,NS,Serie A,Udinese,Cremonese,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1492262.0,NS,Brasileirao,Bahia,Gremio,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1492263.0,NS,Brasileirao,Botafogo,Corinthians,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1511582.0,NS,Copa Chile,San Luis,D. Puerto Montt,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1387996.0,NS,Ligue 1,Lille,Auxerre,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1387998.0,NS,Ligue 1,Lyon,Lens,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1387999.0,NS,Ligue 1,Marseille,Rennes,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1388000.0,NS,Ligue 1,Nantes,Toulouse,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1388001.0,NS,Ligue 1,Nice,Metz,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1388003.0,NS,Ligue 1,Strasbourg,Monaco,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1387997.0,NS,Ligue 1,Lorient,Le Havre,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1387995.0,NS,Ligue 1,Stade Brestois 29,Angers,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1388002.0,NS,Ligue 1,Paris FC,Paris Saint Germain,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:00:00,1505435.0,NS,Primera Division Chile,Cobresal,Universidad de Chile,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T19:15:00,1391181.0,NS,La Liga,Barcelona,Real Betis,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T20:00:00,1505083.0,NS,Division Profesional Paraguay,Club Sp. San Lorenzo,Sportivo Luqueno,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T20:30:00,1544270.0,NS,Copa Colombia,Popayan,Deportivo Cali,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T20:30:00,1544274.0,NS,Copa Colombia,Deportivo Pereira,Real Soacha,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T20:30:00,1512612.0,NS,Primera Division Peru,Club Deportivo Los Chankas,UCV Moquegua,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T21:00:00,1544926.0,NS,Primera Division Uruguay,Albion FC,Wanderers,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T21:30:00,1492265.0,NS,Brasileirao,Chapecoense-sc,Remo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T21:30:00,1492264.0,NS,Brasileirao,RB Bragantino,Vitoria,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T21:30:00,1511583.0,NS,Copa Chile,San Marcos de Arica,Antofagasta,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T21:30:00,1505436.0,NS,Primera Division Chile,Colo Colo,Nublense,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T22:00:00,1544272.0,NS,Copa Colombia,Ind. Yumbo,Águilas Doradas,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T22:00:00,1490308.0,NS,MLS,Inter Miami,Portland Timbers,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T22:30:00,1492260.0,NS,Brasileirao,Atletico Paranaense,Flamengo,0,0,0,0,0,0,0,0,0.0,0.0
+2026-05-17T23:10:00,1519366.0,NS,Liga Pro Ecuador,Manta FC,Emelec,0,0,0,0,0,0,0,0,0.0,0.0
