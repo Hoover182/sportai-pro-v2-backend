@@ -725,24 +725,6 @@ def get_value_bets_hoy():
 def chat_ia(mensajes, contexto=""):
     try:
         import anthropic
-        client = anthropic.Anthropic(api_key="TU_API_KEY_AQUI")
-        system = "Eres SportAI Pro, experto en apuestas de futbol. Responde en espanol, conciso y directo."
-        if contexto:
-            system += "\n\n" + contexto
-        msgs = [{"role": m["role"], "content": m["text"]} for m in mensajes if m.get("role") in ("user", "assistant")]
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=400,
-            system=system,
-            messages=msgs
-        )
-        return response.content[0].text, None
-    except Exception as e:
-        return None, str(e)
-
-def chat_ia(mensajes, contexto=""):
-    try:
-        import anthropic
         client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", ""))
         system = "Eres SportAI Pro, experto en apuestas de futbol. Responde en espanol, conciso y directo."
         if contexto:
