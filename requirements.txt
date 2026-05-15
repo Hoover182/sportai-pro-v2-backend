@@ -5,3 +5,5 @@ numpy
 requests
 scikit-learn
 pytz
+
+anthropic

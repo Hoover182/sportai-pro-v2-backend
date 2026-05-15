@@ -37,3 +37,13 @@ async def jugadores(local: str, visitante: str):
 async def value_bets_hoy():
     value_bets = futbol_service.get_value_bets_hoy()
     return {"value_bets": value_bets}
+
+@router.post("/chat")
+async def chat(payload: dict):
+    try:
+        resultado, error = futbol_service.chat_ia(payload.get("mensajes", []), payload.get("contexto", ""))
+        if error:
+            return {"error": error}
+        return {"respuesta": resultado}
+    except Exception as e:
+        return {"error": str(e)}
