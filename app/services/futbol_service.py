@@ -252,6 +252,10 @@ def get_analisis_partido(local_input, visitante_input):
                 "resultado": f"{gl}-{gv}",
                 "ganado": gf > gc,
                 "empate": gf == gc,
+                "corners": int(r["corners_local"] if es_local else r["corners_visitante"]) if "corners_local" in r.index and str(r["corners_local"]) != "nan" else 0,
+                "tarjetas": int(r["tarjetas_local"] if es_local else r["tarjetas_visitante"]) if "tarjetas_local" in r.index and str(r["tarjetas_local"]) != "nan" else 0,
+                "tiros_arco": int(r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"]) if "tiros_arco_local" in r.index and str(r["tiros_arco_local"]) != "nan" else 0,
+                "tiros_total": int(r["tiros_total_local"] if es_local else r["tiros_total_visitante"]) if "tiros_total_local" in r.index and str(r["tiros_total_local"]) != "nan" else 0,
             })
     except Exception:
         pass
@@ -265,10 +269,14 @@ def get_analisis_partido(local_input, visitante_input):
             gc = gv if es_local else gl
             ultimos_visitante.append({
                 "fecha": str(r["fecha"])[:10],
-                "rival": r["equipo_visitante"] if es_local else r["equipo_local"],
-                "resultado": f"{gl}-{gv}",
-                "ganado": gf > gc,
-                "empate": gf == gc,
+                "rival": r["equipo_visitante"] if r["equipo_local"] == visitante else r["equipo_local"],
+                "resultado": f"{int(r['goles_local'])}-{int(r['goles_visitante'])}",
+                "ganado": (int(r["goles_local"]) if r["equipo_local"] == visitante else int(r["goles_visitante"])) > (int(r["goles_visitante"]) if r["equipo_local"] == visitante else int(r["goles_local"])),
+                "empate": int(r["goles_local"]) == int(r["goles_visitante"]),
+                "corners": int(r["corners_local"] if r["equipo_local"] == visitante else r["corners_visitante"]) if "corners_local" in r.index and str(r["corners_local"]) != "nan" else 0,
+                "tarjetas": int(r["tarjetas_local"] if r["equipo_local"] == visitante else r["tarjetas_visitante"]) if "tarjetas_local" in r.index and str(r["tarjetas_local"]) != "nan" else 0,
+                "tiros_arco": int(r["tiros_arco_local"] if r["equipo_local"] == visitante else r["tiros_arco_visitante"]) if "tiros_arco_local" in r.index and str(r["tiros_arco_local"]) != "nan" else 0,
+                "tiros_total": int(r["tiros_total_local"] if r["equipo_local"] == visitante else r["tiros_total_visitante"]) if "tiros_total_local" in r.index and str(r["tiros_total_local"]) != "nan" else 0,
             })
     except Exception:
         pass
