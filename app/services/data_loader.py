@@ -3,38 +3,30 @@
 CSV_FUTBOL = "futbol_partidos.csv"
 
 LIGAS_VALIDAS = [
-    # Europa - Ligas
     "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
     "Primeira Liga", "Eredivisie", "Pro League Belgica", "Super Lig Turquia",
-    # Europa - Copas
     "Champions League", "Europa League", "Conference League",
     "FA Cup", "Copa del Rey", "Coppa Italia", "DFB Pokal", "Coupe de France",
     "Taca de Portugal", "KNVB Beker", "Copa Belgica", "Turkiye Kupasi",
-    # Africa/Asia
     "Premier League Egipto", "Copa Egipto", "Pro League Arabia",
-    # America - Ligas
     "MLS", "Liga MX", "Liga Profesional Argentina", "Brasileirao",
     "Liga Colombia", "Primera Division Chile", "Primera Division Uruguay",
     "Primera Division Peru", "Liga Pro Ecuador", "Primera Division Venezuela",
+    "Mundial 2026",
     "Primera Division Bolivia", "Division Profesional Paraguay",
-    # America - Copas
     "Copa Libertadores", "Copa Sudamericana", "Recopa Sudamericana",
     "Copa Argentina", "Copa do Brasil", "Copa Chile", "Copa Colombia",
     "Copa Uruguay",
 ]
 
-# Estados de partidos NO terminados (en juego o por jugar)
-ESTADOS_EN_JUEGO = ("NS", "1H", "HT", "2H", "ET", "BT", "LIVE")
-
-# Estados de partidos terminados
+ESTADOS_EN_JUEGO   = ("NS", "1H", "HT", "2H", "ET", "BT", "LIVE")
 ESTADOS_TERMINADOS = ("FT", "AET", "PEN")
 
-# Ligas principales para priorizar busqueda de equipos
 LIGAS_PRINCIPALES = [
     "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
     "Champions League", "Europa League", "Conference League",
     "Liga MX", "Liga Profesional Argentina", "Brasileirao",
-    "Liga Colombia", "Primeira Liga", "Eredivisie", "Pro League Belgica",
+    "Mundial 2026", "Liga Colombia", "Primeira Liga", "Eredivisie", "Pro League Belgica",
     "Super Lig Turquia", "Primera Division Uruguay", "Primera Division Chile",
     "Copa Libertadores", "Copa Sudamericana", "MLS",
 ]
@@ -65,7 +57,7 @@ def filtrar_ligas_validas(df):
 def listar_equipos(df):
     if df.empty:
         return []
-    local = df["equipo_local"].dropna().unique().tolist()
+    local     = df["equipo_local"].dropna().unique().tolist()
     visitante = df["equipo_visitante"].dropna().unique().tolist()
     return sorted(list(set(local + visitante)))
 
@@ -88,23 +80,20 @@ def obtener_equipo_por_nombre(df, nombre):
         if nombre_lower == str(equipo).lower():
             return equipo
 
-    # 3. Busqueda parcial en ligas principales — excluir prefijos genericos
-    PREFIJOS_GENERICOS = ("afc ", "fc ", "cd ", "cf ", "sd ", "ud ")
+    # 3. Busqueda parcial en ligas principales
+    PREFIJOS = ("afc ", "fc ", "cd ", "cf ", "sd ", "ud ")
     for liga in LIGAS_PRINCIPALES:
         df_liga = df[df["liga"] == liga]
         if df_liga.empty:
             continue
         equipos = pd.concat([df_liga["equipo_local"], df_liga["equipo_visitante"]]).unique()
-        # Primero buscar sin prefijos genericos
         for equipo in equipos:
             equipo_lower = str(equipo).lower()
-            tiene_prefijo = any(equipo_lower.startswith(p) for p in PREFIJOS_GENERICOS)
+            tiene_prefijo = any(equipo_lower.startswith(p) for p in PREFIJOS)
             if nombre_lower in equipo_lower and not tiene_prefijo:
                 return equipo
-        # Luego buscar incluyendo prefijos si no encontro
         for equipo in equipos:
-            equipo_lower = str(equipo).lower()
-            if nombre_lower in equipo_lower:
+            if nombre_lower in str(equipo).lower():
                 return equipo
 
     # 4. Busqueda parcial en todas las ligas
@@ -124,7 +113,6 @@ def obtener_partidos_hoy_futbol(df):
     if "estado" not in df.columns:
         return df[df["fecha"].dt.normalize() == hoy].copy()
 
-    # Partidos de hoy que NO han terminado (pendientes o en juego)
     partidos_hoy = df[
         (df["fecha"].dt.normalize() == hoy) &
         (df["estado"].isin(ESTADOS_EN_JUEGO))
@@ -133,7 +121,6 @@ def obtener_partidos_hoy_futbol(df):
     if not partidos_hoy.empty:
         return partidos_hoy
 
-    # Si no hay partidos pendientes hoy buscar proxima fecha
     proximos = df[
         (df["fecha"].dt.normalize() >= hoy) &
         (df["estado"].isin(ESTADOS_EN_JUEGO))
