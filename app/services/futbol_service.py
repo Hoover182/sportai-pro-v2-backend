@@ -342,6 +342,7 @@ def get_analisis_partido(local_input, visitante_input):
                   "goles_favor_2t": int(r["goles_local_2t"] if es_local else r["goles_visitante_2t"]) if "goles_local_2t" in r.index and str(r["goles_local_2t"]) not in ["nan","None"] else None,
                   "goles_contra_2t": int(r["goles_visitante_2t"] if es_local else r["goles_local_2t"]) if "goles_visitante_2t" in r.index and str(r["goles_visitante_2t"]) not in ["nan","None"] else None,
                   "tarjetas_favor_1t": int(r["tarjetas_local_1t"] if es_local else r["tarjetas_visitante_1t"]) if "tarjetas_local_1t" in r.index and str(r["tarjetas_local_1t"]) not in ["nan","None"] else None,
+                  "tarjetas_favor_2t": int(r["tarjetas_local_2t"] if es_local else r["tarjetas_visitante_2t"]) if "tarjetas_local_2t" in r.index and str(r["tarjetas_local_2t"]) not in ["nan","None"] else None,
             })
     except Exception:
         pass
@@ -368,6 +369,7 @@ def get_analisis_partido(local_input, visitante_input):
                 "goles_favor_2t": int(r["goles_local_2t"] if r["equipo_local"] == visitante else r["goles_visitante_2t"]) if "goles_local_2t" in r.index and str(r["goles_local_2t"]) not in ["nan","None"] else None,
                 "goles_contra_2t": int(r["goles_visitante_2t"] if r["equipo_local"] == visitante else r["goles_local_2t"]) if "goles_visitante_2t" in r.index and str(r["goles_visitante_2t"]) not in ["nan","None"] else None,
                 "tarjetas_favor_1t": int(r["tarjetas_local_1t"] if r["equipo_local"] == visitante else r["tarjetas_visitante_1t"]) if "tarjetas_local_1t" in r.index and str(r["tarjetas_local_1t"]) not in ["nan","None"] else None,
+                "tarjetas_favor_2t": int(r["tarjetas_local_2t"] if r["equipo_local"] == visitante else r["tarjetas_visitante_2t"]) if "tarjetas_local_2t" in r.index and str(r["tarjetas_local_2t"]) not in ["nan","None"] else None,
             })
     except Exception:
         pass
