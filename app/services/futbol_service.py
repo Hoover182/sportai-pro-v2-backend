@@ -320,7 +320,7 @@ def get_analisis_partido(local_input, visitante_input):
     ultimos_local = []
     ultimos_visitante = []
     try:
-        pl = obtener_partidos_equipo(df, local, n=10)
+        pl = obtener_partidos_equipo(df, local, n=20)
         for _, r in pl.iterrows():
             gl = int(r["goles_local"])
             gv = int(r["goles_visitante"])
@@ -343,11 +343,12 @@ def get_analisis_partido(local_input, visitante_input):
                   "goles_contra_2t": int(r["goles_visitante_2t"] if es_local else r["goles_local_2t"]) if "goles_visitante_2t" in r.index and str(r["goles_visitante_2t"]) not in ["nan","None"] else None,
                   "tarjetas_favor_1t": int(r["tarjetas_local_1t"] if es_local else r["tarjetas_visitante_1t"]) if "tarjetas_local_1t" in r.index and str(r["tarjetas_local_1t"]) not in ["nan","None"] else None,
                   "tarjetas_favor_2t": int(r["tarjetas_local_2t"] if es_local else r["tarjetas_visitante_2t"]) if "tarjetas_local_2t" in r.index and str(r["tarjetas_local_2t"]) not in ["nan","None"] else None,
+                  "liga_partido": str(r["liga"]) if "liga" in r.index else "",
             })
     except Exception:
         pass
     try:
-        pv = obtener_partidos_equipo(df, visitante, n=10)
+        pv = obtener_partidos_equipo(df, visitante, n=20)
         for _, r in pv.iterrows():
             gl = int(r["goles_local"])
             gv = int(r["goles_visitante"])
@@ -370,6 +371,7 @@ def get_analisis_partido(local_input, visitante_input):
                 "goles_contra_2t": int(r["goles_visitante_2t"] if r["equipo_local"] == visitante else r["goles_local_2t"]) if "goles_visitante_2t" in r.index and str(r["goles_visitante_2t"]) not in ["nan","None"] else None,
                 "tarjetas_favor_1t": int(r["tarjetas_local_1t"] if r["equipo_local"] == visitante else r["tarjetas_visitante_1t"]) if "tarjetas_local_1t" in r.index and str(r["tarjetas_local_1t"]) not in ["nan","None"] else None,
                 "tarjetas_favor_2t": int(r["tarjetas_local_2t"] if r["equipo_local"] == visitante else r["tarjetas_visitante_2t"]) if "tarjetas_local_2t" in r.index and str(r["tarjetas_local_2t"]) not in ["nan","None"] else None,
+                "liga_partido": str(r["liga"]) if "liga" in r.index else "",
             })
     except Exception:
         pass
