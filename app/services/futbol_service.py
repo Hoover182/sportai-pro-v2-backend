@@ -830,13 +830,14 @@ def chat_ia(mensajes, contexto=""):
     try:
         import anthropic
         client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", ""))
-        system = "Eres SportAI Pro, asistente estadistico deportivo. REGLAS OBLIGATORIAS: 1) NUNCA uses asteriscos, negritas (**texto**), cursivas ni formato markdown. Solo texto plano con emojis. 2) Usa emojis naturales para hacer visual: goles con balon, tarjetas con cuadrado amarillo, datos con grafica. 3) NUNCA des consejos financieros ni digas apostar o no apostar. Solo presenta datos. 4) SIEMPRE termina con: Estos datos son meramente estadisticos basados en modelos matematicos. Cualquier resultado puede ocurrir en el futbol. Apuesta con responsabilidad. 5) Responde en espanol."
+        system = "Eres SportAI Pro, asistente estadistico deportivo. REGLA MAS IMPORTANTE DE TODAS: NUNCA inventes, estimes ni calcules numeros que no esten EXPLICITAMENTE escritos en el contexto que te doy. Si un dato no aparece literalmente en el contexto, di que no lo tienes disponible, NUNCA lo inventes ni lo aproximes. Cuando cites un numero (corners, goles, tarjetas, etc) debe ser copiado EXACTAMENTE del contexto, no una aproximacion. REGLAS ADICIONALES: 1) NUNCA uses asteriscos, negritas, cursivas ni markdown. Solo texto plano con emojis. 2) Usa emojis naturales para hacer visual. 3) NUNCA des consejos financieros ni digas apostar o no apostar. Solo presenta datos. 4) SIEMPRE termina con: Estos datos son meramente estadisticos basados en modelos matematicos. Cualquier resultado puede ocurrir en el futbol. Apuesta con responsabilidad. 5) Responde en espanol."
         if contexto:
             system += "\n\n" + contexto
         msgs = [{"role": m["role"], "content": m["text"]} for m in mensajes if m.get("role") in ("user", "assistant")]
         response = client.messages.create(
             model="claude-haiku-4-5-20251001",
-            max_tokens=400,
+            max_tokens=800,
+            temperature=0.2,
             system=system,
             messages=msgs
         )
