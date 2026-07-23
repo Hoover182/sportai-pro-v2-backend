@@ -15626,9 +15626,9 @@
 2026-07-16T23:30:00,1490325.0,FT,MLS,CF Montreal,Toronto FC,0,0,9,3,1,1,3,0,14.0,8.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,,,,
 2026-07-17T00:00:00,1519406.0,FT,Liga Pro Ecuador,Orense SC,Emelec,0,2,5,1,6,2,1,5,7.0,11.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,1.0,4.0,3.0,1.0,1.0,,,,
 2026-07-17T00:30:00,1490326.0,NS,MLS,Chicago Fire,Vancouver Whitecaps,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-17T00:30:00,1490327.0,FT,MLS,St. Louis City,Sporting Kansas City,3,2,5,6,2,1,6,3,20.0,12.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,1.0,1.0,0.0,2.0,0.0,1.0,,,,
+2026-07-17T00:30:00,1490327.0,FT,MLS,St. Louis City,Sporting Kansas City,3,2,5,6,2,1,5,3,20.0,12.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,1.0,1.0,0.0,2.0,0.0,1.0,,,,
 2026-07-17T00:45:00,1540103.0,FT,Copa Argentina,Sarmiento Junin,Boca Juniors,0,2,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,2.0,2.0,0.0,0.0,1.0,,,,
-2026-07-17T02:30:00,1490328.0,FT,MLS,Seattle Sounders,Portland Timbers,1,5,2,8,2,0,6,10,11.0,20.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,4.0,1.0,1.0,0.0,0.0,,,,
+2026-07-17T02:30:00,1490328.0,FT,MLS,Seattle Sounders,Portland Timbers,1,5,2,8,2,0,6,10,10.0,20.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,4.0,1.0,1.0,0.0,0.0,,,,
 2026-07-17T18:00:00,1549414.0,FT,Primera Division Peru,FC Cajamarca,Juan Pablo II College,2,2,1,4,5,2,5,6,15.0,11.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,0.0,2.0,4.0,1.0,1.0,1.0,,,,
 2026-07-17T18:00:00,1576795.0,FT,Primera Division Uruguay,Albion FC,Juventud,0,1,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,1.0,1.0,2.0,1.0,2.0,,,,
 2026-07-17T20:15:00,1549418.0,FT,Primera Division Peru,Sporting Cristal,Deportivo Garcilaso,1,0,10,3,1,0,6,0,16.0,3.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,,,,
@@ -15683,41 +15683,41 @@
 2026-07-22T00:00:00,1519423.0,FT,Liga Pro Ecuador,Universidad Catolica,Barcelona SC,2,1,8,2,1,3,8,3,21.0,11.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,1.0,0.0,1.0,1.0,3.0,,,,
 2026-07-22T00:30:00,1545504.0,FT,Copa Colombia,America de Cali,Real Cartagena,2,1,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,,,,
 2026-07-22T00:30:00,1547780.0,FT,Copa Sudamericana,UCV,Santos,1,4,2,6,2,2,4,7,8.0,17.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,3.0,1.0,1.0,1.0,1.0,,,,
-2026-07-22T19:00:00,1519420.0,NS,Liga Pro Ecuador,Macara,Deportivo Cuenca,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-8.0,8.0,"Deportivo Cuenca arriba en 2º lugar con 27 puntos y racha de 3 victorias recientes (WWWDW), mostrando solidez ofensiva con +1 diferencia gol. Macará cae 10º con 20 puntos, rachas negativas (LWLLD) y defensa frágil (-3 gol diferencia). Cuenca es claro favorito pese jugar fuera.",2026-07-22T10:28:46.946734
-2026-07-22T21:30:00,1519417.0,NS,Liga Pro Ecuador,Independiente del Valle,Tecnico Universitario,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,8.0,-8.0,"Independiente del Valle lidera con 49 puntos, racha de cinco victorias consecutivas, goleó 6-1 a Emelec y diferencia de gol de +29. Técnico Universitario en octavo lugar con solo 20 puntos, 8 derrotas en 16 partidos. Diferencia de clase clara entre líder invicto en casa y equipo luchando por clasificación.",2026-07-22T10:28:59.545471
-2026-07-22T22:00:00,1547775.0,NS,Copa Sudamericana,Independiente Medellin,Vasco DA Gama,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,8.0,-8.0,"Independiente Medellín juega en casa con solidez: 2 victorias y 1 empate en últimos 5, defensiva permite solo 1.26 goles. Vasco da Gama está en zona de descenso (17º), resultados irregulares recientemente, perdió 1-0 contra Vitória. Ventaja local + buen momento local vs crisis institucional visitante.",2026-07-22T10:29:09.568438
-2026-07-22T22:30:00,1492294.0,NS,Brasileirao,Coritiba,Palmeiras,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-8.0,8.0,"Palmeiras arriba invicto hace 13 rodadas y lidera con 41 puntos, mientras Coritiba sufre moral baja tras goleada 0-3. Histórico favorece visitante con 4 victorias consecutivas. Coritiba irregular (2-1-1 últimas 4), Palmeiras sólido ofensivamente pese a bajas.",2026-07-22T10:29:20.940902
-2026-07-22T23:30:00,1490334.0,NS,MLS,Philadelphia Union,New York Red Bulls,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-8.0,8.0,"Philadelphia Union vive crisis sin ganar en 8 partidos y nunca ha ganado en casa esta temporada, con defensa endeble (4+ goles concedidos dos veces en cierre). New York Red Bulls domina tabla en 5to lugar con 22 puntos, solidez defensiva y Julian Hall en gran forma con 9 goles. Ventaja visitante clara.",2026-07-22T10:29:32.208286
-2026-07-22T23:30:00,1490335.0,NS,MLS,New England Revolution,Toronto FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-3.0,2.0,New England Revolution en inconsistencia grave con apenas 25% victorias recientes y defensa muy vulnerable (2.3 goles por partido concedidos). Toronto FC llegando con irregularidad. Ventaja local modera el ajuste negativo del anfitrión.,2026-07-22T10:29:42.551412
-2026-07-22T23:30:00,1490333.0,NS,MLS,Columbus Crew,New York City FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-8.0,5.0,"Columbus Crew en crisis con 0 victorias en 5 partidos recientes incluyendo 3 derrotas, mientras ocupa 10ª en conferencia. NYCFC mantiene mejor competitividad histórica pese a reciente derrota. Diferencial forma justifica ajuste negativo local.",2026-07-22T10:29:53.299850
-2026-07-22T23:30:00,1490332.0,NS,MLS,FC Cincinnati,Vancouver Whitecaps,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-5.0,5.0,Vancouver Whitecaps lidera la conferencia Este y ocupa 2º en MLS general con mejor consistencia que Cincinnati (9º con 3 pts en 5 juegos). Los Caps vienen invictos y han mostrado fortaleza defensiva incluso con lesiones. Cincinnati ha alternado buenos y malos resultados recientemente.,2026-07-22T10:30:02.854660
-2026-07-22T23:30:00,1490331.0,NS,MLS,Inter Miami,Chicago Fire,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-8.0,5.0,"Inter Miami carece de Messi y De Paul por descanso post-Mundial, con 8 bajas totales. Chicago Fire marcha tercero en conferencia con buen desempeño (8-4-2), plantel íntegro y mejor momento. Miami juega con suplentes, Fire con equipo disponible.",2026-07-22T10:30:16.440512
-2026-07-23T00:00:00,1519421.0,NS,Liga Pro Ecuador,Manta FC,LDU de Quito,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-5.0,8.0,"Manta FC llega en racha ganadora (3 victorias consecutivas vs LDU) con victoria reciente 1-0. LDU atraviesa momento irregular, acaba de perder 0-1 contra Leones del Norte y ocupa sexta posición. El momentum local y forma ofensiva de Manta contrastan con la crisis defensiva visitante.",2026-07-22T10:30:27.601461
-2026-07-23T00:15:00,1490336.0,NS,MLS,Charlotte,Atlanta United FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1492296.0,NS,Brasileirao,Internacional,Cruzeiro,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1492298.0,NS,Brasileirao,Sao Paulo,Atletico Paranaense,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1492292.0,NS,Brasileirao,Chapecoense-sc,Flamengo,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1545509.0,NS,Copa Colombia,Junior,Barranquilla,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1547776.0,NS,Copa Sudamericana,Lanus,Cienciano,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1547779.0,NS,Copa Sudamericana,Sporting Cristal,RB Bragantino,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1490337.0,NS,MLS,Austin,Seattle Sounders,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1490340.0,NS,MLS,Houston Dynamo,DC United,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1490339.0,NS,MLS,Sporting Kansas City,Minnesota United FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T00:30:00,1490338.0,NS,MLS,Nashville SC,CF Montreal,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T01:30:00,1490341.0,NS,MLS,Colorado Rapids,San Diego,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T01:30:00,1490337.0,NS,MLS,Austin,Seattle Sounders,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T02:30:00,1490344.0,NS,MLS,San Jose Earthquakes,Orlando City SC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T02:30:00,1490343.0,NS,MLS,Los Angeles Galaxy,St. Louis City,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T02:30:00,1490342.0,NS,MLS,Los Angeles FC,Real Salt Lake,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T02:30:00,1490345.0,NS,MLS,Portland Timbers,FC Dallas,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T21:30:00,1519422.0,NS,Liga Pro Ecuador,Orense SC,Aucas,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T21:30:00,1519418.0,NS,Liga Pro Ecuador,Leones del Norte,Guayaquil City FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T22:00:00,1547774.0,NS,Copa Sudamericana,Bolívar,Gremio,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T22:30:00,1492141.0,NS,Brasileirao,Botafogo,Vitoria,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T22:30:00,1492293.0,NS,Brasileirao,Corinthians,Remo,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T22:30:00,1493003.0,NS,Liga Profesional Argentina,Belgrano Cordoba,Rosario Central,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-23T22:30:00,1493015.0,NS,Liga Profesional Argentina,Sarmiento Junin,Argentinos JRS,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-2026-07-24T00:00:00,1519416.0,NS,Liga Pro Ecuador,Emelec,Mushuc Runa SC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-22T19:00:00,1519420.0,FT,Liga Pro Ecuador,Macara,Deportivo Cuenca,3,0,4,3,2,4,6,2,16.0,10.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,0.0,0.0,0.0,2.0,2.0,2.0,,,,
+2026-07-22T21:30:00,1519417.0,FT,Liga Pro Ecuador,Independiente del Valle,Tecnico Universitario,3,0,5,4,0,4,7,0,12.0,8.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,0.0,0.0,0.0,0.0,2.0,2.0,,,,
+2026-07-22T22:00:00,1547775.0,FT,Copa Sudamericana,Independiente Medellin,Vasco DA Gama,2,2,3,6,1,1,3,4,12.0,13.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,2.0,1.0,0.0,0.0,1.0,,,,
+2026-07-22T22:30:00,1492294.0,FT,Brasileirao,Coritiba,Palmeiras,1,3,8,4,1,3,6,6,17.0,13.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,2.0,1.0,1.0,0.0,2.0,1.0,,,,
+2026-07-22T23:30:00,1490334.0,FT,MLS,Philadelphia Union,New York Red Bulls,3,1,8,6,0,3,10,5,24.0,10.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,1.0,0.0,0.0,0.0,0.0,3.0,,,,
+2026-07-22T23:30:00,1490335.0,FT,MLS,New England Revolution,Toronto FC,0,0,7,9,2,0,3,1,11.0,13.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,0.0,2.0,0.0,0.0,,,,
+2026-07-22T23:30:00,1490333.0,FT,MLS,Columbus Crew,New York City FC,1,2,3,0,3,2,4,5,11.0,8.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,1.0,0.0,3.0,1.0,1.0,,,,
+2026-07-22T23:30:00,1490332.0,FT,MLS,FC Cincinnati,Vancouver Whitecaps,4,3,1,3,1,5,6,6,10.0,19.0,,,,,,,,,,,,,,,,,,,,,3.0,1.0,2.0,1.0,1.0,0.0,2.0,3.0,,,,
+2026-07-22T23:30:00,1490331.0,FT,MLS,Inter Miami,Chicago Fire,3,2,8,4,1,1,7,4,14.0,15.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,1.0,1.0,0.0,1.0,0.0,1.0,,,,
+2026-07-23T00:00:00,1519421.0,FT,Liga Pro Ecuador,Manta FC,LDU de Quito,1,1,10,7,4,2,2,2,14.0,11.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,0.0,2.0,2.0,1.0,1.0,,,,
+2026-07-23T00:15:00,1490336.0,FT,MLS,Charlotte,Atlanta United FC,2,2,6,3,1,3,9,6,23.0,12.0,,,,,,,,,,,,,,,,,,,,,2.0,0.0,0.0,2.0,0.0,1.0,1.0,2.0,,,,
+2026-07-23T00:30:00,1492296.0,FT,Brasileirao,Internacional,Cruzeiro,1,2,5,7,1,6,3,6,21.0,13.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,1.0,1.0,0.0,4.0,2.0,,,,
+2026-07-23T00:30:00,1492298.0,FT,Brasileirao,Sao Paulo,Atletico Paranaense,1,2,7,3,0,1,3,3,18.0,11.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,2.0,0.0,0.0,1.0,0.0,,,,
+2026-07-23T00:30:00,1492292.0,FT,Brasileirao,Chapecoense-sc,Flamengo,0,4,5,3,1,0,3,6,13.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,2.0,2.0,0.0,1.0,0.0,0.0,,,,
+2026-07-23T00:30:00,1545509.0,FT,Copa Colombia,Junior,Barranquilla,2,2,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,2.0,0.0,0.0,2.0,0.0,0.0,0.0,0.0,,,,
+2026-07-23T00:30:00,1547776.0,FT,Copa Sudamericana,Lanus,Cienciano,2,0,7,0,4,2,5,1,15.0,3.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,0.0,3.0,1.0,1.0,1.0,,,,
+2026-07-23T00:30:00,1547779.0,FT,Copa Sudamericana,Sporting Cristal,RB Bragantino,0,0,6,2,1,3,6,5,20.0,15.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,1.0,0.0,1.0,2.0,,,,
+2026-07-23T00:30:00,1490337.0,NS,MLS,Austin,Seattle Sounders,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,5.0,-4.0,Austin juega en casa con ventaja emocional tras tres derrotas consecutivas y necesita puntos urgentes. Seattle llega diezmado defensivamente con 6 bajas y está en peor forma: apenas 1 victoria en 5 partidos y derrota 1-5 reciente. Motiva a Austin el factor cancha.,2026-07-23T11:31:33.084301
+2026-07-23T00:30:00,1490340.0,FT,MLS,Houston Dynamo,DC United,1,1,3,3,2,4,5,1,20.0,7.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,1.0,0.0,2.0,0.0,4.0,,,,
+2026-07-23T00:30:00,1490339.0,FT,MLS,Sporting Kansas City,Minnesota United FC,2,1,3,6,2,3,7,10,11.0,16.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,1.0,1.0,1.0,1.0,2.0,,,,
+2026-07-23T00:30:00,1490338.0,FT,MLS,Nashville SC,CF Montreal,1,0,3,2,1,1,1,2,10.0,7.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,0.0,1.0,0.0,1.0,,,,
+2026-07-23T01:30:00,1490341.0,FT,MLS,Colorado Rapids,San Diego,1,0,5,3,4,3,2,2,8.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,2.0,2.0,1.0,2.0,,,,
+2026-07-23T01:30:00,1490337.0,FT,MLS,Austin,Seattle Sounders,3,1,4,4,2,2,6,3,10.0,10.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,1.0,0.0,0.0,2.0,0.0,2.0,,,,
+2026-07-23T02:30:00,1490344.0,FT,MLS,San Jose Earthquakes,Orlando City SC,0,4,3,2,4,2,7,8,11.0,15.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,2.0,2.0,1.0,3.0,1.0,1.0,,,,
+2026-07-23T02:30:00,1490343.0,FT,MLS,Los Angeles Galaxy,St. Louis City,1,3,4,7,4,1,3,9,11.0,15.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,2.0,1.0,2.0,2.0,0.0,1.0,,,,
+2026-07-23T02:30:00,1490342.0,FT,MLS,Los Angeles FC,Real Salt Lake,3,1,7,12,0,0,3,6,12.0,28.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,,,,
+2026-07-23T02:30:00,1490345.0,FT,MLS,Portland Timbers,FC Dallas,2,2,5,3,3,2,4,3,16.0,11.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,1.0,1.0,1.0,2.0,0.0,2.0,,,,
+2026-07-23T21:30:00,1519422.0,NS,Liga Pro Ecuador,Orense SC,Aucas,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-8.0,8.0,"Orense sufre racha negativa con 2 derrotas consecutivas y décimo tercer lugar. Aucas demuestra mayor potencial ofensivo, recientemente venció 3-2 a Orense y mantiene mejor forma. Ventaja visitante por solidez actual y superioridad en duelos directos.",2026-07-23T11:31:42.823229
+2026-07-23T21:30:00,1519418.0,NS,Liga Pro Ecuador,Leones del Norte,Guayaquil City FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-8.0,8.0,"Guayaquil City vive racha de 4 victorias consecutivas con impulso psicológico tras escapar zona descenso. Leones del Norte, debutante en Serie A, cae en irregularidad con derrota reciente 0-1 ante LDU. City superior en momento competitivo y forma ofensiva.",2026-07-23T11:31:53.875812
+2026-07-23T22:00:00,1547774.0,NS,Copa Sudamericana,Bolívar,Gremio,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,5.0,-3.0,"Bolívar llega invicto con goleada 4-0 sobre Guabirá y ventaja de jugar en La Paz a 3.640m. Gremio pierde a su lateral Marlon por cinco meses por fractura de tobillo. Ambos con problemas defensivos por lesiones, pero el local controla mejor el partido con altura y forma ofensiva reciente.",2026-07-23T11:32:05.007393
+2026-07-23T22:30:00,1492141.0,NS,Brasileirao,Botafogo,Vitoria,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,5.0,-5.0,"Botafogo juega en casa con buena forma reciente (ganó 2-1 a Santos), plantel completo y pocos lesionados. Vitória es visitante con desempeño irregular: aunque ganó contra Vasco, tiene mala defensa histórica (-5 differential) y juega fuera. Ventaja significativa para el local.",2026-07-23T11:32:15.536995
+2026-07-23T22:30:00,1492293.0,NS,Brasileirao,Corinthians,Remo,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,8.0,-8.0,"Corinthians en casa (Neo Química Arena) contra Remo, ambos en lucha por no descender. Corinthians ocupa puesto 17 con 18 puntos, mejor que Remo (puesto 20 con 24 puntos tras 18 partidas pero bajo rendimiento). Ventaja decisiva: localía, mejor posición relativa y necesidad urgente de puntos en casa.",2026-07-23T11:32:24.680915
+2026-07-23T22:30:00,1493003.0,NS,Liga Profesional Argentina,Belgrano Cordoba,Rosario Central,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,6.0,-6.0,"Belgrano llega como campeón reciente con confianza máxima. Rosario Central tiene baja forma ofensiva por lesiones críticas de Copetti, Ruben y Ovando, aunque viene ganando. Ventaja local significativa para el equipo de Córdoba.",2026-07-23T11:32:35.652263
+2026-07-23T22:30:00,1493015.0,NS,Liga Profesional Argentina,Sarmiento Junin,Argentinos JRS,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,5.0,-5.0,"Sarmiento domina con una racha positiva en 2026 (múltiples victorias consecutivas vs. 1 derrota en abril) y juega de local en Junín. Argentinos acaba de perder 4-5 contra Belgrano, mostrando problemas defensivos serios. Sarmiento en mejor momento táctico y psicológico.",2026-07-23T11:32:45.071730
+2026-07-24T00:00:00,1519416.0,NS,Liga Pro Ecuador,Emelec,Mushuc Runa SC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,-5.0,3.0,"Emelec sufre crisis institucional tras goleada 6-1 y atrasos salariales, pero juega en casa. Mushuc Runa es más estable aunque con racha irregular. Ventaja moderada al visitante por solidez relativa ante caos local.",2026-07-23T11:32:55.554522
 2026-07-24T00:30:00,1547773.0,NS,Copa Sudamericana,Boca Juniors,O'Higgins,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-07-24T00:30:00,1547778.0,NS,Copa Sudamericana,Santa Fe,Caracas FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-07-24T00:45:00,1493004.0,NS,Liga Profesional Argentina,Defensa Y Justicia,Aldosivi,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15800,3 +15800,11 @@
 2026-07-26T22:30:00,1492307.0,NS,Brasileirao,Remo,Vitoria,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-07-26T22:30:00,1493005.0,NS,Liga Profesional Argentina,Deportivo Riestra,Boca Juniors,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-07-26T23:10:00,1549684.0,NS,Liga Colombia,Alianza Valledupar,Fortaleza FC,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T00:00:00,1549422.0,NS,Primera Division Peru,Deportivo Garcilaso,FC Cajamarca,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T00:15:00,1519425.0,NS,Liga Pro Ecuador,Barcelona SC,LDU de Quito,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T00:30:00,1505472.0,NS,Primera Division Chile,Concepción,O'Higgins,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T01:15:00,1549692.0,NS,Liga Colombia,Once Caldas,Cucuta,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T19:00:00,1519429.0,NS,Liga Pro Ecuador,Mushuc Runa SC,Libertad,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T21:30:00,1519428.0,NS,Liga Pro Ecuador,Guayaquil City FC,Universidad Catolica,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T22:30:00,1581848.0,NS,Primera Division Uruguay,Atletico Torque,Wanderers,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-07-27T23:00:00,1511624.0,NS,Copa Chile,Union Espanola,Recoleta,0,0,0,0,0,0,0,0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
