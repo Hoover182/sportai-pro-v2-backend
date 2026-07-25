@@ -315,12 +315,20 @@ def get_top_picks():
 
 
 def _obtener_ajuste_ia(df, local, visitante):
-    """Busca el ajuste cualitativo de IA para este partido si existe."""
+    """Busca el ajuste cualitativo de IA para este partido si existe.
+    Prioriza el partido mas reciente (o el pendiente NS) para evitar
+    traer el ajuste de un enfrentamiento historico viejo entre los mismos equipos."""
     try:
         fila = df[(df["equipo_local"] == local) & (df["equipo_visitante"] == visitante)]
         if fila.empty:
             return None
-        r = fila.iloc[0]
+        # Preferir partidos pendientes (NS), si no hay, tomar el mas reciente por fecha
+        pendientes = fila[fila["estado"] == "NS"]
+        if not pendientes.empty:
+            fila_ordenada = pendientes.sort_values("fecha", ascending=False)
+        else:
+            fila_ordenada = fila.sort_values("fecha", ascending=False)
+        r = fila_ordenada.iloc[0]
         if "ajuste_ia_local" not in r.index or pd.isna(r.get("ajuste_ia_local")):
             return None
         return {
