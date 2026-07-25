@@ -136,6 +136,27 @@ def obtener_partidos_hoy_futbol(df):
     return pd.DataFrame()
 
 
+def obtener_partidos_rango_futbol(df, dias=4):
+    """Devuelve partidos desde hoy hasta 'dias' dias en el futuro, agrupables por fecha."""
+    if df.empty:
+        return df
+    hoy = pd.Timestamp.now(tz="America/Bogota").normalize()
+    hasta = hoy + pd.Timedelta(days=dias - 1)
+
+    if "estado" not in df.columns:
+        return df[
+            (df["fecha"].dt.normalize() >= hoy) &
+            (df["fecha"].dt.normalize() <= hasta)
+        ].copy()
+
+    partidos = df[
+        (df["fecha"].dt.normalize() >= hoy) &
+        (df["fecha"].dt.normalize() <= hasta) &
+        (df["estado"].isin(ESTADOS_EN_JUEGO))
+    ].copy()
+    return partidos
+
+
 def obtener_partidos_mas_recientes(df, n=20):
     if df.empty:
         return df

@@ -8,6 +8,12 @@ async def partidos_hoy():
     partidos = futbol_service.get_partidos_hoy()
     return {"partidos": partidos}
 
+
+@router.get("/partidos-rango")
+async def partidos_rango(dias: int = 4):
+    partidos = futbol_service.get_partidos_rango(dias=dias)
+    return {"partidos": partidos}
+
 @router.get("/top-picks")
 async def top_picks():
     picks = futbol_service.get_top_picks()
