@@ -10,7 +10,7 @@ async def partidos_hoy():
 
 
 @router.get("/partidos-rango")
-async def partidos_rango(dias: int = 4):
+async def partidos_rango(dias: int = 3):
     partidos = futbol_service.get_partidos_rango(dias=dias)
     return {"partidos": partidos}
 
