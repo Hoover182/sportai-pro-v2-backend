@@ -706,7 +706,7 @@ def get_jugadores_partido(local_input, visitante_input):
         return None, "Fixture no encontrado en la API"
 
     try:
-        data = obtener_jugadores_partido(fixture_id, liga_id, temporada)
+        data = obtener_jugadores_partido(fixture_id, liga_id, temporada, nombre_local=local, nombre_visitante=visitante)
     except Exception as e:
         return None, str(e)
 

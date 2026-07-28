@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 API_KEY = "7be9c4250da301a68726beedbe2b382a"
 BASE_URL = "https://v3.football.api-sports.io"
 
-MINUTOS_MIN_TEMPORADA = 200
+MINUTOS_MIN_TEMPORADA = 90
 MAX_JUGADORES_POR_SECCION = 5
 
 POSICIONES_PORTERO   = ["goalkeeper", "gk", "g", "portero"]
@@ -136,7 +136,26 @@ def _guardar_cache_jugadores(team_id, liga_id, temporada, response):
         pass
 
 
-def obtener_squad_equipo(team_id, liga_id, temporada):
+JUGADORES_DATA_DIR = os.path.join(os.path.dirname(__file__), "jugadores_data")
+
+def _leer_jugadores_data_por_nombre(nombre_equipo):
+    """Busca el archivo descargado masivamente por nombre de equipo."""
+    path = os.path.join(JUGADORES_DATA_DIR, f"{nombre_equipo.replace('/', '_')}.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("jugadores", [])
+    except Exception:
+        return None
+
+
+def obtener_squad_equipo(team_id, liga_id, temporada, nombre_equipo=None):
+    if nombre_equipo:
+        datos_masivos = _leer_jugadores_data_por_nombre(nombre_equipo)
+        if datos_masivos:
+            return datos_masivos
     cacheado = _leer_cache_jugadores(team_id, liga_id, temporada)
     if cacheado is not None:
         return cacheado
@@ -235,7 +254,7 @@ def _agregar_simulaciones_defensa(j):
     }
 
 
-def obtener_jugadores_partido(fixture_id, liga_id, temporada):
+def obtener_jugadores_partido(fixture_id, liga_id, temporada, nombre_local=None, nombre_visitante=None):
     """
     Devuelve TODOS los jugadores del partido (sin limite, sin separar ataque/defensa).
     Cada jugador trae TODAS las stats: tiros arco, totales, asistencias, fuera juego, tarjetas, faltas.
@@ -250,9 +269,9 @@ def obtener_jugadores_partido(fixture_id, liga_id, temporada):
         away_id   = f.get("teams", {}).get("away", {}).get("id")
         away_name = f.get("teams", {}).get("away", {}).get("name", "")
         if home_id:
-            equipos_info.append({"id": home_id, "nombre": home_name})
+            equipos_info.append({"id": home_id, "nombre": nombre_local or home_name})
         if away_id:
-            equipos_info.append({"id": away_id, "nombre": away_name})
+            equipos_info.append({"id": away_id, "nombre": nombre_visitante or away_name})
 
     if not equipos_info:
         return {}
@@ -262,7 +281,7 @@ def obtener_jugadores_partido(fixture_id, liga_id, temporada):
         team_id = equipo["id"]
         nombre_equipo = equipo["nombre"]
 
-        squad = obtener_squad_equipo(team_id, liga_id, temporada)
+        squad = obtener_squad_equipo(team_id, liga_id, temporada, nombre_equipo=nombre_equipo)
         jugadores_equipo = []
         for p in squad:
             j = _procesar_jugador(p, nombre_equipo)
