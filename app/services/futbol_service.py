@@ -51,6 +51,21 @@ LIGAS_IDS = {
     "Brasileirao": (71, 2026),
     "Liga Colombia": (239, 2026),
     "Liga Pro Ecuador": (242, 2026),
+    "Primera Division Chile": (265, 2026),
+    "Primera Division Uruguay": (268, 2026),
+    "Primera Division Peru": (281, 2026),
+    "Primera Division Venezuela": (337, 2026),
+    "Primera Division Bolivia": (344, 2026),
+    "Division Profesional Paraguay": (250, 2026),
+    "Liga MX": (262, None),
+    "MLS": (253, 2026),
+    "Copa Argentina": (130, 2026),
+    "Copa Chile": (267, 2026),
+    "Copa Colombia": (241, 2026),
+    "Copa Uruguay": (270, 2026),
+    "Copa do Brasil": (73, 2026),
+    "Recopa Sudamericana": (12, 2026),
+    "Mundial 2026": (1, 2026),
 }
 
 ORDEN_COMPETENCIAS = [
