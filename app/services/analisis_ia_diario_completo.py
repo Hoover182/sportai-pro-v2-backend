@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 
 import os
 API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-CSV = "futbol_partidos.csv"
+import os
+CSV = os.path.join(os.path.dirname(__file__), "futbol_partidos.csv")
 
 def analizar_partido_ia(local, visitante, liga, fecha):
     headers = {
