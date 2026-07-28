@@ -206,11 +206,14 @@ def _nombres_coinciden(nombre_a, nombre_b):
 
 def obtener_historial_jugador(nombre_jugador, fixture_ids, n=5):
     """Busca el desglose real de un jugador especifico en una lista de fixture_ids.
-    Devuelve lista de dicts: [{fixture_id, tiros_total, tiros_arco, goles, asistencias, tarjetas_amarillas}, ...]"""
+    Devuelve lista de dicts: [{fixture_id, rival, tiros_total, tiros_arco, goles, asistencias, tarjetas_amarillas}, ...]"""
     resultado = []
     for fid in fixture_ids[:n]:
         datos_fixture = obtener_stats_jugadores_fixture(fid)
+        nombres_equipos = [eq.get("team", {}).get("name", "") for eq in datos_fixture]
         for equipo in datos_fixture:
+            equipo_jugador = equipo.get("team", {}).get("name", "")
+            rival = next((n for n in nombres_equipos if n != equipo_jugador), "")
             for j in equipo.get("players", []):
                 nombre = j.get("player", {}).get("name", "")
                 if not _nombres_coinciden(nombre, nombre_jugador):
@@ -221,6 +224,7 @@ def obtener_historial_jugador(nombre_jugador, fixture_ids, n=5):
                 cards = stats.get("cards", {}) or {}
                 resultado.append({
                     "fixture_id": fid,
+                    "rival": rival,
                     "tiros_total": shots.get("total"),
                     "tiros_arco": shots.get("on"),
                     "goles": goals.get("total"),
