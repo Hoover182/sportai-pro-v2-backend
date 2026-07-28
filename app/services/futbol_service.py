@@ -75,6 +75,38 @@ OPUESTOS = {
 }
 
 
+LIGAS_NIVEL_1 = [
+    "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Primeira Liga",
+    "Eredivisie", "Pro League Belgica", "Premier League Egipto", "Pro League Arabia",
+    "Super Lig Turquia", "Liga Profesional Argentina", "Brasileirao", "Liga Colombia",
+    "Primera Division Chile", "Primera Division Uruguay", "Primera Division Peru",
+    "Liga Pro Ecuador", "Primera Division Venezuela", "Primera Division Bolivia",
+    "Division Profesional Paraguay", "Liga MX", "MLS",
+]
+
+_cache_equipos_nivel1 = None
+
+def obtener_equipos_nivel1(df):
+    """Devuelve el set de equipos que juegan en ligas de Primera division.
+    Se cachea en memoria porque el CSV no cambia dentro del mismo proceso."""
+    global _cache_equipos_nivel1
+    if _cache_equipos_nivel1 is not None:
+        return _cache_equipos_nivel1
+    equipos = set()
+    for liga in LIGAS_NIVEL_1:
+        sub = df[df["liga"] == liga]
+        equipos.update(sub["equipo_local"].unique())
+        equipos.update(sub["equipo_visitante"].unique())
+    _cache_equipos_nivel1 = equipos
+    return equipos
+
+
+def categoria_equipo(nombre, equipos_nivel1):
+    """Devuelve 'Primera' si el equipo juega habitualmente en una liga top,
+    o 'Categoria menor' si solo aparece en copas (posible Segunda/Tercera/amateur)."""
+    return "Primera" if nombre in equipos_nivel1 else "Categoria menor"
+
+
 def cargar_df():
     import os
     original = os.getcwd()
@@ -425,6 +457,7 @@ def get_analisis_partido(local_input, visitante_input):
     df = cargar_df()
     if df.empty:
         return None, "No hay datos disponibles"
+    equipos_n1 = obtener_equipos_nivel1(df)
     local = obtener_equipo_por_nombre(df, local_input)
     visitante = obtener_equipo_por_nombre(df, visitante_input)
     if local is None:
@@ -469,6 +502,7 @@ def get_analisis_partido(local_input, visitante_input):
                   "tarjetas_favor_1t": int(r["tarjetas_local_1t"] if es_local else r["tarjetas_visitante_1t"]) if "tarjetas_local_1t" in r.index and str(r["tarjetas_local_1t"]) not in ["nan","None"] else None,
                   "tarjetas_favor_2t": int(r["tarjetas_local_2t"] if es_local else r["tarjetas_visitante_2t"]) if "tarjetas_local_2t" in r.index and str(r["tarjetas_local_2t"]) not in ["nan","None"] else None,
                   "liga_partido": str(r["liga"]) if "liga" in r.index else "",
+                "categoria_rival": categoria_equipo(r["equipo_visitante"] if r["equipo_local"] == local else r["equipo_local"], equipos_n1),
             })
     except Exception:
         pass
@@ -497,6 +531,7 @@ def get_analisis_partido(local_input, visitante_input):
                 "tarjetas_favor_1t": int(r["tarjetas_local_1t"] if es_local else r["tarjetas_visitante_1t"]) if "tarjetas_local_1t" in r.index and str(r["tarjetas_local_1t"]) not in ["nan","None"] else None,
                 "tarjetas_favor_2t": int(r["tarjetas_local_2t"] if es_local else r["tarjetas_visitante_2t"]) if "tarjetas_local_2t" in r.index and str(r["tarjetas_local_2t"]) not in ["nan","None"] else None,
                 "liga_partido": str(r["liga"]) if "liga" in r.index else "",
+                "categoria_rival": categoria_equipo(r["equipo_visitante"] if r["equipo_local"] == visitante else r["equipo_local"], equipos_n1),
             })
     except Exception:
         pass
