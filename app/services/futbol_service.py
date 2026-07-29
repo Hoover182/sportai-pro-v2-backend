@@ -679,16 +679,21 @@ def get_historial_jugador(equipo_input, jugador_nombre, n=5):
             return None, "Equipo no encontrado en la API"
         team_id = data_team["response"][0]["team"]["id"]
 
+        # Buscar un rango amplio de fixtures del equipo (no solo n), porque el
+        # jugador puede no haber participado en varios partidos recientes
+        # (lesion, suspension, no convocado). Se sigue buscando hacia atras
+        # hasta encontrar n partidos REALES donde el jugador jugo.
+        RANGO_BUSQUEDA = max(n * 4, 20)
         resp_fixtures = _requests.get(
             f"{_PM_BASE_URL}/fixtures", headers=headers,
-            params={"team": team_id, "season": temporada, "last": n}
+            params={"team": team_id, "season": temporada, "last": RANGO_BUSQUEDA}
         )
         data_fixtures = resp_fixtures.json()
         fixture_ids = [f["fixture"]["id"] for f in data_fixtures.get("response", [])]
         if not fixture_ids:
             return [], None
 
-        historial = obtener_historial_jugador(jugador_nombre, fixture_ids, n=n)
+        historial = obtener_historial_jugador(jugador_nombre, fixture_ids, n=n, rango_busqueda=RANGO_BUSQUEDA)
         return historial, None
     except Exception as e:
         return None, str(e)
