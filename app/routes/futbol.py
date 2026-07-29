@@ -29,6 +29,15 @@ async def partido(local: str, visitante: str):
     except Exception as e:
         return {"error": str(e)}
 
+@router.get("/buscar-jugador")
+async def buscar_jugador(q: str, limite: int = 20):
+    try:
+        resultados = futbol_service.buscar_jugador_general(q, limite=limite)
+        return {"jugadores": resultados}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @router.get("/jugadores/{local}/{visitante}")
 async def jugadores(local: str, visitante: str):
     try:
