@@ -228,6 +228,8 @@ def obtener_historial_jugador(nombre_jugador, fixture_ids, n=5, rango_busqueda=N
                 shots = stats.get("shots", {}) or {}
                 goals = stats.get("goals", {}) or {}
                 cards = stats.get("cards", {}) or {}
+                games_stats = stats.get("games", {}) or {}
+                fouls = stats.get("fouls", {}) or {}
                 resultado.append({
                     "fixture_id": fid,
                     "rival": rival,
@@ -236,7 +238,9 @@ def obtener_historial_jugador(nombre_jugador, fixture_ids, n=5, rango_busqueda=N
                     "goles": goals.get("total"),
                     "asistencias": goals.get("assists"),
                     "tarjetas_amarillas": cards.get("yellow"),
-                    "minutos": (stats.get("games", {}) or {}).get("minutes"),
+                    "fuera_juego": stats.get("offsides"),
+                    "faltas": fouls.get("committed"),
+                    "minutos": games_stats.get("minutes"),
                 })
     return resultado
 
