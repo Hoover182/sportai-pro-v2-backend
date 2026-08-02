@@ -150,6 +150,32 @@ def simular(df, local, visitante):
     if stats_a is None or stats_b is None:
         return None, None, None
     h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=5)
+
+    # ---- Filtros adicionales de tarjetas (arbitro, presion, agresividad, clasico) ----
+    try:
+        from modelo_presion import calcular_tabla, calcular_presion, calcular_indice_agresividad, es_clasico
+        liga_partido = df[(df["equipo_local"] == local) | (df["equipo_visitante"] == local)]["liga"].iloc[0]
+        tabla_liga = calcular_tabla(df, liga_partido)
+
+        presion_local = calcular_presion(tabla_liga, local)
+        presion_visitante = calcular_presion(tabla_liga, visitante)
+        presion_promedio = (presion_local + presion_visitante) / 2
+
+        agresividad_local, _ = calcular_indice_agresividad(df, local, liga_partido)
+        agresividad_visitante, _ = calcular_indice_agresividad(df, visitante, liga_partido)
+        agresividad_promedio = (agresividad_local + agresividad_visitante) / 2
+
+        clasico = es_clasico(local, visitante)
+
+        # Multiplicador combinado: base 1.0, cada factor puede sumar hasta +25%
+        multiplicador_tarjetas = 1.0
+        multiplicador_tarjetas += presion_promedio * 0.15
+        multiplicador_tarjetas += agresividad_promedio * 0.10
+        if clasico:
+            multiplicador_tarjetas += 0.20
+        multiplicador_tarjetas = min(multiplicador_tarjetas, 1.5)
+    except Exception:
+        multiplicador_tarjetas = 1.0
     goles_a, goles_b, corners_a, corners_b, tarjetas = ajustar_medias_con_rival(
         stats_a, stats_b, h2h, equipo_local=local, equipo_visitante=visitante
     )
@@ -158,6 +184,19 @@ def simular(df, local, visitante):
         stats_a["std_goles_favor"], stats_b["std_goles_favor"],
         corners_a, corners_b, tarjetas
     )
+    # Aplicar el multiplicador de arbitro/presion/agresividad/clasico a las tarjetas
+    if multiplicador_tarjetas != 1.0 and "tarjetas_totales_proj" in sim:
+        sim["tarjetas_totales_proj"] = sim["tarjetas_totales_proj"] * multiplicador_tarjetas
+        if "tarjetas_ou" in sim:
+            import numpy as np
+            media_ajustada = max(sim["tarjetas_totales_proj"], 0.1)
+            valores_sim = np.random.poisson(media_ajustada, 10000)
+            for linea_ou in list(sim["tarjetas_ou"].keys()):
+                sim["tarjetas_ou"][linea_ou] = {
+                    "over": float(np.mean(valores_sim > linea_ou)),
+                    "under": float(np.mean(valores_sim < linea_ou)),
+                }
+
     return sim, stats_a, stats_b
 
 
