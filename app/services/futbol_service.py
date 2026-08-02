@@ -171,8 +171,11 @@ def simular(df, local, visitante):
         multiplicador_tarjetas = 1.0
         multiplicador_tarjetas += presion_promedio * 0.15
         multiplicador_tarjetas += agresividad_promedio * 0.10
+        # NOTA: peso de clasico calibrado para futbol sudamericano (mas fisico).
+        # Si se agregan ligas europeas, este peso deberia ser mas bajo alli,
+        # ya que los derbis europeos tienden a menos tarjetas que los sudamericanos.
         if clasico:
-            multiplicador_tarjetas += 0.20
+            multiplicador_tarjetas += 0.35
         multiplicador_tarjetas = min(multiplicador_tarjetas, 1.5)
     except Exception:
         multiplicador_tarjetas = 1.0
