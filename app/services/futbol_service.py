@@ -177,8 +177,18 @@ def simular(df, local, visitante):
         if clasico:
             multiplicador_tarjetas += 0.35
         multiplicador_tarjetas = min(multiplicador_tarjetas, 1.5)
+
+        # ---- Multiplicador de corners basado en intensidad ofensiva reciente ----
+        from modelo_presion import calcular_indice_intensidad_ofensiva
+        intensidad_local, _ = calcular_indice_intensidad_ofensiva(df, local, liga_partido)
+        intensidad_visitante, _ = calcular_indice_intensidad_ofensiva(df, visitante, liga_partido)
+        intensidad_promedio = (intensidad_local + intensidad_visitante) / 2
+        # Base 1.0, hasta +/-20% segun que tan ofensivos vienen ambos equipos
+        multiplicador_corners = 0.9 + (intensidad_promedio * 0.3)
+        multiplicador_corners = max(0.8, min(multiplicador_corners, 1.3))
     except Exception:
         multiplicador_tarjetas = 1.0
+        multiplicador_corners = 1.0
     goles_a, goles_b, corners_a, corners_b, tarjetas = ajustar_medias_con_rival(
         stats_a, stats_b, h2h, equipo_local=local, equipo_visitante=visitante
     )
@@ -198,6 +208,19 @@ def simular(df, local, visitante):
                 sim["tarjetas_ou"][linea_ou] = {
                     "over": float(np.mean(valores_sim > linea_ou)),
                     "under": float(np.mean(valores_sim < linea_ou)),
+                }
+
+    # Aplicar el multiplicador de intensidad ofensiva a los corners
+    if multiplicador_corners != 1.0 and "corners_totales_proj" in sim:
+        sim["corners_totales_proj"] = sim["corners_totales_proj"] * multiplicador_corners
+        if "corners_ou" in sim:
+            import numpy as np
+            media_ajustada_c = max(sim["corners_totales_proj"], 0.1)
+            valores_sim_c = np.random.poisson(media_ajustada_c, 10000)
+            for linea_ou in list(sim["corners_ou"].keys()):
+                sim["corners_ou"][linea_ou] = {
+                    "over": float(np.mean(valores_sim_c > linea_ou)),
+                    "under": float(np.mean(valores_sim_c < linea_ou)),
                 }
 
     return sim, stats_a, stats_b
