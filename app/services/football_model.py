@@ -1,4 +1,5 @@
-﻿import numpy as np
+import numpy as np
+import pandas as pd
 from fifa_ranking import ajuste_fifa
 from value_bet import normalizar_std
 
@@ -7,7 +8,7 @@ from value_bet import normalizar_std
 GOLES_MIN = 0.7
 GOLES_MAX = 3.5
 CORNERS_MIN = 3.0
-CORNERS_MAX = 9.0     # subido de 8 a 9 — equipos top promedian 6-7
+CORNERS_MAX = 9.0     # subido de 8 a 9 Ã¢â‚¬â€ equipos top promedian 6-7
 TARJETAS_MIN = 0.5    # por equipo
 TARJETAS_MAX = 4.0    # por equipo
 
@@ -106,7 +107,7 @@ def estadisticas_equipo_ultimos10(df, equipo, min_partidos=3):
 
     victorias = empates = derrotas = 0
 
-    # Goles con todos los partidos — ponderados por fuerza del rival (ranking FIFA)
+    # Goles con todos los partidos Ã¢â‚¬â€ ponderados por fuerza del rival (ranking FIFA)
     try:
         from fifa_ranking import get_puntos_fifa, es_seleccion_nacional
         usar_peso_fifa = True
@@ -290,11 +291,28 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_b = (stats_b["corners_favor"] + stats_a["corners_contra"]) / 2
     tarjetas_total = stats_a["tarjetas_favor"] + stats_b["tarjetas_favor"]
 
-    # Ajuste H2H — mas peso cuando hay mas partidos directos
+    # Ajuste H2H Ã¢â‚¬â€ mas peso cuando hay mas partidos directos
     if not h2h.empty:
         n_h2h = len(h2h)
         # 1 partido=15%, 2=20%, 3=25%, 4+=30%
         peso_h2h = min(0.15 + (n_h2h - 1) * 0.05, 0.30)
+
+        # Ajuste por antiguedad del H2H - el conjunto completo pesa menos
+        # si el enfrentamiento mas reciente ya es viejo, aunque haya
+        # varios partidos. Interpolacion entre 4 puntos de referencia:
+        # 0 anos=100%, 1 ano=90%, 2 anos=70%, 3+ anos=50% (piso).
+        try:
+            fecha_mas_reciente = pd.to_datetime(h2h["fecha"]).max()
+            if fecha_mas_reciente.tzinfo is not None:
+                ahora_h2h = pd.Timestamp.now(tz=fecha_mas_reciente.tzinfo)
+            else:
+                ahora_h2h = pd.Timestamp.now()
+            anios_desde_ultimo = (ahora_h2h - fecha_mas_reciente).days / 365.25
+            multiplicador_antiguedad = np.interp(anios_desde_ultimo, [0, 1, 2, 3], [1.0, 0.9, 0.7, 0.5])
+            peso_h2h = peso_h2h * multiplicador_antiguedad
+        except Exception:
+            pass
+
         peso_base = 1 - peso_h2h
 
         goles_local_h2h = h2h["goles_local"].mean()
@@ -324,7 +342,7 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_b      = float(np.clip(corners_b,      CORNERS_MIN,  CORNERS_MAX))
     tarjetas_total = float(np.clip(tarjetas_total, 1.5,          8.0))
 
-    # Ajuste FIFA — solo aplica para selecciones nacionales
+    # Ajuste FIFA Ã¢â‚¬â€ solo aplica para selecciones nacionales
     try:
         if equipo_local and equipo_visitante:
             from fifa_ranking import ajuste_fifa, es_seleccion_nacional, get_puntos_fifa
