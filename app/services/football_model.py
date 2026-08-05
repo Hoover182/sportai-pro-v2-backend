@@ -8,7 +8,7 @@ from value_bet import normalizar_std
 GOLES_MIN = 0.7
 GOLES_MAX = 3.5
 CORNERS_MIN = 3.0
-CORNERS_MAX = 9.0     # subido de 8 a 9 Ã¢â‚¬â€ equipos top promedian 6-7
+CORNERS_MAX = 9.0     # subido de 8 a 9 â€”Â equipos top promedian 6-7
 TARJETAS_MIN = 0.5    # por equipo
 TARJETAS_MAX = 4.0    # por equipo
 
@@ -107,7 +107,7 @@ def estadisticas_equipo_ultimos10(df, equipo, min_partidos=3):
 
     victorias = empates = derrotas = 0
 
-    # Goles con todos los partidos Ã¢â‚¬â€ ponderados por fuerza del rival (ranking FIFA)
+    # Goles con todos los partidos â€”Â ponderados por fuerza del rival (ranking FIFA)
     try:
         from fifa_ranking import get_puntos_fifa, es_seleccion_nacional
         usar_peso_fifa = True
@@ -291,7 +291,7 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_b = (stats_b["corners_favor"] + stats_a["corners_contra"]) / 2
     tarjetas_total = stats_a["tarjetas_favor"] + stats_b["tarjetas_favor"]
 
-    # Ajuste H2H Ã¢â‚¬â€ mas peso cuando hay mas partidos directos
+    # Ajuste H2H â€”Â mas peso cuando hay mas partidos directos
     if not h2h.empty:
         n_h2h = len(h2h)
         # 1 partido=15%, 2=20%, 3=25%, 4+=30%
@@ -335,6 +335,15 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
             if not np.isnan(corners_h2h_b):
                 corners_b = corners_b * peso_base + corners_h2h_b * peso_h2h
 
+        # Ajuste H2H para tarjetas si hay datos
+        h2h_con_tarjetas = h2h[
+            h2h["tarjetas_local"].notna() & h2h["tarjetas_visitante"].notna()
+        ]
+        if not h2h_con_tarjetas.empty:
+            tarjetas_h2h_total = (h2h_con_tarjetas["tarjetas_local"] + h2h_con_tarjetas["tarjetas_visitante"]).mean()
+            if not np.isnan(tarjetas_h2h_total):
+                tarjetas_total = tarjetas_total * peso_base + tarjetas_h2h_total * peso_h2h
+
     # Aplicar limites finales
     goles_a        = float(np.clip(goles_a,        GOLES_MIN,    GOLES_MAX))
     goles_b        = float(np.clip(goles_b,        GOLES_MIN,    GOLES_MAX))
@@ -342,7 +351,7 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_b      = float(np.clip(corners_b,      CORNERS_MIN,  CORNERS_MAX))
     tarjetas_total = float(np.clip(tarjetas_total, 1.5,          8.0))
 
-    # Ajuste FIFA Ã¢â‚¬â€ solo aplica para selecciones nacionales
+    # Ajuste FIFA â€”Â solo aplica para selecciones nacionales
     try:
         if equipo_local and equipo_visitante:
             from fifa_ranking import ajuste_fifa, es_seleccion_nacional, get_puntos_fifa
