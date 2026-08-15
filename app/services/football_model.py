@@ -8,7 +8,7 @@ from value_bet import normalizar_std
 GOLES_MIN = 0.7
 GOLES_MAX = 3.5
 CORNERS_MIN = 3.0
-CORNERS_MAX = 9.0     # subido de 8 a 9 â€”Â equipos top promedian 6-7
+CORNERS_MAX = 9.0     # subido de 8 a 9 - equipos top promedian 6-7
 TARJETAS_MIN = 0.5    # por equipo
 TARJETAS_MAX = 4.0    # por equipo
 
@@ -107,7 +107,7 @@ def estadisticas_equipo_ultimos10(df, equipo, min_partidos=3):
 
     victorias = empates = derrotas = 0
 
-    # Goles con todos los partidos â€”Â ponderados por fuerza del rival (ranking FIFA)
+    # Goles con todos los partidos - ponderados por fuerza del rival (ranking FIFA)
     try:
         from fifa_ranking import get_puntos_fifa, es_seleccion_nacional
         usar_peso_fifa = True
@@ -291,7 +291,7 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_b = (stats_b["corners_favor"] + stats_a["corners_contra"]) / 2
     tarjetas_total = stats_a["tarjetas_favor"] + stats_b["tarjetas_favor"]
 
-    # Ajuste H2H â€”Â mas peso cuando hay mas partidos directos
+    # Ajuste H2H - mas peso cuando hay mas partidos directos
     if not h2h.empty:
         n_h2h = len(h2h)
         # 1 partido=15%, 2=20%, 3=25%, 4+=30%
@@ -351,7 +351,7 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_b      = float(np.clip(corners_b,      CORNERS_MIN,  CORNERS_MAX))
     tarjetas_total = float(np.clip(tarjetas_total, 1.5,          8.0))
 
-    # Ajuste FIFA â€”Â solo aplica para selecciones nacionales
+    # Ajuste FIFA - solo aplica para selecciones nacionales
     try:
         if equipo_local and equipo_visitante:
             from fifa_ranking import ajuste_fifa, es_seleccion_nacional, get_puntos_fifa
