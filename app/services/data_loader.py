@@ -7,7 +7,7 @@ LIGAS_VALIDAS = [
     "Primeira Liga", "Eredivisie", "Pro League Belgica", "Super Lig Turquia",
     "Champions League", "Europa League", "Conference League",
     "FA Cup", "Copa del Rey", "Coppa Italia", "DFB Pokal", "Coupe de France",
-    "Taca de Portugal", "KNVB Beker", "Copa Belgica", "Turkiye Kupasi",
+    "Taça de Portugal", "KNVB Beker", "Copa Belgica", "Turkiye Kupasi",
     "Premier League Egipto", "Copa Egipto", "Pro League Arabia",
     "MLS", "Liga MX", "Liga Profesional Argentina", "Brasileirao",
     "Liga Colombia", "Primera Division Chile", "Primera Division Uruguay",
