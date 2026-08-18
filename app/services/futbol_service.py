@@ -1088,18 +1088,29 @@ def _stats_temporada_actual(df, equipo):
         v = e = d = 0
         for _, r in ps.iterrows():
             es_local = r["equipo_local"] == equipo
-            gf = float(r["goles_local"] if es_local else r["goles_visitante"] or 0)
-            gc = float(r["goles_visitante"] if es_local else r["goles_local"] or 0)
+            # NaN es "truthy" en Python, asi que "valor or 0" NO lo reemplaza
+            # por 0 -- hay que chequear pd.notna() explicitamente. Los goles
+            # casi nunca faltan, pero se protegen igual por consistencia.
+            gf_val = r["goles_local"] if es_local else r["goles_visitante"]
+            gc_val = r["goles_visitante"] if es_local else r["goles_local"]
+            gf = float(gf_val) if pd.notna(gf_val) else 0.0
+            gc = float(gc_val) if pd.notna(gc_val) else 0.0
             gf_list.append(gf); gc_list.append(gc)
             if gf > gc: v += 1
             elif gf == gc: e += 1
             else: d += 1
-            try:
-                cf = float(r["corners_local"] if es_local else r["corners_visitante"] or 0)
-                tf = float(r["tarjetas_local"] if es_local else r["tarjetas_visitante"] or 0)
-                ta = float(r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"] or 0)
-                cf_list.append(cf); tf_list.append(tf); ta_list.append(ta)
-            except: pass
+
+            # Corners/tarjetas/tiros al arco: partidos sin stats detalladas
+            # en la API quedan en NaN (ver construir_fila() en api_to_csv.py).
+            # Se excluyen del promedio en vez de contarlos como 0 real, y se
+            # excluyen por metrica individual (no la fila entera) porque un
+            # partido puede tener corners pero no tarjetas, o viceversa.
+            cf_val = r["corners_local"] if es_local else r["corners_visitante"]
+            tf_val = r["tarjetas_local"] if es_local else r["tarjetas_visitante"]
+            ta_val = r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"]
+            if pd.notna(cf_val): cf_list.append(float(cf_val))
+            if pd.notna(tf_val): tf_list.append(float(tf_val))
+            if pd.notna(ta_val): ta_list.append(float(ta_val))
         return {
             "goles_favor": round(float(np.mean(gf_list)), 2) if gf_list else 0,
             "goles_contra": round(float(np.mean(gc_list)), 2) if gc_list else 0,
