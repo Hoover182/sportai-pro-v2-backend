@@ -677,16 +677,25 @@ def get_analisis_partido(local_input, visitante_input):
             es_local = r["equipo_local"] == local
             gf = gl if es_local else gv
             gc = gv if es_local else gl
+            # Calcular el valor real primero y chequear NaN sobre ESE valor
+            # (antes siempre chequeaba la columna "_local" aunque es_local
+            # fuera False, dando el resultado equivocado), y usar None en
+            # vez de 0 cuando el dato genuinamente falta (mismo patron que
+            # construir_fila()/api_to_csv.py y _stats_n_equipo()).
+            _corners_val = r["corners_local"] if es_local else r["corners_visitante"]
+            _tarjetas_val = r["tarjetas_local"] if es_local else r["tarjetas_visitante"]
+            _tiros_arco_val = r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"]
+            _tiros_total_val = r["tiros_total_local"] if es_local else r["tiros_total_visitante"]
             ultimos_local.append({
                 "fecha": str(r["fecha"])[:10],
                 "rival": r["equipo_visitante"] if es_local else r["equipo_local"],
                 "resultado": f"{gl}-{gv}",
                 "ganado": gf > gc,
                 "empate": gf == gc,
-                "corners": int(r["corners_local"] if es_local else r["corners_visitante"]) if "corners_local" in r.index and str(r["corners_local"]) != "nan" else 0,
-                "tarjetas": int(r["tarjetas_local"] if es_local else r["tarjetas_visitante"]) if "tarjetas_local" in r.index and str(r["tarjetas_local"]) != "nan" else 0,
-                "tiros_arco": int(r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"]) if "tiros_arco_local" in r.index and str(r["tiros_arco_local"]) != "nan" else 0,
-                "tiros_total": int(r["tiros_total_local"] if es_local else r["tiros_total_visitante"]) if "tiros_total_local" in r.index and str(r["tiros_total_local"]) != "nan" else 0,
+                "corners": int(_corners_val) if pd.notna(_corners_val) else None,
+                "tarjetas": int(_tarjetas_val) if pd.notna(_tarjetas_val) else None,
+                "tiros_arco": int(_tiros_arco_val) if pd.notna(_tiros_arco_val) else None,
+                "tiros_total": int(_tiros_total_val) if pd.notna(_tiros_total_val) else None,
                   "goles_favor_1t": int(r["goles_local_1t"] if es_local else r["goles_visitante_1t"]) if "goles_local_1t" in r.index and str(r["goles_local_1t"]) not in ["nan","None"] else None,
                   "goles_contra_1t": int(r["goles_visitante_1t"] if es_local else r["goles_local_1t"]) if "goles_visitante_1t" in r.index and str(r["goles_visitante_1t"]) not in ["nan","None"] else None,
                   "goles_favor_2t": int(r["goles_local_2t"] if es_local else r["goles_visitante_2t"]) if "goles_local_2t" in r.index and str(r["goles_local_2t"]) not in ["nan","None"] else None,
@@ -706,16 +715,20 @@ def get_analisis_partido(local_input, visitante_input):
             es_local = r["equipo_local"] == visitante
             gf = gl if es_local else gv
             gc = gv if es_local else gl
+            _corners_val = r["corners_local"] if es_local else r["corners_visitante"]
+            _tarjetas_val = r["tarjetas_local"] if es_local else r["tarjetas_visitante"]
+            _tiros_arco_val = r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"]
+            _tiros_total_val = r["tiros_total_local"] if es_local else r["tiros_total_visitante"]
             ultimos_visitante.append({
                 "fecha": str(r["fecha"])[:10],
                 "rival": r["equipo_visitante"] if es_local else r["equipo_local"],
                 "resultado": f"{gf}-{gc}",
                 "ganado": gf > gc,
                 "empate": gf == gc,
-                "corners": int(r["corners_local"] if es_local else r["corners_visitante"]) if "corners_local" in r.index and str(r["corners_local"]) != "nan" else 0,
-                "tarjetas": int(r["tarjetas_local"] if es_local else r["tarjetas_visitante"]) if "tarjetas_local" in r.index and str(r["tarjetas_local"]) != "nan" else 0,
-                "tiros_arco": int(r["tiros_arco_local"] if es_local else r["tiros_arco_visitante"]) if "tiros_arco_local" in r.index and str(r["tiros_arco_local"]) != "nan" else 0,
-                "tiros_total": int(r["tiros_total_local"] if es_local else r["tiros_total_visitante"]) if "tiros_total_local" in r.index and str(r["tiros_total_local"]) != "nan" else 0,
+                "corners": int(_corners_val) if pd.notna(_corners_val) else None,
+                "tarjetas": int(_tarjetas_val) if pd.notna(_tarjetas_val) else None,
+                "tiros_arco": int(_tiros_arco_val) if pd.notna(_tiros_arco_val) else None,
+                "tiros_total": int(_tiros_total_val) if pd.notna(_tiros_total_val) else None,
                 "goles_favor_1t": int(r["goles_local_1t"] if es_local else r["goles_visitante_1t"]) if "goles_local_1t" in r.index and str(r["goles_local_1t"]) not in ["nan","None"] else None,
                 "goles_contra_1t": int(r["goles_visitante_1t"] if es_local else r["goles_local_1t"]) if "goles_visitante_1t" in r.index and str(r["goles_visitante_1t"]) not in ["nan","None"] else None,
                 "goles_favor_2t": int(r["goles_local_2t"] if es_local else r["goles_visitante_2t"]) if "goles_local_2t" in r.index and str(r["goles_local_2t"]) not in ["nan","None"] else None,
