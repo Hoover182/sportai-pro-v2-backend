@@ -5,6 +5,7 @@ CSV_FUTBOL = "futbol_partidos.csv"
 LIGAS_VALIDAS = [
     "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
     "Primeira Liga", "Eredivisie", "Pro League Belgica", "Super Lig Turquia",
+    "Serie B Italia", "Serie B Brasil",
     "Champions League", "Europa League", "Conference League",
     "FA Cup", "Copa del Rey", "Coppa Italia", "DFB Pokal", "Coupe de France",
     "Taça de Portugal", "KNVB Beker", "Copa Belgica", "Turkiye Kupasi",
