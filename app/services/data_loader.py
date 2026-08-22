@@ -12,6 +12,8 @@ LIGAS_VALIDAS = [
     "Champions League", "Europa League", "Conference League",
     "FA Cup", "Copa del Rey", "Coppa Italia", "DFB Pokal", "Coupe de France",
     "Taça de Portugal", "KNVB Beker", "Copa Belgica", "Turkiye Kupasi",
+    "Community Shield", "Trophée des Champions",
+    "Super Cup Italia", "Super Cup Espana", "Super Cup Alemania",
     "Premier League Egipto", "Copa Egipto", "Pro League Arabia",
     "MLS", "Liga MX", "Liga Profesional Argentina", "Brasileirao",
     "Liga Colombia", "Primera Division Chile", "Primera Division Uruguay",
