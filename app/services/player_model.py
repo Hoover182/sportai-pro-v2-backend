@@ -271,6 +271,17 @@ def obtener_squad_equipo(team_id, liga_id, temporada, nombre_equipo=None):
 
 
 def _procesar_jugador(p, nombre_equipo):
+    """Despacha segun el formato de origen: la API cruda de /players?...
+    (dict con "player"/"statistics", usada por el fallback en vivo) o el
+    formato ya aplanado de jugadores_data/{equipo}.json que arma
+    descargar_jugadores_europa_5grandes.py (plantel real via /players/
+    squads + stats pre-promediadas, con tiene_datos_2025)."""
+    if "statistics" in p:
+        return _procesar_jugador_api_cruda(p, nombre_equipo)
+    return _procesar_jugador_precalculado(p, nombre_equipo)
+
+
+def _procesar_jugador_api_cruda(p, nombre_equipo):
     info = p.get("player", {})
     stats_list = p.get("statistics", [])
     if not stats_list:
@@ -331,6 +342,58 @@ def _procesar_jugador(p, nombre_equipo):
         "_tarjetas_media":    max(tarjetas_pg,    0.05),
         "_faltas_media":      max(faltas_pg,      0.3),
         "_fuera_juego_media": max(fuera_juego_pg, 0.05),
+    }
+
+
+def _procesar_jugador_precalculado(p, nombre_equipo):
+    """Formato de jugadores_data/{equipo}.json: plantel real actual +
+    stats de temporada ya promediadas por partido (ver
+    descargar_jugadores_europa_5grandes.py). tiene_datos_2025=False
+    significa que el jugador no tuvo ninguna stat esa temporada (debut,
+    cantera) -- se excluye igual que un jugador sin minutos, no se
+    inventa un promedio en 0."""
+    if not p.get("tiene_datos_2025"):
+        return None
+
+    pos = p.get("posicion") or ""
+    tipo_pos = clasificar_posicion(pos)
+    if tipo_pos in ["portero", "otro"]:
+        return None
+
+    minutos = p.get("minutos") or 0
+    if minutos < MINUTOS_MIN_TEMPORADA:
+        return None
+
+    goles_pg       = p.get("goles_pg") or 0
+    asist_pg       = p.get("asist_pg") or 0
+    tarjetas_pg    = p.get("tarjetas_pg") or 0
+    faltas_pg      = p.get("faltas_pg") or 0
+    tiros_total_pg = p.get("tiros_total_pg") or 0
+    tiros_arco_pg  = p.get("tiros_arco_pg") or 0
+
+    return {
+        "nombre":        p.get("nombre", "Desconocido"),
+        "equipo":        nombre_equipo,
+        "posicion":      pos,
+        "posicion_tipo": tipo_pos,
+        "minutos":       minutos,
+        "partidos":      p.get("partidos") or 1,
+        "goles_pg":      p.get("goles_pg"),
+        "asist_pg":      p.get("asist_pg"),
+        "tarjetas_pg":   p.get("tarjetas_pg"),
+        "faltas_pg":     p.get("faltas_pg"),
+        "_score_ataque":   goles_pg + asist_pg,
+        "_score_defensa":  tarjetas_pg + faltas_pg,
+        "_goles_media": max(goles_pg, 0.05),
+        "_tiros_arco_media":  max(tiros_arco_pg,  0.1),
+        "_tiros_total_media": max(tiros_total_pg, 0.2),
+        "_asist_media":       max(asist_pg,       0.05),
+        "_tarjetas_media":    max(tarjetas_pg,    0.05),
+        "_faltas_media":      max(faltas_pg,      0.3),
+        # El formato nuevo no captura offsides -- ver
+        # descargar_jugadores_europa_5grandes.py. Piso de seguridad en vez
+        # de inventar un promedio real hasta que se agregue esa stat.
+        "_fuera_juego_media": 0.05,
     }
 
 
