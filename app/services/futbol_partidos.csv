@@ -11982,6 +11982,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-07-25T20:00:00,1391878.0,FT,Primera Division Peru,Sport Huancayo,Juan Pablo II College,5,1,8.0,7.0,2.0,1.0,10.0,3.0,25.0,11.0,,,,,,,0.0,1.0,4.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-07-25T22:00:00,1405665.0,FT,Copa de la División Profesional,Real Oruro,Always Ready,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-07-25T22:00:00,1374104.0,FT,Liga Profesional Argentina,Sarmiento Junin,Lanus,0,2,8.0,8.0,3.0,2.0,6.0,3.0,14.0,7.0,,,,,,,0.0,0.0,13.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
+2025-07-25T22:00:00,1385583.0,FT,Primera B Metropolitana,Excursionistas,Midland,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,0.0,3.0,2.0,2.0,,,,,Julián Jerez
 2025-07-25T23:00:00,1339139.0,FT,Primera Division Chile,Deportes Limache,Nublense,0,1,4.0,6.0,3.0,4.0,2.0,5.0,15.0,18.0,,,,,,,0.0,0.0,15.0,15.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-07-25T23:20:00,1392374.0,FT,Liga Colombia,Deportes Tolima,Deportivo Pereira,1,0,9.0,0.0,3.0,2.0,5.0,0.0,17.0,5.0,,,,,,,1.0,2.0,4.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-07-25T23:30:00,1326565.0,FT,MLS,New England Revolution,CF Montreal,1,3,3.0,3.0,5.0,2.0,4.0,5.0,19.0,11.0,,,,,,,0.0,0.0,10.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -12154,6 +12155,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-08-08T22:00:00,1412424.0,FT,Primera Division Uruguay,Atletico Torque,Boston River,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-09T00:00:00,1338483.0,FT,Liga Pro Ecuador,Orense SC,Universidad Catolica,1,1,4.0,5.0,2.0,5.0,2.0,4.0,6.0,12.0,,,,,,,1.0,0.0,12.0,16.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-09T00:00:00,1374108.0,FT,Liga Profesional Argentina,Newells Old Boys,Central Cordoba de Santiago,1,1,2.0,10.0,2.0,0.0,3.0,5.0,9.0,13.0,,,,,,,1.0,0.0,7.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
+2025-08-09T00:10:00,1385598.0,FT,Primera B Metropolitana,Midland,Sportivo Italiano,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,2.0,0.0,0.0,0.0,2.0,3.0,1.0,,,,,Gabriel Andrés Gutiérrez
 2025-08-09T00:15:00,1374117.0,FT,Liga Profesional Argentina,Lanus,Talleres Cordoba,1,0,1.0,7.0,2.0,2.0,6.0,1.0,15.0,9.0,,,,,,,0.0,0.0,7.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-09T00:30:00,1392397.0,FT,Liga Colombia,Millonarios,Deportivo Cali,3,3,7.0,4.0,2.0,3.0,11.0,5.0,20.0,10.0,,,,,,,0.0,0.0,14.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-09T03:00:00,1379507.0,FT,Liga MX,Tigres UANL,Puebla,7,0,3.0,4.0,1.0,3.0,8.0,1.0,14.0,9.0,,,,,,,0.0,1.0,9.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -12321,6 +12323,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-08-17T18:00:00,1380884.0,FT,Eredivisie,NAC Breda,Fortuna Sittard,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-17T18:00:00,1338494.0,FT,Liga Pro Ecuador,LDU de Quito,Manta FC,1,1,10.0,3.0,1.0,4.0,9.0,4.0,21.0,7.0,,,,,,,0.0,0.0,11.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-17T18:00:00,1429257.0,FT,Primera Division Uruguay,Racing Montevideo,Defensor Sporting,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-08-17T18:30:00,1385613.0,FT,Primera B Metropolitana,UAI Urquiza,Midland,0,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,1.0,0.0,2.0,1.0,2.0,,,,,Ignacio Agustin Cuicchi
 2025-08-17T18:30:00,1394444.0,FT,Super Lig Turquia,Beşiktaş,Eyüpspor,2,1,10.0,3.0,2.0,2.0,9.0,4.0,18.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-17T18:30:00,1394443.0,FT,Super Lig Turquia,Başakşehir,Kayserispor,1,1,5.0,7.0,1.0,1.0,4.0,3.0,13.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-17T18:45:00,1387704.0,FT,Ligue 1,Nantes,Paris Saint Germain,0,1,2.0,7.0,1.0,1.0,0.0,4.0,5.0,18.0,,,,,,,0.0,0.0,6.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -12421,6 +12424,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-08-23T21:30:00,1396866.0,FT,Division Profesional - Clausura,Sportivo Luqueno,Deportivo Recoleta,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-23T21:30:00,1338504.0,FT,Liga Pro Ecuador,Manta FC,Deportivo Cuenca,0,1,5.0,6.0,1.0,3.0,6.0,4.0,18.0,14.0,,,,,,,0.0,0.0,10.0,7.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-23T21:30:00,1339172.0,FT,Primera División,A. Italiano,Coquimbo Unido,0,1,0.0,10.0,3.0,0.0,2.0,3.0,6.0,13.0,,,,,,,0.0,0.0,7.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
+2025-08-23T21:40:00,1385620.0,FT,Primera B Metropolitana,Midland,Real Pilar,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,1.0,1.0,1.0,0.0,5.0,,,,,Gastón Iglesias
 2025-08-23T23:00:00,1379529.0,FT,Liga MX,Leon,CF Pachuca,1,1,2.0,4.0,5.0,1.0,4.0,7.0,9.0,25.0,,,,,,,1.0,0.0,14.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-23T23:00:00,1374146.0,FT,Liga Profesional Argentina,Atletico Tucuman,Talleres Cordoba,3,0,1.0,7.0,2.0,4.0,6.0,5.0,11.0,16.0,,,,,,,1.0,1.0,14.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-23T23:00:00,1415247.0,FT,Primera Division Peru,Deportivo Garcilaso,Sport Huancayo,1,1,5.0,1.0,1.0,3.0,4.0,6.0,12.0,22.0,,,,,,,0.0,0.0,13.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -12549,6 +12553,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-08-30T17:30:00,1390844.0,FT,La Liga,Girona,Sevilla,0,2,11.0,3.0,0.0,1.0,5.0,4.0,20.0,13.0,,,,,,,0.0,0.0,5.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-30T17:45:00,1374167.0,FT,Liga Profesional Argentina,San Lorenzo,Huracan,0,0,1.0,1.0,4.0,2.0,3.0,2.0,10.0,9.0,,,,,,,0.0,1.0,16.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-30T18:00:00,1418804.0,FT,Premier League Egipto,Ismaily SC,Ghazl El Mehalla,0,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-08-30T18:30:00,1385626.0,FT,Primera B Metropolitana,Villa San Carlos,Midland,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,0.0,2.0,1.0,3.0,,,,,Julián Jerez
 2025-08-30T18:30:00,1394463.0,FT,Super Lig Turquia,Galatasaray,Rizespor,3,1,5.0,2.0,1.0,4.0,7.0,4.0,16.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-30T18:30:00,1394461.0,FT,Super Lig Turquia,Antalyaspor,Fatih Karagümrük,1,2,7.0,4.0,0.0,2.0,6.0,6.0,9.0,17.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-08-30T18:45:00,1377882.0,FT,Serie A,Pisa,AS Roma,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -12695,6 +12700,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-09-07T21:10:00,1392443.0,FT,Liga Colombia,America de Cali,Deportivo Cali,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-08T01:30:00,1392445.0,FT,Liga Colombia,Fortaleza FC,Internacional de Bogota,1,0,4.0,3.0,2.0,5.0,9.0,1.0,19.0,6.0,,,,,,,0.0,0.0,18.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-08T21:30:00,1396880.0,FT,Division Profesional - Clausura,Sportivo Trinidense,Sportivo Ameliano,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-09-08T23:00:00,1385643.0,FT,Primera B Metropolitana,Midland,Dock Sud,3,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2.0,1.0,0.0,0.0,3.0,0.0,4.0,1.0,,,,,Marcos Iván Recalde
 2025-09-09T00:10:00,1429528.0,FT,Copa Argentina,Argentinos JRS,Lanus,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-10T01:30:00,1438674.0,FT,Copa Colombia,Santa Fe,Alianza Valledupar,4,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-10T01:30:00,1392364.0,FT,Liga Colombia,Bucaramanga,Once Caldas,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -12839,6 +12845,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-09-15T19:00:00,1390853.0,FT,La Liga,Espanyol,Mallorca,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-15T23:00:00,1351270.0,FT,Brasileirao,Bahia,Cruzeiro,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-16T00:00:00,1338515.0,FT,Liga Pro Ecuador,Manta FC,Aucas,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-09-16T00:10:00,1385654.0,FT,Primera B Metropolitana,Deportivo Merlo,Midland,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,,,,,Nicolás Agustín Mastroieni
 2025-09-16T10:30:00,1468311.0,FT,Turkiye Kupasi,Ağrı 1970,Batman Petrolspor,4,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-16T11:30:00,1467100.0,FT,Turkiye Kupasi,Kahta 02 Spor,Adana Demirspor,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-16T11:30:00,1467099.0,FT,Turkiye Kupasi,Karaköprü Belediyespor,Bitlis Özgüzelderespor,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -13006,6 +13013,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-09-21T18:45:00,1377897.0,FT,Serie A,Inter,Sassuolo,2,1,7.0,3.0,2.0,1.0,6.0,5.0,20.0,9.0,,,,,,,0.0,0.0,15.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-21T19:00:00,1390860.0,FT,La Liga,Barcelona,Getafe,3,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-21T19:00:00,1392462.0,FT,Liga Colombia,Millonarios,Fortaleza FC,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-09-21T19:00:00,1385662.0,FT,Primera B Metropolitana,Midland,Sacachispas,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,2.0,0.0,1.0,0.0,1.0,2.0,4.0,,,,,Sebastián Bresba
 2025-09-21T19:00:00,1469021.0,FT,Primera Division Bolivia,Guabirá,The Strongest,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-21T19:30:00,1396890.0,FT,Division Profesional - Clausura,Club Guarani,Nacional Asuncion,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-21T19:30:00,1396283.0,FT,Primeira Liga,Casa Pia,Famalicao,1,1,5.0,3.0,1.0,2.0,3.0,2.0,10.0,11.0,,,,,,,0.0,0.0,18.0,21.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -13220,6 +13228,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-09-29T21:30:00,1469038.0,FT,Primera Division Bolivia,Always Ready,Real Oruro,4,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-29T23:00:00,1374208.0,FT,Liga Profesional Argentina,Velez Sarsfield,Atletico Tucuman,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-30T00:00:00,1469039.0,FT,Primera Division Bolivia,Guabirá,ABB,5,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-09-30T00:10:00,1385667.0,FT,Primera B Metropolitana,San Martín Burzaco,Midland,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,2.0,3.0,1.0,1.0,,,,,
 2025-09-30T22:00:00,1374203.0,FT,Liga Profesional Argentina,Newells Old Boys,Estudiantes L.P.,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-30T23:00:00,1472353.0,FT,Copa de la División Profesional,Independiente Petrolero,Real Tomayapo,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-09-30T23:30:00,1326621.0,FT,MLS,Inter Miami,Chicago Fire,3,5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -13373,6 +13382,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-10-06T22:00:00,1374222.0,FT,Liga Profesional Argentina,Deportivo Riestra,Velez Sarsfield,2,2,2.0,5.0,4.0,6.0,4.0,1.0,10.0,7.0,,,,,,,0.0,1.0,21.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-06T22:00:00,1479339.0,FT,Primera Division Uruguay,Defensor Sporting,Wanderers,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-07T00:00:00,1472361.0,FT,Copa de la División Profesional,The Strongest,Gualberto Villarroel SJ,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-10-07T00:10:00,1385683.0,FT,Primera B Metropolitana,Midland,Deportivo Armenio,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,1.0,2.0,0.0,2.0,,,,,
 2025-10-07T00:30:00,1392484.0,FT,Liga Colombia,Internacional de Bogota,Once Caldas,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-07T20:00:00,1475955.0,FT,Copa Colombia,Envigado,Deportivo Pereira,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-07T22:10:00,1470104.0,FT,Primera B Colombia,Real Cundinamarca,Orsomarso,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -13405,6 +13415,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-10-12T02:30:00,1326632.0,FT,MLS,Los Angeles Galaxy,FC Dallas,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-12T03:00:00,1482652.0,FT,Friendlies Clubs,Club America,Guadalajara Chivas,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-12T13:30:00,1479345.0,FT,Primera Division Uruguay,Atletico Torque,Wanderers,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-10-12T18:30:00,1385687.0,FT,Primera B Metropolitana,Comunicaciones,Midland,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,2.0,0.0,1.0,3.0,,,,,
 2025-10-12T19:00:00,1472467.0,FT,Copa de la División Profesional,Oriente Petrolero,Gualberto Villarroel SJ,4,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-12T19:00:00,1479446.0,FT,Primera B Colombia,Bogota FC,Real Cundinamarca,0,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,2.0,0.0,1.0,1.0,3.0,,,,,
 2025-10-12T19:00:00,1479347.0,FT,Primera Division Uruguay,Danubio,Club Nacional,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -13486,6 +13497,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-10-18T18:45:00,1377932.0,FT,Serie A,AS Roma,Inter,0,1,4.0,5.0,4.0,3.0,5.0,3.0,15.0,12.0,,,,,,,0.0,0.0,18.0,29.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-18T19:00:00,1390900.0,FT,La Liga,Atletico Madrid,Osasuna,1,0,4.0,2.0,1.0,3.0,9.0,2.0,18.0,9.0,,,,,,,0.0,0.0,10.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-18T19:00:00,1392498.0,FT,Liga Colombia,Deportivo Pasto,Atletico Nacional,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-10-18T19:00:00,1385695.0,FT,Primera B Metropolitana,Midland,Liniers,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,1.0,1.0,0.0,2.0,3.0,3.0,1.0,,,,,
 2025-10-18T19:05:00,1387764.0,FT,Ligue 1,Marseille,Le Havre,6,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-18T20:15:00,1479793.0,FT,Primera Division Peru,Comerciantes Unidos,Alianza Atletico,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-10-18T21:00:00,1374243.0,FT,Liga Profesional Argentina,Boca Juniors,Belgrano Cordoba,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -13824,6 +13836,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-11-01T19:00:00,1380958.0,FT,Eredivisie,Feyenoord,FC Volendam,3,1,10.0,1.0,0.0,0.0,9.0,1.0,37.0,9.0,,,,,,,0.0,0.0,4.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-01T19:00:00,1479599.0,FT,Liga Pro Ecuador,Tecnico Universitario,Mushuc Runa SC,0,0,8.0,6.0,2.0,3.0,1.0,1.0,13.0,9.0,,,,,,,0.0,0.0,16.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-01T19:00:00,1374262.0,FT,Liga Profesional Argentina,Barracas Central,Argentinos JRS,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-11-01T19:00:00,1387685.0,FT,Primera B Metropolitana,Deportivo Laferrere,Midland,1,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,0.0,2.0,2.0,2.0,1.0,0.0,1.0,,,,,
 2025-11-01T19:00:00,1482498.0,FT,Primera Division Bolivia,Real Oruro,Gualberto Villarroel SJ,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-01T19:30:00,1482526.0,FT,Primera Division Uruguay,Liverpool Montevideo,Juventud,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-01T19:45:00,1382523.0,FT,Pro League Belgica,Anderlecht,KV Mechelen,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -13965,6 +13978,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-11-08T17:00:00,1394532.0,FT,Super Lig Turquia,Antalyaspor,Beşiktaş,1,3,3.0,3.0,3.0,1.0,1.0,5.0,5.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-08T17:15:00,1382534.0,FT,Pro League Belgica,Charleroi,KVC Westerlo,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-08T18:00:00,1387798.0,FT,Ligue 1,Le Havre,Nantes,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-11-08T18:30:00,1387688.0,FT,Primera B Metropolitana,Midland,Fénix,4,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,4.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,
 2025-11-08T19:00:00,1485395.0,FT,Copa de la División Profesional,Always Ready,ABB,5,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-08T19:00:00,1380969.0,FT,Eredivisie,Fortuna Sittard,Heerenveen,2,0,4.0,5.0,2.0,1.0,5.0,8.0,10.0,18.0,,,,,,,0.0,0.0,14.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-08T19:00:00,1479601.0,FT,Liga Pro Ecuador,Manta FC,Mushuc Runa SC,3,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -14076,6 +14090,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-11-14T23:00:00,1374295.0,FT,Liga Profesional Argentina,Lanus,Atletico Tucuman,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-15T19:00:00,1485985.0,FT,Copa de la División Profesional,Oriente Petrolero,Nacional Potosí,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-15T20:00:00,1374296.0,FT,Liga Profesional Argentina,Godoy Cruz,Deportivo Riestra,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2025-11-15T20:00:00,1387690.0,FT,Primera B Metropolitana,Flandria,Midland,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,1.0,3.0,2.0,1.0,,,,,
 2025-11-15T21:10:00,1485589.0,FT,Primera B,Jaguares,Cucuta,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-15T22:00:00,1485986.0,FT,Copa de la División Profesional,Always Ready,San Antonio Bulo Bulo,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-11-15T22:30:00,1374298.0,FT,Liga Profesional Argentina,San Lorenzo,Sarmiento Junin,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -14653,7 +14668,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2025-12-21T14:30:00,1388439.0,FT,Bundesliga,FSV Mainz 05,FC St. Pauli,0,0,9.0,5.0,1.0,1.0,1.0,1.0,13.0,5.0,,,,,,,0.0,0.0,5.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-12-21T15:15:00,1390988.0,FT,La Liga,Villarreal,Barcelona,0,2,5.0,10.0,1.0,1.0,5.0,5.0,14.0,19.0,,,,,,,1.0,0.0,10.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-12-21T15:30:00,1396363.0,FT,Primeira Liga,AVS,Nacional,2,2,9.0,2.0,1.0,0.0,3.0,6.0,16.0,19.0,,,,,,,1.0,0.0,10.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
-2025-12-21T16:30:00,1388438.0,FT,Bundesliga,1. FC Heidenheim,Bayern München,0,4,0.0,6.0,0.0,0.0,1.0,11.0,7.0,23.0,,,,,,,0.0,0.0,8.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
+2025-12-21T16:30:00,1388438.0,FT,Bundesliga,FC Heidenheim,Bayern München,0,4,0.0,6.0,0.0,0.0,1.0,11.0,7.0,23.0,,,,,,,0.0,0.0,8.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-12-21T16:30:00,1379129.0,FT,Premier League,Aston Villa,Manchester United,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2025-12-21T17:00:00,1378016.0,FT,Serie A,Fiorentina,Udinese,5,1,1.0,4.0,3.0,1.0,7.0,4.0,20.0,11.0,,,,,,,0.0,1.0,10.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2025-12-21T17:00:00,1394581.0,FT,Super Lig Turquia,Galatasaray,Kasımpaşa,3,0,10.0,1.0,2.0,1.0,7.0,0.0,27.0,1.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15477,6 +15492,10 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-09T22:15:00,1491867.0,FT,Liga Profesional Argentina,Estudiantes L.P.,Deportivo Riestra,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-09T23:00:00,1505362.0,FT,Primera Division Chile,Union La Calera,Cobresal,3,1,3.0,6.0,2.0,3.0,5.0,1.0,14.0,9.0,,,,,,,0.0,0.0,16.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-09T23:00:00,1515123.0,FT,Primera Division Uruguay,Cerro,Danubio,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-10T18:00:00,1419821.0,FT,Serie B Italia,Sampdoria,Palermo,3,3,3.0,4.0,3.0,4.0,5.0,3.0,13.0,15.0,,,,,,,0.0,0.0,12.0,21.0,,,47.0,53.0,,,,,,,0.0,3.0,1.0,2.0,0.0,3.0,2.0,2.0,,,,,D. Di Marco
+2026-02-10T19:00:00,1419825.0,FT,Serie B Italia,Padova,Carrarese,1,0,3.0,8.0,2.0,3.0,2.0,1.0,13.0,22.0,,,,,,,0.0,0.0,18.0,10.0,,,36.0,64.0,,,,,,,1.0,0.0,0.0,0.0,0.0,2.0,1.0,2.0,,,,,N. Turrini
+2026-02-10T19:00:00,1419828.0,FT,Serie B Italia,Virtus Entella,Cesena,3,1,5.0,5.0,2.0,3.0,5.0,2.0,11.0,17.0,,,,,,,0.0,0.0,12.0,13.0,,,34.0,66.0,,,,,,,1.0,2.0,0.0,1.0,0.0,2.0,1.0,2.0,,,,,L. Massimi
+2026-02-10T19:00:00,1419830.0,FT,Serie B Italia,Reggiana,Mantova,1,0,5.0,3.0,4.0,3.0,3.0,1.0,11.0,11.0,,,,,,,0.0,0.0,16.0,12.0,,,30.0,70.0,,,,,,,1.0,0.0,0.0,0.0,2.0,2.0,0.0,3.0,,,,,C. G. Allegretta
 2026-02-10T19:30:00,1379221.0,FT,Premier League,Chelsea,Leeds,2,2,4.0,1.0,4.0,4.0,4.0,2.0,19.0,4.0,,,,,,,0.0,0.0,9.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-10T19:30:00,1379227.0,FT,Premier League,Tottenham,Newcastle,1,2,2.0,12.0,3.0,2.0,2.0,5.0,16.0,21.0,,,,,,,0.0,0.0,15.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-10T19:30:00,1379223.0,FT,Premier League,Everton,Bournemouth,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15554,6 +15573,9 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-14T13:00:00,1391050.0,FT,La Liga,Espanyol,Celta Vigo,2,2,2.0,2.0,1.0,0.0,3.0,5.0,9.0,14.0,,,,,,,0.0,0.0,9.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T13:00:00,1389321.0,FT,Ligue 2,Montpellier,Le Mans,4,2,4.0,6.0,0.0,2.0,4.0,8.0,7.0,13.0,,,,,,,0.0,0.0,8.0,15.0,,,46.0,54.0,,,,,,,1.0,3.0,1.0,1.0,0.0,0.0,0.0,2.0,,,,,A. Souifi
 2026-02-14T14:00:00,1378105.0,FT,Serie A,Como,Fiorentina,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-14T14:00:00,1419837.0,FT,Serie B Italia,Modena,Carrarese,2,0,6.0,5.0,5.0,4.0,6.0,4.0,13.0,13.0,,,,,,,0.0,0.0,16.0,13.0,,,50.0,50.0,,,,,,,1.0,1.0,0.0,0.0,1.0,4.0,0.0,4.0,,,,,M. Perri
+2026-02-14T14:00:00,1419833.0,FT,Serie B Italia,Sampdoria,Padova,1,0,5.0,1.0,2.0,1.0,3.0,1.0,12.0,4.0,,,,,,,0.0,0.0,12.0,20.0,,,51.0,49.0,,,,,,,1.0,0.0,0.0,0.0,2.0,0.0,1.0,0.0,,,,,L. Zufferli
+2026-02-14T14:00:00,1419834.0,FT,Serie B Italia,Palermo,Virtus Entella,3,0,3.0,8.0,,,3.0,5.0,7.0,21.0,,,,,,,0.0,0.0,10.0,12.0,,,46.0,54.0,,,,,,,2.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,I. Pezzuto
 2026-02-14T14:00:00,1394622.0,FT,Super Lig Turquia,Alanyaspor,Konyaspor,2,1,4.0,3.0,2.0,4.0,6.0,2.0,19.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T14:30:00,1388502.0,FT,Bundesliga,1899 Hoffenheim,SC Freiburg,3,0,6.0,6.0,3.0,1.0,7.0,3.0,25.0,13.0,,,,,,,0.0,0.0,8.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T14:30:00,1388500.0,FT,Bundesliga,Eintracht Frankfurt,Borussia Mönchengladbach,3,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15563,6 +15585,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-14T15:15:00,1391051.0,FT,La Liga,Getafe,Villarreal,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T15:30:00,1396427.0,FT,Primeira Liga,Casa Pia,Arouca,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T16:00:00,1387891.0,FT,Ligue 1,Marseille,Strasbourg,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-14T16:15:00,1419832.0,FT,Serie B Italia,Catanzaro,Mantova,2,0,2.0,11.0,0.0,1.0,3.0,3.0,4.0,19.0,,,,,,,0.0,0.0,17.0,18.0,,,43.0,57.0,,,,,,,2.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,,,,,A. Zanotti
 2026-02-14T17:00:00,1378108.0,FT,Serie A,Lazio,Atalanta,0,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T17:00:00,1394630.0,FT,Super Lig Turquia,Trabzonspor,Fenerbahçe,2,3,7.0,7.0,4.0,5.0,8.0,3.0,17.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T17:30:00,1391058.0,FT,La Liga,Sevilla,Alaves,1,1,0.0,3.0,5.0,0.0,2.0,1.0,4.0,12.0,,,,,,,2.0,0.0,16.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15570,6 +15593,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-14T18:00:00,1522713.0,FT,Friendlies Clubs,Chicago Fire,Portland Timbers,3,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T18:00:00,1387888.0,FT,Ligue 1,Lille,Stade Brestois 29,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T18:00:00,1512501.0,FT,Primera Division Peru,Deportivo Garcilaso,ADT,1,0,5.0,4.0,5.0,2.0,3.0,1.0,10.0,7.0,,,,,,,0.0,1.0,16.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-14T18:30:00,1419836.0,FT,Serie B Italia,Cesena,Venezia,0,4,5.0,5.0,3.0,1.0,4.0,7.0,11.0,14.0,,,,,,,0.0,0.0,11.0,14.0,,,33.0,67.0,,,,,,,0.0,0.0,2.0,2.0,1.0,2.0,0.0,1.0,,,,,S. Galipo
 2026-02-14T19:45:00,1378107.0,FT,Serie A,Inter,Juventus,3,2,4.0,1.0,4.0,2.0,9.0,8.0,21.0,10.0,,,,,,,0.0,1.0,15.0,7.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T20:00:00,1381069.0,FT,Eredivisie,Groningen,Utrecht,1,2,2.0,8.0,0.0,1.0,2.0,7.0,11.0,15.0,,,,,,,0.0,0.0,12.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-14T20:00:00,1506258.0,FT,FA Cup,Liverpool,Brighton,3,0,5.0,6.0,0.0,4.0,5.0,3.0,13.0,17.0,,,,,,,0.0,0.0,15.0,19.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15611,6 +15635,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-15T17:30:00,1382624.0,FT,Pro League Belgica,Anderlecht,RAAL La Louvière,0,0,8.0,4.0,1.0,5.0,5.0,0.0,19.0,7.0,,,,,,,0.0,0.0,15.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-15T18:00:00,1396426.0,FT,Primeira Liga,AVS,Estoril,3,0,9.0,9.0,2.0,2.0,3.0,2.0,15.0,12.0,,,,,,,0.0,0.0,9.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-15T18:00:00,1512505.0,FT,Primera Division Peru,Sport Huancayo,FC Cajamarca,2,0,5.0,6.0,2.0,2.0,2.0,1.0,10.0,7.0,,,,,,,2.0,0.0,14.0,18.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-15T18:30:00,1419835.0,FT,Serie B Italia,Avellino,Pescara,0,1,6.0,4.0,4.0,4.0,2.0,3.0,11.0,16.0,,,,,,,0.0,0.0,17.0,18.0,,,60.0,40.0,,,,,,,0.0,0.0,0.0,1.0,4.0,0.0,1.0,3.0,,,,,A. Calzavara
 2026-02-15T19:45:00,1387890.0,FT,Ligue 1,Lyon,Nice,2,0,8.0,5.0,3.0,1.0,2.0,3.0,9.0,10.0,,,,,,,0.0,0.0,16.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-15T19:45:00,1378109.0,FT,Serie A,Napoli,AS Roma,2,2,2.0,1.0,1.0,1.0,7.0,2.0,11.0,9.0,,,,,,,0.0,0.0,14.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-15T20:00:00,1391054.0,FT,La Liga,Mallorca,Real Betis,1,2,7.0,3.0,4.0,3.0,3.0,8.0,14.0,17.0,,,,,,,0.0,0.0,16.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15634,6 +15659,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-16T17:00:00,1394628.0,FT,Super Lig Turquia,Kasımpaşa,Fatih Karagümrük,3,2,2.0,3.0,5.0,2.0,6.0,4.0,12.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-16T19:45:00,1396832.0,FT,Ligue 2,Bastia,Estac Troyes,0,0,5.0,2.0,2.0,3.0,5.0,0.0,16.0,3.0,,,,,,,0.0,0.0,11.0,21.0,,,49.0,51.0,,,,,,,0.0,0.0,0.0,0.0,1.0,1.0,1.0,2.0,,,,,R. Buquet
 2026-02-16T19:45:00,1378104.0,FT,Serie A,Cagliari,Lecce,0,2,8.0,2.0,0.0,0.0,0.0,4.0,11.0,13.0,,,,,,,0.0,0.0,16.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-16T20:00:00,1386927.0,FT,Championship,Coventry,Middlesbrough,3,1,3.0,2.0,3.0,2.0,4.0,4.0,9.0,17.0,,,,,,,0.0,0.0,17.0,13.0,,,29.0,71.0,,,,,,,1.0,2.0,0.0,1.0,1.0,2.0,1.0,1.0,,,,,T. Bramall
 2026-02-16T20:00:00,1391052.0,FT,La Liga,Girona,Barcelona,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-16T20:15:00,1396430.0,FT,Primeira Liga,Rio Ave,Moreirense,1,2,7.0,1.0,1.0,3.0,6.0,3.0,18.0,6.0,,,,,,,0.0,0.0,17.0,24.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-16T22:00:00,1491883.0,FT,Liga Profesional Argentina,Deportivo Riestra,Newells Old Boys,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15680,12 +15706,17 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-21T03:06:00,1492518.0,FT,Liga MX,Puebla,Club America,0,4,3.0,7.0,1.0,1.0,6.0,7.0,15.0,20.0,,,,,,,0.0,0.0,13.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T10:30:00,1394633.0,FT,Super Lig Turquia,Eyüpspor,Gençlerbirliği S.K.,1,0,3.0,4.0,1.0,2.0,7.0,4.0,10.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T12:00:00,1388814.0,FT,2. Bundesliga,SV Elversberg,Eintracht Braunschweig,3,1,4.0,0.0,1.0,1.0,4.0,4.0,12.0,7.0,,,,,,,0.0,0.0,7.0,12.0,,,59.0,41.0,,,,,,,2.0,1.0,1.0,0.0,0.0,1.0,0.0,1.0,,,,,F. Wagner
+2026-02-21T12:30:00,1386935.0,FT,Championship,West Brom,Coventry,0,2,3.0,2.0,0.0,3.0,1.0,3.0,11.0,10.0,,,,,,,0.0,0.0,10.0,7.0,,,55.0,45.0,,,,,,,0.0,0.0,2.0,0.0,0.0,0.0,3.0,0.0,,,,,J. Linington
 2026-02-21T13:00:00,1394295.0,FT,3. Liga,MSV Duisburg,FC Schweinfurt 05,3,1,7.0,0.0,1.0,5.0,6.0,3.0,14.0,10.0,,,,,,,0.0,0.0,8.0,13.0,,,45.0,55.0,,,,,,,3.0,0.0,0.0,1.0,0.0,1.0,2.0,3.0,,,,,L. Exuzidis
 2026-02-21T13:00:00,1394299.0,FT,3. Liga,SSV Jahn Regensburg,SV Wehen,2,1,8.0,3.0,3.0,1.0,12.0,2.0,23.0,7.0,,,,,,,0.0,0.0,14.0,17.0,,,50.0,50.0,,,,,,,1.0,1.0,0.0,1.0,0.0,3.0,1.0,0.0,,,,,F. Weller
 2026-02-21T13:00:00,1394293.0,FT,3. Liga,Alemannia Aachen,Verl,3,1,2.0,7.0,4.0,1.0,7.0,6.0,10.0,15.0,,,,,,,0.0,1.0,19.0,6.0,,,30.0,70.0,,,,,,,2.0,1.0,1.0,0.0,2.0,2.0,1.0,0.0,,,,,D. Aytekin
 2026-02-21T13:00:00,1389322.0,FT,Ligue 2,Estac Troyes,PAU,4,3,5.0,2.0,5.0,3.0,8.0,5.0,22.0,11.0,,,,,,,0.0,0.0,11.0,13.0,,,64.0,36.0,,,,,,,2.0,2.0,2.0,1.0,3.0,2.0,1.0,2.0,,,,,A. Perreau Niel
 2026-02-21T13:00:00,1394631.0,FT,Super Lig Turquia,Alanyaspor,Başakşehir,1,2,6.0,2.0,5.0,5.0,2.0,3.0,13.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T14:00:00,1378119.0,FT,Serie A,Juventus,Como,0,2,7.0,2.0,1.0,0.0,3.0,2.0,11.0,11.0,,,,,,,0.0,0.0,10.0,15.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-21T14:00:00,1419844.0,FT,Serie B Italia,Mantova,Sampdoria,2,1,6.0,5.0,2.0,2.0,5.0,3.0,11.0,13.0,,,,,,,0.0,0.0,15.0,21.0,,,49.0,51.0,,,,,,,0.0,2.0,1.0,0.0,0.0,2.0,1.0,1.0,,,,,K. Bonacina
+2026-02-21T14:00:00,1419841.0,FT,Serie B Italia,Padova,Bari,1,1,9.0,3.0,3.0,4.0,5.0,4.0,9.0,17.0,,,,,,,0.0,0.0,19.0,15.0,,,55.0,45.0,,,,,,,1.0,0.0,1.0,0.0,1.0,2.0,2.0,2.0,,,,,G. Collu
+2026-02-21T14:00:00,1419847.0,FT,Serie B Italia,Palermo,Sudtirol,3,0,5.0,3.0,0.0,2.0,8.0,3.0,14.0,14.0,,,,,,,0.0,0.0,15.0,11.0,,,41.0,59.0,,,,,,,2.0,1.0,0.0,0.0,0.0,0.0,0.0,2.0,,,,,V. Crezzini
+2026-02-21T14:00:00,1419846.0,FT,Serie B Italia,Virtus Entella,Catanzaro,1,3,5.0,3.0,2.0,1.0,3.0,5.0,16.0,12.0,,,,,,,0.0,0.0,20.0,9.0,,,53.0,47.0,,,,,,,0.0,1.0,1.0,2.0,0.0,2.0,1.0,0.0,,,,,D. Perenzoni
 2026-02-21T14:30:00,1388514.0,FT,Bundesliga,VfL Wolfsburg,FC Augsburg,2,3,4.0,10.0,3.0,4.0,4.0,6.0,10.0,15.0,,,,,,,0.0,0.0,10.0,16.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T14:30:00,1388513.0,FT,Bundesliga,Union Berlin,Bayer Leverkusen,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T14:30:00,1388506.0,FT,Bundesliga,Bayern München,Eintracht Frankfurt,3,2,8.0,2.0,0.0,3.0,11.0,3.0,24.0,9.0,,,,,,,0.0,0.0,9.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15694,6 +15725,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-21T15:15:00,1391063.0,FT,La Liga,Real Betis,Rayo Vallecano,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T15:30:00,1396436.0,FT,Primeira Liga,Arouca,Nacional,3,0,4.0,1.0,5.0,3.0,7.0,5.0,10.0,15.0,,,,,,,1.0,1.0,13.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T16:00:00,1387899.0,FT,Ligue 1,Lens,Monaco,2,3,7.0,2.0,2.0,2.0,7.0,5.0,18.0,10.0,,,,,,,0.0,0.0,13.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-21T16:15:00,1419850.0,FT,Serie B Italia,Cesena,Spezia,2,3,7.0,0.0,1.0,2.0,8.0,6.0,22.0,9.0,,,,,,,0.0,0.0,11.0,15.0,,,52.0,48.0,,,,,,,1.0,1.0,1.0,2.0,1.0,0.0,1.0,1.0,,,,,D. Di Marco
 2026-02-21T17:00:00,1394638.0,FT,Super Lig Turquia,Konyaspor,Galatasaray,2,0,3.0,4.0,4.0,2.0,2.0,2.0,9.0,6.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T17:15:00,1382626.0,FT,Pro League Belgica,Club Brugge KV,OH Leuven,2,1,12.0,4.0,0.0,1.0,10.0,3.0,22.0,12.0,,,,,,,0.0,0.0,8.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T17:30:00,1388511.0,FT,Bundesliga,RB Leipzig,Borussia Dortmund,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15702,6 +15734,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-21T18:00:00,1396443.0,FT,Primeira Liga,Moreirense,Sporting CP,0,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T18:00:00,1396437.0,FT,Primeira Liga,Benfica,AVS,3,0,10.0,1.0,0.0,0.0,9.0,0.0,22.0,3.0,,,,,,,0.0,0.0,7.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T18:00:00,1512511.0,FT,Primera Division Peru,FC Cajamarca,FBC Melgar,3,1,5.0,7.0,2.0,2.0,6.0,3.0,12.0,9.0,,,,,,,0.0,0.0,11.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-21T18:30:00,1419845.0,FT,Serie B Italia,Carrarese,Monza,0,1,4.0,7.0,1.0,1.0,4.0,2.0,10.0,9.0,,,,,,,0.0,0.0,14.0,17.0,,,45.0,55.0,,,,,,,0.0,0.0,0.0,1.0,0.0,1.0,1.0,0.0,,,,,R. Abisso
 2026-02-21T19:00:00,1529378.0,FT,Friendlies Clubs,ABB,Real Oruro,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T19:00:00,1505999.0,FT,Liga Colombia,Once Caldas,Fortaleza FC,4,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-21T19:00:00,1519256.0,FT,Liga Pro Ecuador,Aucas,Mushuc Runa SC,1,1,7.0,5.0,4.0,2.0,3.0,5.0,7.0,15.0,,,,,,,2.0,0.0,14.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15747,6 +15780,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-22T14:00:00,1379235.0,FT,Premier League,Nottingham Forest,Liverpool,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T14:00:00,1398167.0,FT,Segunda Liga,Chaves,Farense,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T14:00:00,1378114.0,FT,Serie A,Atalanta,Napoli,2,1,6.0,1.0,1.0,1.0,7.0,4.0,10.0,10.0,,,,,,,0.0,0.0,10.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-22T14:00:00,1419849.0,FT,Serie B Italia,Juve Stabia,Modena,1,2,19.0,3.0,4.0,4.0,4.0,4.0,23.0,9.0,,,,,,,0.0,1.0,17.0,21.0,,,65.0,35.0,,,,,,,0.0,1.0,2.0,0.0,0.0,4.0,2.0,2.0,,,,,G. Ayroldi
 2026-02-22T14:30:00,1388508.0,FT,Bundesliga,SC Freiburg,Borussia Mönchengladbach,2,1,3.0,3.0,1.0,2.0,6.0,2.0,10.0,12.0,,,,,,,0.0,0.0,9.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T15:00:00,1505374.0,FT,Primera División,D. La Serena,Universidad de Concepcion,1,1,5.0,4.0,1.0,2.0,7.0,4.0,14.0,10.0,,,,,,,0.0,0.0,15.0,15.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T15:30:00,1394294.0,FT,3. Liga,Erzgebirge Aue,Energie Cottbus,1,2,,,1.0,0.0,,,,,,,,,,,0.0,0.0,,,,,,,,,,,,,1.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,,,,,L. Benen
@@ -15754,6 +15788,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-22T16:15:00,1387901.0,FT,Ligue 1,Nice,Lorient,3,3,3.0,7.0,2.0,3.0,4.0,5.0,8.0,17.0,,,,,,,0.0,0.0,15.0,4.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T16:15:00,1387896.0,FT,Ligue 1,Angers,Lille,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T16:15:00,1387900.0,FT,Ligue 1,Nantes,Le Havre,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-22T16:15:00,1419848.0,FT,Serie B Italia,Reggiana,Avellino,1,1,1.0,8.0,2.0,1.0,3.0,2.0,9.0,7.0,,,,,,,0.0,0.0,10.0,15.0,,,47.0,53.0,,,,,,,1.0,0.0,1.0,0.0,1.0,1.0,1.0,0.0,,,,,P. Tremolada
 2026-02-22T16:30:00,1388512.0,FT,Bundesliga,FC St. Pauli,Werder Bremen,2,1,1.0,5.0,2.0,6.0,4.0,4.0,4.0,13.0,,,,,,,0.0,0.0,6.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T16:30:00,1379237.0,FT,Premier League,Tottenham,Arsenal,1,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-22T17:00:00,1378121.0,FT,Serie A,AC Milan,Parma,0,1,5.0,2.0,2.0,1.0,6.0,3.0,25.0,9.0,,,,,,,0.0,0.0,13.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15802,6 +15837,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-25T19:30:00,1418935.0,FT,Premier League Egipto,National Bank of Egypt,Pharco,1,0,3.0,6.0,1.0,2.0,3.0,2.0,16.0,8.0,,,,,,,0.0,0.0,9.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-25T19:30:00,1418936.0,FT,Premier League Egipto,AL Masry,Future FC,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-25T19:30:00,1418934.0,FT,Premier League Egipto,Petrojet,Al Ittihad,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-25T19:45:00,1386958.0,FT,Championship,Sheffield Utd,Coventry,1,2,7.0,3.0,3.0,2.0,4.0,5.0,22.0,11.0,,,,,,,0.0,0.0,12.0,14.0,,,63.0,37.0,,,,,,,0.0,1.0,0.0,2.0,1.0,2.0,1.0,1.0,,,,,J. Busby
 2026-02-25T20:00:00,1515528.0,FT,Champions League,Paris Saint Germain,Monaco,2,2,8.0,4.0,1.0,5.0,6.0,4.0,21.0,10.0,,,,,,,0.0,1.0,8.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-25T20:00:00,1491909.0,FT,Liga Profesional Argentina,Barracas Central,Tigre,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-25T20:00:00,1491913.0,FT,Liga Profesional Argentina,Gimnasia L.P.,Rosario Central,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15828,6 +15864,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-27T17:00:00,1394648.0,FT,Super Lig Turquia,Trabzonspor,Fatih Karagümrük,3,1,5.0,4.0,1.0,1.0,6.0,4.0,13.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-27T17:30:00,1388823.0,FT,2. Bundesliga,Fortuna Düsseldorf,VfL Bochum,2,1,10.0,3.0,1.0,1.0,9.0,3.0,20.0,10.0,,,,,,,0.0,0.0,10.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-27T18:00:00,1394307.0,FT,3. Liga,Hoffenheim II,TSV 1860 München,1,2,6.0,2.0,4.0,3.0,4.0,5.0,10.0,8.0,,,,,,,1.0,0.0,8.0,19.0,,,58.0,42.0,,,,,,,1.0,0.0,1.0,1.0,2.0,2.0,0.0,3.0,,,,,J. Besong
+2026-02-27T18:00:00,1419852.0,FT,Serie B Italia,Monza,Virtus Entella,2,0,1.0,2.0,2.0,0.0,7.0,3.0,21.0,8.0,,,,,,,0.0,0.0,12.0,14.0,,,61.0,39.0,,,,,,,0.0,2.0,0.0,0.0,0.0,2.0,0.0,0.0,,,,,C. G. Allegretta
 2026-02-27T18:45:00,1396446.0,FT,Primeira Liga,FC Porto,Arouca,3,1,5.0,1.0,0.0,2.0,7.0,1.0,20.0,7.0,,,,,,,0.0,0.0,11.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-27T19:00:00,1382200.0,FT,Eerste Divisie,MVV,De Graafschap,3,3,9.0,4.0,3.0,1.0,5.0,7.0,18.0,24.0,,,,,,,0.0,0.0,12.0,4.0,,,32.0,68.0,,,,,,,1.0,2.0,2.0,1.0,0.0,3.0,1.0,0.0,,,,,E. van de Graaf
 2026-02-27T19:00:00,1382194.0,FT,Eerste Divisie,Den Bosch,Roda,2,2,3.0,7.0,1.0,3.0,5.0,6.0,13.0,17.0,,,,,,,0.0,0.0,15.0,8.0,,,38.0,62.0,,,,,,,2.0,0.0,0.0,2.0,0.0,1.0,3.0,0.0,,,,,W. Wiersma
@@ -15837,6 +15874,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-27T19:45:00,1378127.0,FT,Serie A,Parma,Cagliari,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-27T20:00:00,1379248.0,FT,Premier League,Wolves,Aston Villa,2,0,0.0,5.0,3.0,3.0,2.0,5.0,9.0,14.0,,,,,,,0.0,0.0,12.0,19.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-27T20:00:00,1512516.0,FT,Primera Division Peru,Alianza Atletico,ADT,0,0,0.0,3.0,3.0,1.0,2.0,4.0,10.0,11.0,,,,,,,0.0,0.0,20.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-27T20:00:00,1419855.0,FT,Serie B Italia,Sampdoria,Bari,0,2,9.0,3.0,4.0,4.0,4.0,7.0,19.0,13.0,,,,,,,0.0,0.0,10.0,20.0,,,73.0,27.0,,,,,,,0.0,0.0,1.0,1.0,3.0,1.0,1.0,3.0,,,,,D. Perenzoni
 2026-02-27T20:45:00,1396450.0,FT,Primeira Liga,Sporting CP,Estoril,3,0,4.0,1.0,2.0,3.0,7.0,3.0,14.0,7.0,,,,,,,0.0,0.0,9.0,16.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-27T22:00:00,1529333.0,FT,Friendlies Clubs,Real Oruro,ABB,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-27T22:45:00,1512520.0,FT,Primera Division Peru,FBC Melgar,Club Deportivo Los Chankas,1,2,5.0,10.0,1.0,1.0,2.0,6.0,14.0,20.0,,,,,,,1.0,1.0,8.0,7.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15855,9 +15893,12 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-28T13:00:00,1396837.0,FT,Ligue 2,RED Star FC 93,Le Mans,0,0,6.0,4.0,2.0,3.0,0.0,2.0,7.0,6.0,,,,,,,0.0,0.0,9.0,17.0,,,54.0,46.0,,,,,,,0.0,0.0,0.0,0.0,0.0,2.0,1.0,2.0,,,,,T. Bouille
 2026-02-28T13:00:00,1394646.0,FT,Super Lig Turquia,Kocaelispor,Beşiktaş,0,1,1.0,4.0,1.0,2.0,0.0,2.0,10.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T14:00:00,1378124.0,FT,Serie A,Como,Lecce,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-28T14:00:00,1419851.0,FT,Serie B Italia,Empoli,Cesena,1,1,13.0,1.0,0.0,1.0,5.0,3.0,28.0,8.0,,,,,,,0.0,0.0,7.0,15.0,,,64.0,36.0,,,,,,,0.0,1.0,1.0,0.0,0.0,0.0,1.0,0.0,,,,,I. Pezzuto
+2026-02-28T14:00:00,1419854.0,FT,Serie B Italia,Modena,Padova,1,2,5.0,3.0,2.0,3.0,5.0,3.0,12.0,6.0,,,,,,,0.0,0.0,13.0,13.0,,,60.0,40.0,,,,,,,0.0,1.0,2.0,0.0,0.0,2.0,1.0,2.0,,,,,A. Calzavara
 2026-02-28T14:30:00,1388516.0,FT,Bundesliga,Bayer Leverkusen,FSV Mainz 05,1,1,6.0,2.0,1.0,2.0,5.0,4.0,12.0,8.0,,,,,,,0.0,0.0,9.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T14:30:00,1388523.0,FT,Bundesliga,Werder Bremen,FC Heidenheim,2,0,3.0,2.0,1.0,0.0,6.0,0.0,17.0,9.0,,,,,,,0.0,0.0,14.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T14:30:00,1388517.0,FT,Bundesliga,Borussia Mönchengladbach,Union Berlin,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-28T15:00:00,1386965.0,FT,Championship,Coventry,Stoke City,2,1,7.0,1.0,1.0,1.0,8.0,1.0,20.0,3.0,,,,,,,0.0,0.0,7.0,6.0,,,64.0,36.0,,,,,,,1.0,1.0,1.0,0.0,0.0,1.0,0.0,1.0,,,,,A. Kitchen
 2026-02-28T15:00:00,1379242.0,FT,Premier League,Burnley,Brentford,3,4,4.0,8.0,2.0,2.0,3.0,7.0,12.0,16.0,,,,,,,0.0,0.0,9.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T15:00:00,1379247.0,FT,Premier League,Newcastle,Everton,2,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T15:00:00,1379245.0,FT,Premier League,Liverpool,West Ham,5,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -15872,6 +15913,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-02-28T17:30:00,1391074.0,FT,La Liga,Mallorca,Real Sociedad,0,1,3.0,7.0,0.0,2.0,1.0,2.0,6.0,12.0,,,,,,,0.0,0.0,6.0,22.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T18:00:00,1387910.0,FT,Ligue 1,Monaco,Angers,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T18:00:00,1396448.0,FT,Primeira Liga,Nacional,SC Braga,1,2,3.0,6.0,2.0,3.0,5.0,8.0,14.0,20.0,,,,,,,0.0,0.0,15.0,15.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-02-28T18:30:00,1419853.0,FT,Serie B Italia,Avellino,Juve Stabia,0,0,6.0,2.0,3.0,1.0,3.0,2.0,11.0,5.0,,,,,,,0.0,0.0,21.0,17.0,,,45.0,55.0,,,,,,,0.0,0.0,0.0,0.0,0.0,3.0,0.0,1.0,,,,,M. Caputi
 2026-02-28T19:00:00,1519268.0,FT,Liga Pro Ecuador,Leones del Norte,Libertad,1,1,3.0,6.0,2.0,2.0,6.0,4.0,16.0,13.0,,,,,,,0.0,0.0,10.0,5.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T19:00:00,1526261.0,FT,Torneo Amistoso de Verano,Blooming,Bolívar,1,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-02-28T19:30:00,1388824.0,FT,2. Bundesliga,SpVgg Greuther Fürth,FC Schalke 04,1,1,4.0,5.0,2.0,4.0,1.0,4.0,6.0,16.0,,,,,,,0.0,0.0,7.0,10.0,,,39.0,61.0,,,,,,,1.0,0.0,0.0,1.0,1.0,1.0,1.0,3.0,,,,,R. Kampka
@@ -15907,6 +15949,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-01T14:00:00,1379241.0,FT,Premier League,Brighton,Nottingham Forest,2,1,4.0,4.0,3.0,1.0,7.0,4.0,14.0,13.0,,,,,,,0.0,0.0,12.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T14:00:00,1379243.0,FT,Premier League,Fulham,Tottenham,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T14:00:00,1378130.0,FT,Serie A,Sassuolo,Atalanta,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-01T14:00:00,1419859.0,FT,Serie B Italia,Pescara,Palermo,2,1,9.0,4.0,4.0,2.0,9.0,5.0,15.0,12.0,,,,,,,0.0,0.0,11.0,14.0,,,53.0,47.0,,,,,,,0.0,2.0,0.0,1.0,0.0,4.0,1.0,1.0,,,,,F. Maresca
 2026-03-01T14:30:00,1388522.0,FT,Bundesliga,VfB Stuttgart,VfL Wolfsburg,4,0,7.0,3.0,1.0,0.0,11.0,3.0,24.0,10.0,,,,,,,0.0,0.0,5.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T15:00:00,1505385.0,FT,Primera Division Chile,Universidad de Concepcion,Everton de Vina,0,3,8.0,2.0,3.0,2.0,4.0,9.0,19.0,13.0,,,,,,,1.0,0.0,13.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T15:00:00,1382641.0,FT,Pro League Belgica,KVC Westerlo,Union St. Gilloise,0,0,5.0,3.0,1.0,3.0,4.0,1.0,8.0,7.0,,,,,,,1.0,0.0,6.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15915,6 +15958,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-01T15:45:00,1381090.0,FT,Eredivisie,Utrecht,AZ Alkmaar,2,0,5.0,4.0,1.0,3.0,3.0,6.0,11.0,10.0,,,,,,,0.0,0.0,13.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T16:15:00,1387909.0,FT,Ligue 1,Metz,Stade Brestois 29,0,1,12.0,4.0,2.0,1.0,6.0,1.0,24.0,6.0,,,,,,,0.0,1.0,14.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T16:15:00,1387906.0,FT,Ligue 1,Lille,Nantes,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-01T16:15:00,1419860.0,FT,Serie B Italia,Mantova,Carrarese,1,1,6.0,9.0,3.0,4.0,4.0,2.0,15.0,11.0,,,,,,,0.0,0.0,18.0,13.0,,,42.0,58.0,,,,,,,1.0,0.0,0.0,1.0,2.0,1.0,1.0,3.0,,,,,N. Turrini
 2026-03-01T16:30:00,1388519.0,FT,Bundesliga,Eintracht Frankfurt,SC Freiburg,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T16:30:00,1379239.0,FT,Premier League,Arsenal,Chelsea,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-01T17:00:00,1519267.0,FT,Liga Pro Ecuador,LDU de Quito,Macara,0,2,2.0,5.0,1.0,2.0,4.0,6.0,14.0,10.0,,,,,,,1.0,0.0,9.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -15970,6 +16014,10 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-03T18:00:00,1394318.0,FT,3. Liga,Stuttgart II,Energie Cottbus,1,2,6.0,9.0,3.0,2.0,5.0,10.0,8.0,20.0,,,,,,,0.0,0.0,17.0,15.0,,,44.0,56.0,,,,,,,0.0,1.0,0.0,2.0,1.0,2.0,0.0,2.0,,,,,A. Nouhoum
 2026-03-03T18:00:00,1394315.0,FT,3. Liga,TSV 1860 München,Erzgebirge Aue,2,1,7.0,13.0,1.0,4.0,4.0,5.0,8.0,19.0,,,,,,,0.0,0.0,7.0,14.0,,,52.0,48.0,,,,,,,1.0,1.0,1.0,0.0,1.0,0.0,2.0,2.0,,,,,T. Bauer
 2026-03-03T18:00:00,1394321.0,FT,3. Liga,Verl,SSV Jahn Regensburg,1,2,4.0,6.0,3.0,2.0,3.0,4.0,16.0,9.0,,,,,,,0.0,0.0,10.0,17.0,,,72.0,28.0,,,,,,,0.0,1.0,2.0,0.0,0.0,3.0,2.0,0.0,,,,,L. Jurgensen
+2026-03-03T18:00:00,1419869.0,FT,Serie B Italia,Padova,Spezia,2,2,6.0,5.0,0.0,2.0,5.0,10.0,19.0,13.0,,,,,,,0.0,0.0,15.0,13.0,,,51.0,49.0,,,,,,,1.0,1.0,1.0,1.0,0.0,0.0,1.0,1.0,,,,,M. Perri
+2026-03-03T19:00:00,1419863.0,FT,Serie B Italia,Venezia,Avellino,4,0,3.0,0.0,1.0,2.0,5.0,0.0,25.0,3.0,,,,,,,0.0,2.0,11.0,9.0,,,73.0,27.0,,,,,,,3.0,1.0,0.0,0.0,1.0,0.0,0.0,2.0,,,,,G. Mucera
+2026-03-03T19:00:00,1419870.0,FT,Serie B Italia,Cesena,Monza,1,3,4.0,2.0,2.0,3.0,6.0,5.0,16.0,11.0,,,,,,,0.0,1.0,15.0,12.0,,,52.0,48.0,,,,,,,0.0,1.0,2.0,1.0,2.0,0.0,0.0,3.0,,,,,K. Bonacina
+2026-03-03T19:00:00,1419865.0,FT,Serie B Italia,Virtus Entella,Modena,2,1,1.0,6.0,3.0,1.0,4.0,5.0,7.0,18.0,,,,,,,1.0,0.0,8.0,13.0,,,50.0,50.0,,,,,,,1.0,1.0,1.0,0.0,1.0,2.0,0.0,1.0,,,,,P. Tremolada
 2026-03-03T19:30:00,1379252.0,FT,Premier League,Everton,Burnley,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-03T19:30:00,1379250.0,FT,Premier League,Bournemouth,Brentford,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-03T20:00:00,1520392.0,FT,Copa del Rey,Barcelona,Atletico Madrid,3,0,15.0,0.0,3.0,1.0,9.0,2.0,21.0,7.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,0.0,0.0,0.0,3.0,0.0,1.0,,,,,
@@ -15991,6 +16039,9 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-04T17:30:00,1489350.0,FT,Turkiye Kupasi,Beyoğlu Yeni Çarşı,Kocaelispor,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-04T18:00:00,1394314.0,FT,3. Liga,FC Ingolstadt 04,MSV Duisburg,0,0,5.0,2.0,2.0,2.0,4.0,0.0,12.0,6.0,,,,,,,0.0,0.0,9.0,15.0,,,65.0,35.0,,,,,,,0.0,0.0,0.0,0.0,0.0,2.0,1.0,1.0,,,,,F. Weller
 2026-03-04T18:00:00,1394317.0,FT,3. Liga,FC Saarbrücken,SV Wehen,2,0,9.0,0.0,4.0,3.0,6.0,1.0,19.0,3.0,,,,,,,0.0,1.0,20.0,10.0,,,45.0,55.0,,,,,,,1.0,1.0,0.0,0.0,0.0,4.0,3.0,0.0,,,,,T. Gansloweit
+2026-03-04T18:00:00,1419866.0,FT,Serie B Italia,Carrarese,Catanzaro,3,3,4.0,2.0,1.0,2.0,9.0,3.0,22.0,9.0,,,,,,,1.0,0.0,10.0,21.0,,,45.0,55.0,,,,,,,1.0,2.0,2.0,1.0,1.0,0.0,1.0,1.0,,,,,F. Dionisi
+2026-03-04T19:00:00,1419862.0,FT,Serie B Italia,Juve Stabia,Sampdoria,1,1,9.0,3.0,0.0,1.0,5.0,1.0,16.0,4.0,,,,,,,0.0,0.0,13.0,9.0,,,63.0,37.0,,,,,,,0.0,1.0,0.0,1.0,0.0,0.0,0.0,1.0,,,,,G. Collu
+2026-03-04T19:00:00,1419864.0,FT,Serie B Italia,Palermo,Mantova,2,1,9.0,2.0,4.0,4.0,5.0,3.0,17.0,7.0,,,,,,,1.0,1.0,23.0,12.0,,,54.0,46.0,,,,,,,2.0,0.0,0.0,1.0,1.0,3.0,2.0,2.0,,,,,G. Ayroldi
 2026-03-04T19:30:00,1388455.0,FT,Bundesliga,Hamburger SV,Bayer Leverkusen,0,1,2.0,7.0,0.0,2.0,3.0,4.0,10.0,14.0,,,,,,,0.0,0.0,12.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-04T19:30:00,1519244.0,PEN,Coupe de France,Lorient,Nice,0,0,0.0,8.0,4.0,2.0,0.0,0.0,9.0,13.0,,,,,,,1.0,0.0,7.0,16.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-04T19:30:00,1379255.0,FT,Premier League,Manchester City,Nottingham Forest,2,2,6.0,1.0,0.0,4.0,7.0,4.0,21.0,9.0,,,,,,,0.0,0.0,10.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -16054,11 +16105,14 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-07T13:00:00,1389342.0,FT,Ligue 2,Le Mans,Annecy,3,0,6.0,5.0,4.0,0.0,6.0,3.0,16.0,10.0,,,,,,,0.0,0.0,11.0,9.0,,,55.0,45.0,,,,,,,2.0,1.0,0.0,0.0,3.0,1.0,0.0,0.0,,,,,A. Taleb
 2026-03-07T13:00:00,1394650.0,FT,Super Lig Turquia,Başakşehir,Göztepe,2,1,3.0,5.0,1.0,2.0,4.0,9.0,7.0,23.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T14:00:00,1378136.0,FT,Serie A,Cagliari,Como,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-07T14:00:00,1419875.0,FT,Serie B Italia,Avellino,Padova,1,0,9.0,3.0,3.0,3.0,5.0,1.0,19.0,6.0,,,,,,,0.0,0.0,12.0,16.0,,,62.0,38.0,,,,,,,0.0,1.0,0.0,0.0,2.0,1.0,0.0,3.0,,,,,D. Perenzoni
+2026-03-07T14:00:00,1419878.0,FT,Serie B Italia,Sudtirol,Virtus Entella,0,1,6.0,2.0,1.0,2.0,2.0,2.0,12.0,8.0,,,,,,,0.0,0.0,10.0,21.0,,,60.0,40.0,,,,,,,0.0,0.0,0.0,1.0,1.0,0.0,2.0,0.0,,,,,A. Calzavara
 2026-03-07T14:30:00,1388529.0,FT,Bundesliga,RB Leipzig,FC Augsburg,2,1,6.0,8.0,0.0,2.0,8.0,5.0,17.0,16.0,,,,,,,0.0,0.0,8.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T14:30:00,1388527.0,FT,Bundesliga,FC Heidenheim,1899 Hoffenheim,2,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T14:30:00,1388526.0,FT,Bundesliga,SC Freiburg,Bayer Leverkusen,3,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T14:30:00,1388528.0,FT,Bundesliga,FSV Mainz 05,VfB Stuttgart,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T15:00:00,1386973.0,FT,Championship,Ipswich,Leicester,1,1,10.0,2.0,3.0,3.0,3.0,3.0,18.0,7.0,,,,,,,0.0,0.0,14.0,16.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-07T15:00:00,1386980.0,FT,Championship,Bristol City,Coventry,0,2,11.0,3.0,4.0,2.0,6.0,7.0,24.0,10.0,,,,,,,1.0,1.0,9.0,6.0,,,60.0,40.0,,,,,,,0.0,0.0,2.0,0.0,2.0,2.0,1.0,1.0,,,,,M. Donohue
 2026-03-07T15:00:00,1382644.0,FT,Pro League Belgica,OH Leuven,KVC Westerlo,0,1,9.0,5.0,2.0,3.0,4.0,2.0,21.0,9.0,,,,,,,0.0,0.0,13.0,15.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T15:30:00,1381094.0,FT,Eredivisie,Groningen,Ajax,3,1,6.0,8.0,1.0,1.0,6.0,5.0,13.0,13.0,,,,,,,0.0,0.0,5.0,7.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T15:30:00,1396459.0,FT,Primeira Liga,Moreirense,Nacional,1,1,4.0,7.0,4.0,2.0,2.0,7.0,7.0,20.0,,,,,,,0.0,0.0,13.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -16068,6 +16122,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-07T17:30:00,1391080.0,FT,La Liga,Atletico Madrid,Real Sociedad,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T18:00:00,1387914.0,FT,Ligue 1,Auxerre,Strasbourg,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T18:00:00,1396455.0,FT,Primeira Liga,SC Braga,Sporting CP,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-07T18:30:00,1419872.0,FT,Serie B Italia,Modena,Cesena,0,0,7.0,1.0,1.0,0.0,4.0,1.0,17.0,3.0,,,,,,,0.0,0.0,8.0,10.0,,,54.0,46.0,,,,,,,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,,,,,M. Marcenaro
 2026-03-07T20:00:00,1523413.0,FT,FA Cup,Newcastle,Manchester City,1,3,3.0,9.0,2.0,0.0,4.0,8.0,11.0,21.0,,,,,,,0.0,0.0,12.0,16.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T20:00:00,1391079.0,FT,La Liga,Athletic Club,Barcelona,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-07T20:00:00,1526468.0,FT,Primera Division Uruguay,Progreso,Albion FC,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16096,6 +16151,8 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-08T14:00:00,1387916.0,FT,Ligue 1,Lens,Metz,3,0,6.0,4.0,0.0,3.0,7.0,0.0,24.0,5.0,,,,,,,0.0,0.0,12.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T14:00:00,1378135.0,FT,Serie A,Bologna,Hellas Verona,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T14:00:00,1378137.0,FT,Serie A,Fiorentina,Parma,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-08T14:00:00,1419880.0,FT,Serie B Italia,Mantova,Juve Stabia,2,0,6.0,1.0,2.0,8.0,4.0,1.0,16.0,3.0,,,,,,,0.0,1.0,21.0,13.0,,,67.0,33.0,,,,,,,2.0,0.0,0.0,0.0,0.0,2.0,3.0,5.0,,,,,I. Pezzuto
+2026-03-08T14:00:00,1419871.0,FT,Serie B Italia,Frosinone,Sampdoria,3,0,10.0,2.0,2.0,1.0,10.0,1.0,24.0,9.0,,,,,,,0.0,0.0,16.0,14.0,,,48.0,52.0,,,,,,,1.0,2.0,0.0,0.0,1.0,1.0,0.0,1.0,,,,,F. La Penna
 2026-03-08T14:30:00,1388530.0,FT,Bundesliga,FC St. Pauli,Eintracht Frankfurt,0,0,6.0,5.0,2.0,1.0,2.0,2.0,11.0,8.0,,,,,,,0.0,0.0,13.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T15:00:00,1382649.0,FT,Pro League Belgica,Gent,KV Mechelen,3,1,3.0,5.0,2.0,2.0,5.0,3.0,13.0,8.0,,,,,,,0.0,0.0,9.0,19.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T15:15:00,1391083.0,FT,La Liga,Getafe,Real Betis,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16104,6 +16161,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-08T16:15:00,1387917.0,FT,Ligue 1,Lille,Lorient,1,1,5.0,1.0,3.0,1.0,2.0,5.0,12.0,9.0,,,,,,,0.0,0.0,14.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T16:15:00,1387915.0,FT,Ligue 1,Stade Brestois 29,Le Havre,2,0,1.0,3.0,3.0,1.0,2.0,0.0,11.0,14.0,,,,,,,0.0,0.0,15.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T16:15:00,1387920.0,FT,Ligue 1,Nice,Rennes,0,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-08T16:15:00,1419874.0,FT,Serie B Italia,Carrarese,Palermo,0,1,9.0,5.0,2.0,1.0,3.0,6.0,13.0,13.0,,,,,,,0.0,0.0,14.0,9.0,,,61.0,39.0,,,,,,,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0,,,,,M. Piccinini
 2026-03-08T16:30:00,1388531.0,FT,Bundesliga,Union Berlin,Werder Bremen,1,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T17:00:00,1378138.0,FT,Serie A,Genoa,AS Roma,2,1,3.0,6.0,1.0,3.0,5.0,1.0,11.0,8.0,,,,,,,0.0,0.0,11.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-08T17:00:00,1394653.0,FT,Super Lig Turquia,Fenerbahçe,Samsunspor,3,2,7.0,6.0,2.0,7.0,5.0,5.0,14.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16151,6 +16209,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-11T01:00:00,1491964.0,FT,Liga Profesional Argentina,Newells Old Boys,Platense,1,1,5.0,6.0,4.0,2.0,3.0,8.0,6.0,19.0,,,,,,,0.0,0.0,17.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-11T01:30:00,1505956.0,FT,Liga Colombia,Junior,Atletico Nacional,0,4,3.0,4.0,0.0,0.0,2.0,6.0,4.0,16.0,,,,,,,1.0,0.0,12.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-11T19:30:00,1418896.0,FT,Premier League Egipto,Enppi,Zamalek SC,1,0,5.0,4.0,1.0,2.0,3.0,1.0,13.0,11.0,,,,,,,0.0,0.0,10.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-11T20:00:00,1386994.0,FT,Championship,Coventry,Preston,3,0,8.0,1.0,,,9.0,2.0,25.0,5.0,,,,,,,0.0,0.0,9.0,9.0,,,68.0,32.0,,,,,,,2.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,L. Smith
 2026-03-11T20:30:00,1491953.0,FT,Liga Profesional Argentina,Argentinos JRS,Rosario Central,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-11T20:30:00,1491955.0,FT,Liga Profesional Argentina,Banfield,Gimnasia L.P.,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-11T21:15:00,1533296.0,FT,Friendlies Clubs,Gualberto Villarroel SJ,Aurora,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16173,6 +16232,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-13T18:00:00,1394333.0,FT,3. Liga,Alemannia Aachen,Energie Cottbus,4,1,4.0,8.0,5.0,4.0,5.0,5.0,13.0,20.0,,,,,,,0.0,0.0,17.0,12.0,,,39.0,61.0,,,,,,,0.0,4.0,0.0,1.0,3.0,2.0,2.0,2.0,,,,,E. Weisbach
 2026-03-13T19:00:00,1382214.0,FT,Eerste Divisie,Cambuur,Roda,1,1,4.0,4.0,1.0,3.0,6.0,7.0,15.0,12.0,,,,,,,0.0,0.0,13.0,9.0,,,50.0,50.0,,,,,,,0.0,1.0,0.0,1.0,1.0,0.0,1.0,2.0,,,,,E. van de Graaf
 2026-03-13T19:00:00,1389346.0,FT,Ligue 2,Nancy,Le Mans,2,4,4.0,7.0,1.0,1.0,4.0,5.0,7.0,10.0,,,,,,,0.0,0.0,10.0,19.0,,,40.0,60.0,,,,,,,1.0,1.0,1.0,3.0,0.0,1.0,0.0,1.0,,,,,E. Rosier
+2026-03-13T19:30:00,1419884.0,FT,Serie B Italia,Modena,Spezia,3,0,3.0,3.0,0.0,2.0,3.0,1.0,9.0,6.0,,,,,,,0.0,0.0,9.0,15.0,,,41.0,59.0,,,,,,,1.0,2.0,0.0,0.0,0.0,0.0,0.0,2.0,,,,,N. Turrini
 2026-03-13T19:45:00,1387926.0,FT,Ligue 1,Marseille,Auxerre,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-13T19:45:00,1378151.0,FT,Serie A,Torino,Parma,4,1,2.0,7.0,1.0,3.0,6.0,3.0,15.0,6.0,,,,,,,0.0,0.0,17.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-13T20:00:00,1391089.0,FT,La Liga,Alaves,Villarreal,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16186,10 +16246,15 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-14T03:00:00,1492555.0,FT,Liga MX,FC Juarez,Monterrey,2,2,6.0,1.0,1.0,3.0,8.0,3.0,24.0,7.0,,,,,,,0.0,1.0,10.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T10:30:00,1394664.0,FT,Super Lig Turquia,Kocaelispor,Konyaspor,1,2,8.0,7.0,3.0,2.0,3.0,7.0,10.0,19.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T12:00:00,1388840.0,FT,2. Bundesliga,Eintracht Braunschweig,Fortuna Düsseldorf,1,0,4.0,5.0,2.0,3.0,5.0,2.0,16.0,9.0,,,,,,,0.0,0.0,10.0,14.0,,,51.0,49.0,,,,,,,0.0,1.0,0.0,0.0,1.0,1.0,1.0,2.0,,,,,F. Lechner
+2026-03-14T12:30:00,1386995.0,FT,Championship,Coventry,Southampton,1,2,7.0,5.0,3.0,2.0,6.0,3.0,20.0,8.0,,,,,,,0.0,0.0,13.0,13.0,,,57.0,43.0,,,,,,,0.0,1.0,0.0,2.0,0.0,3.0,0.0,2.0,,,,,F. Hallam
 2026-03-14T13:00:00,1394336.0,FT,3. Liga,Rot-Weiß Essen,Erzgebirge Aue,4,2,4.0,5.0,1.0,2.0,5.0,5.0,12.0,11.0,,,,,,,0.0,0.0,10.0,11.0,,,51.0,49.0,,,,,,,3.0,1.0,1.0,1.0,0.0,1.0,0.0,2.0,,,,,A. Nouhoum
 2026-03-14T13:00:00,1394334.0,FT,3. Liga,Hansa Rostock,MSV Duisburg,5,1,4.0,6.0,0.0,3.0,8.0,7.0,16.0,15.0,,,,,,,0.0,0.0,12.0,13.0,,,66.0,34.0,,,,,,,4.0,1.0,1.0,0.0,0.0,0.0,1.0,2.0,,,,,C. Ballweg
 2026-03-14T13:00:00,1391093.0,FT,La Liga,Girona,Athletic Club,3,0,2.0,9.0,0.0,2.0,6.0,9.0,14.0,20.0,,,,,,,0.0,0.0,8.0,16.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T14:00:00,1378146.0,FT,Serie A,Inter,Atalanta,1,1,2.0,3.0,2.0,2.0,3.0,3.0,16.0,8.0,,,,,,,0.0,0.0,11.0,5.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-14T14:00:00,1419889.0,FT,Serie B Italia,Juve Stabia,Carrarese,1,1,6.0,8.0,2.0,1.0,4.0,5.0,15.0,10.0,,,,,,,0.0,0.0,16.0,14.0,,,56.0,44.0,,,,,,,1.0,0.0,0.0,1.0,1.0,1.0,1.0,0.0,,,,,P. Tremolada
+2026-03-14T14:00:00,1419890.0,FT,Serie B Italia,Cesena,Frosinone,2,2,1.0,5.0,4.0,1.0,6.0,7.0,15.0,24.0,,,,,,,0.0,0.0,18.0,13.0,,,48.0,52.0,,,,,,,0.0,2.0,1.0,1.0,1.0,3.0,0.0,1.0,,,,,L. Massimi
+2026-03-14T14:00:00,1419883.0,FT,Serie B Italia,Empoli,Mantova,2,2,9.0,4.0,3.0,2.0,8.0,5.0,18.0,12.0,,,,,,,0.0,0.0,17.0,17.0,,,59.0,41.0,,,,,,,0.0,2.0,2.0,0.0,2.0,1.0,0.0,2.0,,,,,M. Marcenaro
+2026-03-14T14:00:00,1419885.0,FT,Serie B Italia,Padova,Catanzaro,1,3,3.0,6.0,1.0,2.0,1.0,5.0,13.0,13.0,,,,,,,0.0,0.0,18.0,15.0,,,53.0,47.0,,,,,,,0.0,1.0,1.0,2.0,0.0,1.0,1.0,1.0,,,,,M. Caputi
 2026-03-14T14:30:00,1388536.0,FT,Bundesliga,Eintracht Frankfurt,FC Heidenheim,1,0,5.0,4.0,3.0,2.0,4.0,1.0,12.0,3.0,,,,,,,1.0,0.0,5.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T14:30:00,1388539.0,FT,Bundesliga,1899 Hoffenheim,VfL Wolfsburg,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T14:30:00,1388535.0,FT,Bundesliga,Borussia Dortmund,FC Augsburg,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16202,6 +16267,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-14T15:30:00,1382223.0,FT,Eerste Divisie,De Graafschap,Dordrecht,2,1,9.0,6.0,0.0,2.0,5.0,2.0,13.0,17.0,,,,,,,0.0,0.0,12.0,7.0,,,48.0,52.0,,,,,,,1.0,1.0,0.0,1.0,0.0,0.0,2.0,0.0,,,,,J. van der Laan
 2026-03-14T15:30:00,1396470.0,FT,Primeira Liga,Guimaraes,Famalicao,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T16:00:00,1387925.0,FT,Ligue 1,Lorient,Lens,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-14T16:15:00,1419887.0,FT,Serie B Italia,Monza,Palermo,3,0,3.0,10.0,2.0,4.0,3.0,4.0,7.0,19.0,,,,,,,0.0,0.0,10.0,11.0,,,42.0,58.0,,,,,,,1.0,2.0,0.0,0.0,1.0,1.0,1.0,3.0,,,,,D. Doveri
 2026-03-14T17:00:00,1378148.0,FT,Serie A,Napoli,Lecce,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T17:00:00,1394659.0,FT,Super Lig Turquia,Galatasaray,Başakşehir,3,0,9.0,3.0,0.0,2.0,6.0,3.0,19.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T17:00:00,1394661.0,FT,Super Lig Turquia,Göztepe,Alanyaspor,2,2,5.0,8.0,3.0,3.0,5.0,3.0,13.0,17.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16210,6 +16276,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-14T17:30:00,1379262.0,FT,Premier League,Chelsea,Newcastle,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T17:30:00,1392094.0,FT,Segunda División,Valladolid,Leganes,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T18:00:00,1387923.0,FT,Ligue 1,Angers,Nice,0,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-14T18:30:00,1419881.0,FT,Serie B Italia,Sampdoria,Venezia,0,0,7.0,6.0,2.0,0.0,1.0,5.0,9.0,15.0,,,,,,,0.0,0.0,11.0,23.0,,,31.0,69.0,,,,,,,0.0,0.0,0.0,0.0,0.0,2.0,0.0,0.0,,,,,E. Feliciani
 2026-03-14T19:00:00,1506029.0,FT,Liga Colombia,Internacional de Bogota,Bucaramanga,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T19:00:00,1519284.0,FT,Liga Pro Ecuador,Independiente del Valle,Aucas,2,2,5.0,7.0,1.0,2.0,5.0,7.0,11.0,10.0,,,,,,,1.0,1.0,5.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-14T19:15:00,1490150.0,FT,MLS,Atlanta United FC,Philadelphia Union,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16240,6 +16307,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-15T14:00:00,1379266.0,FT,Premier League,Nottingham Forest,Fulham,0,0,5.0,4.0,2.0,3.0,2.0,1.0,11.0,5.0,,,,,,,0.0,0.0,8.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-15T14:00:00,1379265.0,FT,Premier League,Manchester United,Aston Villa,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-15T14:00:00,1378150.0,FT,Serie A,Sassuolo,Bologna,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-15T14:00:00,1419888.0,FT,Serie B Italia,Virtus Entella,Avellino,1,2,7.0,5.0,1.0,1.0,5.0,3.0,19.0,6.0,,,,,,,0.0,0.0,16.0,17.0,,,59.0,41.0,,,,,,,0.0,1.0,2.0,0.0,1.0,0.0,1.0,0.0,,,,,M. Perri
 2026-03-15T14:30:00,1388541.0,FT,Bundesliga,Werder Bremen,FSV Mainz 05,0,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-15T15:00:00,1505401.0,FT,Primera Division Chile,Universidad de Concepcion,Palestino,1,0,2.0,5.0,3.0,5.0,1.0,3.0,9.0,10.0,,,,,,,0.0,0.0,6.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-15T15:00:00,1382656.0,FT,Pro League Belgica,Antwerp,Standard Liege,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16288,6 +16356,9 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-16T23:00:00,1542327.0,FT,Friendlies Clubs,Blooming,Independiente Petrolero,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-17T01:15:00,1491974.0,FT,Liga Profesional Argentina,Instituto Cordoba,Independiente,2,1,3.0,8.0,5.0,3.0,4.0,4.0,11.0,12.0,,,,,,,0.0,0.0,20.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-17T17:00:00,1394671.0,FT,Super Lig Turquia,Fenerbahçe,Gaziantep FK,4,1,11.0,7.0,1.0,0.0,8.0,4.0,18.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-17T18:00:00,1419897.0,FT,Serie B Italia,Palermo,Juve Stabia,2,2,7.0,2.0,4.0,5.0,6.0,6.0,21.0,7.0,,,,,,,0.0,0.0,16.0,12.0,,,57.0,43.0,,,,,,,0.0,2.0,1.0,1.0,1.0,3.0,1.0,4.0,,,,,F. Dionisi
+2026-03-17T19:00:00,1419893.0,FT,Serie B Italia,Mantova,Cesena,3,0,5.0,3.0,1.0,3.0,4.0,3.0,20.0,13.0,,,,,,,0.0,0.0,19.0,16.0,,,48.0,52.0,,,,,,,1.0,2.0,0.0,0.0,0.0,1.0,0.0,3.0,,,,,A. Zanotti
+2026-03-17T19:00:00,1419891.0,FT,Serie B Italia,Venezia,Padova,3,1,9.0,1.0,1.0,3.0,9.0,3.0,30.0,8.0,,,,,,,0.0,0.0,9.0,13.0,,,66.0,34.0,,,,,,,1.0,2.0,0.0,1.0,0.0,1.0,2.0,1.0,,,,,V. Crezzini
 2026-03-17T21:30:00,1519295.0,FT,Liga Pro Ecuador,Universidad Catolica,Deportivo Cuenca,1,0,5.0,4.0,2.0,1.0,5.0,5.0,17.0,16.0,,,,,,,0.0,0.0,10.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-17T22:00:00,1491975.0,FT,Liga Profesional Argentina,Lanus,Newells Old Boys,5,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-17T23:00:00,1542303.0,FT,Friendlies Clubs,Aurora,Gualberto Villarroel SJ,2,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16300,6 +16371,9 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-18T17:00:00,1394668.0,FT,Super Lig Turquia,Başakşehir,Antalyaspor,0,0,2.0,3.0,3.0,4.0,6.0,4.0,17.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-18T17:00:00,1394670.0,FT,Super Lig Turquia,Eyüpspor,Trabzonspor,0,1,1.0,5.0,3.0,1.0,1.0,3.0,7.0,10.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-18T19:00:00,1519292.0,FT,Liga Pro Ecuador,Macara,Delfin SC,1,0,4.0,4.0,0.0,2.0,7.0,4.0,14.0,11.0,,,,,,,0.0,0.0,14.0,5.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-18T19:00:00,1419900.0,FT,Serie B Italia,Avellino,Sudtirol,3,2,2.0,2.0,5.0,6.0,3.0,3.0,8.0,10.0,,,,,,,0.0,0.0,14.0,28.0,,,57.0,43.0,,,,,,,1.0,2.0,0.0,2.0,0.0,5.0,2.0,4.0,,,,,S. Galipo
+2026-03-18T19:00:00,1419892.0,FT,Serie B Italia,Carrarese,Sampdoria,2,0,4.0,2.0,1.0,4.0,3.0,1.0,7.0,7.0,,,,,,,0.0,1.0,16.0,18.0,,,48.0,52.0,,,,,,,0.0,2.0,0.0,0.0,0.0,1.0,1.0,3.0,,,,,R. Abisso
+2026-03-18T19:00:00,1419894.0,FT,Serie B Italia,Pescara,Virtus Entella,3,0,2.0,1.0,1.0,2.0,3.0,4.0,6.0,11.0,,,,,,,0.0,0.0,15.0,16.0,,,58.0,42.0,,,,,,,2.0,1.0,0.0,0.0,1.0,0.0,0.0,2.0,,,,,I. Pezzuto
 2026-03-18T21:10:00,1506040.0,FT,Liga Colombia,Deportivo Pasto,Chico,2,0,4.0,2.0,2.0,2.0,4.0,0.0,17.0,2.0,,,,,,,0.0,2.0,14.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-18T21:30:00,1505022.0,FT,Division Profesional - Apertura,Rubio NU,Cerro Porteno,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-18T21:30:00,1519293.0,FT,Liga Pro Ecuador,Manta FC,Guayaquil City FC,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16346,6 +16420,9 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-21T13:00:00,1394347.0,FT,3. Liga,Waldhof Mannheim,Erzgebirge Aue,2,1,4.0,5.0,0.0,2.0,5.0,2.0,17.0,11.0,,,,,,,0.0,0.0,10.0,12.0,,,54.0,46.0,,,,,,,0.0,2.0,1.0,0.0,0.0,0.0,0.0,2.0,,,,,T. Schulz
 2026-03-21T13:00:00,1389357.0,FT,Ligue 2,Estac Troyes,Dunkerque,5,1,6.0,3.0,0.0,2.0,8.0,3.0,18.0,8.0,,,,,,,0.0,1.0,14.0,15.0,,,58.0,42.0,,,,,,,2.0,3.0,1.0,0.0,0.0,0.0,1.0,1.0,,,,,A. Taleb
 2026-03-21T13:00:00,1531920.0,FT,Primera Division Uruguay,Racing Montevideo,Liverpool Montevideo,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-21T14:00:00,1419905.0,FT,Serie B Italia,Cesena,Catanzaro,3,1,7.0,5.0,4.0,1.0,6.0,3.0,18.0,16.0,,,,,,,0.0,1.0,15.0,12.0,,,50.0,50.0,,,,,,,0.0,3.0,1.0,0.0,0.0,4.0,0.0,1.0,,,,,A. Calzavara
+2026-03-21T14:00:00,1419909.0,FT,Serie B Italia,Juve Stabia,Spezia,3,1,3.0,2.0,0.0,4.0,8.0,2.0,20.0,8.0,,,,,,,0.0,0.0,9.0,14.0,,,56.0,44.0,,,,,,,1.0,2.0,1.0,0.0,0.0,0.0,1.0,3.0,,,,,D. Di Marco
+2026-03-21T14:00:00,1419901.0,FT,Serie B Italia,Padova,Palermo,0,1,9.0,4.0,3.0,1.0,2.0,1.0,14.0,11.0,,,,,,,1.0,1.0,10.0,12.0,,,66.0,34.0,,,,,,,0.0,0.0,0.0,1.0,0.0,3.0,0.0,1.0,,,,,L. Marinelli
 2026-03-21T14:30:00,1388550.0,FT,Bundesliga,VfL Wolfsburg,Werder Bremen,0,1,8.0,4.0,3.0,0.0,4.0,3.0,11.0,8.0,,,,,,,1.0,0.0,16.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T14:30:00,1388546.0,FT,Bundesliga,FC Heidenheim,Bayer Leverkusen,3,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T14:30:00,1388543.0,FT,Bundesliga,Bayern München,Union Berlin,4,0,12.0,1.0,1.0,2.0,9.0,1.0,31.0,5.0,,,,,,,0.0,0.0,5.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -16358,12 +16435,14 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-21T16:00:00,1387940.0,FT,Ligue 1,Toulouse,Lorient,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T16:15:00,1419907.0,FT,Serie B Italia,Monza,Venezia,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T17:00:00,1378161.0,FT,Serie A,AC Milan,Torino,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-21T17:15:00,1387008.0,FT,Championship,Swansea,Coventry,0,3,2.0,7.0,3.0,1.0,2.0,7.0,11.0,14.0,,,,,,,0.0,0.0,10.0,15.0,,,54.0,46.0,,,,,,,0.0,0.0,3.0,0.0,2.0,1.0,0.0,1.0,,,,,S. Martin
 2026-03-21T17:30:00,1391105.0,FT,La Liga,Osasuna,Girona,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T17:30:00,1379272.0,FT,Premier League,Everton,Chelsea,3,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T18:00:00,1387932.0,FT,Ligue 1,Auxerre,Stade Brestois 29,3,0,6.0,3.0,0.0,4.0,7.0,2.0,11.0,9.0,,,,,,,1.0,0.0,10.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T18:00:00,1396472.0,FT,Primeira Liga,Benfica,Guimaraes,3,0,4.0,8.0,0.0,1.0,4.0,2.0,12.0,16.0,,,,,,,0.0,0.0,15.0,15.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T18:00:00,1396478.0,FT,Primeira Liga,Santa Clara,GIL Vicente,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T18:30:00,1491997.0,FT,Liga Profesional Argentina,Velez Sarsfield,Lanus,0,1,4.0,2.0,1.0,3.0,5.0,7.0,10.0,17.0,,,,,,,0.0,0.0,12.0,18.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-21T18:30:00,1419902.0,FT,Serie B Italia,Modena,Mantova,2,1,1.0,4.0,1.0,4.0,4.0,2.0,9.0,8.0,,,,,,,0.0,0.0,14.0,20.0,,,37.0,63.0,,,,,,,1.0,1.0,0.0,1.0,1.0,0.0,0.0,4.0,,,,,M. Caputi
 2026-03-21T19:00:00,1519298.0,FT,Liga Pro Ecuador,Delfin SC,Libertad,0,0,9.0,1.0,1.0,2.0,5.0,2.0,20.0,10.0,,,,,,,0.0,0.0,13.0,12.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T19:00:00,1531922.0,FT,Primera Division Uruguay,Wanderers,Danubio,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-21T19:45:00,1378160.0,FT,Serie A,Juventus,Sassuolo,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16394,6 +16473,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-22T14:00:00,1387934.0,FT,Ligue 1,Lyon,Monaco,1,2,2.0,6.0,0.0,3.0,4.0,7.0,15.0,21.0,,,,,,,1.0,0.0,11.0,19.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T14:00:00,1378155.0,FT,Serie A,Bologna,Lazio,0,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T14:00:00,1378154.0,FT,Serie A,Atalanta,Hellas Verona,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-22T14:00:00,1419903.0,FT,Serie B Italia,Bari,Carrarese,0,3,12.0,6.0,0.0,2.0,3.0,4.0,12.0,14.0,,,,,,,1.0,0.0,11.0,10.0,,,52.0,48.0,,,,,,,0.0,0.0,0.0,3.0,0.0,0.0,1.0,1.0,,,,,D. Perenzoni
 2026-03-22T14:15:00,1379269.0,FT,Premier League,Aston Villa,West Ham,2,0,6.0,6.0,0.0,1.0,7.0,1.0,23.0,9.0,,,,,,,0.0,0.0,3.0,7.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T14:15:00,1379277.0,FT,Premier League,Tottenham,Nottingham Forest,0,3,13.0,3.0,1.0,2.0,3.0,7.0,14.0,8.0,,,,,,,0.0,0.0,13.0,13.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T14:30:00,1388547.0,FT,Bundesliga,FSV Mainz 05,Eintracht Frankfurt,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16402,6 +16482,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-22T15:30:00,1396474.0,FT,Primeira Liga,Estoril,Rio Ave,1,2,11.0,7.0,2.0,3.0,4.0,8.0,13.0,13.0,,,,,,,0.0,0.0,16.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T16:15:00,1387939.0,FT,Ligue 1,Rennes,Metz,0,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T16:15:00,1387935.0,FT,Ligue 1,Marseille,Lille,1,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-22T16:15:00,1419904.0,FT,Serie B Italia,Sampdoria,Avellino,2,1,9.0,3.0,3.0,4.0,5.0,2.0,10.0,3.0,,,,,,,0.0,0.0,16.0,26.0,,,47.0,53.0,,,,,,,0.0,2.0,0.0,1.0,2.0,1.0,2.0,2.0,,,,,D. Chiffi
 2026-03-22T16:30:00,1518728.0,FT,League Cup,Arsenal,Manchester City,0,2,3.0,3.0,3.0,1.0,4.0,2.0,10.0,10.0,,,,,,,0.0,0.0,12.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T17:00:00,1378163.0,FT,Serie A,AS Roma,Lecce,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T17:30:00,1391099.0,FT,La Liga,Athletic Club,Real Betis,2,1,6.0,5.0,1.0,1.0,6.0,3.0,11.0,11.0,,,,,,,0.0,0.0,10.0,6.0,,,,,,,,,,,,,,,,,,,,,,,
@@ -16410,6 +16491,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-03-22T17:30:00,1382664.0,FT,Pro League Belgica,Club Brugge KV,KV Mechelen,4,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T18:00:00,1519303.0,FT,Liga Pro Ecuador,Tecnico Universitario,Independiente del Valle,1,2,3.0,4.0,4.0,2.0,4.0,5.0,13.0,17.0,,,,,,,0.0,0.0,18.0,11.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T18:30:00,1388542.0,FT,Bundesliga,FC Augsburg,VfB Stuttgart,2,5,2.0,5.0,1.0,3.0,7.0,8.0,13.0,13.0,,,,,,,0.0,0.0,11.0,14.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-03-22T18:30:00,1419910.0,FT,Serie B Italia,Virtus Entella,Reggiana,3,0,8.0,3.0,2.0,6.0,9.0,3.0,19.0,11.0,,,,,,,0.0,1.0,20.0,18.0,,,54.0,46.0,,,,,,,1.0,2.0,0.0,0.0,0.0,2.0,1.0,5.0,,,,,S. Sozza
 2026-03-22T19:00:00,1492186.0,FT,Brasileirao,Remo,Bahia,4,1,5.0,9.0,2.0,1.0,10.0,3.0,16.0,10.0,,,,,,,0.0,0.0,15.0,10.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T19:45:00,1387936.0,FT,Ligue 1,Nantes,Strasbourg,2,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-03-22T20:00:00,1391106.0,FT,La Liga,Real Madrid,Atletico Madrid,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16494,6 +16576,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-03T18:00:00,1382247.0,FT,Eerste Divisie,Dordrecht,Roda,0,3,9.0,3.0,1.0,2.0,4.0,4.0,21.0,9.0,,,,,,,0.0,0.0,18.0,12.0,,,48.0,52.0,,,,,,,0.0,0.0,2.0,1.0,1.0,0.0,0.0,2.0,,,,,R. Dieperink
 2026-04-03T18:45:00,1387948.0,FT,Ligue 1,Paris Saint Germain,Toulouse,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-03T18:45:00,1536936.0,FT,Pro League Belgica,Antwerp,Genk,1,2,3.0,0.0,2.0,2.0,2.0,5.0,13.0,12.0,,,,,,,0.0,0.0,12.0,15.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-03T19:00:00,1387024.0,FT,Championship,Coventry,Derby,3,2,6.0,1.0,0.0,2.0,7.0,3.0,13.0,8.0,,,,,,,0.0,0.0,12.0,15.0,,,51.0,49.0,,,,,,,1.0,2.0,1.0,1.0,0.0,0.0,1.0,1.0,,,,,T. Nield
 2026-04-03T19:00:00,1538325.0,FT,Primera Division Bolivia,Bolívar,Real Oruro,5,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-03T19:30:00,1396487.0,FT,Primeira Liga,Sporting CP,Santa Clara,4,2,9.0,5.0,4.0,3.0,8.0,4.0,22.0,7.0,,,,,,,0.0,0.0,12.0,22.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-03T20:15:00,1492012.0,FT,Liga Profesional Argentina,Union Santa Fe,Deportivo Riestra,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16584,6 +16667,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-05T15:15:00,1387945.0,FT,Ligue 1,Lorient,Paris FC,1,1,5.0,6.0,1.0,2.0,3.0,5.0,10.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-05T15:15:00,1387943.0,FT,Ligue 1,Le Havre,Auxerre,1,1,5.0,5.0,2.0,2.0,3.0,2.0,10.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-05T15:15:00,1387946.0,FT,Ligue 1,Metz,Nantes,0,0,6.0,3.0,2.0,1.0,5.0,2.0,19.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,
+2026-04-05T15:15:00,1419918.0,FT,Serie B Italia,Frosinone,Padova,2,0,7.0,5.0,1.0,2.0,8.0,2.0,24.0,11.0,,,,,,,0.0,0.0,10.0,15.0,,,63.0,37.0,,,,,,,2.0,0.0,0.0,0.0,0.0,1.0,0.0,2.0,,,,,N. Turrini
 2026-04-05T15:30:00,1388553.0,FT,Bundesliga,Eintracht Frankfurt,1. FC Köln,2,2,8.0,0.0,1.0,2.0,7.0,9.0,20.0,14.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,0.0,2.0,1.0,0.0,0.0,2.0,,,,,
 2026-04-05T15:30:00,1531573.0,PEN,FA Cup,West Ham,Leeds,2,2,4.0,5.0,2.0,3.0,6.0,8.0,22.0,21.0,,,,,,,0.0,0.0,20.0,11.0,,,56.0,44.0,,,,,,,,,,,,,,,,,,,
 2026-04-05T15:55:00,1436149.0,FT,Pro League Arabia,Al Okhdood,Al-Fateh,1,0,5.0,7.0,3.0,1.0,6.0,5.0,11.0,10.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16592,6 +16676,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-05T16:30:00,1536938.0,FT,Pro League Belgica,KVC Westerlo,Charleroi,2,0,5.0,5.0,2.0,2.0,5.0,4.0,15.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-05T17:00:00,1394677.0,FT,Super Lig Turquia,Fenerbahçe,Beşiktaş,1,0,10.0,5.0,3.0,5.0,6.0,2.0,13.0,14.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-05T17:30:00,1394353.0,FT,3. Liga,Alemannia Aachen,SV Wehen,3,0,3.0,7.0,1.0,3.0,3.0,5.0,13.0,14.0,,,,,,,0.0,0.0,12.0,13.0,,,50.0,50.0,,,,,,,3.0,0.0,0.0,0.0,0.0,1.0,1.0,2.0,,,,,S. Schreiner
+2026-04-05T17:30:00,1419916.0,FT,Serie B Italia,Palermo,Avellino,2,0,1.0,0.0,2.0,3.0,3.0,1.0,10.0,5.0,,,,,,,0.0,1.0,14.0,15.0,,,51.0,49.0,,,,,,,1.0,1.0,0.0,0.0,1.0,1.0,3.0,0.0,,,,,V. Crezzini
 2026-04-05T18:00:00,1519307.0,FT,Liga Pro Ecuador,Leones del Norte,Delfin SC,1,0,2.0,2.0,2.0,3.0,2.0,6.0,5.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,1.0,1.0,2.0,1.0,,,,,
 2026-04-05T18:00:00,1533584.0,FT,Premier League Egipto,Ismaily SC,El Geish,0,0,6.0,5.0,1.0,1.0,1.0,0.0,5.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-05T18:00:00,1533664.0,FT,Premier League Egipto,AL Masry,Zamalek SC,1,4,2.0,6.0,0.0,0.0,2.0,5.0,7.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16625,16 +16710,22 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-05T23:30:00,1492001.0,FT,Liga Profesional Argentina,Central Cordoba de Santiago,Newells Old Boys,1,3,3.0,2.0,3.0,0.0,2.0,5.0,6.0,13.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,2.0,1.0,2.0,1.0,0.0,0.0,,,,,
 2026-04-06T02:07:00,1492579.0,FT,Liga MX,Guadalajara Chivas,U.N.A.M. - Pumas,2,2,8.0,1.0,3.0,7.0,12.0,2.0,28.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,2.0,0.0,2.0,1.0,3.0,4.0,,,,,
 2026-04-06T10:30:00,1378172.0,FT,Serie A,Udinese,Como,0,0,6.0,2.0,2.0,3.0,4.0,4.0,14.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,0.0,2.0,0.0,3.0,,,,,
+2026-04-06T10:30:00,1419913.0,FT,Serie B Italia,Cesena,Sudtirol,1,1,4.0,6.0,0.0,3.0,3.0,1.0,11.0,10.0,,,,,,,0.0,0.0,10.0,17.0,,,71.0,29.0,,,,,,,1.0,0.0,1.0,0.0,0.0,0.0,2.0,1.0,,,,,C. G. Allegretta
 2026-04-06T11:30:00,1536979.0,FT,Pro League Belgica,Club Brugge KV,Anderlecht,4,2,8.0,2.0,2.0,1.0,9.0,6.0,30.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-06T12:30:00,1382256.0,FT,Eerste Divisie,Almere City FC,Den Bosch,1,2,8.0,1.0,2.0,1.0,8.0,5.0,25.0,10.0,,,,,,,0.0,0.0,14.0,8.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-06T13:00:00,1378168.0,FT,Serie A,Lecce,Atalanta,0,3,2.0,5.0,0.0,2.0,0.0,6.0,11.0,16.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,2.0,0.0,0.0,0.0,2.0,,,,,
+2026-04-06T13:00:00,1419912.0,FT,Serie B Italia,Venezia,Juve Stabia,3,1,5.0,4.0,3.0,2.0,10.0,4.0,19.0,12.0,,,,,,,0.0,0.0,22.0,14.0,,,69.0,31.0,,,,,,,2.0,1.0,1.0,0.0,0.0,3.0,2.0,0.0,,,,,M. Perri
+2026-04-06T13:00:00,1419920.0,FT,Serie B Italia,Mantova,Virtus Entella,1,0,4.0,2.0,4.0,3.0,6.0,1.0,12.0,10.0,,,,,,,0.0,0.0,18.0,15.0,,,55.0,45.0,,,,,,,0.0,1.0,0.0,0.0,0.0,4.0,1.0,2.0,,,,,F. Dionisi
+2026-04-06T13:00:00,1419919.0,FT,Serie B Italia,Bari,Modena,3,1,4.0,7.0,2.0,2.0,8.0,6.0,12.0,19.0,,,,,,,0.0,0.0,2.0,14.0,,,38.0,62.0,,,,,,,2.0,1.0,0.0,1.0,0.0,2.0,0.0,2.0,,,,,A. Arena
 2026-04-06T14:00:00,1536967.0,FT,Pro League Belgica,RAAL La Louvière,Dender,0,1,4.0,3.0,3.0,4.0,4.0,3.0,21.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-06T14:45:00,1382258.0,FT,Eerste Divisie,De Graafschap,Jong AZ,5,0,9.0,2.0,1.0,1.0,15.0,3.0,27.0,6.0,,,,,,,0.0,1.0,8.0,9.0,,,62.0,38.0,,,,,,,1.0,4.0,0.0,0.0,0.0,1.0,1.0,0.0,,,,,L. Gerrets
 2026-04-06T14:45:00,1382255.0,FT,Eerste Divisie,Roda,Willem II,0,1,3.0,8.0,2.0,0.0,1.0,6.0,6.0,14.0,,,,,,,0.0,0.0,10.0,16.0,,,57.0,43.0,,,,,,,0.0,0.0,1.0,0.0,1.0,1.0,0.0,0.0,,,,,M. Nagtegaal
 2026-04-06T15:00:00,1533585.0,FT,Premier League Egipto,Kahraba Ismailia,Petrojet,0,0,4.0,10.0,0.0,2.0,0.0,6.0,8.0,16.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-06T15:15:00,1419914.0,FT,Serie B Italia,Sampdoria,Empoli,1,0,7.0,4.0,2.0,2.0,3.0,0.0,13.0,10.0,,,,,,,0.0,0.0,10.0,21.0,,,44.0,56.0,,,,,,,0.0,1.0,0.0,0.0,0.0,2.0,0.0,2.0,,,,,I. Pezzuto
 2026-04-06T16:00:00,1378166.0,FT,Serie A,Juventus,Genoa,2,0,5.0,5.0,4.0,1.0,5.0,3.0,16.0,12.0,,,,,,,,,,,,,,,,,,,,,2.0,0.0,0.0,0.0,2.0,2.0,0.0,1.0,,,,,
 2026-04-06T16:30:00,1536980.0,FT,Pro League Belgica,Gent,KV Mechelen,1,1,5.0,10.0,1.0,0.0,4.0,6.0,6.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-06T17:00:00,1394682.0,FT,Super Lig Turquia,Kocaelispor,Başakşehir,0,0,1.0,8.0,0.0,1.0,1.0,2.0,11.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-06T17:30:00,1419917.0,FT,Serie B Italia,Carrarese,Spezia,3,1,2.0,5.0,1.0,4.0,4.0,4.0,12.0,16.0,,,,,,,1.0,3.0,12.0,22.0,,,51.0,49.0,,,,,,,2.0,1.0,0.0,1.0,0.0,1.0,2.0,2.0,,,,,G. Manganiello
 2026-04-06T17:45:00,1396480.0,FT,Primeira Liga,Arouca,Estoril,3,2,3.0,3.0,3.0,2.0,4.0,3.0,12.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-06T18:00:00,1533586.0,FT,Premier League Egipto,Masr,El Mokawloon,0,0,5.0,1.0,2.0,0.0,0.0,2.0,11.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-06T18:45:00,1389362.0,FT,Ligue 2,Le Mans,PAU,4,0,6.0,3.0,1.0,3.0,9.0,2.0,16.0,5.0,,,,,,,0.0,0.0,20.0,4.0,,,53.0,47.0,,,,,,,2.0,2.0,0.0,0.0,0.0,1.0,2.0,1.0,,,,,M. Lesage
@@ -16731,6 +16822,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-10T18:00:00,1382265.0,FT,Eerste Divisie,FC Eindhoven,Roda,1,3,5.0,5.0,2.0,1.0,3.0,6.0,12.0,16.0,,,,,,,0.0,0.0,21.0,4.0,,,39.0,61.0,,,,,,,1.0,0.0,1.0,2.0,0.0,2.0,0.0,1.0,,,,,S. Teuben
 2026-04-10T18:00:00,1381134.0,FT,Eredivisie,Twente,FC Volendam,2,1,7.0,1.0,1.0,1.0,9.0,4.0,23.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-10T18:30:00,1388560.0,FT,Bundesliga,FC Augsburg,1899 Hoffenheim,2,2,4.0,4.0,5.0,3.0,8.0,4.0,17.0,13.0,,,,,,,,,,,,,,,,,,,,,2.0,0.0,2.0,0.0,2.0,3.0,0.0,3.0,,,,,
+2026-04-10T18:30:00,1419926.0,FT,Serie B Italia,Frosinone,Palermo,1,1,4.0,7.0,4.0,3.0,5.0,7.0,14.0,13.0,,,,,,,0.0,0.0,12.0,11.0,,,46.0,54.0,,,,,,,0.0,1.0,0.0,1.0,2.0,2.0,2.0,1.0,,,,,S. Sozza
 2026-04-10T18:45:00,1536939.0,FT,Pro League Belgica,Charleroi,Antwerp,2,1,2.0,9.0,3.0,2.0,5.0,3.0,13.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-10T18:45:00,1378182.0,FT,Serie A,AS Roma,Pisa,3,0,1.0,3.0,1.0,1.0,3.0,5.0,8.0,9.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,,,,,
 2026-04-10T19:00:00,1391126.0,FT,La Liga,Real Madrid,Girona,1,1,10.0,1.0,2.0,1.0,9.0,2.0,22.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,1.0,1.0,1.0,0.0,1.0,,,,,
@@ -16750,6 +16842,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-11T01:05:00,1506080.0,FT,Liga Colombia,Deportivo Pasto,Deportes Tolima,1,0,1.0,4.0,1.0,2.0,1.0,2.0,2.0,9.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,0.0,1.0,0.0,2.0,0.0,,,,,
 2026-04-11T03:06:00,1492581.0,FT,Liga MX,FC Juarez,Club Tijuana,1,2,5.0,9.0,1.0,2.0,1.0,6.0,11.0,21.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,1.0,0.0,1.0,2.0,0.0,,,,,
 2026-04-11T11:00:00,1388874.0,FT,2. Bundesliga,Preußen Münster,SpVgg Greuther Fürth,0,0,6.0,4.0,,,3.0,5.0,12.0,6.0,,,,,,,0.0,0.0,12.0,14.0,,,32.0,68.0,,,,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,J. Wienefeld
+2026-04-11T11:30:00,1387048.0,FT,Championship,Coventry,Sheffield Wednesday,0,0,7.0,2.0,0.0,3.0,3.0,0.0,20.0,8.0,,,,,,,0.0,0.0,10.0,16.0,,,69.0,31.0,,,,,,,0.0,0.0,0.0,0.0,0.0,0.0,1.0,2.0,,,,,M. Donohue
 2026-04-11T11:30:00,1379279.0,FT,Premier League,Arsenal,Bournemouth,1,2,10.0,1.0,1.0,3.0,3.0,3.0,15.0,8.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,1.0,1.0,0.0,1.0,0.0,3.0,,,,,
 2026-04-11T11:30:00,1394686.0,FT,Super Lig Turquia,Başakşehir,Gençlerbirliği S.K.,3,0,4.0,2.0,2.0,1.0,10.0,3.0,21.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-11T12:00:00,1394377.0,FT,3. Liga,Waldhof Mannheim,MSV Duisburg,1,4,,,5.0,2.0,,,,,,,,,,,0.0,0.0,,,,,,,,,,,,,0.0,1.0,2.0,2.0,2.0,3.0,1.0,1.0,,,,,K. Oldhafer
@@ -16759,6 +16852,10 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-11T13:00:00,1537239.0,FT,Primera Division Uruguay,Atletico Torque,Albion FC,0,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,0.0,0.0,1.0,1.0,0.0,,,,,
 2026-04-11T13:00:00,1378176.0,FT,Serie A,Cagliari,Cremonese,1,0,6.0,5.0,1.0,1.0,5.0,2.0,17.0,5.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,,,,,
 2026-04-11T13:00:00,1378183.0,FT,Serie A,Torino,Hellas Verona,2,1,3.0,6.0,1.0,4.0,2.0,4.0,11.0,18.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,1.0,0.0,1.0,0.0,1.0,3.0,,,,,
+2026-04-11T13:00:00,1419925.0,FT,Serie B Italia,Juve Stabia,Cesena,2,0,6.0,2.0,1.0,2.0,3.0,2.0,7.0,16.0,,,,,,,0.0,0.0,7.0,20.0,,,50.0,50.0,,,,,,,0.0,2.0,0.0,0.0,0.0,1.0,1.0,1.0,,,,,M. Caputi
+2026-04-11T13:00:00,1419922.0,FT,Serie B Italia,Sudtirol,Modena,1,1,7.0,9.0,1.0,1.0,5.0,3.0,18.0,17.0,,,,,,,0.0,0.0,12.0,12.0,,,47.0,53.0,,,,,,,0.0,1.0,1.0,0.0,0.0,1.0,0.0,1.0,,,,,A. Zanotti
+2026-04-11T13:00:00,1419924.0,FT,Serie B Italia,Pescara,Sampdoria,1,2,5.0,3.0,3.0,4.0,1.0,2.0,12.0,14.0,,,,,,,0.0,0.0,27.0,24.0,,,49.0,51.0,,,,,,,1.0,0.0,0.0,2.0,2.0,1.0,2.0,2.0,,,,,M. Piccinini
+2026-04-11T13:00:00,1419923.0,FT,Serie B Italia,Virtus Entella,Venezia,1,1,4.0,2.0,3.0,4.0,4.0,2.0,9.0,10.0,,,,,,,0.0,1.0,13.0,21.0,,,37.0,63.0,,,,,,,0.0,1.0,1.0,0.0,0.0,3.0,1.0,3.0,,,,,S. Galipo
 2026-04-11T13:30:00,1388568.0,FT,Bundesliga,VfL Wolfsburg,Eintracht Frankfurt,1,2,7.0,7.0,2.0,1.0,7.0,4.0,22.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,2.0,0.0,1.0,1.0,0.0,1.0,,,,,
 2026-04-11T13:30:00,1388561.0,FT,Bundesliga,Borussia Dortmund,Bayer Leverkusen,0,1,5.0,5.0,3.0,0.0,1.0,4.0,14.0,11.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,0.0,2.0,1.0,0.0,0.0,,,,,
 2026-04-11T13:30:00,1388565.0,FT,Bundesliga,RB Leipzig,Borussia Mönchengladbach,1,0,11.0,4.0,4.0,1.0,11.0,3.0,24.0,15.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,1.0,3.0,1.0,0.0,,,,,
@@ -16773,6 +16870,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-11T14:30:00,1381135.0,FT,Eredivisie,Utrecht,Telstar,4,1,7.0,5.0,2.0,1.0,9.0,7.0,18.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-11T14:30:00,1396489.0,FT,Primeira Liga,AVS,Guimaraes,1,1,5.0,4.0,5.0,1.0,4.0,6.0,17.0,14.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-11T15:00:00,1533667.0,FT,Premier League Egipto,Pyramids FC,AL Masry,1,1,6.0,6.0,4.0,4.0,6.0,2.0,12.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-11T15:15:00,1419927.0,FT,Serie B Italia,Avellino,Catanzaro,1,1,6.0,1.0,4.0,5.0,5.0,2.0,19.0,7.0,,,,,,,0.0,1.0,15.0,10.0,,,44.0,56.0,,,,,,,0.0,1.0,0.0,1.0,3.0,1.0,1.0,4.0,,,,,P. Tremolada
 2026-04-11T16:00:00,1436161.0,FT,Pro League Arabia,Al Taawon,Al Kholood,1,2,3.0,0.0,5.0,6.0,3.0,4.0,17.0,6.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-11T16:00:00,1436158.0,FT,Pro League Arabia,Al Najma,NEOM,2,1,3.0,22.0,1.0,2.0,4.0,4.0,6.0,33.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-11T16:00:00,1378180.0,FT,Serie A,AC Milan,Udinese,0,3,4.0,3.0,1.0,1.0,3.0,6.0,20.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,2.0,1.0,1.0,0.0,0.0,1.0,,,,,
@@ -16851,6 +16949,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-12T13:00:00,1379283.0,FT,Premier League,Crystal Palace,Newcastle,2,1,2.0,4.0,0.0,3.0,5.0,3.0,11.0,7.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,1.0,0.0,0.0,0.0,0.0,3.0,,,,,
 2026-04-12T13:00:00,1537236.0,FT,Primera Division Uruguay,Central Espanol,Danubio,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,2.0,1.0,1.0,0.0,5.0,1.0,2.0,,,,,
 2026-04-12T13:00:00,1378181.0,FT,Serie A,Parma,Napoli,1,1,3.0,7.0,1.0,0.0,2.0,6.0,3.0,20.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,,,,,
+2026-04-12T13:00:00,1419921.0,FT,Serie B Italia,Padova,Empoli,1,0,4.0,4.0,2.0,1.0,7.0,1.0,16.0,11.0,,,,,,,0.0,0.0,20.0,22.0,,,44.0,56.0,,,,,,,0.0,1.0,0.0,0.0,0.0,2.0,1.0,0.0,,,,,D. Perenzoni
 2026-04-12T13:30:00,1388562.0,FT,Bundesliga,1. FC Köln,Werder Bremen,3,1,8.0,5.0,3.0,2.0,8.0,2.0,25.0,6.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,0.0,1.0,0.0,3.0,0.0,2.0,,,,,
 2026-04-12T14:00:00,1492210.0,FT,Brasileirao,Atletico Paranaense,Chapecoense-sc,2,0,5.0,0.0,2.0,4.0,6.0,1.0,14.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-12T14:00:00,1536941.0,FT,Pro League Belgica,Genk,OH Leuven,0,0,3.0,2.0,2.0,3.0,6.0,1.0,16.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16862,6 +16961,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-12T14:45:00,1381128.0,FT,Eredivisie,AZ Alkmaar,Heerenveen,3,0,6.0,6.0,1.0,1.0,10.0,1.0,23.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-12T15:15:00,1387955.0,FT,Ligue 1,Nice,Le Havre,1,1,5.0,2.0,1.0,1.0,5.0,6.0,15.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-12T15:15:00,1387958.0,FT,Ligue 1,Toulouse,Lille,0,4,4.0,2.0,2.0,0.0,1.0,9.0,9.0,15.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-12T15:15:00,1419928.0,FT,Serie B Italia,Spezia,Mantova,0,2,6.0,0.0,2.0,3.0,3.0,5.0,12.0,13.0,,,,,,,0.0,0.0,21.0,12.0,,,44.0,56.0,,,,,,,0.0,0.0,1.0,1.0,1.0,1.0,2.0,1.0,,,,,J. L. Sacchi
 2026-04-12T15:30:00,1388567.0,FT,Bundesliga,VfB Stuttgart,Hamburger SV,4,0,8.0,2.0,2.0,1.0,11.0,5.0,23.0,9.0,,,,,,,,,,,,,,,,,,,,,2.0,2.0,0.0,0.0,1.0,1.0,0.0,1.0,,,,,
 2026-04-12T15:30:00,1379282.0,FT,Premier League,Chelsea,Manchester City,0,3,4.0,12.0,3.0,1.0,3.0,8.0,12.0,18.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,3.0,1.0,2.0,1.0,0.0,,,,,
 2026-04-12T16:00:00,1378175.0,FT,Serie A,Bologna,Lecce,2,0,8.0,6.0,0.0,2.0,4.0,1.0,12.0,6.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,0.0,0.0,0.0,2.0,0.0,,,,,
@@ -16874,6 +16974,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-12T17:15:00,1536969.0,FT,Pro League Belgica,Dender,Zulte Waregem,1,2,2.0,6.0,2.0,0.0,5.0,9.0,15.0,24.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-12T17:30:00,1394378.0,FT,3. Liga,TSV 1860 München,SSV Jahn Regensburg,2,2,9.0,5.0,1.0,3.0,9.0,4.0,18.0,11.0,,,,,,,0.0,0.0,12.0,12.0,,,55.0,45.0,,,,,,,1.0,1.0,2.0,0.0,0.0,1.0,0.0,3.0,,,,,D. Bartnitzki
 2026-04-12T17:30:00,1388564.0,FT,Bundesliga,FSV Mainz 05,SC Freiburg,0,1,6.0,4.0,1.0,3.0,3.0,3.0,10.0,8.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,1.0,0.0,1.0,2.0,1.0,,,,,
+2026-04-12T17:30:00,1419929.0,FT,Serie B Italia,Reggiana,Carrarese,2,0,4.0,8.0,1.0,3.0,4.0,1.0,10.0,19.0,,,,,,,0.0,0.0,16.0,12.0,,,33.0,67.0,,,,,,,2.0,0.0,0.0,0.0,0.0,1.0,1.0,2.0,,,,,L. Massimi
 2026-04-12T18:00:00,1492587.0,FT,Liga MX,U.N.A.M. - Pumas,Mazatlán,3,1,8.0,6.0,1.0,2.0,8.0,5.0,18.0,13.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,1.0,0.0,0.0,1.0,0.0,2.0,,,,,
 2026-04-12T18:00:00,1519315.0,FT,Liga Pro Ecuador,Deportivo Cuenca,Independiente del Valle,2,3,2.0,9.0,3.0,4.0,4.0,9.0,12.0,22.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,3.0,1.0,2.0,2.0,2.0,,,,,
 2026-04-12T18:00:00,1492023.0,FT,Liga Profesional Argentina,Newells Old Boys,San Lorenzo,0,0,3.0,1.0,2.0,4.0,3.0,1.0,11.0,4.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,0.0,2.0,1.0,3.0,,,,,
@@ -16925,6 +17026,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-14T00:00:00,1505418.0,FT,Primera Division Chile,Union La Calera,Concepción,1,0,8.0,8.0,1.0,3.0,3.0,3.0,18.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,0.0,1.0,0.0,3.0,,,,,
 2026-04-14T00:30:00,1492027.0,FT,Liga Profesional Argentina,Velez Sarsfield,Central Cordoba de Santiago,1,0,4.0,4.0,1.0,2.0,8.0,2.0,21.0,11.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,0.0,1.0,0.0,1.0,1.0,,,,,
 2026-04-14T15:00:00,1533598.0,FT,Premier League Egipto,Future FC,El Gouna FC,0,0,3.0,3.0,5.0,0.0,5.0,3.0,12.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-14T17:00:00,1419899.0,FT,Serie B Italia,Catanzaro,Modena,2,2,5.0,5.0,2.0,1.0,4.0,3.0,8.0,8.0,,,,,,,0.0,0.0,8.0,16.0,,,55.0,45.0,,,,,,,2.0,0.0,1.0,1.0,2.0,0.0,0.0,1.0,,,,,C. G. Allegretta
 2026-04-14T18:00:00,1533599.0,FT,Premier League Egipto,Al Ittihad,Masr,2,1,4.0,6.0,1.0,0.0,4.0,3.0,9.0,5.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-14T18:00:00,1533600.0,FT,Premier League Egipto,Kahraba Ismailia,Ismaily SC,1,1,2.0,6.0,1.0,2.0,1.0,5.0,7.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-14T18:00:00,1512567.0,FT,Primera Division Peru,UCV Moquegua,Juan Pablo II College,3,0,3.0,5.0,3.0,1.0,3.0,2.0,5.0,9.0,,,,,,,,,,,,,,,,,,,,,0.0,3.0,0.0,0.0,2.0,1.0,0.0,1.0,,,,,
@@ -16989,8 +17091,10 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-17T18:00:00,1382281.0,FT,Eerste Divisie,Roda,Emmen,2,2,3.0,5.0,0.0,6.0,6.0,5.0,15.0,15.0,,,,,,,0.0,1.0,7.0,16.0,,,59.0,41.0,,,,,,,2.0,0.0,0.0,2.0,0.0,0.0,1.0,5.0,,,,,J. van der Laan
 2026-04-17T18:00:00,1389384.0,FT,Ligue 2,Le Mans,Clermont Foot,1,0,6.0,4.0,1.0,1.0,6.0,1.0,13.0,10.0,,,,,,,0.0,0.0,24.0,8.0,,,58.0,42.0,,,,,,,0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,,,,,M. Leleu
 2026-04-17T18:30:00,1388575.0,FT,Bundesliga,FC St. Pauli,1. FC Köln,1,1,8.0,5.0,4.0,1.0,6.0,1.0,14.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,1.0,0.0,4.0,0.0,1.0,,,,,
+2026-04-17T18:30:00,1419940.0,FT,Serie B Italia,Sampdoria,Monza,0,3,8.0,5.0,1.0,2.0,8.0,4.0,19.0,15.0,,,,,,,0.0,0.0,8.0,12.0,,,62.0,38.0,,,,,,,0.0,0.0,2.0,1.0,0.0,1.0,1.0,1.0,,,,,G. Manganiello
 2026-04-17T18:45:00,1387960.0,FT,Ligue 1,Lens,Toulouse,3,2,14.0,1.0,1.0,1.0,13.0,2.0,41.0,5.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-17T18:45:00,1378185.0,FT,Serie A,Inter,Cagliari,3,0,4.0,9.0,0.0,2.0,5.0,1.0,18.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,3.0,0.0,0.0,0.0,0.0,2.0,0.0,,,,,
+2026-04-17T19:00:00,1387061.0,FT,Championship,Blackburn,Coventry,1,1,3.0,3.0,4.0,1.0,2.0,2.0,7.0,12.0,,,,,,,0.0,0.0,10.0,9.0,,,30.0,70.0,,,,,,,0.0,1.0,0.0,1.0,1.0,3.0,0.0,1.0,,,,,L. Smith
 2026-04-17T19:00:00,1392158.0,FT,Segunda División,Las Palmas,Leganes,2,0,5.0,5.0,3.0,0.0,5.0,1.0,12.0,11.0,,,,,,,0.0,0.0,17.0,9.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-17T19:45:00,1396505.0,FT,Primeira Liga,Rio Ave,AVS,2,2,4.0,9.0,1.0,2.0,8.0,7.0,20.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-17T20:00:00,1505060.0,FT,Division Profesional Paraguay,Sportivo Trinidense,Club Sp. San Lorenzo,2,1,4.0,6.0,2.0,3.0,5.0,3.0,12.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17012,6 +17116,8 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-18T12:00:00,1394387.0,FT,3. Liga,FC Saarbrücken,TSV 1860 München,0,0,12.0,1.0,1.0,3.0,6.0,5.0,22.0,10.0,,,,,,,0.0,0.0,6.0,12.0,,,53.0,47.0,,,,,,,0.0,0.0,0.0,0.0,0.0,1.0,1.0,2.0,,,,,C. Ballweg
 2026-04-18T12:00:00,1389382.0,FT,Ligue 2,Estac Troyes,Boulogne,1,0,8.0,1.0,1.0,1.0,5.0,1.0,11.0,5.0,,,,,,,0.0,0.0,14.0,17.0,,,48.0,52.0,,,,,,,0.0,1.0,0.0,0.0,1.0,0.0,0.0,1.0,,,,,F. Benchabane
 2026-04-18T13:00:00,1378192.0,FT,Serie A,Udinese,Parma,0,1,10.0,5.0,2.0,0.0,3.0,1.0,16.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,1.0,0.0,2.0,0.0,0.0,,,,,
+2026-04-18T13:00:00,1419933.0,FT,Serie B Italia,Mantova,Avellino,0,2,10.0,2.0,1.0,0.0,3.0,3.0,12.0,6.0,,,,,,,0.0,0.0,18.0,12.0,,,64.0,36.0,,,,,,,0.0,0.0,0.0,2.0,0.0,1.0,0.0,0.0,,,,,A. Calzavara
+2026-04-18T13:00:00,1419932.0,FT,Serie B Italia,Modena,Frosinone,1,2,2.0,6.0,3.0,4.0,7.0,9.0,19.0,20.0,,,,,,,0.0,0.0,16.0,16.0,,,50.0,50.0,,,,,,,1.0,0.0,0.0,2.0,1.0,2.0,1.0,3.0,,,,,G. Ayroldi
 2026-04-18T13:30:00,1388577.0,FT,Bundesliga,Werder Bremen,Hamburger SV,3,1,7.0,3.0,4.0,3.0,10.0,3.0,18.0,11.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,1.0,0.0,1.0,3.0,1.0,2.0,,,,,
 2026-04-18T13:30:00,1388574.0,FT,Bundesliga,1899 Hoffenheim,Borussia Dortmund,2,1,4.0,3.0,2.0,3.0,4.0,3.0,13.0,8.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,1.0,1.0,1.0,0.0,3.0,,,,,
 2026-04-18T13:30:00,1388569.0,FT,Bundesliga,Bayer Leverkusen,FC Augsburg,1,2,11.0,4.0,2.0,1.0,10.0,5.0,36.0,11.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,1.0,1.0,0.0,2.0,0.0,1.0,,,,,
@@ -17024,6 +17130,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-18T14:30:00,1396504.0,FT,Primeira Liga,Nacional,Alverca,1,0,4.0,8.0,2.0,1.0,6.0,4.0,10.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-18T15:00:00,1387962.0,FT,Ligue 1,Lorient,Marseille,2,0,1.0,7.0,0.0,3.0,4.0,2.0,11.0,16.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-18T15:00:00,1533601.0,FT,Premier League Egipto,Petrojet,Pharco,1,0,2.0,7.0,3.0,2.0,4.0,2.0,9.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-18T15:15:00,1419934.0,FT,Serie B Italia,Palermo,Cesena,2,0,6.0,6.0,0.0,1.0,3.0,3.0,17.0,14.0,,,,,,,0.0,0.0,14.0,5.0,,,39.0,61.0,,,,,,,1.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,,,,,G. Collu
 2026-04-18T16:00:00,1539883.0,FT,Primera Division Uruguay,Progreso,Wanderers,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,1.0,1.0,2.0,1.0,1.0,,,,,
 2026-04-18T16:00:00,1378188.0,FT,Serie A,Napoli,Lazio,0,2,12.0,0.0,1.0,3.0,0.0,7.0,12.0,14.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,1.0,1.0,0.0,1.0,2.0,,,,,
 2026-04-18T16:15:00,1536942.0,FT,Pro League Belgica,KVC Westerlo,Genk,1,2,3.0,7.0,1.0,2.0,3.0,5.0,12.0,10.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17034,6 +17141,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-18T17:00:00,1490212.0,FT,MLS,Toronto FC,Austin,3,3,6.0,5.0,5.0,2.0,11.0,6.0,18.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,3.0,1.0,2.0,1.0,4.0,2.0,0.0,,,,,
 2026-04-18T17:00:00,1396500.0,FT,Primeira Liga,Casa Pia,Santa Clara,0,0,4.0,6.0,3.0,2.0,3.0,2.0,10.0,5.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-18T17:00:00,1394697.0,FT,Super Lig Turquia,Gençlerbirliği S.K.,Galatasaray,1,2,2.0,4.0,2.0,2.0,3.0,2.0,11.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-18T17:30:00,1419936.0,FT,Serie B Italia,Juve Stabia,Catanzaro,1,1,3.0,4.0,1.0,1.0,3.0,5.0,7.0,13.0,,,,,,,0.0,0.0,14.0,14.0,,,44.0,56.0,,,,,,,1.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,,,,,N. Turrini
 2026-04-18T18:00:00,1492033.0,FT,Liga Profesional Argentina,Gimnasia L.P.,Estudiantes de Rio Cuarto,1,0,1.0,4.0,2.0,3.0,4.0,4.0,14.0,14.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,0.0,1.0,1.0,1.0,2.0,,,,,
 2026-04-18T18:00:00,1533602.0,FT,Premier League Egipto,El Mokawloon,El Geish,2,0,11.0,6.0,3.0,4.0,5.0,2.0,9.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-18T18:00:00,1533603.0,FT,Premier League Egipto,Wadi Degla,National Bank of Egypt,2,0,5.0,2.0,1.0,1.0,3.0,1.0,10.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17096,6 +17204,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-19T13:00:00,1539885.0,FT,Primera Division Uruguay,Cerro,Atletico Torque,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,1.0,1.0,1.0,0.0,4.0,,,,,
 2026-04-19T13:00:00,1398238.0,FT,Segunda Liga,Vizela,Farense,0,2,0.0,0.0,4.0,3.0,0.0,0.0,0.0,0.0,,,,,,,0.0,0.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-19T13:00:00,1378193.0,FT,Serie A,Hellas Verona,AC Milan,0,1,6.0,1.0,2.0,0.0,2.0,3.0,13.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,0.0,1.0,1.0,0.0,0.0,,,,,
+2026-04-19T13:00:00,1419937.0,FT,Serie B Italia,Carrarese,Pescara,2,2,6.0,5.0,1.0,1.0,5.0,4.0,14.0,14.0,,,,,,,0.0,0.0,18.0,15.0,,,41.0,59.0,,,,,,,1.0,1.0,1.0,1.0,1.0,0.0,1.0,0.0,,,,,I. Pezzuto
 2026-04-19T13:30:00,1388573.0,FT,Bundesliga,SC Freiburg,FC Heidenheim,2,1,5.0,4.0,1.0,0.0,4.0,2.0,17.0,13.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,1.0,0.0,1.0,0.0,0.0,,,,,
 2026-04-19T14:00:00,1492225.0,NS,Brasileirao,Internacional,Mirassol,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-19T14:00:00,1536970.0,FT,Pro League Belgica,Dender,Cercle Brugge,1,4,4.0,6.0,4.0,0.0,2.0,12.0,8.0,18.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17107,6 +17216,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-19T15:15:00,1387965.0,FT,Ligue 1,Nantes,Stade Brestois 29,1,1,11.0,0.0,2.0,2.0,4.0,2.0,17.0,4.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-19T15:15:00,1387967.0,FT,Ligue 1,Strasbourg,Rennes,0,3,2.0,9.0,0.0,1.0,1.0,9.0,9.0,26.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-19T15:15:00,1387963.0,FT,Ligue 1,Metz,Paris FC,1,3,6.0,5.0,2.0,2.0,6.0,7.0,13.0,15.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-19T15:15:00,1419938.0,FT,Serie B Italia,Padova,Reggiana,1,0,5.0,2.0,0.0,2.0,2.0,3.0,10.0,12.0,,,,,,,0.0,0.0,16.0,19.0,,,56.0,44.0,,,,,,,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,,,,,G. Mucera
 2026-04-19T15:30:00,1388570.0,FT,Bundesliga,Bayern München,VfB Stuttgart,4,2,11.0,3.0,0.0,0.0,9.0,7.0,28.0,11.0,,,,,,,,,,,,,,,,,,,,,3.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,,,,,
 2026-04-19T15:30:00,1379295.0,FT,Premier League,Manchester City,Arsenal,2,1,8.0,5.0,2.0,2.0,5.0,3.0,15.0,9.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,1.0,0.0,0.0,2.0,1.0,1.0,,,,,
 2026-04-19T16:00:00,1529695.0,FT,KNVB Beker,AZ Alkmaar,NEC Nijmegen,5,1,2.0,8.0,4.0,3.0,7.0,3.0,13.0,11.0,,,,,,,,,,,,,,,,,,,,,1.0,4.0,0.0,1.0,1.0,3.0,1.0,2.0,,,,,
@@ -17120,6 +17230,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-19T17:15:00,1536971.0,FT,Pro League Belgica,RAAL La Louvière,Zulte Waregem,0,2,7.0,1.0,2.0,0.0,2.0,3.0,10.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-19T17:30:00,1394392.0,FT,3. Liga,SV Wehen,Waldhof Mannheim,3,3,,,3.0,1.0,,,,,,,,,,,0.0,0.0,,,,,,,,,,,,,3.0,0.0,0.0,3.0,0.0,3.0,0.0,1.0,,,,,Y. Rupert
 2026-04-19T17:30:00,1388571.0,FT,Bundesliga,Borussia Mönchengladbach,FSV Mainz 05,1,1,0.0,6.0,5.0,2.0,4.0,7.0,9.0,17.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,1.0,0.0,5.0,2.0,0.0,,,,,
+2026-04-19T17:30:00,1419939.0,FT,Serie B Italia,Empoli,Virtus Entella,1,1,6.0,5.0,1.0,3.0,2.0,1.0,15.0,9.0,,,,,,,0.0,0.0,11.0,13.0,,,62.0,38.0,,,,,,,0.0,1.0,1.0,0.0,1.0,0.0,0.0,3.0,,,,,L. Marinelli
 2026-04-19T18:00:00,1519324.0,FT,Liga Pro Ecuador,Manta FC,Deportivo Cuenca,0,1,6.0,1.0,4.0,1.0,5.0,2.0,20.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,0.0,1.0,3.0,0.0,1.0,,,,,
 2026-04-19T18:00:00,1533607.0,FT,Premier League Egipto,Future FC,Masr,1,3,15.0,1.0,2.0,3.0,3.0,4.0,13.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-19T18:00:00,1533606.0,FT,Premier League Egipto,Kahraba Ismailia,Ghazl El Mehalla,1,3,5.0,1.0,2.0,1.0,8.0,4.0,16.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17177,6 +17288,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-21T18:30:00,1536946.0,FT,Pro League Belgica,OH Leuven,KVC Westerlo,0,2,8.0,4.0,1.0,0.0,5.0,8.0,12.0,16.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-21T18:30:00,1536945.0,FT,Pro League Belgica,Standard Liege,Antwerp,1,2,6.0,4.0,1.0,2.0,4.0,3.0,15.0,17.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-21T18:45:00,1387077.0,FT,Championship,Leicester,Hull City,2,2,9.0,8.0,3.0,2.0,4.0,4.0,20.0,13.0,,,,,,,0.0,0.0,11.0,11.0,,,52.0,48.0,,,,,,,0.0,2.0,1.0,1.0,1.0,2.0,1.0,1.0,,,,,T. Kirk
+2026-04-21T18:45:00,1387069.0,FT,Championship,Coventry,Portsmouth,5,1,2.0,1.0,0.0,1.0,6.0,2.0,15.0,4.0,,,,,,,0.0,0.0,4.0,10.0,,,71.0,29.0,,,,,,,1.0,4.0,0.0,1.0,0.0,0.0,1.0,0.0,,,,,A. Kitchen
 2026-04-21T19:00:00,1521548.0,FT,Coppa Italia,Inter,Como,3,2,9.0,7.0,0.0,1.0,8.0,7.0,22.0,16.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-21T19:00:00,1379301.0,FT,Premier League,Brighton,Chelsea,3,0,6.0,5.0,1.0,1.0,9.0,0.0,15.0,6.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,0.0,0.0,0.0,1.0,1.0,0.0,,,,,
 2026-04-21T19:00:00,1538341.0,FT,Primera Division Bolivia,Universitario de Vinto,ABB,5,2,2.0,8.0,3.0,1.0,11.0,8.0,20.0,18.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17291,6 +17403,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-24T17:00:00,1394393.0,FT,3. Liga,Alemannia Aachen,MSV Duisburg,3,1,3.0,2.0,3.0,2.0,4.0,5.0,8.0,11.0,,,,,,,0.0,0.0,7.0,19.0,,,47.0,53.0,,,,,,,2.0,1.0,0.0,1.0,1.0,2.0,2.0,0.0,,,,,L. Benen
 2026-04-24T17:00:00,1533613.0,FT,Premier League Egipto,Ismaily SC,Future FC,0,2,6.0,3.0,2.0,3.0,3.0,2.0,6.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-24T17:00:00,1533612.0,FT,Premier League Egipto,El Geish,Kahraba Ismailia,1,2,6.0,3.0,0.0,2.0,2.0,3.0,13.0,6.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-24T17:00:00,1419947.0,FT,Serie B Italia,Monza,Modena,1,0,5.0,4.0,1.0,2.0,4.0,5.0,10.0,15.0,,,,,,,0.0,0.0,8.0,20.0,,,41.0,59.0,,,,,,,1.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,,,,,F. Dionisi
 2026-04-24T17:00:00,1394704.0,FT,Super Lig Turquia,Başakşehir,Kasımpaşa,4,0,6.0,2.0,3.0,1.0,8.0,2.0,14.0,5.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-24T18:00:00,1537053.0,FT,Copa Belgica,Genk W,Gent W,2,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-24T18:00:00,1382288.0,FT,Eerste Divisie,Emmen,De Graafschap,1,0,7.0,6.0,3.0,0.0,6.0,6.0,15.0,17.0,,,,,,,0.0,0.0,10.0,10.0,,,42.0,58.0,,,,,,,0.0,1.0,0.0,0.0,3.0,0.0,0.0,0.0,,,,,S. Shukrula
@@ -17301,6 +17414,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-24T18:45:00,1378200.0,FT,Serie A,Napoli,Cremonese,4,0,7.0,5.0,0.0,0.0,9.0,4.0,25.0,7.0,,,,,,,,,,,,,,,,,,,,,3.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,
 2026-04-24T19:00:00,1391131.0,FT,La Liga,Real Betis,Real Madrid,1,1,7.0,6.0,1.0,2.0,4.0,8.0,19.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,0.0,1.0,0.0,1.0,1.0,,,,,
 2026-04-24T19:00:00,1379306.0,FT,Premier League,Sunderland,Nottingham Forest,0,5,3.0,6.0,2.0,5.0,4.0,6.0,14.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,4.0,1.0,0.0,2.0,0.0,5.0,,,,,
+2026-04-24T19:00:00,1419945.0,FT,Serie B Italia,Avellino,Bari,2,0,8.0,4.0,2.0,2.0,6.0,0.0,18.0,9.0,,,,,,,0.0,0.0,13.0,13.0,,,60.0,40.0,,,,,,,0.0,2.0,0.0,0.0,1.0,1.0,1.0,1.0,,,,,G. Manganiello
 2026-04-24T19:15:00,1396508.0,FT,Primeira Liga,Alverca,Arouca,2,1,6.0,3.0,0.0,6.0,3.0,3.0,7.0,14.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-24T20:00:00,1492046.0,FT,Liga Profesional Argentina,Deportivo Riestra,Independiente,2,0,3.0,3.0,5.0,3.0,4.0,2.0,8.0,12.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,0.0,0.0,2.0,3.0,1.0,2.0,,,,,
 2026-04-24T20:45:00,1505064.0,FT,Division Profesional Paraguay,Nacional Asuncion,Deportivo Recoleta,2,1,14.0,4.0,3.0,4.0,6.0,2.0,20.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17328,6 +17442,11 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-25T13:00:00,1387972.0,FT,Ligue 1,Lyon,Auxerre,3,2,6.0,3.0,1.0,2.0,6.0,2.0,12.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-25T13:00:00,1440955.0,FT,Second League Egipto,Itesalat,Abu Qair Semad,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,,,,,
 2026-04-25T13:00:00,1378201.0,FT,Serie A,Parma,Pisa,1,0,7.0,4.0,1.0,2.0,5.0,3.0,15.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,0.0,0.0,1.0,2.0,0.0,,,,,
+2026-04-25T13:00:00,1419950.0,FT,Serie B Italia,Frosinone,Carrarese,3,0,8.0,8.0,2.0,3.0,4.0,3.0,20.0,15.0,,,,,,,0.0,0.0,10.0,13.0,,,57.0,43.0,,,,,,,0.0,3.0,0.0,0.0,1.0,1.0,1.0,2.0,,,,,A. Rapuano
+2026-04-25T13:00:00,1419948.0,FT,Serie B Italia,Pescara,Juve Stabia,1,1,3.0,2.0,2.0,4.0,4.0,7.0,8.0,13.0,,,,,,,0.0,0.0,16.0,13.0,,,46.0,54.0,,,,,,,0.0,1.0,0.0,1.0,0.0,2.0,2.0,2.0,,,,,D. Perenzoni
+2026-04-25T13:00:00,1419944.0,FT,Serie B Italia,Sudtirol,Mantova,0,3,2.0,2.0,2.0,1.0,0.0,5.0,9.0,11.0,,,,,,,0.0,0.0,15.0,12.0,,,41.0,59.0,,,,,,,0.0,0.0,2.0,1.0,1.0,1.0,0.0,1.0,,,,,M. Caputi
+2026-04-25T13:00:00,1419949.0,FT,Serie B Italia,Virtus Entella,Padova,1,0,5.0,3.0,1.0,3.0,7.0,1.0,14.0,8.0,,,,,,,0.0,0.0,18.0,14.0,,,58.0,42.0,,,,,,,0.0,1.0,0.0,0.0,1.0,0.0,1.0,2.0,,,,,L. Massimi
+2026-04-25T13:00:00,1419942.0,FT,Serie B Italia,Reggiana,Palermo,1,1,2.0,7.0,3.0,1.0,1.0,10.0,3.0,20.0,,,,,,,1.0,0.0,11.0,9.0,,,30.0,70.0,,,,,,,1.0,0.0,1.0,0.0,1.0,2.0,1.0,0.0,,,,,E. Feliciani
 2026-04-25T13:30:00,1388586.0,FT,Bundesliga,VfL Wolfsburg,Borussia Mönchengladbach,0,0,8.0,5.0,1.0,3.0,4.0,2.0,12.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,0.0,1.0,0.0,3.0,,,,,
 2026-04-25T13:30:00,1388583.0,FT,Bundesliga,FSV Mainz 05,Bayern München,3,4,4.0,4.0,1.0,2.0,8.0,6.0,21.0,11.0,,,,,,,,,,,,,,,,,,,,,3.0,0.0,0.0,4.0,1.0,0.0,1.0,1.0,,,,,
 2026-04-25T13:30:00,1388578.0,FT,Bundesliga,FC Augsburg,Eintracht Frankfurt,1,1,9.0,7.0,1.0,2.0,3.0,7.0,17.0,19.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,1.0,0.0,1.0,1.0,1.0,,,,,
@@ -17357,6 +17476,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-25T17:00:00,1490237.0,FT,MLS,Toronto FC,Atlanta United FC,1,2,8.0,7.0,0.0,2.0,2.0,2.0,9.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,0.0,2.0,0.0,0.0,2.0,0.0,,,,,
 2026-04-25T17:00:00,1396509.0,FT,Primeira Liga,Benfica,Moreirense,4,1,9.0,2.0,2.0,2.0,8.0,4.0,18.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-25T17:00:00,1394709.0,FT,Super Lig Turquia,Göztepe,Antalyaspor,2,0,4.0,3.0,2.0,0.0,8.0,4.0,16.0,19.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-04-25T17:30:00,1419941.0,FT,Serie B Italia,Cesena,Sampdoria,0,0,4.0,5.0,1.0,3.0,2.0,3.0,10.0,13.0,,,,,,,0.0,0.0,16.0,14.0,,,51.0,49.0,,,,,,,0.0,0.0,0.0,0.0,0.0,1.0,1.0,2.0,,,,,P. Tremolada
 2026-04-25T18:00:00,1537045.0,FT,Copa Belgica,OH Leuven W,Club Brugge W,2,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-25T18:00:00,1381142.0,FT,Eredivisie,NAC Breda,Ajax,0,2,11.0,2.0,0.0,2.0,3.0,6.0,21.0,8.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-25T18:00:00,1389395.0,FT,Ligue 2,Saint Etienne,Estac Troyes,0,3,9.0,3.0,2.0,4.0,3.0,4.0,13.0,15.0,,,,,,,0.0,0.0,15.0,16.0,,,66.0,34.0,,,,,,,0.0,0.0,0.0,3.0,0.0,2.0,1.0,3.0,,,,,A. Valnet
@@ -17412,6 +17532,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-04-26T03:10:00,1492612.0,FT,Liga MX,Club America,Atlas,0,1,5.0,2.0,1.0,2.0,3.0,2.0,11.0,7.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,1.0,0.0,1.0,1.0,1.0,,,,,
 2026-04-26T10:15:00,1381137.0,FT,Eredivisie,Excelsior,Utrecht,5,0,3.0,2.0,0.0,3.0,9.0,3.0,18.0,10.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-04-26T10:30:00,1378196.0,FT,Serie A,Fiorentina,Sassuolo,0,0,7.0,4.0,2.0,1.0,5.0,1.0,22.0,11.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,1.0,1.0,0.0,1.0,,,,,
+2026-04-26T11:00:00,1387083.0,FT,Championship,Coventry,Wrexham,3,1,5.0,4.0,2.0,2.0,6.0,2.0,15.0,13.0,,,,,,,0.0,0.0,6.0,18.0,,,61.0,39.0,,,,,,,1.0,2.0,1.0,0.0,1.0,1.0,1.0,1.0,,,,,S. Allison
 2026-04-26T11:30:00,1388884.0,FT,2. Bundesliga,VfL Bochum,SpVgg Greuther Fürth,2,1,5.0,5.0,,,4.0,4.0,17.0,14.0,,,,,,,0.0,0.0,12.0,9.0,,,35.0,65.0,,,,,,,1.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,,,,,F. Willenborg
 2026-04-26T11:30:00,1394402.0,FT,3. Liga,FC Viktoria Köln,Energie Cottbus,0,2,4.0,5.0,1.0,2.0,8.0,3.0,17.0,9.0,,,,,,,0.0,0.0,15.0,10.0,,,56.0,44.0,,,,,,,0.0,0.0,1.0,1.0,0.0,1.0,2.0,0.0,,,,,L. Exuzidis
 2026-04-26T11:30:00,1536992.0,FT,Pro League Belgica,Gent,Club Brugge KV,0,2,7.0,9.0,2.0,0.0,3.0,6.0,17.0,16.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17565,6 +17686,15 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-01T00:30:00,1535173.0,FT,Copa Sudamericana,RB Bragantino,River Plate,0,1,5.0,6.0,6.0,4.0,5.0,6.0,12.0,14.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-01T02:00:00,1535273.0,FT,Copa Libertadores,Independiente Medellin,Cusco,1,0,6.0,1.0,3.0,2.0,6.0,1.0,21.0,10.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-01T02:00:00,1535170.0,FT,Copa Sudamericana,Alianza Atletico,Macara,0,2,5.0,9.0,3.0,2.0,2.0,3.0,10.0,15.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-05-01T13:00:00,1419959.0,FT,Serie B Italia,Empoli,Avellino,1,0,4.0,2.0,3.0,1.0,9.0,2.0,17.0,5.0,,,,,,,0.0,1.0,21.0,22.0,,,43.0,57.0,,,,,,,0.0,1.0,0.0,0.0,0.0,3.0,0.0,1.0,,,,,F. La Penna
+2026-05-01T13:00:00,1419954.0,FT,Serie B Italia,Carrarese,Cesena,0,0,10.0,4.0,3.0,0.0,3.0,2.0,23.0,6.0,,,,,,,0.0,0.0,18.0,8.0,,,59.0,41.0,,,,,,,0.0,0.0,0.0,0.0,1.0,2.0,0.0,0.0,,,,,D. Perenzoni
+2026-05-01T13:00:00,1419952.0,FT,Serie B Italia,Juve Stabia,Frosinone,0,1,7.0,8.0,,,4.0,3.0,20.0,12.0,,,,,,,0.0,0.0,10.0,14.0,,,57.0,43.0,,,,,,,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,,,,,M. Marcenaro
+2026-05-01T13:00:00,1419956.0,FT,Serie B Italia,Mantova,Monza,3,2,0.0,7.0,3.0,2.0,7.0,10.0,18.0,23.0,,,,,,,0.0,0.0,18.0,11.0,,,44.0,56.0,,,,,,,2.0,1.0,0.0,2.0,1.0,2.0,1.0,1.0,,,,,J. L. Sacchi
+2026-05-01T13:00:00,1419957.0,FT,Serie B Italia,Modena,Reggiana,2,1,2.0,4.0,4.0,3.0,3.0,5.0,9.0,16.0,,,,,,,1.0,0.0,16.0,21.0,,,53.0,47.0,,,,,,,1.0,1.0,0.0,1.0,1.0,3.0,1.0,2.0,,,,,R. Abisso
+2026-05-01T13:00:00,1419960.0,FT,Serie B Italia,Padova,Pescara,1,0,3.0,6.0,3.0,3.0,4.0,5.0,11.0,11.0,,,,,,,0.0,0.0,21.0,14.0,,,37.0,63.0,,,,,,,0.0,1.0,0.0,0.0,1.0,2.0,1.0,2.0,,,,,G. Collu
+2026-05-01T13:00:00,1419951.0,FT,Serie B Italia,Palermo,Catanzaro,3,2,4.0,3.0,2.0,0.0,6.0,8.0,12.0,15.0,,,,,,,0.0,0.0,17.0,10.0,,,41.0,59.0,,,,,,,1.0,2.0,2.0,0.0,1.0,1.0,0.0,0.0,,,,,C. G. Allegretta
+2026-05-01T13:00:00,1419953.0,FT,Serie B Italia,Sampdoria,Sudtirol,1,0,4.0,2.0,2.0,2.0,3.0,3.0,8.0,8.0,,,,,,,0.0,0.0,15.0,21.0,,,53.0,47.0,,,,,,,1.0,0.0,0.0,0.0,0.0,2.0,1.0,1.0,,,,,M. Marchetti
+2026-05-01T13:00:00,1419958.0,FT,Serie B Italia,Bari,Virtus Entella,2,0,1.0,4.0,2.0,3.0,5.0,5.0,5.0,16.0,,,,,,,1.0,1.0,15.0,13.0,,,43.0,57.0,,,,,,,1.0,1.0,0.0,0.0,1.0,1.0,0.0,3.0,,,,,M. Mariani
 2026-05-01T14:00:00,1533677.0,FT,Premier League Egipto,Pyramids FC,Enppi,3,2,2.0,5.0,4.0,4.0,3.0,4.0,7.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-01T14:00:00,1533676.0,FT,Premier League Egipto,Ceramica Cleopatra,AL Masry,0,1,3.0,1.0,1.0,0.0,2.0,4.0,6.0,7.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-01T14:00:00,1394718.0,FT,Super Lig Turquia,Rizespor,Konyaspor,3,2,1.0,2.0,1.0,2.0,7.0,5.0,15.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -17587,6 +17717,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-02T00:00:00,1519349.0,FT,Liga Pro Ecuador,Libertad,Aucas,3,2,4.0,5.0,2.0,2.0,6.0,9.0,16.0,19.0,,,,,,,,,,,,,,,,,,,,,1.0,2.0,0.0,2.0,1.0,1.0,0.0,2.0,,,,,
 2026-05-02T11:00:00,1388897.0,FT,2. Bundesliga,Holstein Kiel,Eintracht Braunschweig,2,0,4.0,5.0,3.0,2.0,4.0,3.0,12.0,9.0,,,,,,,0.0,0.0,13.0,12.0,,,54.0,46.0,,,,,,,1.0,1.0,0.0,0.0,2.0,1.0,1.0,1.0,,,,,F. Exner
 2026-05-02T11:30:00,1387093.0,FT,Championship,Hull City,Norwich,2,1,1.0,7.0,2.0,2.0,6.0,2.0,8.0,12.0,,,,,,,0.0,0.0,10.0,15.0,,,35.0,65.0,,,,,,,1.0,1.0,1.0,0.0,1.0,1.0,1.0,1.0,,,,,J. Smith
+2026-05-02T11:30:00,1387092.0,FT,Championship,Watford,Coventry,0,4,0.0,6.0,2.0,1.0,4.0,7.0,13.0,18.0,,,,,,,0.0,0.0,16.0,10.0,,,43.0,57.0,,,,,,,0.0,0.0,2.0,2.0,1.0,1.0,1.0,0.0,,,,,R. Ricardo
 2026-05-02T11:30:00,1537044.0,FT,Copa Belgica,Anderlecht W,OH Leuven W,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-02T12:00:00,1394411.0,FT,3. Liga,Verl,Havelse,4,0,,,0.0,3.0,,,,,,,,,,,0.0,0.0,,,,,,,,,,,,,3.0,1.0,0.0,0.0,0.0,0.0,2.0,1.0,,,,,F. Michel
 2026-05-02T12:00:00,1394408.0,FT,3. Liga,FC Schweinfurt 05,TSV 1860 München,1,1,,,3.0,2.0,,,,,,,,,,,0.0,0.0,,,,,,,,,,,,,1.0,0.0,1.0,0.0,0.0,3.0,1.0,1.0,,,,,T. Schulz
@@ -17856,6 +17987,13 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-08T18:30:00,1388597.0,FT,Bundesliga,Borussia Dortmund,Eintracht Frankfurt,3,2,6.0,2.0,3.0,0.0,8.0,4.0,12.0,9.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,1.0,1.0,1.0,2.0,0.0,0.0,,,,,
 2026-05-08T18:30:00,1392192.0,FT,Segunda Division Espana,Cadiz,Deportivo La Coruna,0,1,3.0,9.0,1.0,3.0,1.0,8.0,7.0,19.0,,,,,,,0.0,0.0,10.0,18.0,,,41.0,59.0,,,,,,,0.0,0.0,0.0,1.0,0.0,1.0,2.0,1.0,,,,,D. Arcediano
 2026-05-08T18:30:00,1419968.0,FT,Serie B Italia,Monza,Empoli,2,2,7.0,4.0,2.0,3.0,8.0,5.0,20.0,10.0,,,,,,,0.0,0.0,10.0,17.0,,,,,,,,,,,,,,,,,,,,,,,
+2026-05-08T18:30:00,1419962.0,FT,Serie B Italia,Avellino,Modena,1,0,6.0,0.0,1.0,1.0,8.0,1.0,17.0,4.0,,,,,,,0.0,0.0,16.0,15.0,,,58.0,42.0,,,,,,,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,,,,,D. Di Marco
+2026-05-08T18:30:00,1419963.0,FT,Serie B Italia,Virtus Entella,Carrarese,2,1,5.0,5.0,3.0,2.0,6.0,2.0,19.0,10.0,,,,,,,0.0,0.0,16.0,11.0,,,43.0,57.0,,,,,,,1.0,1.0,0.0,1.0,0.0,3.0,2.0,0.0,,,,,M. Fabbri
+2026-05-08T18:30:00,1419966.0,FT,Serie B Italia,Cesena,Padova,3,4,11.0,3.0,2.0,4.0,11.0,7.0,30.0,15.0,,,,,,,0.0,0.0,11.0,11.0,,,58.0,42.0,,,,,,,3.0,0.0,3.0,1.0,0.0,2.0,0.0,4.0,,,,,A. Arena
+2026-05-08T18:30:00,1419964.0,FT,Serie B Italia,Sudtirol,Juve Stabia,1,1,8.0,2.0,1.0,0.0,5.0,1.0,23.0,6.0,,,,,,,0.0,0.0,11.0,7.0,,,42.0,58.0,,,,,,,0.0,1.0,1.0,0.0,0.0,1.0,0.0,0.0,,,,,L. Marinelli
+2026-05-08T18:30:00,1419969.0,FT,Serie B Italia,Frosinone,Mantova,5,0,8.0,3.0,3.0,2.0,8.0,5.0,15.0,16.0,,,,,,,0.0,0.0,16.0,11.0,,,43.0,57.0,,,,,,,2.0,3.0,0.0,0.0,1.0,2.0,1.0,1.0,,,,,G. Manganiello
+2026-05-08T18:30:00,1419965.0,FT,Serie B Italia,Venezia,Palermo,2,0,6.0,2.0,2.0,2.0,9.0,2.0,21.0,13.0,,,,,,,0.0,0.0,15.0,13.0,,,62.0,38.0,,,,,,,0.0,2.0,0.0,0.0,0.0,2.0,2.0,0.0,,,,,A. Zanotti
+2026-05-08T18:30:00,1419967.0,FT,Serie B Italia,Reggiana,Sampdoria,1,0,3.0,9.0,2.0,1.0,2.0,6.0,14.0,14.0,,,,,,,0.0,0.0,15.0,8.0,,,32.0,68.0,,,,,,,0.0,1.0,0.0,0.0,1.0,1.0,1.0,0.0,,,,,M. Guida
 2026-05-08T18:45:00,1387989.0,FT,Ligue 1,Lens,Nantes,1,0,8.0,3.0,2.0,1.0,5.0,3.0,14.0,15.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-08T18:45:00,1536954.0,FT,Pro League Belgica,Standard Liege,OH Leuven,2,1,3.0,7.0,0.0,2.0,4.0,2.0,13.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-08T18:45:00,1378222.0,FT,Serie A,Torino,Sassuolo,2,1,7.0,5.0,4.0,2.0,4.0,7.0,18.0,13.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,0.0,1.0,0.0,4.0,1.0,1.0,,,,,
@@ -18058,6 +18196,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-12T14:00:00,1533637.0,FT,Premier League Egipto,Pharco,Future FC,0,1,4.0,4.0,2.0,2.0,3.0,5.0,7.0,11.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-12T14:00:00,1533636.0,FT,Premier League Egipto,El Gouna FC,Kahraba Ismailia,0,1,2.0,2.0,2.0,1.0,2.0,2.0,9.0,13.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-12T16:20:00,1436197.0,FT,Pro League Arabia,Al Kholood,Al Okhdood,0,0,4.0,5.0,2.0,4.0,2.0,3.0,14.0,5.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-05-12T16:45:00,1544649.0,FT,Serie B Italia,Modena,Juve Stabia,0,1,2.0,4.0,3.0,1.0,4.0,1.0,13.0,7.0,,,,,,,0.0,0.0,18.0,13.0,,,41.0,59.0,,,,,,,0.0,0.0,0.0,1.0,2.0,1.0,1.0,0.0,,,,,F. Fourneau
 2026-05-12T17:00:00,1391171.0,FT,La Liga,Celta Vigo,Levante,2,3,4.0,4.0,0.0,2.0,6.0,6.0,11.0,14.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,1.0,2.0,0.0,0.0,0.0,2.0,,,,,
 2026-05-12T17:00:00,1533638.0,FT,Premier League Egipto,Wadi Degla,Ismaily SC,2,1,2.0,0.0,2.0,3.0,4.0,3.0,10.0,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-12T18:00:00,1391170.0,FT,La Liga,Real Betis,Elche,2,1,8.0,1.0,3.0,3.0,7.0,2.0,16.0,8.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,1.0,0.0,0.0,3.0,0.0,3.0,,,,,
@@ -18065,6 +18204,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-12T18:30:00,1544684.0,FT,Ligue 1,RED Star FC 93,Rodez,2,3,2.0,3.0,3.0,1.0,4.0,5.0,9.0,12.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-12T19:00:00,1544264.0,FT,Copa Colombia,Leones FC,Orsomarso,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-12T19:00:00,1538373.0,FT,Primera Division Bolivia,San Antonio Bulo Bulo,Universitario de Vinto,0,2,5.0,7.0,3.0,4.0,4.0,15.0,14.0,27.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-05-12T19:00:00,1544650.0,FT,Serie B Italia,Catanzaro,Avellino,3,0,6.0,5.0,0.0,1.0,8.0,3.0,20.0,8.0,,,,,,,0.0,0.0,20.0,12.0,,,47.0,53.0,,,,,,,1.0,2.0,0.0,0.0,0.0,0.0,1.0,0.0,,,,,L. Marinelli
 2026-05-12T19:30:00,1391175.0,FT,La Liga,Osasuna,Atletico Madrid,1,2,8.0,4.0,6.0,5.0,5.0,4.0,23.0,5.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,1.0,3.0,3.0,0.0,5.0,,,,,
 2026-05-12T20:00:00,1544266.0,FT,Copa Colombia,Real Santander,Popayan,0,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-12T22:00:00,1544849.0,FT,Liga Profesional Argentina,Belgrano Cordoba,Union Santa Fe,2,0,4.0,7.0,0.0,4.0,8.0,4.0,17.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,0.0,0.0,0.0,0.0,0.0,4.0,,,,,
@@ -18195,6 +18335,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-16T18:00:00,1512609.0,FT,Primera Division Peru,FBC Melgar,Sport Huancayo,4,1,5.0,3.0,4.0,3.0,8.0,3.0,15.0,17.0,,,,,,,,,,,,,,,,,,,,,1.0,3.0,0.0,1.0,0.0,4.0,2.0,1.0,,,,,
 2026-05-16T18:00:00,1544922.0,FT,Primera Division Uruguay,Juventud,Progreso,2,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2.0,0.0,0.0,0.0,0.0,2.0,0.0,4.0,,,,,
 2026-05-16T18:00:00,1436204.0,FT,Pro League Arabia,Al-Ahli Jeddah,Al Kholood,3,0,4.0,2.0,1.0,1.0,5.0,2.0,15.0,4.0,,,,,,,,,,,,,,,,,,,,,3.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,,,,,
+2026-05-16T18:00:00,1544949.0,FT,Serie B Italia,Juve Stabia,Monza,2,2,1.0,3.0,3.0,2.0,4.0,3.0,13.0,9.0,,,,,,,0.0,0.0,15.0,17.0,,,65.0,35.0,,,,,,,0.0,2.0,0.0,2.0,1.0,2.0,1.0,1.0,,,,,G. Ayroldi
 2026-05-16T18:45:00,1537001.0,FT,Pro League Belgica,St. Truiden,Gent,1,1,3.0,3.0,0.0,1.0,4.0,1.0,16.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,0.0,0.0,0.0,0.0,1.0,,,,,
 2026-05-16T19:00:00,1519365.0,FT,Liga Pro Ecuador,Macara,Independiente del Valle,0,3,3.0,7.0,2.0,2.0,1.0,6.0,13.0,12.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,2.0,1.0,1.0,1.0,1.0,,,,,
 2026-05-16T19:00:00,1538382.0,FT,Primera Division Bolivia,Universitario de Vinto,Bolívar,3,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -18287,6 +18428,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-17T18:00:00,1519363.0,FT,Liga Pro Ecuador,Leones del Norte,Mushuc Runa SC,3,1,4.0,2.0,2.0,1.0,6.0,5.0,17.0,12.0,,,,,,,,,,,,,,,,,,,,,2.0,1.0,1.0,0.0,2.0,0.0,1.0,0.0,,,,,
 2026-05-17T18:00:00,1544925.0,FT,Primera Division Uruguay,Racing Montevideo,Cerro Largo,1,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,0.0,1.0,4.0,2.0,1.0,,,,,
 2026-05-17T18:00:00,1436160.0,FT,Pro League Arabia,Al Shabab,Al-Ittihad FC,3,2,4.0,11.0,3.0,1.0,9.0,6.0,13.0,15.0,,,,,,,,,,,,,,,,,,,,,0.0,3.0,0.0,2.0,0.0,3.0,0.0,1.0,,,,,
+2026-05-17T18:00:00,1544950.0,FT,Serie B Italia,Catanzaro,Palermo,3,0,6.0,2.0,1.0,3.0,6.0,1.0,13.0,9.0,,,,,,,0.0,0.0,8.0,16.0,,,45.0,55.0,,,,,,,3.0,0.0,0.0,0.0,0.0,1.0,2.0,1.0,,,,,E. Feliciani
 2026-05-17T18:15:00,1512608.0,FT,Primera Division Peru,Deportivo Garcilaso,UTC Cajamarca,2,0,1.0,6.0,2.0,3.0,5.0,3.0,12.0,10.0,,,,,,,,,,,,,,,,,,,,,0.0,2.0,0.0,0.0,0.0,2.0,2.0,1.0,,,,,
 2026-05-17T18:45:00,1378232.0,FT,Serie A,Sassuolo,Lecce,2,3,2.0,8.0,1.0,4.0,6.0,6.0,15.0,11.0,,,,,,,,,,,,,,,,,,,,,1.0,1.0,2.0,1.0,0.0,1.0,0.0,4.0,,,,,
 2026-05-17T18:45:00,1378225.0,FT,Serie A,Cagliari,Torino,2,1,5.0,1.0,1.0,1.0,4.0,3.0,13.0,10.0,,,,,,,,,,,,,,,,,,,,,2.0,0.0,1.0,0.0,0.0,1.0,0.0,1.0,,,,,
@@ -18329,6 +18471,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-18T19:00:00,1379329.0,FT,Premier League,Arsenal,Burnley,1,0,3.0,3.0,1.0,3.0,3.0,0.0,13.0,5.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,0.0,0.0,1.0,1.0,2.0,,,,,
 2026-05-18T21:30:00,1544927.0,FT,Primera Division Uruguay,Deportivo Maldonado,Danubio,3,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2.0,1.0,0.0,1.0,2.0,4.0,1.0,1.0,,,,,
 2026-05-19T00:00:00,1519361.0,FT,Liga Pro Ecuador,Guayaquil City FC,Orense SC,0,1,6.0,0.0,0.0,1.0,5.0,3.0,9.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,,,,,
+2026-05-19T18:00:00,1544951.0,FT,Serie B Italia,Monza,Juve Stabia,2,1,6.0,2.0,3.0,3.0,6.0,1.0,14.0,6.0,,,,,,,0.0,0.0,10.0,15.0,,,45.0,55.0,,,,,,,0.0,2.0,0.0,1.0,2.0,1.0,0.0,3.0,,,,,M. Mariani
 2026-05-19T18:30:00,1379331.0,FT,Premier League,Bournemouth,Manchester City,1,1,7.0,6.0,4.0,2.0,2.0,5.0,10.0,14.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,1.0,1.0,3.0,0.0,2.0,,,,,
 2026-05-19T18:30:00,1536960.0,FT,Pro League Belgica,KVC Westerlo,Standard Liege,1,2,6.0,1.0,3.0,2.0,4.0,6.0,24.0,12.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,2.0,0.0,1.0,2.0,0.0,2.0,,,,,
 2026-05-19T18:30:00,1536962.0,FT,Pro League Belgica,Charleroi,OH Leuven,1,1,14.0,6.0,0.0,0.0,7.0,2.0,23.0,11.0,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,,,,,
@@ -18354,6 +18497,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-05-20T17:00:00,1545403.0,FT,Primeira Liga,Torreense,Casa Pia,0,0,5.0,3.0,1.0,5.0,2.0,2.0,14.0,6.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0,0.0,1.0,0.0,2.0,3.0,,,,,
 2026-05-20T18:00:00,1436212.0,FT,Pro League Arabia,Al Khaleej Saihat,Al-Ahli Jeddah,1,4,5.0,4.0,2.0,0.0,4.0,7.0,9.0,13.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,2.0,2.0,1.0,1.0,0.0,0.0,,,,,
 2026-05-20T18:00:00,1438976.0,FT,Pro League Arabia,Al Najma,Al Shabab,1,0,8.0,9.0,6.0,2.0,4.0,3.0,12.0,8.0,,,,,,,,,,,,,,,,,,,,,1.0,0.0,0.0,0.0,3.0,3.0,1.0,1.0,,,,,
+2026-05-20T18:00:00,1544952.0,FT,Serie B Italia,Palermo,Catanzaro,2,0,5.0,1.0,3.0,3.0,5.0,4.0,17.0,12.0,,,,,,,2.0,0.0,28.0,11.0,,,53.0,47.0,,,,,,,1.0,1.0,0.0,0.0,2.0,1.0,0.0,3.0,,,,,M. Marcenaro
 2026-05-20T19:00:00,1544596.0,FT,Europa League,SC Freiburg,Aston Villa,0,3,1.0,8.0,1.0,3.0,2.0,6.0,4.0,17.0,,,,,,,,,,,,,,,,,,,,,0.0,0.0,2.0,1.0,1.0,0.0,2.0,1.0,,,,,
 2026-05-20T20:00:00,1540062.0,FT,Copa Argentina,Talleres Cordoba,Atletico Tucuman,0,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-05-20T20:00:00,1544278.0,FT,Copa Colombia,Fortaleza FC,Orsomarso,1,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,,,,,
@@ -19948,7 +20092,7 @@ fecha,fixture_id,estado,liga,equipo_local,equipo_visitante,goles_local,goles_vis
 2026-08-18T00:30:00,1505497.0,FT,Primera Division Chile,Palestino,Huachipato,5,1,4.0,2.0,2.0,2.0,7.0,3.0,20.0,6.0,,,,,,,0.0,0.0,6.0,11.0,,,69.0,31.0,,,,,,,1.0,4.0,1.0,0.0,1.0,1.0,1.0,1.0,,,,,C. Galaz
 2026-08-18T01:00:00,1550928.0,FT,Liga MX,Necaxa,Leon,1,2,7.0,3.0,2.0,1.0,8.0,7.0,24.0,16.0,,,,,,,0.0,1.0,15.0,14.0,,,61.0,39.0,,,,,,,0.0,1.0,1.0,1.0,0.0,2.0,0.0,1.0,,,,,L. E. Santander Aguirre
 2026-08-18T03:06:00,1550929.0,FT,Liga MX,CF Pachuca,Puebla,2,3,5.0,3.0,0.0,0.0,4.0,5.0,22.0,12.0,,,,,,,0.0,0.0,10.0,15.0,,,56.0,44.0,,,,,,,1.0,1.0,2.0,1.0,0.0,0.0,0.0,0.0,,,,,A. Barba
-2026-08-18T16:00:00,1618943.0,FT,Friendlies Clubs,1. FC Heidenheim,Bayern München,2,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2026-08-18T16:00:00,1618943.0,FT,Friendlies Clubs,FC Heidenheim,Bayern München,2,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2026-08-18T19:00:00,1622621.0,FT,Champions League,Fenerbahçe,Lyon,1,1,3.0,0.0,2.0,1.0,5.0,5.0,12.0,12.0,,,,,,,0.0,0.0,13.0,13.0,,,52.0,48.0,,,,,,,0.0,1.0,1.0,0.0,0.0,2.0,1.0,0.0,,,,,"Sven Jablonski, Germany"
 2026-08-18T19:00:00,1622620.0,FT,Champions League,Dinamo Zagreb,Viking,2,2,9.0,3.0,1.0,1.0,4.0,3.0,23.0,6.0,,,,,,,0.0,0.0,12.0,10.0,,,60.0,40.0,,,,,,,2.0,0.0,2.0,0.0,0.0,1.0,0.0,1.0,,,,,S. Gozubuyuk
 2026-08-18T19:00:00,1622622.0,FT,Champions League,Levski Sofia,AEK Athens FC,0,0,1.0,2.0,0.0,0.0,3.0,1.0,15.0,12.0,,,,,,,0.0,0.0,8.0,17.0,,,52.0,48.0,,,,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,,,,"Glenn Nyberg, Sweden"

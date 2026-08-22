@@ -8,6 +8,7 @@ LIGAS_VALIDAS = [
     "Serie B Italia", "Serie B Brasil",
     "Championship", "Segunda Division Espana", "Ligue 2", "Eerste Divisie",
     "2. Bundesliga", "3. Liga", "Second League Egipto", "Primera B Colombia",
+    "Primera B Metropolitana",
     "Champions League", "Europa League", "Conference League",
     "FA Cup", "Copa del Rey", "Coppa Italia", "DFB Pokal", "Coupe de France",
     "Taça de Portugal", "KNVB Beker", "Copa Belgica", "Turkiye Kupasi",
