@@ -385,6 +385,34 @@ def ultimos_enfrentamientos_directos(df, equipo_a, equipo_b, n=5):
     return h2h.sort_values("fecha", ascending=False).head(n)
 
 
+def _promedios_h2h_por_equipo(h2h, columna, equipo_a):
+    """Extrae los valores de una columna (goles o corners) del H2H
+    separados por EQUIPO real, no por columna local/visitante -- los
+    cruces historicos alternan de estadio temporada a temporada (ej. en
+    5 partidos Espanyol-Real Madrid, Real Madrid jugo de local en 3 de
+    los 5), asi que promediar ciegamente la columna "local" mezclaba los
+    goles de ambos equipos segun quien jugaba en casa en CADA partido
+    pasado, no segun el equipo local de HOY -- ver conversacion sobre el
+    caso Espanyol vs Real Madrid.
+    Retorna (valores_a, valores_b): valores de equipo_a y de su rival,
+    un numero por partido donde el dato no sea nulo."""
+    valores_a, valores_b = [], []
+    for _, row in h2h.iterrows():
+        val_local = row.get(f"{columna}_local")
+        val_visit = row.get(f"{columna}_visitante")
+        if row["equipo_local"] == equipo_a:
+            v_a, v_b = val_local, val_visit
+        elif row["equipo_visitante"] == equipo_a:
+            v_a, v_b = val_visit, val_local
+        else:
+            continue
+        if pd.notna(v_a):
+            valores_a.append(float(v_a))
+        if pd.notna(v_b):
+            valores_b.append(float(v_b))
+    return valores_a, valores_b
+
+
 def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_visitante=None):
     # Base: promedio entre ataque propio y defensa rival
     goles_a   = (stats_a["goles_favor"]   + stats_b["goles_contra"])   / 2
@@ -417,25 +445,29 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
 
         peso_base = 1 - peso_h2h
 
-        goles_local_h2h = h2h["goles_local"].mean()
-        goles_visit_h2h = h2h["goles_visitante"].mean()
+        # Ajuste H2H para goles y corners -- separado por equipo real
+        # (ver _promedios_h2h_por_equipo), no por columna local/
+        # visitante. Sin equipo_local/equipo_visitante no hay forma de
+        # saber que lado corresponde a cada equipo en cada cruce
+        # historico, asi que se omite el ajuste antes que arriesgar la
+        # mezcla (comportamiento previo a este fix).
+        if equipo_local and equipo_visitante:
+            goles_a_h2h, goles_b_h2h = _promedios_h2h_por_equipo(h2h, "goles", equipo_local)
+            if goles_a_h2h:
+                goles_a = goles_a * peso_base + (sum(goles_a_h2h) / len(goles_a_h2h)) * peso_h2h
+            if goles_b_h2h:
+                goles_b = goles_b * peso_base + (sum(goles_b_h2h) / len(goles_b_h2h)) * peso_h2h
 
-        if not np.isnan(goles_local_h2h):
-            goles_a = goles_a * peso_base + goles_local_h2h * peso_h2h
-        if not np.isnan(goles_visit_h2h):
-            goles_b = goles_b * peso_base + goles_visit_h2h * peso_h2h
-
-        # Ajuste H2H para corners si hay datos
-        h2h_con_stats = h2h[
-            (h2h["corners_local"] + h2h["corners_visitante"] > 0)
-        ]
-        if not h2h_con_stats.empty:
-            corners_h2h_a = h2h_con_stats["corners_local"].mean()
-            corners_h2h_b = h2h_con_stats["corners_visitante"].mean()
-            if not np.isnan(corners_h2h_a):
-                corners_a = corners_a * peso_base + corners_h2h_a * peso_h2h
-            if not np.isnan(corners_h2h_b):
-                corners_b = corners_b * peso_base + corners_h2h_b * peso_h2h
+            # Solo partidos con datos de corners reales (evita que un
+            # partido sin stats registradas cuente como 0 corners real)
+            h2h_con_stats = h2h[
+                (h2h["corners_local"] + h2h["corners_visitante"] > 0)
+            ]
+            corners_a_h2h, corners_b_h2h = _promedios_h2h_por_equipo(h2h_con_stats, "corners", equipo_local)
+            if corners_a_h2h:
+                corners_a = corners_a * peso_base + (sum(corners_a_h2h) / len(corners_a_h2h)) * peso_h2h
+            if corners_b_h2h:
+                corners_b = corners_b * peso_base + (sum(corners_b_h2h) / len(corners_b_h2h)) * peso_h2h
 
         # Ajuste H2H para tarjetas si hay datos
         h2h_con_tarjetas = h2h[
