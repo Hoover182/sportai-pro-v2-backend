@@ -117,13 +117,24 @@ def estadisticas_equipo_ultimos10(df, equipo, min_partidos=3):
     pesos_partidos = []
     for _, row in partidos.iterrows():
         if row["equipo_local"] == equipo:
-            gf = float(row["goles_local"] or 0)
-            gc = float(row["goles_visitante"] or 0)
+            gf_val = row["goles_local"]
+            gc_val = row["goles_visitante"]
             rival = str(row["equipo_visitante"])
         else:
-            gf = float(row["goles_visitante"] or 0)
-            gc = float(row["goles_local"] or 0)
+            gf_val = row["goles_visitante"]
+            gc_val = row["goles_local"]
             rival = str(row["equipo_local"])
+
+        # NaN es "truthy" en Python, asi que "valor or 0" NO lo reemplaza
+        # por 0 -- hay que chequear pd.notna() explicitamente. Los goles
+        # casi nunca faltan (0 casos en el CSV actual), pero se protege
+        # igual por consistencia con el resto del pipeline. Si falta
+        # cualquiera de los dos, el partido se excluye de este calculo (no
+        # se puede saber si gano/empato/perdio sin ambos goles).
+        if pd.isna(gf_val) or pd.isna(gc_val):
+            continue
+        gf = float(gf_val)
+        gc = float(gc_val)
 
         # Calcular peso segun fuerza del rival
         peso = 1.0
@@ -143,26 +154,25 @@ def estadisticas_equipo_ultimos10(df, equipo, min_partidos=3):
         elif gf == gc: empates += 1
         else: derrotas += 1
 
-    # Corners, tarjetas y tiros solo con partidos con stats reales
-    # Ponderados por fuerza del rival (ranking FIFA) igual que goles
+    # Corners, tarjetas y tiros solo con partidos con stats reales. Cada
+    # metrica se excluye INDIVIDUALMENTE si vino null (un partido puede
+    # tener corners pero no tarjetas, o viceversa) en vez de contarla como
+    # 0 real -- mismo criterio que _stats_n_equipo() en futbol_service.py.
+    # Ponderados por fuerza del rival (ranking FIFA) igual que goles.
     for _, row in partidos_stats.iterrows():
         if row["equipo_local"] == equipo:
-            cf = float(row["corners_local"] or 0)
-            cc = float(row["corners_visitante"] or 0)
-            tf = float(row["tarjetas_local"] or 0)
-            ta_f = float(row["tiros_arco_local"] or 0)
-            ta_c = float(row["tiros_arco_visitante"] or 0)
-            tt_f = float(row["tiros_total_local"] if "tiros_total_local" in row.index and row["tiros_total_local"] else 0)
-            tt_c = float(row["tiros_total_visitante"] if "tiros_total_visitante" in row.index and row["tiros_total_visitante"] else 0)
+            cf_val, cc_val = row["corners_local"], row["corners_visitante"]
+            tf_val = row["tarjetas_local"]
+            ta_f_val, ta_c_val = row["tiros_arco_local"], row["tiros_arco_visitante"]
+            tt_f_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
+            tt_c_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
             rival_stats = str(row["equipo_visitante"])
         else:
-            cf = float(row["corners_visitante"] or 0)
-            cc = float(row["corners_local"] or 0)
-            tf = float(row["tarjetas_visitante"] or 0)
-            ta_f = float(row["tiros_arco_visitante"] or 0)
-            ta_c = float(row["tiros_arco_local"] or 0)
-            tt_f = float(row["tiros_total_visitante"] if "tiros_total_visitante" in row.index and row["tiros_total_visitante"] else 0)
-            tt_c = float(row["tiros_total_local"] if "tiros_total_local" in row.index and row["tiros_total_local"] else 0)
+            cf_val, cc_val = row["corners_visitante"], row["corners_local"]
+            tf_val = row["tarjetas_visitante"]
+            ta_f_val, ta_c_val = row["tiros_arco_visitante"], row["tiros_arco_local"]
+            tt_f_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
+            tt_c_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
             rival_stats = str(row["equipo_local"])
 
         # Peso por rival FIFA (mismo sistema que goles)
@@ -173,13 +183,13 @@ def estadisticas_equipo_ultimos10(df, equipo, min_partidos=3):
             ratio = pts_rival / max(pts_equipo, 1)
             peso_stats = max(0.3, min(2.0, ratio))
 
-        corners_favor.append(cf * peso_stats)
-        corners_contra.append(cc * peso_stats)
-        tarjetas_favor.append(tf * peso_stats)
-        tiros_arco_favor.append(ta_f * peso_stats)
-        tiros_arco_contra.append(ta_c * peso_stats)
-        tiros_total_favor.append(tt_f * peso_stats)
-        tiros_total_contra.append(tt_c * peso_stats)
+        if pd.notna(cf_val):   corners_favor.append(float(cf_val) * peso_stats)
+        if pd.notna(cc_val):   corners_contra.append(float(cc_val) * peso_stats)
+        if pd.notna(tf_val):   tarjetas_favor.append(float(tf_val) * peso_stats)
+        if pd.notna(ta_f_val): tiros_arco_favor.append(float(ta_f_val) * peso_stats)
+        if pd.notna(ta_c_val): tiros_arco_contra.append(float(ta_c_val) * peso_stats)
+        if pd.notna(tt_f_val): tiros_total_favor.append(float(tt_f_val) * peso_stats)
+        if pd.notna(tt_c_val): tiros_total_contra.append(float(tt_c_val) * peso_stats)
 
     n_partidos = len(partidos)
     # n_partidos_stats = partidos con stats reales verificados
