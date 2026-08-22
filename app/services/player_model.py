@@ -290,12 +290,25 @@ def _procesar_jugador(p, nombre_equipo):
 
     partidos = max(games.get("appearences") or 1, 1)
 
-    goles_pg       = (stats.get("goals", {}).get("total")     or 0) / partidos
-    asist_pg       = (stats.get("goals", {}).get("assists")   or 0) / partidos
+    goles_val       = stats.get("goals", {}).get("total")
+    asist_val       = stats.get("goals", {}).get("assists")
+    tarjetas_val    = stats.get("cards", {}).get("yellow")
+    faltas_val      = stats.get("fouls", {}).get("committed")
+
+    # Promedios "crudos" (null -> 0) para alimentar la simulacion Poisson
+    # (mas abajo, _goles_media etc.), que ya tiene un piso de seguridad por
+    # metrica y necesita un numero siempre, no None -- "asumir el piso
+    # cuando no sabemos" es la mejor aproximacion disponible ahi. Distinto
+    # criterio para lo que se MUESTRA al usuario (goles_pg/asist_pg/
+    # tarjetas_pg/faltas_pg en el dict de retorno): ahi SI se distingue
+    # null de 0 real mas abajo, para no mostrar "0.0 goles por partido"
+    # falso cuando en realidad no hay dato para ese jugador.
+    goles_pg       = (goles_val or 0) / partidos
+    asist_pg       = (asist_val or 0) / partidos
     tiros_total_pg = (stats.get("shots", {}).get("total")     or 0) / partidos
     tiros_arco_pg  = (stats.get("shots", {}).get("on")        or 0) / partidos
-    tarjetas_pg    = (stats.get("cards", {}).get("yellow")    or 0) / partidos
-    faltas_pg      = (stats.get("fouls", {}).get("committed") or 0) / partidos
+    tarjetas_pg    = (tarjetas_val or 0) / partidos
+    faltas_pg      = (faltas_val or 0) / partidos
     fuera_juego_pg = (stats.get("offsides")                   or 0) / partidos
 
     return {
@@ -305,10 +318,10 @@ def _procesar_jugador(p, nombre_equipo):
         "posicion_tipo": tipo_pos,
         "minutos":       minutos,
         "partidos":      partidos,
-        "goles_pg":      round(goles_pg, 2),
-        "asist_pg":      round(asist_pg, 2),
-        "tarjetas_pg":   round(tarjetas_pg, 2),
-        "faltas_pg":     round(faltas_pg, 2),
+        "goles_pg":      round(goles_val / partidos, 2)    if goles_val    is not None else None,
+        "asist_pg":      round(asist_val / partidos, 2)    if asist_val    is not None else None,
+        "tarjetas_pg":   round(tarjetas_val / partidos, 2) if tarjetas_val is not None else None,
+        "faltas_pg":     round(faltas_val / partidos, 2)   if faltas_val   is not None else None,
         "_score_ataque":   goles_pg + asist_pg,
         "_score_defensa":  tarjetas_pg + faltas_pg,
         "_goles_media": max(goles_pg, 0.05),
@@ -411,12 +424,16 @@ def obtener_jugadores_partido(fixture_id, liga_id, temporada, nombre_local=None,
 
 
 def analizar_jugadores_partido(fixture_id, liga_id, temporada, equipo_local=None, equipo_visitante=None):
-    """Wrapper para compatibilidad con CLI antiguo."""
-    data = obtener_jugadores_partido(fixture_id, liga_id, temporada)
+    """Wrapper para compatibilidad con el CLI antiguo (main.py, opcion 8),
+    que espera una lista plana en vez del formato {equipo: {jugadores: [...]}}
+    que devuelve obtener_jugadores_partido(). Cada jugador ya trae su propio
+    "posicion_tipo" real (delantero/medio/defensa/otro) calculado en
+    _procesar_jugador() -- antes se pisaba con un "atacante"/"defensa"
+    fijo leyendo de claves ("secciones['atacantes']"/"secciones['defensivos']")
+    que ya no existen en el formato actual, dejando esta funcion rota."""
+    data = obtener_jugadores_partido(fixture_id, liga_id, temporada, equipo_local, equipo_visitante)
     lista_plana = []
     for equipo_nombre, secciones in data.items():
-        for j in secciones["atacantes"]:
-            lista_plana.append({**j, "equipo": equipo_nombre, "posicion_tipo": "atacante"})
-        for j in secciones["defensivos"]:
-            lista_plana.append({**j, "equipo": equipo_nombre, "posicion_tipo": "defensa"})
+        for j in secciones["jugadores"]:
+            lista_plana.append({**j, "equipo": equipo_nombre})
     return lista_plana
