@@ -8,8 +8,30 @@ def _safe(v):
 import os
 JUGADORES_DATA_DIR = os.path.join(os.path.dirname(__file__), "jugadores_data")
 import sys
+import time
 import pandas as pd
 from datetime import datetime
+
+# Cache en memoria con TTL para los endpoints que recorren TODOS los
+# partidos del dia llamando a simular() uno por uno (Monte Carlo +
+# Dixon-Coles + xG + ajuste de liga por cada partido) -- sin esto, cada
+# request recalculaba de cero para los ~70+ partidos del dia, bloqueando
+# el unico worker de Uvicorn (uvicorn corre sin --workers) el tiempo
+# suficiente como para que Render matara la instancia pensando que no
+# respondia. 5 minutos de TTL: nuevos partidos/resultados tardan como
+# maximo eso en reflejarse, imperceptible para el usuario.
+_CACHE_TTL_SEGUNDOS = 300
+_cache_resultados = {}
+
+
+def _obtener_o_calcular_cacheado(clave, fn_calculo):
+    ahora = time.time()
+    cacheado = _cache_resultados.get(clave)
+    if cacheado is not None and (ahora - cacheado["timestamp"]) < _CACHE_TTL_SEGUNDOS:
+        return cacheado["data"]
+    resultado = fn_calculo()
+    _cache_resultados[clave] = {"data": resultado, "timestamp": ahora}
+    return resultado
 
 # Apuntar al CSV correcto
 CSV_PATH = os.path.join(os.path.dirname(__file__), "futbol_partidos.csv")
@@ -384,6 +406,10 @@ def calcular_top3(sim, stats_a=None, stats_b=None):
 
 
 def get_partidos_hoy():
+    return _obtener_o_calcular_cacheado("partidos_hoy", _calcular_partidos_hoy)
+
+
+def _calcular_partidos_hoy():
     df = cargar_df()
     if df.empty:
         return []
@@ -442,6 +468,10 @@ def get_partidos_hoy():
 
 
 def get_partidos_rango(dias=4):
+    return _obtener_o_calcular_cacheado(f"partidos_rango_{dias}", lambda: _calcular_partidos_rango(dias))
+
+
+def _calcular_partidos_rango(dias=4):
     import pytz
     df = cargar_df()
     if df.empty:
@@ -508,6 +538,10 @@ def get_partidos_rango(dias=4):
 
 
 def get_top_picks():
+    return _obtener_o_calcular_cacheado("top_picks", _calcular_top_picks)
+
+
+def _calcular_top_picks():
     df = cargar_df()
     if df.empty:
         return []
