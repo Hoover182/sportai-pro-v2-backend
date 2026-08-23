@@ -120,6 +120,29 @@ def _liga_referencia_equipo(df, equipo):
     return partidos_dom["liga"].value_counts().idxmax()
 
 
+def n_efectivo_estimacion(n_base, n_condicion, min_partidos_condicion=10):
+    """Cantidad "equivalente" de partidos reales que respaldan un
+    promedio ya blendeado entre la ventana mezclada (n_base partidos) y
+    la ventana por condicion local/visitante (n_condicion partidos) --
+    mismo peso que usa el blend de los promedios en si (ver
+    estadisticas_equipo_ultimos10), aplicado ahora al TAMANO de muestra
+    en vez de al valor. Se usa como "k" (confianza) en la mezcla
+    Gamma-Poisson de simulator.py, para no tratar un promedio de pocos
+    partidos como si fuera la tasa exacta y verdadera del equipo.
+
+    Medido en un backtest de 1459 partidos reales (FT, con datos
+    completos, simulados con SOLO los datos disponibles antes de cada
+    partido): sin este ajuste el modelo daba probabilidades
+    sistematicamente ~8-11 puntos mas extremas que el acierto real en
+    los mercados de mayor confianza del Top3 (85%+). Probando k=n_base,
+    k=n_base/2 y k=8 fijo contra ese mismo backtest, k=n_efectivo (esta
+    funcion) fue el que mas cerca dejo la probabilidad dicha del
+    acierto real (gap de +8.0 a -1.3 puntos), sin sobrecorregir para el
+    otro lado como n_base/2."""
+    peso_cond = min(n_condicion / min_partidos_condicion, 1.0)
+    return n_base * (1 - peso_cond) + n_condicion * peso_cond
+
+
 def obtener_liga_partido(df, local, visitante):
     """Determina la liga del partido que se esta analizando (Boca vs River
     en Liga Profesional Argentina, por ejemplo), en 3 niveles de confianza:

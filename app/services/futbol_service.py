@@ -53,8 +53,10 @@ from football_model import (
     ajustar_medias_con_rival,
     obtener_partidos_equipo,
     obtener_liga_partido,
+    n_efectivo_estimacion,
 )
-from simulator import simular_partido_futbol, probabilidad_linea_personalizada, tarjetas_esperadas_por_parejez
+from simulator import simular_partido_futbol, probabilidad_linea_personalizada, tarjetas_esperadas_por_parejez, _muestrear_conteo
+import numpy as np
 
 LIGAS_IDS = {
     "Champions League": (2, None),
@@ -307,10 +309,27 @@ def simular(df, local, visitante):
     )
     goles_a = goles_a * multiplicador_goles_local
     goles_b = goles_b * multiplicador_goles_visitante
+
+    # Confianza (k) en cada promedio para la mezcla Gamma-Poisson -- ver
+    # n_efectivo_estimacion() y la conversacion de calibracion. Goles usa
+    # n_partidos/n_partidos_condicion (siempre disponibles); corners/
+    # tarjetas usan n_partidos_stats/n_partidos_condicion (solo partidos
+    # con esos datos reales). Tarjetas es un unico total combinado, asi
+    # que usa la muestra mas chica de los dos equipos (el eslabon mas
+    # debil determina cuanto ensanchar).
+    k_goles_a = n_efectivo_estimacion(stats_a["n_partidos"], stats_a["n_partidos_condicion"])
+    k_goles_b = n_efectivo_estimacion(stats_b["n_partidos"], stats_b["n_partidos_condicion"])
+    k_corners_a = n_efectivo_estimacion(stats_a["n_partidos_stats"], stats_a["n_partidos_condicion"])
+    k_corners_b = n_efectivo_estimacion(stats_b["n_partidos_stats"], stats_b["n_partidos_condicion"])
+    k_tarjetas = min(k_corners_a, k_corners_b)
+
     sim = simular_partido_futbol(
         goles_a, goles_b,
         stats_a["std_goles_favor"], stats_b["std_goles_favor"],
-        corners_a, corners_b, tarjetas
+        corners_a, corners_b, tarjetas,
+        k_goles_a=k_goles_a, k_goles_b=k_goles_b,
+        k_corners_a=k_corners_a, k_corners_b=k_corners_b,
+        k_tarjetas=k_tarjetas,
     )
 
     # Ajuste H2H directo para Ambos Marcan - el modelo derivado de Poisson
@@ -344,9 +363,13 @@ def simular(df, local, visitante):
     if multiplicador_tarjetas != 1.0 and "tarjetas_totales_proj" in sim:
         sim["tarjetas_totales_proj"] = sim["tarjetas_totales_proj"] * multiplicador_tarjetas
         if "tarjetas_ou" in sim:
-            import numpy as np
             media_ajustada = max(sim["tarjetas_totales_proj"], 0.1)
-            valores_sim = np.random.poisson(media_ajustada, 10000)
+            # Mismo k_tarjetas que ya uso simular_partido_futbol() para
+            # tarjetas_ou -- sin esto, este resampleo pisaba la mezcla
+            # Gamma-Poisson con un Poisson puro, anulando la correccion
+            # de calibracion en la enorme mayoria de partidos (el
+            # multiplicador casi nunca da exactamente 1.0).
+            valores_sim = _muestrear_conteo(media_ajustada, k_tarjetas, 10000)
             for linea_ou in list(sim["tarjetas_ou"].keys()):
                 sim["tarjetas_ou"][linea_ou] = {
                     "over": float(np.mean(valores_sim > linea_ou)),
@@ -357,9 +380,11 @@ def simular(df, local, visitante):
     if multiplicador_corners != 1.0 and "corners_totales_proj" in sim:
         sim["corners_totales_proj"] = sim["corners_totales_proj"] * multiplicador_corners
         if "corners_ou" in sim:
-            import numpy as np
             media_ajustada_c = max(sim["corners_totales_proj"], 0.1)
-            valores_sim_c = np.random.poisson(media_ajustada_c, 10000)
+            # Mismo criterio que arriba -- k combinado (el mas chico de
+            # los dos equipos) ya que este resampleo trabaja sobre el
+            # total combinado, no por separado local/visitante.
+            valores_sim_c = _muestrear_conteo(media_ajustada_c, min(k_corners_a, k_corners_b), 10000)
             for linea_ou in list(sim["corners_ou"].keys()):
                 sim["corners_ou"][linea_ou] = {
                     "over": float(np.mean(valores_sim_c > linea_ou)),
@@ -1075,12 +1100,24 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
         return None, "No hay datos suficientes para simular"
     h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=5)
 
+    # Misma confianza (k) que ya usa simular() para goles_ou/corners_ou/
+    # tarjetas_ou -- sin esto, una linea personalizada mostraria una
+    # probabilidad mas extrema (Poisson puro) que la que el usuario ya
+    # ve en las lineas fijas del mismo partido para el mismo mercado.
+    k_goles_a = n_efectivo_estimacion(stats_a["n_partidos"], stats_a["n_partidos_condicion"])
+    k_goles_b = n_efectivo_estimacion(stats_b["n_partidos"], stats_b["n_partidos_condicion"])
+    k_corners_a = n_efectivo_estimacion(stats_a["n_partidos_stats"], stats_a["n_partidos_condicion"])
+    k_corners_b = n_efectivo_estimacion(stats_b["n_partidos_stats"], stats_b["n_partidos_condicion"])
+
     probabilidad_modelo = probabilidad_linea_personalizada(
         mercado, linea, lado,
         media_goles_a=sim["goles_local_proj"],
         media_goles_b=sim["goles_visitante_proj"],
         media_corners_total=sim["corners_totales_proj"],
         media_tarjetas_total=sim["tarjetas_totales_proj"],
+        k_goles_a=k_goles_a, k_goles_b=k_goles_b,
+        k_corners=min(k_corners_a, k_corners_b),
+        k_tarjetas=min(k_corners_a, k_corners_b),
     )
 
     probabilidad_implicita = 1 / cuota

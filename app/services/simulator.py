@@ -30,6 +30,44 @@ def _poisson_pmf_vector(lam, max_k=MAX_GOLES_GRID):
     return np.exp(-lam) * lam**ks / factoriales
 
 
+def _neg_binom_pmf_vector(lam, k, max_k=MAX_GOLES_GRID):
+    """PMF con incertidumbre parametrica sobre la tasa lam (mezcla
+    Gamma-Poisson => Binomial Negativa) en vez de Poisson puro. k es la
+    "confianza" en lam -- alto (muchos partidos reales respaldandolo)
+    se acerca a Poisson puro; bajo (poca muestra) da una distribucion
+    mas ancha, con probabilidades menos extremas. k=None => Poisson
+    puro exacto (comportamiento identico al de siempre).
+
+    Sin esto, el modelo trataba el promedio calculado (a veces con solo
+    10 partidos, o menos) como si fuera la tasa EXACTA y verdadera del
+    equipo. Medido en un backtest de 1459 partidos reales: el modelo
+    daba probabilidades ~8-11 puntos mas extremas de lo que el acierto
+    real sostenia en los mercados de mayor confianza (85%+). Ver
+    football_model.n_efectivo_estimacion() para como se arma k."""
+    if k is None:
+        return _poisson_pmf_vector(lam, max_k)
+    k = max(float(k), 0.5)
+    ks = np.arange(0, max_k + 1)
+    log_coef = np.array([math.lgamma(n + k) - math.lgamma(k) - math.lgamma(n + 1) for n in ks])
+    p = k / (k + lam)
+    log_pmf = log_coef + k * math.log(p) + ks * math.log(1 - p)
+    return np.exp(log_pmf)
+
+
+def _muestrear_conteo(media, k, sims):
+    """Muestrea sims conteos de una variable con incertidumbre
+    parametrica sobre su tasa (Gamma-Poisson) si se pasa k, o Poisson
+    puro si k es None (comportamiento identico al de siempre). Version
+    Monte Carlo de _neg_binom_pmf_vector, para corners/tarjetas (que ya
+    se simulaban asi antes de este cambio, a diferencia de goles que
+    usa la grilla Dixon-Coles cerrada)."""
+    if k is None:
+        return np.random.poisson(media, sims)
+    k = max(float(k), 0.5)
+    lam = np.random.gamma(k, media / k, sims)
+    return np.random.poisson(lam)
+
+
 def _tau_dixon_coles(x, y, lam, mu, rho):
     if x == 0 and y == 0:
         return 1 - (lam * mu * rho)
@@ -42,13 +80,19 @@ def _tau_dixon_coles(x, y, lam, mu, rho):
     return 1.0
 
 
-def _grid_dixon_coles(media_a, media_b, rho=RHO_DIXON_COLES, max_goles=MAX_GOLES_GRID):
+def _grid_dixon_coles(media_a, media_b, k_a=None, k_b=None, rho=RHO_DIXON_COLES, max_goles=MAX_GOLES_GRID):
     """Matriz de probabilidad conjunta P(goles_local=x, goles_visitante=y),
     con la correccion tau de Dixon-Coles sobre los 4 marcadores bajos.
     Normalizada para sumar 1 despues de aplicar tau (tau mueve masa de
-    probabilidad, no la agrega/quita)."""
-    prob_a = _poisson_pmf_vector(media_a, max_goles)
-    prob_b = _poisson_pmf_vector(media_b, max_goles)
+    probabilidad, no la agrega/quita).
+
+    k_a/k_b: confianza en media_a/media_b para la mezcla Gamma-Poisson
+    (ver _neg_binom_pmf_vector) -- None (default) da el Poisson puro de
+    siempre. La correccion tau se sigue aplicando sobre media_a/media_b
+    tal cual (esta pensada para la correlacion ENTRE ambos equipos en
+    marcadores bajos, no para el ancho de cada marginal)."""
+    prob_a = _neg_binom_pmf_vector(media_a, k_a, max_goles)
+    prob_b = _neg_binom_pmf_vector(media_b, k_b, max_goles)
     grid = np.outer(prob_a, prob_b)
     for x in range(2):
         for y in range(2):
@@ -88,7 +132,12 @@ def simular_partido_futbol(
     media_corners_a,
     media_corners_b,
     media_tarjetas_total,
-    sims=10000
+    sims=10000,
+    k_goles_a=None,
+    k_goles_b=None,
+    k_corners_a=None,
+    k_corners_b=None,
+    k_tarjetas=None,
 ):
     # Aplicar limites realistas a los inputs
     media_goles_a = float(np.clip(media_goles_a, GOLES_MIN, GOLES_MAX))
@@ -103,7 +152,14 @@ def simular_partido_futbol(
     # tarjetas y el desglose por mitades siguen con Poisson independiente
     # + Monte Carlo: Dixon-Coles es especificamente sobre la correlacion
     # de goles entre ambos equipos, no aplica a esas metricas.
-    grid_goles = _grid_dixon_coles(media_goles_a, media_goles_b)
+    #
+    # k_goles_a/b, k_corners_a/b, k_tarjetas: confianza en el promedio
+    # respectivo para la mezcla Gamma-Poisson (ver _neg_binom_pmf_vector/
+    # _muestrear_conteo) -- None (default) reproduce el Poisson puro de
+    # siempre. Se aplican SOLO a goles_ou/corners_ou/tarjetas_ou (lo que
+    # alimenta el Top3), no al desglose por mitades ni al 1X2/handicap/
+    # ambos marcan, que no fueron parte del backtest de calibracion.
+    grid_goles = _grid_dixon_coles(media_goles_a, media_goles_b, k_goles_a, k_goles_b)
     n_grid = grid_goles.shape[0]
     xs_grid, ys_grid = np.meshgrid(np.arange(n_grid), np.arange(n_grid), indexing="ij")
     dif_grid = xs_grid - ys_grid
@@ -117,10 +173,10 @@ def simular_partido_futbol(
     goles_a = np.random.poisson(media_goles_a, sims).astype(float)
     goles_b = np.random.poisson(media_goles_b, sims).astype(float)
 
-    # Corners con Poisson (sin ajuste -- no hay correlacion real medida
-    # entre corners y goles, ver conversacion de diseno)
-    corners_a = np.random.poisson(media_corners_a, sims)
-    corners_b = np.random.poisson(media_corners_b, sims)
+    # Corners: sin ajuste de parejez (no hay correlacion real medida
+    # entre corners y goles, ver conversacion de diseno).
+    corners_a = _muestrear_conteo(media_corners_a, k_corners_a, sims)
+    corners_b = _muestrear_conteo(media_corners_b, k_corners_b, sims)
 
     # Tarjetas: ajuste suave segun que tan pareja resulta la simulacion
     # de goles (grilla Dixon-Coles) -- partidos parejos tienden a tener
@@ -133,7 +189,7 @@ def simular_partido_futbol(
         + tarjetas_por_parejez * PESO_PAREJEZ_TARJETAS
     )
     media_tarjetas_total = float(np.clip(media_tarjetas_total, TARJETAS_MIN, TARJETAS_MAX))
-    tarjetas = np.random.poisson(media_tarjetas_total, sims)
+    tarjetas = _muestrear_conteo(media_tarjetas_total, k_tarjetas, sims)
 
     total_corners = corners_a + corners_b
 
@@ -254,14 +310,18 @@ def proyectar_tiempos(goles_a, goles_b):
     }
 
 
-def _over_under_poisson(lam, linea, max_k=40):
+def _over_under_poisson(lam, linea, max_k=40, k=None):
     """P(over) y P(under) de una linea arbitraria para una variable
     Poisson(lam) -- calculo cerrado, sin Monte Carlo. Valido para
     corners totales (suma de dos Poisson independientes = Poisson de la
     suma de sus medias) y para tarjetas totales (ya es un unico
     Poisson). max_k=40 alcanza de sobra para cualquier lambda realista
-    de corners/tarjetas de un partido (linea tipica hasta ~20)."""
-    pmf = _poisson_pmf_vector(lam, max_k=max_k)
+    de corners/tarjetas de un partido (linea tipica hasta ~20).
+
+    k: confianza en lam para la mezcla Gamma-Poisson (ver
+    _neg_binom_pmf_vector) -- None (default) da el Poisson puro de
+    siempre."""
+    pmf = _neg_binom_pmf_vector(lam, k, max_k=max_k)
     piso = int(np.floor(linea))
     prob_under = float(pmf[:piso + 1].sum()) if linea != piso else float(pmf[:piso].sum())
     prob_over = float(1.0 - pmf[:piso + 1].sum())
@@ -271,25 +331,33 @@ def _over_under_poisson(lam, linea, max_k=40):
 def probabilidad_linea_personalizada(mercado, linea, lado,
                                       media_goles_a, media_goles_b,
                                       media_corners_total,
-                                      media_tarjetas_total):
+                                      media_tarjetas_total,
+                                      k_goles_a=None, k_goles_b=None,
+                                      k_corners=None, k_tarjetas=None):
     """Probabilidad de una linea arbitraria (no solo las fijas que ya
     mostramos) para value betting manual -- el usuario mete la linea y
     la cuota de su casa de apuestas, esto le da nuestra probabilidad
     para comparar. mercado: 'goles' | 'corners' | 'tarjetas'.
     lado: 'over' | 'under'. Reutiliza la grilla Dixon-Coles (goles) o
-    el cierre Poisson (corners/tarjetas) -- mismo calculo exacto que ya
-    usa simular_partido_futbol(), sin Monte Carlo nuevo.
+    el cierre Poisson/Binomial Negativa (corners/tarjetas) -- mismo
+    calculo exacto que ya usa simular_partido_futbol(), sin Monte Carlo
+    nuevo.
 
     media_corners_total y media_tarjetas_total van ya combinados (no
     por separado local/visitante) para poder pasar directo los valores
     finales que ya calcula simular() en futbol_service.py -- esos ya
     incluyen H2H, ajuste de liga y los multiplicadores de presion/
     agresividad/clasico/intensidad ofensiva, mismos numeros que
-    alimentan corners_ou/tarjetas_ou en el resto de la app."""
+    alimentan corners_ou/tarjetas_ou en el resto de la app.
+
+    k_goles_a/b, k_corners, k_tarjetas: confianza en el promedio
+    respectivo (ver _neg_binom_pmf_vector) -- None (default) da el
+    Poisson puro de siempre, para no romper llamadas existentes que
+    todavia no la pasan."""
     if mercado == "goles":
         media_goles_a = float(np.clip(media_goles_a, GOLES_MIN, GOLES_MAX))
         media_goles_b = float(np.clip(media_goles_b, GOLES_MIN, GOLES_MAX))
-        grid = _grid_dixon_coles(media_goles_a, media_goles_b)
+        grid = _grid_dixon_coles(media_goles_a, media_goles_b, k_goles_a, k_goles_b)
         n = grid.shape[0]
         xs, ys = np.meshgrid(np.arange(n), np.arange(n), indexing="ij")
         total = xs + ys
@@ -297,10 +365,10 @@ def probabilidad_linea_personalizada(mercado, linea, lado,
         prob_under = float(grid[total < linea].sum())
     elif mercado == "corners":
         lam = max(float(media_corners_total), 0.1)
-        prob_over, prob_under = _over_under_poisson(lam, linea)
+        prob_over, prob_under = _over_under_poisson(lam, linea, k=k_corners)
     elif mercado == "tarjetas":
         lam = max(float(media_tarjetas_total), 0.1)
-        prob_over, prob_under = _over_under_poisson(lam, linea)
+        prob_over, prob_under = _over_under_poisson(lam, linea, k=k_tarjetas)
     else:
         raise ValueError(f"Mercado no soportado: {mercado!r} (usar 'goles', 'corners' o 'tarjetas')")
 
