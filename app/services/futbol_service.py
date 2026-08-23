@@ -679,6 +679,50 @@ def simular_goles_1t(media_local, media_visitante, iteraciones=10000):
     }
 
 
+def _obtener_estado_real_partido(df, local, visitante):
+    """Si el kickoff programado ya paso, consulta el estado EN VIVO via
+    api-football en vez de confiar en el "estado" del CSV (que solo se
+    refresca una vez al dia via el cron y puede quedar mostrando "NS"
+    mientras el partido ya esta en juego o termino). Gateado por hora de
+    kickoff para no gastar cuota en partidos que todavia no empezaron.
+    Devuelve (estado_real, goles_local_real, goles_visitante_real), con
+    None en los 3 si no aplica o no se pudo verificar."""
+    try:
+        partido_row = df[
+            ((df["equipo_local"] == local) & (df["equipo_visitante"] == visitante)) |
+            ((df["equipo_local"] == visitante) & (df["equipo_visitante"] == local))
+        ].sort_values("fecha", ascending=False)
+        if partido_row.empty:
+            return None, None, None
+        fila = partido_row.iloc[0]
+        fixture_id = fila.get("fixture_id")
+        if fixture_id is None or pd.isna(fixture_id):
+            return None, None, None
+        fixture_id = int(fixture_id)
+
+        kickoff = fila["fecha"]
+        if pd.isna(kickoff):
+            return None, None, None
+        from datetime import timezone
+        if kickoff > datetime.now(timezone.utc):
+            return None, None, None  # todavia no empieza, no gastar cuota
+
+        import requests as _requests
+        from player_model import API_KEY as _PM_API_KEY, BASE_URL as _PM_BASE_URL
+        headers = {"x-apisports-key": _PM_API_KEY}
+        resp = _requests.get(f"{_PM_BASE_URL}/fixtures", headers=headers, params={"id": fixture_id}, timeout=10)
+        resp_list = resp.json().get("response", [])
+        if not resp_list:
+            return None, None, None
+        f = resp_list[0]
+        estado_real = f["fixture"]["status"]["short"]
+        gl = f["goals"]["home"]
+        gv = f["goals"]["away"]
+        return estado_real, gl, gv
+    except Exception:
+        return None, None, None
+
+
 def get_analisis_partido(local_input, visitante_input):
     df = cargar_df()
     if df.empty:
@@ -701,6 +745,7 @@ def get_analisis_partido(local_input, visitante_input):
     except Exception:
         liga = "Desconocida"
     top3 = calcular_top3(sim, stats_a, stats_b)
+    estado_real, goles_local_real, goles_visitante_real = _obtener_estado_real_partido(df, local, visitante)
     ultimos_local = []
     ultimos_visitante = []
     try:
@@ -802,6 +847,9 @@ def get_analisis_partido(local_input, visitante_input):
         "local": local,
         "visitante": visitante,
         "liga": liga,
+        "estado_real": estado_real,
+        "goles_local_real": goles_local_real,
+        "goles_visitante_real": goles_visitante_real,
         "prob_local": round(prob_local_final, 1),
         "prob_empate": round(prob_empate_final, 1),
         "prob_visitante": round(prob_visitante_final, 1),
