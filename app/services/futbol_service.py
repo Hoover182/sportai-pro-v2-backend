@@ -234,8 +234,8 @@ def simular(df, local, visitante):
     except Exception:
         pass
 
-    stats_a = estadisticas_equipo_ultimos10(df, local, condicion="local")
-    stats_b = estadisticas_equipo_ultimos10(df, visitante, condicion="visitante")
+    stats_a = estadisticas_equipo_ultimos10(df, local)
+    stats_b = estadisticas_equipo_ultimos10(df, visitante)
     if stats_a is None or stats_b is None:
         return None, None, None
     h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=5)

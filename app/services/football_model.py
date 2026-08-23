@@ -34,23 +34,6 @@ def obtener_partidos_equipo(df, equipo, n=10):
     return partidos.sort_values("fecha", ascending=False).head(n)
 
 
-def obtener_partidos_equipo_por_condicion(df, equipo, condicion, n=10):
-    """Ultimos partidos de un equipo SOLO en la condicion que va a tener
-    en el partido que se esta simulando -- a diferencia de
-    obtener_partidos_equipo(), que mezcla local y visitante. Medido en
-    vivo (sesion de diseno): 32.9% de los equipos trackeados tienen una
-    diferencia >0.5 goles a favor entre jugar de local y de visitante,
-    diferencia promedio 0.33 goles -- un efecto real, no un ajuste
-    cosmetico."""
-    if condicion == "local":
-        partidos = df[df["equipo_local"] == equipo].copy()
-    else:
-        partidos = df[df["equipo_visitante"] == equipo].copy()
-    if "estado" in partidos.columns:
-        partidos = partidos[partidos["estado"].isin(["FT", "AET", "PEN"])]
-    return partidos.sort_values("fecha", ascending=False).head(n)
-
-
 # Las 23 ligas domesticas top de nivel 1 (mismo criterio que LIGAS_NIVEL_1 en
 # api_to_csv.py). Se usan para calcular la liga "principal" de un equipo por
 # moda, en vez de por el ultimo partido jugado (que puede ser de copa,
@@ -156,23 +139,6 @@ def obtener_partidos_con_stats(df, equipo, n=10):
     return partidos_con_stats.sort_values("fecha", ascending=False).head(n)
 
 
-def obtener_partidos_con_stats_por_condicion(df, equipo, condicion, n=10):
-    """Version de obtener_partidos_con_stats() filtrada por condicion
-    (local/visitante), mismo criterio que obtener_partidos_equipo_por_
-    condicion() para goles."""
-    if condicion == "local":
-        partidos = df[df["equipo_local"] == equipo].copy()
-    else:
-        partidos = df[df["equipo_visitante"] == equipo].copy()
-    if "estado" in partidos.columns:
-        partidos = partidos[partidos["estado"].isin(["FT", "AET", "PEN"])]
-    partidos_con_stats = partidos[
-        (partidos["corners_local"] + partidos["corners_visitante"] > 0) |
-        (partidos["tarjetas_local"] + partidos["tarjetas_visitante"] > 0)
-    ]
-    return partidos_con_stats.sort_values("fecha", ascending=False).head(n)
-
-
 def _promedio_liga_con_stats(df, liga):
     """Calcula promedios de liga usando SOLO partidos con stats reales."""
     df_liga = df[df["liga"] == liga].copy()
@@ -213,111 +179,11 @@ def _promedio_liga_con_stats(df, liga):
     return resultado
 
 
-def _promedios_ponderados_condicion(df, equipo, condicion, n=10):
-    """Promedios ponderados por fuerza FIFA del rival para los ultimos n
-    partidos de un equipo EN UNA CONDICION especifica (local o
-    visitante) -- mismo criterio de ponderacion y de exclusion null por
-    metrica que la ventana general de estadisticas_equipo_ultimos10(),
-    pero sin fallback a promedio de liga (ese ya lo aporta el blend con
-    la ventana mezclada en el caller). Devuelve None por metrica si no
-    hay ningun partido con ese dato, nunca un 0 falso."""
-    partidos = obtener_partidos_equipo_por_condicion(df, equipo, condicion, n=n)
-    partidos_stats = obtener_partidos_con_stats_por_condicion(df, equipo, condicion, n=n)
-
-    try:
-        from fifa_ranking import get_puntos_fifa, es_seleccion_nacional
-        usar_peso_fifa = True
-    except Exception:
-        usar_peso_fifa = False
-
-    goles_favor, goles_contra, pesos_partidos = [], [], []
-    for _, row in partidos.iterrows():
-        if row["equipo_local"] == equipo:
-            gf_val, gc_val, rival = row["goles_local"], row["goles_visitante"], str(row["equipo_visitante"])
-        else:
-            gf_val, gc_val, rival = row["goles_visitante"], row["goles_local"], str(row["equipo_local"])
-        if pd.isna(gf_val) or pd.isna(gc_val):
-            continue
-        peso = 1.0
-        if usar_peso_fifa and es_seleccion_nacional(equipo) and es_seleccion_nacional(rival):
-            pts_equipo = get_puntos_fifa(equipo)
-            pts_rival = get_puntos_fifa(rival)
-            peso = max(0.3, min(2.0, pts_rival / max(pts_equipo, 1)))
-        pesos_partidos.append(peso)
-        goles_favor.append(float(gf_val) * peso)
-        goles_contra.append(float(gc_val) * peso)
-
-    corners_favor, corners_contra = [], []
-    tarjetas_favor = []
-    tiros_arco_favor, tiros_arco_contra = [], []
-    tiros_total_favor, tiros_total_contra = [], []
-    for _, row in partidos_stats.iterrows():
-        if row["equipo_local"] == equipo:
-            cf_val, cc_val = row["corners_local"], row["corners_visitante"]
-            tf_val = row["tarjetas_local"]
-            ta_f_val, ta_c_val = row["tiros_arco_local"], row["tiros_arco_visitante"]
-            tt_f_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
-            tt_c_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
-            rival_stats = str(row["equipo_visitante"])
-        else:
-            cf_val, cc_val = row["corners_visitante"], row["corners_local"]
-            tf_val = row["tarjetas_visitante"]
-            ta_f_val, ta_c_val = row["tiros_arco_visitante"], row["tiros_arco_local"]
-            tt_f_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
-            tt_c_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
-            rival_stats = str(row["equipo_local"])
-
-        peso_stats = 1.0
-        if usar_peso_fifa and es_seleccion_nacional(equipo) and es_seleccion_nacional(rival_stats):
-            pts_equipo = get_puntos_fifa(equipo)
-            pts_rival = get_puntos_fifa(rival_stats)
-            peso_stats = max(0.3, min(2.0, pts_rival / max(pts_equipo, 1)))
-
-        if pd.notna(cf_val):   corners_favor.append(float(cf_val) * peso_stats)
-        if pd.notna(cc_val):   corners_contra.append(float(cc_val) * peso_stats)
-        if pd.notna(tf_val):   tarjetas_favor.append(float(tf_val) * peso_stats)
-        if pd.notna(ta_f_val): tiros_arco_favor.append(float(ta_f_val) * peso_stats)
-        if pd.notna(ta_c_val): tiros_arco_contra.append(float(ta_c_val) * peso_stats)
-        if pd.notna(tt_f_val): tiros_total_favor.append(float(tt_f_val) * peso_stats)
-        if pd.notna(tt_c_val): tiros_total_contra.append(float(tt_c_val) * peso_stats)
-
-    def _media(valores, pesos=None):
-        if not valores:
-            return None
-        if pesos:
-            suma_pesos = sum(pesos)
-            return sum(valores) / suma_pesos if suma_pesos > 0 else float(np.mean(valores))
-        return float(np.mean(valores))
-
-    return {
-        "n_partidos": len(partidos),
-        "goles_favor": _media(goles_favor, pesos_partidos),
-        "goles_contra": _media(goles_contra, pesos_partidos),
-        "corners_favor": _media(corners_favor),
-        "corners_contra": _media(corners_contra),
-        "tarjetas_favor": _media(tarjetas_favor),
-        "tiros_arco_favor": _media(tiros_arco_favor),
-        "tiros_arco_contra": _media(tiros_arco_contra),
-        "tiros_total_favor": _media(tiros_total_favor),
-        "tiros_total_contra": _media(tiros_total_contra),
-    }
-
-
-def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condicion=None):
+def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3):
     """liga: liga del partido que se esta analizando (ver obtener_liga_partido).
     Si no se pasa (compatibilidad con llamadas existentes que no la conocen),
     se infiere con _liga_principal_equipo() en vez de usar el ultimo partido
-    jugado del equipo, que puede ser de una competencia distinta.
-
-    condicion: "local" o "visitante" -- la condicion que el equipo va a
-    tener en el partido que se esta simulando. Si se pasa, blendea el
-    promedio general (mezclado, como siempre) con el promedio SOLO de
-    esa condicion, peso proporcional a cuanta muestra real hay en esa
-    condicion (sin tope en 1.0, a diferencia del blend de xG: no es un
-    dato complementario, es la categoria correcta de dato). Medido en
-    vivo: 32.9% de los equipos trackeados tienen una diferencia >0.5
-    goles a favor entre jugar de local y de visitante. Si no se pasa
-    (compatibilidad), comportamiento identico al de antes de este fix."""
+    jugado del equipo, que puede ser de una competencia distinta."""
     partidos = obtener_partidos_equipo(df, equipo, n=10)
     partidos_stats = obtener_partidos_con_stats(df, equipo, n=10)
 
@@ -490,39 +356,6 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_gf = media_gf * (1 - peso_xg) + np.mean(xg_favor)  * peso_xg
         media_gc = media_gc * (1 - peso_xg) + np.mean(xg_contra) * peso_xg
 
-    # Blend por condicion (local/visitante) -- peso proporcional a cuanta
-    # muestra real hay en esa condicion especifica, SIN tope en 1.0 (a
-    # diferencia de xG): con muestra completa (10 partidos en esa
-    # condicion) el promedio general mezclado queda completamente
-    # reemplazado, no es un dato complementario sino la categoria
-    # correcta. Aplica a las 4 metricas principales (goles, corners,
-    # tarjetas, tiros) con la misma logica.
-    MIN_PARTIDOS_CONDICION = 10
-    n_partidos_condicion = 0
-    if condicion in ("local", "visitante"):
-        prom_condicion = _promedios_ponderados_condicion(df, equipo, condicion, n=10)
-        n_partidos_condicion = prom_condicion["n_partidos"]
-        if n_partidos_condicion > 0:
-            peso_cond = min(n_partidos_condicion / MIN_PARTIDOS_CONDICION, 1.0)
-            if prom_condicion["goles_favor"] is not None:
-                media_gf = media_gf * (1 - peso_cond) + prom_condicion["goles_favor"] * peso_cond
-            if prom_condicion["goles_contra"] is not None:
-                media_gc = media_gc * (1 - peso_cond) + prom_condicion["goles_contra"] * peso_cond
-            if prom_condicion["corners_favor"] is not None:
-                media_cf = media_cf * (1 - peso_cond) + prom_condicion["corners_favor"] * peso_cond
-            if prom_condicion["corners_contra"] is not None:
-                media_cc = media_cc * (1 - peso_cond) + prom_condicion["corners_contra"] * peso_cond
-            if prom_condicion["tarjetas_favor"] is not None:
-                media_tf = media_tf * (1 - peso_cond) + prom_condicion["tarjetas_favor"] * peso_cond
-            if prom_condicion["tiros_arco_favor"] is not None:
-                media_ta_f = media_ta_f * (1 - peso_cond) + prom_condicion["tiros_arco_favor"] * peso_cond
-            if prom_condicion["tiros_arco_contra"] is not None:
-                media_ta_c = media_ta_c * (1 - peso_cond) + prom_condicion["tiros_arco_contra"] * peso_cond
-            if prom_condicion["tiros_total_favor"] is not None:
-                media_tt_f = media_tt_f * (1 - peso_cond) + prom_condicion["tiros_total_favor"] * peso_cond
-            if prom_condicion["tiros_total_contra"] is not None:
-                media_tt_c = media_tt_c * (1 - peso_cond) + prom_condicion["tiros_total_contra"] * peso_cond
-
     # Detectar si es torneo de selecciones para usar constantes correctas
     es_torneo_selecc = liga in TORNEOS_SELECCIONES
 
@@ -546,8 +379,6 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         "n_partidos": n_partidos,
         "n_partidos_stats": n_partidos_stats,
         "n_partidos_xg": n_partidos_xg,
-        "condicion": condicion,
-        "n_partidos_condicion": n_partidos_condicion,
         "goles_favor": media_gf,
         "goles_contra": media_gc,
         "std_goles_favor":   normalizar_std(np.std(goles_favor),    0.35),
