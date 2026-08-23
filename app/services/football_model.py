@@ -199,6 +199,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3):
     tiros_arco_contra = []
     tiros_total_favor = []
     tiros_total_contra = []
+    xg_favor = []
+    xg_contra = []
 
     victorias = empates = derrotas = 0
 
@@ -261,6 +263,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3):
             ta_f_val, ta_c_val = row["tiros_arco_local"], row["tiros_arco_visitante"]
             tt_f_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
             tt_c_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
+            xg_f_val = row["xg_local"] if "xg_local" in row.index else None
+            xg_c_val = row["xg_visitante"] if "xg_visitante" in row.index else None
             rival_stats = str(row["equipo_visitante"])
         else:
             cf_val, cc_val = row["corners_visitante"], row["corners_local"]
@@ -268,6 +272,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3):
             ta_f_val, ta_c_val = row["tiros_arco_visitante"], row["tiros_arco_local"]
             tt_f_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
             tt_c_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
+            xg_f_val = row["xg_visitante"] if "xg_visitante" in row.index else None
+            xg_c_val = row["xg_local"] if "xg_local" in row.index else None
             rival_stats = str(row["equipo_local"])
 
         # Peso por rival FIFA (mismo sistema que goles)
@@ -285,6 +291,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3):
         if pd.notna(ta_c_val): tiros_arco_contra.append(float(ta_c_val) * peso_stats)
         if pd.notna(tt_f_val): tiros_total_favor.append(float(tt_f_val) * peso_stats)
         if pd.notna(tt_c_val): tiros_total_contra.append(float(tt_c_val) * peso_stats)
+        if pd.notna(xg_f_val): xg_favor.append(float(xg_f_val) * peso_stats)
+        if pd.notna(xg_c_val): xg_contra.append(float(xg_c_val) * peso_stats)
 
     n_partidos = len(partidos)
     # n_partidos_stats = partidos con stats reales verificados
@@ -332,6 +340,22 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3):
         media_tt_f = np.mean(tiros_total_favor)  if tiros_total_favor  else 0.0
         media_tt_c = np.mean(tiros_total_contra) if tiros_total_contra else 0.0
 
+    # Blend con xG (expected goals) cuando hay cobertura real -- fallback
+    # total a goles reales si no. Cobertura muy despareja segun competencia
+    # (100% en Premier League/La Liga/Serie A, 0% en Champions League y en
+    # casi todas las copas, verificado en vivo), asi que el peso es
+    # proporcional a cuantos de los ultimos partidos realmente tienen el
+    # dato -- nunca un peso fijo. Tope de 50%: el resultado real siempre
+    # sigue siendo el ancla, xG solo lo suaviza (no sabe de roja temprana,
+    # atajadon puntual, etc).
+    MIN_PARTIDOS_XG = 3
+    PESO_XG_MAX = 0.5
+    n_partidos_xg = len(xg_favor)
+    if n_partidos_xg >= MIN_PARTIDOS_XG and n_partidos > 0:
+        peso_xg = min(n_partidos_xg / n_partidos, PESO_XG_MAX)
+        media_gf = media_gf * (1 - peso_xg) + np.mean(xg_favor)  * peso_xg
+        media_gc = media_gc * (1 - peso_xg) + np.mean(xg_contra) * peso_xg
+
     # Detectar si es torneo de selecciones para usar constantes correctas
     es_torneo_selecc = liga in TORNEOS_SELECCIONES
 
@@ -354,6 +378,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3):
         "pocos_datos": pocos_datos,
         "n_partidos": n_partidos,
         "n_partidos_stats": n_partidos_stats,
+        "n_partidos_xg": n_partidos_xg,
         "goles_favor": media_gf,
         "goles_contra": media_gc,
         "std_goles_favor":   normalizar_std(np.std(goles_favor),    0.35),
