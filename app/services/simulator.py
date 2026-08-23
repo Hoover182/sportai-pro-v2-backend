@@ -305,3 +305,14 @@ def probabilidad_linea_personalizada(mercado, linea, lado,
         raise ValueError(f"Mercado no soportado: {mercado!r} (usar 'goles', 'corners' o 'tarjetas')")
 
     return prob_over if lado == "over" else prob_under
+
+
+def tarjetas_esperadas_por_parejez(media_goles_a, media_goles_b):
+    """Wrapper publico de _tarjetas_esperadas_por_parejez() para uso
+    fuera de este modulo (ej. el texto de reglas fijas del value bet
+    manual, que necesita explicar si el ajuste de parejez subio o bajo
+    el promedio de tarjetas) -- arma la grilla Dixon-Coles internamente."""
+    media_goles_a = float(np.clip(media_goles_a, GOLES_MIN, GOLES_MAX))
+    media_goles_b = float(np.clip(media_goles_b, GOLES_MIN, GOLES_MAX))
+    grid = _grid_dixon_coles(media_goles_a, media_goles_b)
+    return _tarjetas_esperadas_por_parejez(grid)

@@ -31,7 +31,7 @@ from football_model import (
     ajustar_medias_con_rival,
     obtener_partidos_equipo,
 )
-from simulator import simular_partido_futbol, probabilidad_linea_personalizada
+from simulator import simular_partido_futbol, probabilidad_linea_personalizada, tarjetas_esperadas_por_parejez
 
 LIGAS_IDS = {
     "Champions League": (2, None),
@@ -851,6 +851,93 @@ MERCADOS_VALIDOS = ("goles", "corners", "tarjetas")
 LADOS_VALIDOS = ("over", "under")
 
 
+def _armar_analisis_reglas_fijas(mercado, linea, lado, probabilidad_modelo,
+                                  local, visitante, sim, stats_a, stats_b, h2h):
+    """Texto automatico (sin IA, sin costo) que explica el calculo del
+    value bet con los datos reales que ya usa el modelo -- forma
+    reciente, H2H si hay, xG si hay cobertura. Nunca inventa un dato: si
+    algo no esta disponible, esa frase se omite en vez de rellenarla."""
+    partes = []
+
+    if mercado == "corners":
+        proyeccion = sim["corners_totales_proj"]
+        partes.append(f"El modelo proyecta {proyeccion:.1f} corners totales para este partido.")
+        partes.append(
+            f"{local} promedia {stats_a['corners_favor']:.1f} corners a favor en sus "
+            f"últimos {stats_a['n_partidos']} partidos, mientras {visitante} concede "
+            f"{stats_b['corners_contra']:.1f} en promedio."
+        )
+        h2h_stats = h2h.dropna(subset=["corners_local", "corners_visitante"]) if not h2h.empty else h2h
+        if not h2h_stats.empty:
+            total_h2h = (h2h_stats["corners_local"] + h2h_stats["corners_visitante"]).mean()
+            partes.append(
+                f"En los últimos {len(h2h_stats)} enfrentamientos directos con datos de corners, "
+                f"el total promedió {total_h2h:.1f}."
+            )
+
+    elif mercado == "goles":
+        proyeccion = sim["goles_local_proj"] + sim["goles_visitante_proj"]
+        partes.append(
+            f"El modelo proyecta {proyeccion:.2f} goles totales "
+            f"({local} {sim['goles_local_proj']:.2f}, {visitante} {sim['goles_visitante_proj']:.2f})."
+        )
+        partes.append(
+            f"{local} promedia {stats_a['goles_favor']:.1f} goles a favor y "
+            f"{stats_a['goles_contra']:.1f} en contra en sus últimos {stats_a['n_partidos']} partidos; "
+            f"{visitante} promedia {stats_b['goles_favor']:.1f} a favor y {stats_b['goles_contra']:.1f} en contra."
+        )
+        if not h2h.empty:
+            total_h2h = (h2h["goles_local"] + h2h["goles_visitante"]).mean()
+            partes.append(
+                f"En los últimos {len(h2h)} enfrentamientos directos, el total de goles promedió {total_h2h:.1f}."
+            )
+        if stats_a.get("n_partidos_xg", 0) >= 3 or stats_b.get("n_partidos_xg", 0) >= 3:
+            partes.append(
+                "Se usaron datos reales de expected goals (xG) de los últimos partidos de "
+                "ambos equipos para afinar este número."
+            )
+
+    elif mercado == "tarjetas":
+        proyeccion = sim["tarjetas_totales_proj"]
+        partes.append(f"El modelo proyecta {proyeccion:.2f} tarjetas totales.")
+        partes.append(
+            f"{local} promedia {stats_a['tarjetas_favor']:.1f} tarjetas por partido y "
+            f"{visitante} promedia {stats_b['tarjetas_favor']:.1f}."
+        )
+        try:
+            tarjetas_parejez = tarjetas_esperadas_por_parejez(sim["goles_local_proj"], sim["goles_visitante_proj"])
+            base_sin_parejez = (stats_a["tarjetas_favor"] + stats_b["tarjetas_favor"]) / 2
+            if tarjetas_parejez - base_sin_parejez > 0.15:
+                partes.append("Como este partido se proyecta parejo, el modelo ajusta el promedio de tarjetas levemente hacia arriba.")
+            elif base_sin_parejez - tarjetas_parejez > 0.15:
+                partes.append("Como este partido se proyecta con un favorito claro, el modelo ajusta el promedio de tarjetas levemente hacia abajo.")
+        except Exception:
+            pass
+        h2h_stats = h2h.dropna(subset=["tarjetas_local", "tarjetas_visitante"]) if not h2h.empty else h2h
+        if not h2h_stats.empty:
+            total_h2h = (h2h_stats["tarjetas_local"] + h2h_stats["tarjetas_visitante"]).mean()
+            partes.append(
+                f"En los últimos {len(h2h_stats)} enfrentamientos directos con datos de tarjetas, "
+                f"el total promedió {total_h2h:.1f}."
+            )
+
+    posicion = "por debajo" if linea < proyeccion else "por encima"
+    lado_texto = "Over" if lado == "over" else "Under"
+    partes.append(
+        f"La línea que pusiste ({linea:g}) está {posicion} de la proyección del modelo, "
+        f"por eso te da {round(probabilidad_modelo * 100, 1)}% de probabilidad para {lado_texto}."
+    )
+
+    for stats, nombre in ((stats_a, local), (stats_b, visitante)):
+        if stats.get("pocos_datos"):
+            partes.append(
+                f"Ojo: {nombre} tiene poco historial disponible ({stats['n_partidos']} partidos), "
+                "así que parte de esta proyección viene del promedio general de su liga."
+            )
+
+    return " ".join(partes)
+
+
 def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado, cuota):
     """Value betting manual: el usuario elige un mercado (goles/corners/
     tarjetas), mete una linea PUNTUAL (no tiene que ser una de las fijas
@@ -894,6 +981,7 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
     sim, stats_a, stats_b = simular(df, local, visitante)
     if sim is None:
         return None, "No hay datos suficientes para simular"
+    h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=5)
 
     probabilidad_modelo = probabilidad_linea_personalizada(
         mercado, linea, lado,
@@ -907,6 +995,10 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
     edge_porcentual = (probabilidad_modelo - probabilidad_implicita) / probabilidad_implicita * 100
     cuota_minima_valor = 1 / probabilidad_modelo if probabilidad_modelo > 0 else None
 
+    analisis_reglas_fijas = _armar_analisis_reglas_fijas(
+        mercado, linea, lado, probabilidad_modelo, local, visitante, sim, stats_a, stats_b, h2h
+    )
+
     return {
         "local": local,
         "visitante": visitante,
@@ -917,9 +1009,70 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
         "probabilidad_modelo": round(probabilidad_modelo * 100, 1),
         "probabilidad_implicita": round(probabilidad_implicita * 100, 1),
         "edge_porcentual": round(edge_porcentual, 1),
+        "analisis_reglas_fijas": analisis_reglas_fijas,
         "tiene_valor": probabilidad_modelo > probabilidad_implicita,
         "cuota_minima_valor": round(cuota_minima_valor, 2) if cuota_minima_valor else None,
     }, None
+
+
+def explicar_value_bet_ia(local_input, visitante_input, mercado, linea, lado, cuota):
+    """Explicacion opcional con IA (Claude Haiku) de un calculo de value
+    bet manual ya hecho -- el usuario la pide explicitamente con un
+    boton aparte, no se genera sola. Vuelve a calcular todo server-side
+    (no confia en numeros que mande el frontend) para tener datos
+    frescos + el texto de reglas fijas, y le pide a la IA que lo
+    explique en lenguaje natural sin recalcular ni cambiar ningun
+    numero. System prompt propio y corto -- no el del chat general
+    (ese trae reglas de jugadores/1T-2T/rivales de categoria menor que
+    no aplican aca y solo agregarian ruido)."""
+    resultado, error = calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado, cuota)
+    if error:
+        return None, error
+
+    df = cargar_df()
+    liga_series = df[
+        (df["equipo_local"] == resultado["local"]) | (df["equipo_visitante"] == resultado["local"])
+    ]["liga"] if not df.empty else None
+    liga = liga_series.iloc[0] if liga_series is not None and not liga_series.empty else "Desconocida"
+
+    contexto = f"""PARTIDO: {resultado['local']} vs {resultado['visitante']} ({liga})
+MERCADO: {resultado['mercado']} - Linea {resultado['linea']} - Lado: {resultado['lado']}
+CUOTA INGRESADA: {resultado['cuota']}
+PROBABILIDAD DEL MODELO: {resultado['probabilidad_modelo']}%
+PROBABILIDAD IMPLICITA DE LA CUOTA: {resultado['probabilidad_implicita']}%
+EDGE: {resultado['edge_porcentual']}%
+TIENE VALOR: {"si" if resultado['tiene_valor'] else "no"}
+CUOTA MINIMA PARA QUE HAYA VALOR: {resultado['cuota_minima_valor']}
+
+ANALISIS DE DATOS QUE USO EL MODELO:
+{resultado['analisis_reglas_fijas']}
+
+Explica este resultado en lenguaje natural."""
+
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", ""))
+        system = (
+            "Sos un asistente que explica en lenguaje natural y conversacional un calculo de "
+            "value betting ya hecho por un modelo estadistico. NO recalcules nada, NO cambies "
+            "ningun numero -- todos los datos que necesitas estan en el contexto. Tu trabajo es "
+            "explicar con tus palabras, en 2 a 4 oraciones, por que el modelo llego a esa "
+            "probabilidad y que significa el edge en terminos simples para alguien que no es "
+            "estadistico. No uses jerga tecnica (Poisson, distribucion, Dixon-Coles, etc) ni "
+            "markdown ni asteriscos. Nunca digas 'apostar' ni 'no apostar' -- termina siempre "
+            "con una frase tipo 'los datos respaldan/no respaldan esta cuota', sin dar una orden "
+            "directa. Cerra siempre con: Esto es un analisis estadistico, no una garantia - el "
+            "resultado real de un partido puede diferir. Responde en espanol, maximo 120 palabras."
+        )
+        response = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=300,
+            system=system,
+            messages=[{"role": "user", "content": contexto}],
+        )
+        return response.content[0].text, None
+    except Exception as e:
+        return None, str(e)
 
 
 def get_historial_jugador(equipo_input, jugador_nombre, n=5):

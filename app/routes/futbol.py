@@ -60,6 +60,17 @@ async def value_bet_manual(local: str, visitante: str, mercado: str, linea: floa
         return {"error": str(e)}
 
 
+@router.get("/value-bet-ia/{local}/{visitante}")
+async def value_bet_ia(local: str, visitante: str, mercado: str, linea: float, lado: str, cuota: float):
+    try:
+        respuesta, error = futbol_service.explicar_value_bet_ia(local, visitante, mercado, linea, lado, cuota)
+        if error:
+            return {"error": error}
+        return {"respuesta": respuesta}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @router.get("/jugador-historial/{equipo}/{jugador}")
 async def jugador_historial(equipo: str, jugador: str, n: int = 5):
     try:
