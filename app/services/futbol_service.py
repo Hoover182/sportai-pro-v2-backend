@@ -52,6 +52,7 @@ from football_model import (
     ultimos_enfrentamientos_directos,
     ajustar_medias_con_rival,
     obtener_partidos_equipo,
+    obtener_liga_partido,
 )
 from simulator import simular_partido_futbol, probabilidad_linea_personalizada, tarjetas_esperadas_por_parejez
 
@@ -234,8 +235,18 @@ def simular(df, local, visitante):
     except Exception:
         pass
 
-    stats_a = estadisticas_equipo_ultimos10(df, local, condicion="local")
-    stats_b = estadisticas_equipo_ultimos10(df, visitante, condicion="visitante")
+    # Liga del partido que se esta analizando (partido programado > liga
+    # domestica mas frecuente del equipo > ultimo jugado como ultimo
+    # recurso -- ver obtener_liga_partido). Se calcula una sola vez y se
+    # comparte con las stats de ambos equipos (incluida la ventana por
+    # condicion local/visitante, que la usa para no mezclar copas u
+    # otra division) y con los filtros de presion/agresividad, en vez
+    # de adivinar la liga por separado con la primera fila que aparezca
+    # para el equipo local (podia no ser su liga domestica actual).
+    liga_partido = obtener_liga_partido(df, local, visitante)
+
+    stats_a = estadisticas_equipo_ultimos10(df, local, liga=liga_partido, condicion="local")
+    stats_b = estadisticas_equipo_ultimos10(df, visitante, liga=liga_partido, condicion="visitante")
     if stats_a is None or stats_b is None:
         return None, None, None
     h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=5)
@@ -243,7 +254,6 @@ def simular(df, local, visitante):
     # ---- Filtros adicionales de tarjetas (arbitro, presion, agresividad, clasico) ----
     try:
         from modelo_presion import calcular_tabla, calcular_presion, calcular_indice_agresividad, es_clasico
-        liga_partido = df[(df["equipo_local"] == local) | (df["equipo_visitante"] == local)]["liga"].iloc[0]
         tabla_liga = calcular_tabla(df, liga_partido)
 
         presion_local = calcular_presion(tabla_liga, local)

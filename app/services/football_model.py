@@ -210,7 +210,7 @@ def _promedio_liga_con_stats(df, liga):
     return resultado
 
 
-def _promedios_ponderados_condicion(historial, equipo, condicion, n=10):
+def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=None):
     """Promedios ponderados por fuerza FIFA del rival para los ultimos n
     partidos de un equipo EN UNA CONDICION especifica (local o
     visitante) -- mismo criterio de ponderacion y de exclusion null por
@@ -223,11 +223,26 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10):
     _historial_equipo() (no el DataFrame completo) -- evita volver a
     barrer las ~20k filas del CSV para sacar la version por condicion,
     ya que la ventana mezclada de mas arriba ya tuvo que filtrar lo
-    mismo."""
+    mismo.
+
+    liga: si se pasa, restringe la ventana de condicion a partidos de
+    ESA MISMA liga/competencia (la del partido que se esta simulando).
+    A diferencia de la ventana mezclada (que junta los ultimos 10
+    partidos de CUALQUIER competencia y por eso se mantiene reciente),
+    la ventana por condicion necesita ir mas atras en el tiempo para
+    juntar 10 partidos de una sola condicion, lo que la hace mas
+    propensa a cruzar a copas (alineaciones rotadas, resultados
+    atipicos) o a otra division (equipo recien ascendido/descendido).
+    Sin este filtro esos partidos entraban con el mismo peso que
+    cualquier otro. Medido en vivo (Elche vs Barcelona, 2026-08-23):
+    el gol_contra de visitante de Barcelona bajaba de 1.50 a 1.25 al
+    excluir una goleada 0-4 de Copa del Rey ante Atletico Madrid."""
     if condicion == "local":
         historial_condicion = historial[historial["equipo_local"] == equipo]
     else:
         historial_condicion = historial[historial["equipo_visitante"] == equipo]
+    if liga:
+        historial_condicion = historial_condicion[historial_condicion["liga"] == liga]
     partidos = historial_condicion.head(n)
     partidos_stats = _con_stats(historial_condicion, n=n)
 
@@ -508,7 +523,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
     MIN_PARTIDOS_CONDICION = 10
     n_partidos_condicion = 0
     if condicion in ("local", "visitante"):
-        prom_condicion = _promedios_ponderados_condicion(historial, equipo, condicion, n=10)
+        prom_condicion = _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=liga)
         n_partidos_condicion = prom_condicion["n_partidos"]
         if n_partidos_condicion > 0:
             peso_cond = min(n_partidos_condicion / MIN_PARTIDOS_CONDICION, 1.0)
