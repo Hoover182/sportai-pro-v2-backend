@@ -1,7 +1,32 @@
-﻿import pandas as pd
+﻿import time
+
+import pandas as pd
+
+# Cache en memoria con TTL para la tabla de posiciones por liga -- se
+# llama una vez por PARTIDO (simular() la pide para calcular presion/
+# agresividad), pero la tabla es la misma para todos los partidos de
+# la misma liga el mismo dia. Medido en vivo con cProfile: 66 llamadas
+# en un request de 73 partidos, 4.71s acumulados recalculando la misma
+# tabla una y otra vez. Mismo TTL (5 min) que el cache de partidos_hoy/
+# top_picks en futbol_service.py -- el CSV que alimenta esto solo se
+# actualiza una vez al dia via el cron, asi que no se pierde frescura
+# real.
+_CACHE_TABLA_TTL_SEGUNDOS = 300
+_cache_tablas = {}
 
 
 def calcular_tabla(df, liga_nombre, temporada_desde=None):
+    clave = (liga_nombre, temporada_desde)
+    ahora = time.time()
+    cacheada = _cache_tablas.get(clave)
+    if cacheada is not None and (ahora - cacheada["timestamp"]) < _CACHE_TABLA_TTL_SEGUNDOS:
+        return cacheada["tabla"]
+    tabla = _calcular_tabla_real(df, liga_nombre, temporada_desde)
+    _cache_tablas[clave] = {"tabla": tabla, "timestamp": ahora}
+    return tabla
+
+
+def _calcular_tabla_real(df, liga_nombre, temporada_desde=None):
     """Calcula la tabla de posiciones de una liga sumando resultados FT del CSV."""
     sub = df[(df["liga"] == liga_nombre) & (df["estado"].isin(["FT", "AET", "PEN"]))].copy()
     if temporada_desde:

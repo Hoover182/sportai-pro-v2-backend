@@ -108,9 +108,29 @@ def actualizar_ranking_fifa():
     guardar_fifa_ranking(FIFA_FALLBACK)
 
 
+# Cache en memoria del ranking FIFA -- leer_fifa_ranking() abre una
+# conexion SQLite nueva por llamada, y get_puntos_fifa()/es_seleccion_
+# nacional() se llaman por CADA partido de CADA equipo en los endpoints
+# que recorren todos los partidos del dia (miles de veces por request).
+# Medido en vivo con cProfile: 5,250 llamadas a es_seleccion_nacional()
+# en un solo request de 73 partidos, ~5.2s solo en abrir/leer SQLite --
+# para un dato que no cambia durante la vida del proceso (solo lo
+# actualiza actualizar_ranking_fifa(), un script de mantenimiento
+# aparte, no el flujo normal de requests).
+_cache_ranking_fifa = None
+
+
+def _obtener_ranking_cacheado():
+    global _cache_ranking_fifa
+    if _cache_ranking_fifa is None:
+        _cache_ranking_fifa = leer_fifa_ranking()
+    return _cache_ranking_fifa
+
+
 def get_puntos_fifa(equipo):
-    """Retorna los puntos FIFA de un equipo desde SQLite."""
-    ranking = leer_fifa_ranking()
+    """Retorna los puntos FIFA de un equipo (cacheado en memoria, ver
+    _obtener_ranking_cacheado)."""
+    ranking = _obtener_ranking_cacheado()
     if ranking:
         return ranking.get(equipo, FIFA_PROMEDIO)
     # Si DB vacia, usar fallback directo
@@ -121,8 +141,9 @@ def get_puntos_fifa(equipo):
 
 
 def es_seleccion_nacional(equipo):
-    """Detecta si un equipo es una seleccion nacional."""
-    ranking = leer_fifa_ranking()
+    """Detecta si un equipo es una seleccion nacional (cacheado en
+    memoria, ver _obtener_ranking_cacheado)."""
+    ranking = _obtener_ranking_cacheado()
     if ranking:
         return equipo in ranking
     return any(r["equipo"] == equipo for r in FIFA_FALLBACK)
