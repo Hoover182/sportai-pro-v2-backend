@@ -56,6 +56,30 @@ def _grid_dixon_coles(media_a, media_b, rho=RHO_DIXON_COLES, max_goles=MAX_GOLES
     return grid / grid.sum()
 
 
+# Promedio real de tarjetas_total medido en el CSV (15,780 partidos FT)
+# segun la diferencia de goles final del partido -- partidos parejos
+# tienen mas tarjetas, goleadas tienen menos (r=-0.15 Pearson, r=-0.14
+# Spearman, ambos altamente significativos; efecto real pero moderado,
+# r^2~2.4%). Verificado que NO existe la misma relacion para corners
+# (r=-0.008, no significativo) -- por eso el ajuste de parejez solo
+# aplica a tarjetas. Ver conversacion de diseno.
+TARJETAS_POR_DIFERENCIA_GOLES = {0: 4.63, 1: 4.80, 2: 4.26, 3: 3.78, 4: 3.38, 5: 3.19}
+PESO_PAREJEZ_TARJETAS = 0.15  # ajuste suave: el promedio real del equipo sigue dominando
+
+
+def _tarjetas_esperadas_por_parejez(grid_goles):
+    """Tarjetas totales esperadas segun la diferencia de goles ESPERADA
+    de la simulacion (no la mas probable), interpolando la tabla
+    empirica TARJETAS_POR_DIFERENCIA_GOLES sobre la grilla Dixon-Coles."""
+    n = grid_goles.shape[0]
+    xs, ys = np.meshgrid(np.arange(n), np.arange(n), indexing="ij")
+    diferencia_esperada = float(np.sum(np.abs(xs - ys) * grid_goles))
+
+    puntos_x = sorted(TARJETAS_POR_DIFERENCIA_GOLES.keys())
+    puntos_y = [TARJETAS_POR_DIFERENCIA_GOLES[k] for k in puntos_x]
+    return float(np.interp(diferencia_esperada, puntos_x, puntos_y))
+
+
 def simular_partido_futbol(
     media_goles_a,
     media_goles_b,
@@ -93,9 +117,22 @@ def simular_partido_futbol(
     goles_a = np.random.poisson(media_goles_a, sims).astype(float)
     goles_b = np.random.poisson(media_goles_b, sims).astype(float)
 
-    # Corners y tarjetas con Poisson
+    # Corners con Poisson (sin ajuste -- no hay correlacion real medida
+    # entre corners y goles, ver conversacion de diseno)
     corners_a = np.random.poisson(media_corners_a, sims)
     corners_b = np.random.poisson(media_corners_b, sims)
+
+    # Tarjetas: ajuste suave segun que tan pareja resulta la simulacion
+    # de goles (grilla Dixon-Coles) -- partidos parejos tienden a tener
+    # mas tarjetas que goleadas, medido en el CSV real. Peso bajo a
+    # proposito: el promedio real de tarjetas del equipo (media_tarjetas_
+    # total, ya calculado antes de llegar aca) sigue siendo el que manda.
+    tarjetas_por_parejez = _tarjetas_esperadas_por_parejez(grid_goles)
+    media_tarjetas_total = (
+        media_tarjetas_total * (1 - PESO_PAREJEZ_TARJETAS)
+        + tarjetas_por_parejez * PESO_PAREJEZ_TARJETAS
+    )
+    media_tarjetas_total = float(np.clip(media_tarjetas_total, TARJETAS_MIN, TARJETAS_MAX))
     tarjetas = np.random.poisson(media_tarjetas_total, sims)
 
     total_corners = corners_a + corners_b
