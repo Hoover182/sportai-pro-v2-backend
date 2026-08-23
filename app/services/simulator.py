@@ -252,3 +252,56 @@ def proyectar_tiempos(goles_a, goles_b):
         "A": [goles_a * 0.45, goles_a * 0.55],
         "B": [goles_b * 0.45, goles_b * 0.55]
     }
+
+
+def _over_under_poisson(lam, linea, max_k=40):
+    """P(over) y P(under) de una linea arbitraria para una variable
+    Poisson(lam) -- calculo cerrado, sin Monte Carlo. Valido para
+    corners totales (suma de dos Poisson independientes = Poisson de la
+    suma de sus medias) y para tarjetas totales (ya es un unico
+    Poisson). max_k=40 alcanza de sobra para cualquier lambda realista
+    de corners/tarjetas de un partido (linea tipica hasta ~20)."""
+    pmf = _poisson_pmf_vector(lam, max_k=max_k)
+    piso = int(np.floor(linea))
+    prob_under = float(pmf[:piso + 1].sum()) if linea != piso else float(pmf[:piso].sum())
+    prob_over = float(1.0 - pmf[:piso + 1].sum())
+    return prob_over, prob_under
+
+
+def probabilidad_linea_personalizada(mercado, linea, lado,
+                                      media_goles_a, media_goles_b,
+                                      media_corners_total,
+                                      media_tarjetas_total):
+    """Probabilidad de una linea arbitraria (no solo las fijas que ya
+    mostramos) para value betting manual -- el usuario mete la linea y
+    la cuota de su casa de apuestas, esto le da nuestra probabilidad
+    para comparar. mercado: 'goles' | 'corners' | 'tarjetas'.
+    lado: 'over' | 'under'. Reutiliza la grilla Dixon-Coles (goles) o
+    el cierre Poisson (corners/tarjetas) -- mismo calculo exacto que ya
+    usa simular_partido_futbol(), sin Monte Carlo nuevo.
+
+    media_corners_total y media_tarjetas_total van ya combinados (no
+    por separado local/visitante) para poder pasar directo los valores
+    finales que ya calcula simular() en futbol_service.py -- esos ya
+    incluyen H2H, ajuste de liga y los multiplicadores de presion/
+    agresividad/clasico/intensidad ofensiva, mismos numeros que
+    alimentan corners_ou/tarjetas_ou en el resto de la app."""
+    if mercado == "goles":
+        media_goles_a = float(np.clip(media_goles_a, GOLES_MIN, GOLES_MAX))
+        media_goles_b = float(np.clip(media_goles_b, GOLES_MIN, GOLES_MAX))
+        grid = _grid_dixon_coles(media_goles_a, media_goles_b)
+        n = grid.shape[0]
+        xs, ys = np.meshgrid(np.arange(n), np.arange(n), indexing="ij")
+        total = xs + ys
+        prob_over = float(grid[total > linea].sum())
+        prob_under = float(grid[total < linea].sum())
+    elif mercado == "corners":
+        lam = max(float(media_corners_total), 0.1)
+        prob_over, prob_under = _over_under_poisson(lam, linea)
+    elif mercado == "tarjetas":
+        lam = max(float(media_tarjetas_total), 0.1)
+        prob_over, prob_under = _over_under_poisson(lam, linea)
+    else:
+        raise ValueError(f"Mercado no soportado: {mercado!r} (usar 'goles', 'corners' o 'tarjetas')")
+
+    return prob_over if lado == "over" else prob_under

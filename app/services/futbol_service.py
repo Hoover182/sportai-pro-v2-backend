@@ -31,7 +31,7 @@ from football_model import (
     ajustar_medias_con_rival,
     obtener_partidos_equipo,
 )
-from simulator import simular_partido_futbol
+from simulator import simular_partido_futbol, probabilidad_linea_personalizada
 
 LIGAS_IDS = {
     "Champions League": (2, None),
@@ -845,6 +845,83 @@ def get_analisis_partido(local_input, visitante_input):
         "tiros_total_local": 0,
         "tiros_total_visitante": 0,
     }, None
+
+
+MERCADOS_VALIDOS = ("goles", "corners", "tarjetas")
+LADOS_VALIDOS = ("over", "under")
+
+
+def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado, cuota):
+    """Value betting manual: el usuario elige un mercado (goles/corners/
+    tarjetas), mete una linea PUNTUAL (no tiene que ser una de las fijas
+    que ya mostramos, ej. 8.5) y la cuota real de su casa de apuestas, y
+    esto le dice si nuestra probabilidad calculada le da "valor" frente
+    a esa cuota.
+
+    Reutiliza simular() tal cual (mismo pipeline que get_analisis_partido:
+    H2H, ajuste de liga, multiplicadores de presion/agresividad/clasico/
+    intensidad ofensiva) y lee goles_local_proj/goles_visitante_proj/
+    corners_totales_proj/tarjetas_totales_proj del resultado -- son los
+    mismos numeros ya ajustados que alimentan goles_ou/corners_ou/
+    tarjetas_ou en el resto de la app, asi que la probabilidad para
+    cualquier linea personalizada queda consistente con lo que el
+    usuario ya ve ahi."""
+    if mercado not in MERCADOS_VALIDOS:
+        return None, f"Mercado no valido: {mercado!r} (usar goles, corners o tarjetas)"
+    if lado not in LADOS_VALIDOS:
+        return None, f"Lado no valido: {lado!r} (usar over o under)"
+    try:
+        linea = float(linea)
+    except (TypeError, ValueError):
+        return None, f"Linea invalida: {linea!r}"
+    try:
+        cuota = float(cuota)
+    except (TypeError, ValueError):
+        return None, f"Cuota invalida: {cuota!r}"
+    if cuota <= 1.0:
+        return None, "La cuota tiene que ser mayor a 1.0"
+
+    df = cargar_df()
+    if df.empty:
+        return None, "No hay datos disponibles"
+    local = obtener_equipo_por_nombre(df, local_input)
+    visitante = obtener_equipo_por_nombre(df, visitante_input)
+    if local is None:
+        return None, f"Equipo no encontrado: {local_input}"
+    if visitante is None:
+        return None, f"Equipo no encontrado: {visitante_input}"
+
+    sim, stats_a, stats_b = simular(df, local, visitante)
+    if sim is None:
+        return None, "No hay datos suficientes para simular"
+
+    probabilidad_modelo = probabilidad_linea_personalizada(
+        mercado, linea, lado,
+        media_goles_a=sim["goles_local_proj"],
+        media_goles_b=sim["goles_visitante_proj"],
+        media_corners_total=sim["corners_totales_proj"],
+        media_tarjetas_total=sim["tarjetas_totales_proj"],
+    )
+
+    probabilidad_implicita = 1 / cuota
+    edge_porcentual = (probabilidad_modelo - probabilidad_implicita) / probabilidad_implicita * 100
+    cuota_minima_valor = 1 / probabilidad_modelo if probabilidad_modelo > 0 else None
+
+    return {
+        "local": local,
+        "visitante": visitante,
+        "mercado": mercado,
+        "linea": linea,
+        "lado": lado,
+        "cuota": cuota,
+        "probabilidad_modelo": round(probabilidad_modelo * 100, 1),
+        "probabilidad_implicita": round(probabilidad_implicita * 100, 1),
+        "edge_porcentual": round(edge_porcentual, 1),
+        "tiene_valor": probabilidad_modelo > probabilidad_implicita,
+        "cuota_minima_valor": round(cuota_minima_valor, 2) if cuota_minima_valor else None,
+    }, None
+
+
 def get_historial_jugador(equipo_input, jugador_nombre, n=5):
     """Devuelve el desglose real (partido por partido) de un jugador especifico,
     buscando en los ultimos n partidos de su equipo."""

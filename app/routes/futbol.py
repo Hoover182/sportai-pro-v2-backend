@@ -49,6 +49,17 @@ async def jugadores(local: str, visitante: str):
         return {"error": str(e)}
 
 
+@router.get("/value-bet-manual/{local}/{visitante}")
+async def value_bet_manual(local: str, visitante: str, mercado: str, linea: float, lado: str, cuota: float):
+    try:
+        resultado, error = futbol_service.calcular_value_bet_manual(local, visitante, mercado, linea, lado, cuota)
+        if error:
+            return {"error": error}
+        return resultado
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @router.get("/jugador-historial/{equipo}/{jugador}")
 async def jugador_historial(equipo: str, jugador: str, n: int = 5):
     try:
