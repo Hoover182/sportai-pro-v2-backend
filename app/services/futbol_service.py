@@ -164,9 +164,39 @@ def resolver_nombre_equipo(df, nombre_input):
         _cache_equipos_todos = {_normalizar_nombre(eq): eq for eq in equipos}
 
     nombre_normalizado = _normalizar_nombre(nombre_input)
+    exacto = _cache_equipos_todos.get(nombre_normalizado)
 
-    if nombre_normalizado in _cache_equipos_todos:
-        return _cache_equipos_todos[nombre_normalizado], False
+    # El match "exacto" es TOTALMENTE confiable cuando el input ya
+    # coincide letra por letra (salvo mayusculas) con el nombre real --
+    # ahi no hay nada que revisar. El caso riesgoso es cuando ese match
+    # solo existe porque sacar tildes/diacriticos igualo dos nombres que
+    # en realidad tienen letras distintas -- ej. "Velez" (arg.) normaliza
+    # igual que "Velež" (con ž, club bosnio NK Velez Mostar), porque
+    # _normalizar_nombre() borra la "ž" igual que borraria un acento
+    # comun, aunque el input nunca tuvo esa letra.
+    exacto_sin_normalizar = exacto is not None and exacto.lower() == nombre_input.lower()
+
+    if exacto is not None and not exacto_sin_normalizar:
+        # Coincidencia por PREFIJO de palabra completa (ej. "Velez" ->
+        # "Velez Sarsfield") tiene prioridad sobre esa clase de match
+        # "exacto" fragil -- es la forma coloquial habitual de acortar
+        # un nombre oficial (se suele decir "Velez" en vez de "Velez
+        # Sarsfield", igual que "Racing" por "Racing Club"), mas
+        # confiable que una coincidencia cruzada entre paises que solo
+        # aparece por normalizar. Solo se aplica si el candidato por
+        # prefijo es UNICO -- si hay mas de uno (ej. "Racing" matchea a
+        # "Racing Club", "Racing Montevideo" Y "Racing Santander" a la
+        # vez) la ambiguedad real no se resuelve aca, cae al match
+        # exacto de siempre.
+        candidatos_prefijo = sorted({
+            nombre for clave, nombre in _cache_equipos_todos.items()
+            if clave.startswith(nombre_normalizado + " ")
+        })
+        if len(candidatos_prefijo) == 1:
+            return candidatos_prefijo[0], True
+
+    if exacto is not None:
+        return exacto, False
 
     from difflib import get_close_matches
     candidatos = get_close_matches(nombre_normalizado, _cache_equipos_todos.keys(), n=1, cutoff=0.80)
