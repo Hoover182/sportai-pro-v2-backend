@@ -57,6 +57,40 @@ LIGAS = [
 
 CSV_SALIDA = "futbol_partidos.csv"
 
+# Cache de team_id de api-football (equipo -> id) persistido a disco entre
+# corridas del cron -- el id de un equipo no cambia de un dia a otro, asi
+# que sin esto actualizar_h2h_desactualizado() volvia a resolver ~500
+# equipos de nivel 1 desde cero TODOS los dias via buscar_team_id() (hasta
+# varios requests por equipo cuando el primer intento de busqueda no da
+# con el pais esperado). Medido en vivo: era el mayor gasto de cuota del
+# cron diario. Mismo directorio que CSV_SALIDA -- si el CSV persiste
+# entre corridas del cron (crece dia a dia sin re-descarga completa), este
+# archivo tambien deberia.
+CACHE_TEAM_IDS_PATH = "cache_team_ids.json"
+
+
+def _cargar_cache_team_ids():
+    import json
+    import os
+    if not os.path.exists(CACHE_TEAM_IDS_PATH):
+        return {}
+    try:
+        with open(CACHE_TEAM_IDS_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _guardar_cache_team_ids(cache):
+    import json
+    # Solo se persisten resoluciones EXITOSAS (id no nulo). Un equipo que
+    # no se pudo resolver en esta corrida (podria ser un fallo transitorio
+    # de la API, no que el equipo no exista) no debe quedar bloqueado para
+    # siempre -- la proxima corrida lo reintenta.
+    limpio = {nombre: tid for nombre, tid in cache.items() if tid is not None}
+    with open(CACHE_TEAM_IDS_PATH, "w", encoding="utf-8") as f:
+        json.dump(limpio, f, ensure_ascii=False, indent=2)
+
 
 def api_get(endpoint, params=None):
     headers = {"x-apisports-key": API_KEY}
