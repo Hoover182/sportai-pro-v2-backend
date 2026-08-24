@@ -625,6 +625,37 @@ def ultimos_enfrentamientos_directos(df, equipo_a, equipo_b, n=5):
     return h2h.sort_values("fecha", ascending=False).head(n)
 
 
+def _peso_antiguedad_partido(fecha_partido, ahora=None):
+    """Peso individual de UN partido segun su antiguedad -- mismo
+    decaimiento (0 anios=100%, 1 anio=90%, 2 anios=70%, 3+ anios=50%
+    piso) que ya se usaba para descontar el BLOQUE entero de H2H segun
+    el cruce mas reciente, aplicado ahora partido por partido antes de
+    promediar. Sin esto, un resultado de hace 2-3 anios pesaba
+    exactamente igual que uno de hace 6 meses dentro del promedio (el
+    descuento por antiguedad del bloque solo miraba la fecha del cruce
+    MAS NUEVO, no la de cada partido individual) -- ver conversacion
+    sobre el caso River Plate vs Velez Sarsfield, donde 2 goleadas de
+    2024 (5-0 y 4-1) pesaban lo mismo que los 2 cruces mas parejos y
+    recientes de 2025-2026."""
+    fecha_partido = pd.to_datetime(fecha_partido)
+    if ahora is None:
+        ahora = pd.Timestamp.now(tz=fecha_partido.tzinfo) if fecha_partido.tzinfo is not None else pd.Timestamp.now()
+    anios = (ahora - fecha_partido).days / 365.25
+    return float(np.interp(anios, [0, 1, 2, 3], [1.0, 0.9, 0.7, 0.5]))
+
+
+def _promedio_ponderado_pares(pares):
+    """Promedio ponderado de una lista de (valor, peso) -- devuelve None
+    si la lista esta vacia (mismo comportamiento que antes: el caller
+    chequea "if valores_h2h" para decidir si hay datos)."""
+    if not pares:
+        return None
+    suma_pesos = sum(p for _, p in pares)
+    if suma_pesos <= 0:
+        return sum(v for v, _ in pares) / len(pares)
+    return sum(v * p for v, p in pares) / suma_pesos
+
+
 def _promedios_h2h_por_equipo(h2h, columna, equipo_a):
     """Extrae los valores de una columna (goles o corners) del H2H
     separados por EQUIPO real, no por columna local/visitante -- los
@@ -634,9 +665,12 @@ def _promedios_h2h_por_equipo(h2h, columna, equipo_a):
     goles de ambos equipos segun quien jugaba en casa en CADA partido
     pasado, no segun el equipo local de HOY -- ver conversacion sobre el
     caso Espanyol vs Real Madrid.
-    Retorna (valores_a, valores_b): valores de equipo_a y de su rival,
-    un numero por partido donde el dato no sea nulo."""
-    valores_a, valores_b = [], []
+    Retorna (pares_a, pares_b): pares (valor, peso_antiguedad) de
+    equipo_a y de su rival, uno por partido donde el dato no sea nulo.
+    peso_antiguedad viene de _peso_antiguedad_partido() -- el caller
+    arma el promedio ponderado con _promedio_ponderado_pares()."""
+    ahora = pd.Timestamp.now(tz="UTC")
+    pares_a, pares_b = [], []
     for _, row in h2h.iterrows():
         val_local = row.get(f"{columna}_local")
         val_visit = row.get(f"{columna}_visitante")
@@ -646,11 +680,12 @@ def _promedios_h2h_por_equipo(h2h, columna, equipo_a):
             v_a, v_b = val_visit, val_local
         else:
             continue
+        peso = _peso_antiguedad_partido(row["fecha"], ahora)
         if pd.notna(v_a):
-            valores_a.append(float(v_a))
+            pares_a.append((float(v_a), peso))
         if pd.notna(v_b):
-            valores_b.append(float(v_b))
-    return valores_a, valores_b
+            pares_b.append((float(v_b), peso))
+    return pares_a, pares_b
 
 
 def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_visitante=None):
@@ -692,11 +727,19 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
         # historico, asi que se omite el ajuste antes que arriesgar la
         # mezcla (comportamiento previo a este fix).
         if equipo_local and equipo_visitante:
+            # Cada partido del H2H pesa distinto DENTRO del promedio
+            # segun su propia antiguedad (_peso_antiguedad_partido),
+            # ademas del descuento de peso_h2h de arriba que ya aplica
+            # al bloque completo -- sin esto, un resultado de hace 2-3
+            # anios pesaba exactamente igual que uno de hace 6 meses en
+            # el promedio (ver _promedios_h2h_por_equipo).
             goles_a_h2h, goles_b_h2h = _promedios_h2h_por_equipo(h2h, "goles", equipo_local)
-            if goles_a_h2h:
-                goles_a = goles_a * peso_base + (sum(goles_a_h2h) / len(goles_a_h2h)) * peso_h2h
-            if goles_b_h2h:
-                goles_b = goles_b * peso_base + (sum(goles_b_h2h) / len(goles_b_h2h)) * peso_h2h
+            prom_goles_a_h2h = _promedio_ponderado_pares(goles_a_h2h)
+            prom_goles_b_h2h = _promedio_ponderado_pares(goles_b_h2h)
+            if prom_goles_a_h2h is not None:
+                goles_a = goles_a * peso_base + prom_goles_a_h2h * peso_h2h
+            if prom_goles_b_h2h is not None:
+                goles_b = goles_b * peso_base + prom_goles_b_h2h * peso_h2h
 
             # Solo partidos con datos de corners reales (evita que un
             # partido sin stats registradas cuente como 0 corners real)
@@ -704,10 +747,12 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
                 (h2h["corners_local"] + h2h["corners_visitante"] > 0)
             ]
             corners_a_h2h, corners_b_h2h = _promedios_h2h_por_equipo(h2h_con_stats, "corners", equipo_local)
-            if corners_a_h2h:
-                corners_a = corners_a * peso_base + (sum(corners_a_h2h) / len(corners_a_h2h)) * peso_h2h
-            if corners_b_h2h:
-                corners_b = corners_b * peso_base + (sum(corners_b_h2h) / len(corners_b_h2h)) * peso_h2h
+            prom_corners_a_h2h = _promedio_ponderado_pares(corners_a_h2h)
+            prom_corners_b_h2h = _promedio_ponderado_pares(corners_b_h2h)
+            if prom_corners_a_h2h is not None:
+                corners_a = corners_a * peso_base + prom_corners_a_h2h * peso_h2h
+            if prom_corners_b_h2h is not None:
+                corners_b = corners_b * peso_base + prom_corners_b_h2h * peso_h2h
 
         # Ajuste H2H para tarjetas si hay datos
         h2h_con_tarjetas = h2h[
