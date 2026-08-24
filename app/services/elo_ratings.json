@@ -1,0 +1,4354 @@
+{
+  "Racing Santander": {
+    "rating": 1609.07,
+    "n_partidos": 9
+  },
+  "Villarreal": {
+    "rating": 1732.24,
+    "n_partidos": 136
+  },
+  "FSV Mainz 05": {
+    "rating": 1596.15,
+    "n_partidos": 111
+  },
+  "FC St. Pauli": {
+    "rating": 1394.01,
+    "n_partidos": 56
+  },
+  "Holstein Kiel": {
+    "rating": 1420.13,
+    "n_partidos": 62
+  },
+  "Nottingham Forest": {
+    "rating": 1619.79,
+    "n_partidos": 138
+  },
+  "Southampton": {
+    "rating": 1369.16,
+    "n_partidos": 88
+  },
+  "Ipswich": {
+    "rating": 1342.15,
+    "n_partidos": 66
+  },
+  "West Ham": {
+    "rating": 1533.62,
+    "n_partidos": 129
+  },
+  "Borussia Dortmund": {
+    "rating": 1735.01,
+    "n_partidos": 105
+  },
+  "Sunderland": {
+    "rating": 1528.22,
+    "n_partidos": 50
+  },
+  "Wolves": {
+    "rating": 1428.97,
+    "n_partidos": 133
+  },
+  "Auxerre": {
+    "rating": 1504.21,
+    "n_partidos": 85
+  },
+  "Montpellier": {
+    "rating": 1369.15,
+    "n_partidos": 101
+  },
+  "Penarol": {
+    "rating": 1573.49,
+    "n_partidos": 54
+  },
+  "Central Espanol": {
+    "rating": 1486.62,
+    "n_partidos": 39
+  },
+  "Danubio": {
+    "rating": 1444.21,
+    "n_partidos": 52
+  },
+  "Deportivo La Coruna": {
+    "rating": 1573.41,
+    "n_partidos": 19
+  },
+  "Valladolid": {
+    "rating": 1310.89,
+    "n_partidos": 93
+  },
+  "Luton": {
+    "rating": 1320.1,
+    "n_partidos": 63
+  },
+  "RB Leipzig": {
+    "rating": 1666.0,
+    "n_partidos": 108
+  },
+  "FC Heidenheim": {
+    "rating": 1419.07,
+    "n_partidos": 110
+  },
+  "SV Elversberg": {
+    "rating": 1427.59,
+    "n_partidos": 9
+  },
+  "Bournemouth": {
+    "rating": 1679.25,
+    "n_partidos": 135
+  },
+  "Leeds": {
+    "rating": 1590.5,
+    "n_partidos": 53
+  },
+  "Almeria": {
+    "rating": 1495.66,
+    "n_partidos": 96
+  },
+  "Real Sociedad": {
+    "rating": 1617.07,
+    "n_partidos": 137
+  },
+  "Atletico Madrid": {
+    "rating": 1754.51,
+    "n_partidos": 148
+  },
+  "Athletic Club": {
+    "rating": 1536.79,
+    "n_partidos": 134
+  },
+  "Barcelona": {
+    "rating": 1908.67,
+    "n_partidos": 135
+  },
+  "SV Darmstadt 98": {
+    "rating": 1346.12,
+    "n_partidos": 80
+  },
+  "Real Madrid": {
+    "rating": 1867.47,
+    "n_partidos": 138
+  },
+  "Celta Vigo": {
+    "rating": 1608.63,
+    "n_partidos": 142
+  },
+  "Belgrano Cordoba": {
+    "rating": 1574.24,
+    "n_partidos": 154
+  },
+  "Arsenal Sarandi": {
+    "rating": 1392.37,
+    "n_partidos": 124
+  },
+  "Valencia": {
+    "rating": 1619.95,
+    "n_partidos": 132
+  },
+  "Colon Santa Fe": {
+    "rating": 1469.77,
+    "n_partidos": 125
+  },
+  "Sarmiento Junin": {
+    "rating": 1462.13,
+    "n_partidos": 146
+  },
+  "Brighton": {
+    "rating": 1651.67,
+    "n_partidos": 134
+  },
+  "Aston Villa": {
+    "rating": 1693.45,
+    "n_partidos": 141
+  },
+  "Tottenham": {
+    "rating": 1515.83,
+    "n_partidos": 133
+  },
+  "Frosinone": {
+    "rating": 1489.31,
+    "n_partidos": 104
+  },
+  "Atalanta": {
+    "rating": 1688.83,
+    "n_partidos": 129
+  },
+  "Fortaleza FC": {
+    "rating": 1439.46,
+    "n_partidos": 118
+  },
+  "Jaguares": {
+    "rating": 1324.58,
+    "n_partidos": 115
+  },
+  "AS Roma": {
+    "rating": 1688.67,
+    "n_partidos": 127
+  },
+  "Bologna": {
+    "rating": 1581.59,
+    "n_partidos": 138
+  },
+  "Manchester United": {
+    "rating": 1679.04,
+    "n_partidos": 133
+  },
+  "Bayer Leverkusen": {
+    "rating": 1724.24,
+    "n_partidos": 112
+  },
+  "FC Augsburg": {
+    "rating": 1524.22,
+    "n_partidos": 106
+  },
+  "VfL Wolfsburg": {
+    "rating": 1457.42,
+    "n_partidos": 109
+  },
+  "Fiorentina": {
+    "rating": 1543.37,
+    "n_partidos": 123
+  },
+  "Inter": {
+    "rating": 1848.5,
+    "n_partidos": 129
+  },
+  "Remo": {
+    "rating": 1526.19,
+    "n_partidos": 32
+  },
+  "Vasco DA Gama": {
+    "rating": 1511.54,
+    "n_partidos": 70
+  },
+  "Hellas Verona": {
+    "rating": 1360.2,
+    "n_partidos": 124
+  },
+  "AC Milan": {
+    "rating": 1671.94,
+    "n_partidos": 129
+  },
+  "Chelsea": {
+    "rating": 1627.34,
+    "n_partidos": 134
+  },
+  "Eintracht Frankfurt": {
+    "rating": 1594.1,
+    "n_partidos": 113
+  },
+  "Envigado": {
+    "rating": 1330.53,
+    "n_partidos": 135
+  },
+  "1899 Hoffenheim": {
+    "rating": 1615.32,
+    "n_partidos": 107
+  },
+  "Aldosivi": {
+    "rating": 1347.61,
+    "n_partidos": 45
+  },
+  "Vizela": {
+    "rating": 1423.16,
+    "n_partidos": 72
+  },
+  "Moreirense": {
+    "rating": 1511.12,
+    "n_partidos": 113
+  },
+  "Newcastle": {
+    "rating": 1633.26,
+    "n_partidos": 125
+  },
+  "Malaga": {
+    "rating": 1498.61,
+    "n_partidos": 8
+  },
+  "Torino": {
+    "rating": 1521.39,
+    "n_partidos": 133
+  },
+  "Pisa": {
+    "rating": 1414.2,
+    "n_partidos": 43
+  },
+  "SC Freiburg": {
+    "rating": 1624.45,
+    "n_partidos": 118
+  },
+  "Borussia Mönchengladbach": {
+    "rating": 1510.4,
+    "n_partidos": 102
+  },
+  "Hamburger SV": {
+    "rating": 1503.59,
+    "n_partidos": 43
+  },
+  "Oviedo": {
+    "rating": 1517.72,
+    "n_partidos": 42
+  },
+  "Getafe": {
+    "rating": 1598.76,
+    "n_partidos": 134
+  },
+  "Everton": {
+    "rating": 1594.76,
+    "n_partidos": 125
+  },
+  "Osasuna": {
+    "rating": 1582.98,
+    "n_partidos": 132
+  },
+  "Leganes": {
+    "rating": 1472.49,
+    "n_partidos": 90
+  },
+  "CF Montreal": {
+    "rating": 1396.64,
+    "n_partidos": 58
+  },
+  "Portland Timbers": {
+    "rating": 1433.69,
+    "n_partidos": 49
+  },
+  "Tigre": {
+    "rating": 1557.85,
+    "n_partidos": 165
+  },
+  "Udinese": {
+    "rating": 1551.84,
+    "n_partidos": 130
+  },
+  "Columbus Crew": {
+    "rating": 1492.43,
+    "n_partidos": 49
+  },
+  "Los Angeles Galaxy": {
+    "rating": 1475.81,
+    "n_partidos": 56
+  },
+  "Farense": {
+    "rating": 1438.59,
+    "n_partidos": 77
+  },
+  "Estrela Vendas Novas": {
+    "rating": 1469.41,
+    "n_partidos": 1
+  },
+  "Rosario Central": {
+    "rating": 1627.33,
+    "n_partidos": 173
+  },
+  "Deportivo Riestra": {
+    "rating": 1474.79,
+    "n_partidos": 104
+  },
+  "Atletico Tucuman": {
+    "rating": 1503.63,
+    "n_partidos": 155
+  },
+  "Philadelphia Union": {
+    "rating": 1514.31,
+    "n_partidos": 58
+  },
+  "Seattle Sounders": {
+    "rating": 1490.01,
+    "n_partidos": 42
+  },
+  "Independiente": {
+    "rating": 1585.52,
+    "n_partidos": 157
+  },
+  "Union Santa Fe": {
+    "rating": 1507.14,
+    "n_partidos": 155
+  },
+  "Chacarita Juniors": {
+    "rating": 1517.6,
+    "n_partidos": 1
+  },
+  "Gimnasia L.P.": {
+    "rating": 1553.65,
+    "n_partidos": 159
+  },
+  "Eyüpspor": {
+    "rating": 1445.39,
+    "n_partidos": 72
+  },
+  "Kayserispor": {
+    "rating": 1394.61,
+    "n_partidos": 77
+  },
+  "Fulham": {
+    "rating": 1566.33,
+    "n_partidos": 126
+  },
+  "Las Palmas": {
+    "rating": 1542.66,
+    "n_partidos": 104
+  },
+  "Velez Sarsfield": {
+    "rating": 1595.52,
+    "n_partidos": 154
+  },
+  "Empoli": {
+    "rating": 1385.9,
+    "n_partidos": 114
+  },
+  "Parma": {
+    "rating": 1513.82,
+    "n_partidos": 101
+  },
+  "Paris FC": {
+    "rating": 1601.0,
+    "n_partidos": 39
+  },
+  "Stade Brestois 29": {
+    "rating": 1536.51,
+    "n_partidos": 120
+  },
+  "Werder Bremen": {
+    "rating": 1494.16,
+    "n_partidos": 112
+  },
+  "Brentford": {
+    "rating": 1628.76,
+    "n_partidos": 128
+  },
+  "Sheffield Utd": {
+    "rating": 1283.4,
+    "n_partidos": 99
+  },
+  "Real Betis": {
+    "rating": 1684.1,
+    "n_partidos": 139
+  },
+  "Orlando City SC": {
+    "rating": 1484.32,
+    "n_partidos": 56
+  },
+  "San Jose Earthquakes": {
+    "rating": 1402.59,
+    "n_partidos": 50
+  },
+  "Atlanta United FC": {
+    "rating": 1389.52,
+    "n_partidos": 48
+  },
+  "Union Berlin": {
+    "rating": 1491.3,
+    "n_partidos": 106
+  },
+  "Arsenal": {
+    "rating": 1865.94,
+    "n_partidos": 136
+  },
+  "Santos": {
+    "rating": 1551.18,
+    "n_partidos": 68
+  },
+  "Vitoria": {
+    "rating": 1458.68,
+    "n_partidos": 66
+  },
+  "Minnesota United FC": {
+    "rating": 1464.72,
+    "n_partidos": 51
+  },
+  "New England Revolution": {
+    "rating": 1430.65,
+    "n_partidos": 58
+  },
+  "Atletico Paranaense": {
+    "rating": 1561.38,
+    "n_partidos": 58
+  },
+  "New York City FC": {
+    "rating": 1537.26,
+    "n_partidos": 52
+  },
+  "Vancouver Whitecaps": {
+    "rating": 1565.08,
+    "n_partidos": 62
+  },
+  "Petrojet": {
+    "rating": 1436.16,
+    "n_partidos": 43
+  },
+  "AL Masry": {
+    "rating": 1458.82,
+    "n_partidos": 64
+  },
+  "Lazio": {
+    "rating": 1593.77,
+    "n_partidos": 135
+  },
+  "Juventus": {
+    "rating": 1709.36,
+    "n_partidos": 127
+  },
+  "Newells Old Boys": {
+    "rating": 1464.12,
+    "n_partidos": 147
+  },
+  "Al Ittihad": {
+    "rating": 1415.64,
+    "n_partidos": 48
+  },
+  "El Geish": {
+    "rating": 1384.0,
+    "n_partidos": 50
+  },
+  "Paris Saint Germain": {
+    "rating": 1846.36,
+    "n_partidos": 136
+  },
+  "Liverpool": {
+    "rating": 1705.85,
+    "n_partidos": 126
+  },
+  "Napoli": {
+    "rating": 1731.16,
+    "n_partidos": 134
+  },
+  "Fortuna Düsseldorf": {
+    "rating": 1457.62,
+    "n_partidos": 15
+  },
+  "Internacional de Bogota": {
+    "rating": 1362.59,
+    "n_partidos": 155
+  },
+  "Huila": {
+    "rating": 1351.01,
+    "n_partidos": 85
+  },
+  "Santa Fe": {
+    "rating": 1584.96,
+    "n_partidos": 173
+  },
+  "Cucuta": {
+    "rating": 1363.99,
+    "n_partidos": 38
+  },
+  "Deportivo Cali": {
+    "rating": 1467.58,
+    "n_partidos": 159
+  },
+  "SC Braga": {
+    "rating": 1714.86,
+    "n_partidos": 117
+  },
+  "Chaves": {
+    "rating": 1371.48,
+    "n_partidos": 66
+  },
+  "Atletico Nacional": {
+    "rating": 1663.87,
+    "n_partidos": 182
+  },
+  "Millonarios": {
+    "rating": 1570.58,
+    "n_partidos": 184
+  },
+  "Universidad de Concepcion": {
+    "rating": 1347.32,
+    "n_partidos": 48
+  },
+  "Everton de Vina": {
+    "rating": 1454.46,
+    "n_partidos": 47
+  },
+  "Ajax": {
+    "rating": 1687.71,
+    "n_partidos": 41
+  },
+  "NAC Breda": {
+    "rating": 1417.38,
+    "n_partidos": 28
+  },
+  "Deportivo Pasto": {
+    "rating": 1391.68,
+    "n_partidos": 162
+  },
+  "Genoa": {
+    "rating": 1525.67,
+    "n_partidos": 127
+  },
+  "Alianza Valledupar": {
+    "rating": 1406.2,
+    "n_partidos": 161
+  },
+  "Junior": {
+    "rating": 1535.14,
+    "n_partidos": 180
+  },
+  "Palmeiras": {
+    "rating": 1675.54,
+    "n_partidos": 77
+  },
+  "Mallorca": {
+    "rating": 1570.34,
+    "n_partidos": 138
+  },
+  "Palestino": {
+    "rating": 1494.62,
+    "n_partidos": 52
+  },
+  "Universidad de Chile": {
+    "rating": 1536.12,
+    "n_partidos": 46
+  },
+  "Union La Calera": {
+    "rating": 1438.47,
+    "n_partidos": 48
+  },
+  "Sporting CP": {
+    "rating": 1888.27,
+    "n_partidos": 127
+  },
+  "Liverpool Montevideo": {
+    "rating": 1499.8,
+    "n_partidos": 64
+  },
+  "Juventud": {
+    "rating": 1452.99,
+    "n_partidos": 53
+  },
+  "Lanus": {
+    "rating": 1528.35,
+    "n_partidos": 161
+  },
+  "Cerro Porteno": {
+    "rating": 1521.31,
+    "n_partidos": 23
+  },
+  "Club Nacional": {
+    "rating": 1544.79,
+    "n_partidos": 63
+  },
+  "Águilas Doradas": {
+    "rating": 1456.37,
+    "n_partidos": 156
+  },
+  "Libertad Asuncion": {
+    "rating": 1421.41,
+    "n_partidos": 20
+  },
+  "America de Cali": {
+    "rating": 1581.65,
+    "n_partidos": 187
+  },
+  "Llaneros": {
+    "rating": 1524.4,
+    "n_partidos": 32
+  },
+  "Boavista": {
+    "rating": 1374.55,
+    "n_partidos": 92
+  },
+  "Nacional": {
+    "rating": 1477.32,
+    "n_partidos": 75
+  },
+  "Sporting Kansas City": {
+    "rating": 1303.08,
+    "n_partidos": 53
+  },
+  "New York Red Bulls": {
+    "rating": 1415.66,
+    "n_partidos": 62
+  },
+  "Fortuna Sittard": {
+    "rating": 1439.51,
+    "n_partidos": 37
+  },
+  "Bucaramanga": {
+    "rating": 1503.17,
+    "n_partidos": 175
+  },
+  "Saint Etienne": {
+    "rating": 1400.97,
+    "n_partidos": 91
+  },
+  "Toulouse": {
+    "rating": 1545.26,
+    "n_partidos": 110
+  },
+  "Once Caldas": {
+    "rating": 1530.17,
+    "n_partidos": 167
+  },
+  "Independiente Medellin": {
+    "rating": 1551.27,
+    "n_partidos": 186
+  },
+  "FC Cincinnati": {
+    "rating": 1524.86,
+    "n_partidos": 47
+  },
+  "Sassuolo": {
+    "rating": 1521.14,
+    "n_partidos": 113
+  },
+  "Houston Dynamo": {
+    "rating": 1508.71,
+    "n_partidos": 50
+  },
+  "DC United": {
+    "rating": 1392.43,
+    "n_partidos": 51
+  },
+  "Huachipato": {
+    "rating": 1370.98,
+    "n_partidos": 44
+  },
+  "Erzurumspor FK": {
+    "rating": 1425.41,
+    "n_partidos": 13
+  },
+  "Fenerbahçe": {
+    "rating": 1762.79,
+    "n_partidos": 86
+  },
+  "Toronto FC": {
+    "rating": 1410.65,
+    "n_partidos": 53
+  },
+  "Union Magdalena": {
+    "rating": 1321.39,
+    "n_partidos": 91
+  },
+  "Coritiba": {
+    "rating": 1371.71,
+    "n_partidos": 56
+  },
+  "SC Paderborn 07": {
+    "rating": 1576.37,
+    "n_partidos": 22
+  },
+  "Los Angeles FC": {
+    "rating": 1535.22,
+    "n_partidos": 57
+  },
+  "Colo Colo": {
+    "rating": 1626.15,
+    "n_partidos": 48
+  },
+  "ADO Den Haag": {
+    "rating": 1425.99,
+    "n_partidos": 15
+  },
+  "AZ Alkmaar": {
+    "rating": 1607.56,
+    "n_partidos": 43
+  },
+  "Anderlecht": {
+    "rating": 1549.63,
+    "n_partidos": 33
+  },
+  "SK Beveren": {
+    "rating": 1432.02,
+    "n_partidos": 17
+  },
+  "Cerro Largo": {
+    "rating": 1443.76,
+    "n_partidos": 51
+  },
+  "VfB Stuttgart": {
+    "rating": 1717.12,
+    "n_partidos": 114
+  },
+  "Sevilla": {
+    "rating": 1564.86,
+    "n_partidos": 133
+  },
+  "Antwerp": {
+    "rating": 1518.85,
+    "n_partidos": 34
+  },
+  "Antalyaspor": {
+    "rating": 1377.09,
+    "n_partidos": 81
+  },
+  "Cremonese": {
+    "rating": 1477.99,
+    "n_partidos": 50
+  },
+  "Aurora": {
+    "rating": 1356.99,
+    "n_partidos": 54
+  },
+  "Real Potosí": {
+    "rating": 1413.3,
+    "n_partidos": 58
+  },
+  "Blooming": {
+    "rating": 1388.7,
+    "n_partidos": 54
+  },
+  "The Strongest": {
+    "rating": 1541.42,
+    "n_partidos": 49
+  },
+  "Crystal Palace": {
+    "rating": 1627.0,
+    "n_partidos": 130
+  },
+  "Telstar": {
+    "rating": 1476.72,
+    "n_partidos": 34
+  },
+  "NEC Nijmegen": {
+    "rating": 1517.2,
+    "n_partidos": 43
+  },
+  "Haras El Hodood": {
+    "rating": 1343.1,
+    "n_partidos": 46
+  },
+  "El Gouna FC": {
+    "rating": 1365.13,
+    "n_partidos": 45
+  },
+  "Talleres Cordoba": {
+    "rating": 1478.85,
+    "n_partidos": 152
+  },
+  "Boca Juniors": {
+    "rating": 1634.22,
+    "n_partidos": 165
+  },
+  "Alaves": {
+    "rating": 1586.88,
+    "n_partidos": 136
+  },
+  "Oriente Petrolero": {
+    "rating": 1373.29,
+    "n_partidos": 55
+  },
+  "Cobresal": {
+    "rating": 1383.39,
+    "n_partidos": 42
+  },
+  "Granada CF": {
+    "rating": 1425.55,
+    "n_partidos": 94
+  },
+  "Chicago Fire": {
+    "rating": 1497.1,
+    "n_partidos": 56
+  },
+  "Bahia": {
+    "rating": 1510.83,
+    "n_partidos": 63
+  },
+  "Wadi Degla": {
+    "rating": 1520.62,
+    "n_partidos": 48
+  },
+  "Groningen": {
+    "rating": 1524.01,
+    "n_partidos": 39
+  },
+  "Beşiktaş": {
+    "rating": 1665.12,
+    "n_partidos": 85
+  },
+  "Gençlerbirliği S.K.": {
+    "rating": 1577.06,
+    "n_partidos": 60
+  },
+  "Gremio": {
+    "rating": 1513.51,
+    "n_partidos": 65
+  },
+  "Santiago Wanderers": {
+    "rating": 1309.63,
+    "n_partidos": 10
+  },
+  "Cagliari": {
+    "rating": 1519.32,
+    "n_partidos": 129
+  },
+  "Manchester City": {
+    "rating": 1835.12,
+    "n_partidos": 129
+  },
+  "Defensa Y Justicia": {
+    "rating": 1498.87,
+    "n_partidos": 158
+  },
+  "Guabirá": {
+    "rating": 1409.92,
+    "n_partidos": 54
+  },
+  "Chico": {
+    "rating": 1313.87,
+    "n_partidos": 151
+  },
+  "Patriotas": {
+    "rating": 1301.33,
+    "n_partidos": 92
+  },
+  "Racing Club": {
+    "rating": 1579.74,
+    "n_partidos": 166
+  },
+  "Excelsior": {
+    "rating": 1453.57,
+    "n_partidos": 53
+  },
+  "PEC Zwolle": {
+    "rating": 1431.43,
+    "n_partidos": 45
+  },
+  "Gaziantep FK": {
+    "rating": 1469.59,
+    "n_partidos": 85
+  },
+  "Kocaelispor": {
+    "rating": 1458.87,
+    "n_partidos": 57
+  },
+  "San Lorenzo": {
+    "rating": 1501.06,
+    "n_partidos": 161
+  },
+  "Bayern Munich": {
+    "rating": 1684.62,
+    "n_partidos": 36
+  },
+  "Girona": {
+    "rating": 1573.92,
+    "n_partidos": 127
+  },
+  "Cadiz": {
+    "rating": 1415.53,
+    "n_partidos": 96
+  },
+  "Strasbourg": {
+    "rating": 1587.79,
+    "n_partidos": 119
+  },
+  "Lyon": {
+    "rating": 1681.84,
+    "n_partidos": 121
+  },
+  "Leicester": {
+    "rating": 1347.52,
+    "n_partidos": 91
+  },
+  "Nantes": {
+    "rating": 1438.55,
+    "n_partidos": 111
+  },
+  "Coquimbo Unido": {
+    "rating": 1582.36,
+    "n_partidos": 44
+  },
+  "Central Cordoba de Santiago": {
+    "rating": 1470.32,
+    "n_partidos": 152
+  },
+  "Rennes": {
+    "rating": 1650.99,
+    "n_partidos": 116
+  },
+  "Levante": {
+    "rating": 1576.73,
+    "n_partidos": 51
+  },
+  "Banfield": {
+    "rating": 1445.9,
+    "n_partidos": 152
+  },
+  "Famalicao": {
+    "rating": 1613.0,
+    "n_partidos": 121
+  },
+  "Universidad Catolica": {
+    "rating": 1534.75,
+    "n_partidos": 75
+  },
+  "Manta FC": {
+    "rating": 1284.57,
+    "n_partidos": 73
+  },
+  "Lens": {
+    "rating": 1725.06,
+    "n_partidos": 116
+  },
+  "Ismaily SC": {
+    "rating": 1292.71,
+    "n_partidos": 46
+  },
+  "Rayo Vallecano": {
+    "rating": 1614.38,
+    "n_partidos": 131
+  },
+  "Estudiantes L.P.": {
+    "rating": 1600.72,
+    "n_partidos": 155
+  },
+  "Argentinos JRS": {
+    "rating": 1627.98,
+    "n_partidos": 150
+  },
+  "Godoy Cruz": {
+    "rating": 1470.55,
+    "n_partidos": 142
+  },
+  "Venezia": {
+    "rating": 1476.6,
+    "n_partidos": 93
+  },
+  "Lecce": {
+    "rating": 1466.36,
+    "n_partidos": 130
+  },
+  "Monaco": {
+    "rating": 1665.41,
+    "n_partidos": 119
+  },
+  "Monza": {
+    "rating": 1441.63,
+    "n_partidos": 115
+  },
+  "Aucas": {
+    "rating": 1480.04,
+    "n_partidos": 70
+  },
+  "Bolívar": {
+    "rating": 1587.83,
+    "n_partidos": 55
+  },
+  "Platense": {
+    "rating": 1487.75,
+    "n_partidos": 159
+  },
+  "Real Tomayapo": {
+    "rating": 1285.12,
+    "n_partidos": 53
+  },
+  "Salernitana": {
+    "rating": 1307.28,
+    "n_partidos": 93
+  },
+  "VfL Bochum": {
+    "rating": 1393.11,
+    "n_partidos": 94
+  },
+  "River Plate": {
+    "rating": 1578.82,
+    "n_partidos": 164
+  },
+  "National Bank of Egypt": {
+    "rating": 1461.84,
+    "n_partidos": 48
+  },
+  "Espanyol": {
+    "rating": 1552.03,
+    "n_partidos": 98
+  },
+  "Clermont Foot": {
+    "rating": 1366.58,
+    "n_partidos": 84
+  },
+  "Le Havre": {
+    "rating": 1484.22,
+    "n_partidos": 106
+  },
+  "Fatih Karagümrük": {
+    "rating": 1468.77,
+    "n_partidos": 91
+  },
+  "Göztepe": {
+    "rating": 1543.25,
+    "n_partidos": 73
+  },
+  "El Mokawloon": {
+    "rating": 1452.9,
+    "n_partidos": 62
+  },
+  "Corinthians": {
+    "rating": 1624.62,
+    "n_partidos": 66
+  },
+  "GIL Vicente": {
+    "rating": 1538.89,
+    "n_partidos": 113
+  },
+  "Nacional Potosí": {
+    "rating": 1411.1,
+    "n_partidos": 51
+  },
+  "Barcelona SC": {
+    "rating": 1481.27,
+    "n_partidos": 78
+  },
+  "Portimonense": {
+    "rating": 1360.57,
+    "n_partidos": 70
+  },
+  "Burnley": {
+    "rating": 1443.22,
+    "n_partidos": 110
+  },
+  "FC Porto": {
+    "rating": 1819.59,
+    "n_partidos": 122
+  },
+  "Benfica": {
+    "rating": 1842.55,
+    "n_partidos": 118
+  },
+  "Lille": {
+    "rating": 1680.39,
+    "n_partidos": 117
+  },
+  "Santa Clara": {
+    "rating": 1555.81,
+    "n_partidos": 77
+  },
+  "Chapecoense-sc": {
+    "rating": 1403.81,
+    "n_partidos": 23
+  },
+  "RB Bragantino": {
+    "rating": 1552.99,
+    "n_partidos": 62
+  },
+  "Botafogo": {
+    "rating": 1574.24,
+    "n_partidos": 66
+  },
+  "Cruzeiro": {
+    "rating": 1631.21,
+    "n_partidos": 70
+  },
+  "Macara": {
+    "rating": 1527.52,
+    "n_partidos": 80
+  },
+  "Guayaquil City FC": {
+    "rating": 1445.24,
+    "n_partidos": 80
+  },
+  "Huracan": {
+    "rating": 1561.57,
+    "n_partidos": 153
+  },
+  "Independiente Petrolero": {
+    "rating": 1347.87,
+    "n_partidos": 55
+  },
+  "Deportivo Cuenca": {
+    "rating": 1363.76,
+    "n_partidos": 76
+  },
+  "Ghazl El Mehalla": {
+    "rating": 1365.4,
+    "n_partidos": 43
+  },
+  "Marseille": {
+    "rating": 1671.04,
+    "n_partidos": 117
+  },
+  "Orense SC": {
+    "rating": 1405.38,
+    "n_partidos": 74
+  },
+  "Willem II": {
+    "rating": 1519.24,
+    "n_partidos": 22
+  },
+  "Maritimo": {
+    "rating": 1486.46,
+    "n_partidos": 11
+  },
+  "Deportes Tolima": {
+    "rating": 1567.98,
+    "n_partidos": 181
+  },
+  "Inter Miami": {
+    "rating": 1638.4,
+    "n_partidos": 54
+  },
+  "Delfin SC": {
+    "rating": 1317.33,
+    "n_partidos": 75
+  },
+  "Cambuur": {
+    "rating": 1330.9,
+    "n_partidos": 18
+  },
+  "Sparta Praha": {
+    "rating": 1480.61,
+    "n_partidos": 4
+  },
+  "Deportivo Pereira": {
+    "rating": 1371.85,
+    "n_partidos": 158
+  },
+  "Feyenoord": {
+    "rating": 1727.1,
+    "n_partidos": 45
+  },
+  "Elche": {
+    "rating": 1564.29,
+    "n_partidos": 54
+  },
+  "Arouca": {
+    "rating": 1571.9,
+    "n_partidos": 115
+  },
+  "Tondela": {
+    "rating": 1499.92,
+    "n_partidos": 38
+  },
+  "Alverca": {
+    "rating": 1565.45,
+    "n_partidos": 31
+  },
+  "Como": {
+    "rating": 1686.82,
+    "n_partidos": 90
+  },
+  "Lommel United": {
+    "rating": 1460.35,
+    "n_partidos": 29
+  },
+  "KVC Westerlo": {
+    "rating": 1478.03,
+    "n_partidos": 35
+  },
+  "GO Ahead Eagles": {
+    "rating": 1593.63,
+    "n_partidos": 40
+  },
+  "Emelec": {
+    "rating": 1399.13,
+    "n_partidos": 66
+  },
+  "Metz": {
+    "rating": 1402.89,
+    "n_partidos": 107
+  },
+  "Utrecht": {
+    "rating": 1573.24,
+    "n_partidos": 38
+  },
+  "FC Volendam": {
+    "rating": 1440.03,
+    "n_partidos": 42
+  },
+  "Nice": {
+    "rating": 1562.7,
+    "n_partidos": 117
+  },
+  "Barracas Central": {
+    "rating": 1478.54,
+    "n_partidos": 156
+  },
+  "Lorient": {
+    "rating": 1583.22,
+    "n_partidos": 102
+  },
+  "Galatasaray": {
+    "rating": 1763.27,
+    "n_partidos": 80
+  },
+  "Mirassol": {
+    "rating": 1575.59,
+    "n_partidos": 49
+  },
+  "Albion FC": {
+    "rating": 1479.57,
+    "n_partidos": 48
+  },
+  "Wanderers": {
+    "rating": 1452.27,
+    "n_partidos": 60
+  },
+  "Alanyaspor": {
+    "rating": 1533.62,
+    "n_partidos": 82
+  },
+  "Tecnico Universitario": {
+    "rating": 1303.64,
+    "n_partidos": 71
+  },
+  "FC Dallas": {
+    "rating": 1466.58,
+    "n_partidos": 47
+  },
+  "Reims": {
+    "rating": 1486.23,
+    "n_partidos": 100
+  },
+  "Angers": {
+    "rating": 1421.09,
+    "n_partidos": 82
+  },
+  "LDU de Quito": {
+    "rating": 1559.76,
+    "n_partidos": 82
+  },
+  "Internacional": {
+    "rating": 1495.11,
+    "n_partidos": 64
+  },
+  "Flamengo": {
+    "rating": 1703.8,
+    "n_partidos": 67
+  },
+  "Nashville SC": {
+    "rating": 1637.44,
+    "n_partidos": 49
+  },
+  "Rio Ave": {
+    "rating": 1472.03,
+    "n_partidos": 109
+  },
+  "Zulte Waregem": {
+    "rating": 1584.4,
+    "n_partidos": 34
+  },
+  "Genk": {
+    "rating": 1575.81,
+    "n_partidos": 37
+  },
+  "Atletico Torque": {
+    "rating": 1537.57,
+    "n_partidos": 57
+  },
+  "Estoril": {
+    "rating": 1484.85,
+    "n_partidos": 110
+  },
+  "Heracles": {
+    "rating": 1319.05,
+    "n_partidos": 27
+  },
+  "Mushuc Runa SC": {
+    "rating": 1400.88,
+    "n_partidos": 72
+  },
+  "Casa Pia": {
+    "rating": 1477.54,
+    "n_partidos": 117
+  },
+  "Libertad": {
+    "rating": 1448.51,
+    "n_partidos": 69
+  },
+  "Sao Paulo": {
+    "rating": 1527.9,
+    "n_partidos": 63
+  },
+  "Deportivo Maldonado": {
+    "rating": 1537.94,
+    "n_partidos": 65
+  },
+  "Guimaraes": {
+    "rating": 1527.96,
+    "n_partidos": 101
+  },
+  "Almere City FC": {
+    "rating": 1491.68,
+    "n_partidos": 13
+  },
+  "De Graafschap": {
+    "rating": 1435.16,
+    "n_partidos": 25
+  },
+  "Instituto Cordoba": {
+    "rating": 1528.71,
+    "n_partidos": 131
+  },
+  "Union St. Gilloise": {
+    "rating": 1624.76,
+    "n_partidos": 30
+  },
+  "Heerenveen": {
+    "rating": 1491.75,
+    "n_partidos": 45
+  },
+  "Twente": {
+    "rating": 1542.44,
+    "n_partidos": 40
+  },
+  "Coca-Cola": {
+    "rating": 1481.81,
+    "n_partidos": 7
+  },
+  "Pharco": {
+    "rating": 1347.49,
+    "n_partidos": 45
+  },
+  "Boston River": {
+    "rating": 1407.7,
+    "n_partidos": 58
+  },
+  "Sparta Rotterdam": {
+    "rating": 1442.09,
+    "n_partidos": 33
+  },
+  "1. FC Köln": {
+    "rating": 1475.21,
+    "n_partidos": 64
+  },
+  "Cerro": {
+    "rating": 1386.91,
+    "n_partidos": 54
+  },
+  "Independiente del Valle": {
+    "rating": 1710.45,
+    "n_partidos": 77
+  },
+  "Estudiantes de Rio Cuarto": {
+    "rating": 1365.75,
+    "n_partidos": 18
+  },
+  "Konyaspor": {
+    "rating": 1533.06,
+    "n_partidos": 81
+  },
+  "Kasımpaşa": {
+    "rating": 1474.58,
+    "n_partidos": 49
+  },
+  "Mazatlán": {
+    "rating": 1368.8,
+    "n_partidos": 102
+  },
+  "Pachuca": {
+    "rating": 1519.53,
+    "n_partidos": 79
+  },
+  "Club America": {
+    "rating": 1627.72,
+    "n_partidos": 133
+  },
+  "FC Juarez": {
+    "rating": 1364.35,
+    "n_partidos": 110
+  },
+  "Club Tijuana": {
+    "rating": 1522.51,
+    "n_partidos": 112
+  },
+  "U.N.A.M. - Pumas": {
+    "rating": 1551.3,
+    "n_partidos": 100
+  },
+  "Atletico San Luis": {
+    "rating": 1404.19,
+    "n_partidos": 114
+  },
+  "Monterrey": {
+    "rating": 1526.41,
+    "n_partidos": 124
+  },
+  "Tigres UANL": {
+    "rating": 1570.79,
+    "n_partidos": 125
+  },
+  "Puebla": {
+    "rating": 1337.54,
+    "n_partidos": 107
+  },
+  "Atlas": {
+    "rating": 1472.29,
+    "n_partidos": 106
+  },
+  "Cruz Azul": {
+    "rating": 1642.13,
+    "n_partidos": 127
+  },
+  "Toluca": {
+    "rating": 1647.36,
+    "n_partidos": 125
+  },
+  "Necaxa": {
+    "rating": 1436.34,
+    "n_partidos": 108
+  },
+  "Santos Laguna": {
+    "rating": 1292.74,
+    "n_partidos": 108
+  },
+  "Club Queretaro": {
+    "rating": 1451.87,
+    "n_partidos": 105
+  },
+  "Leon": {
+    "rating": 1444.73,
+    "n_partidos": 108
+  },
+  "Guadalajara Chivas": {
+    "rating": 1577.12,
+    "n_partidos": 118
+  },
+  "Fluminense": {
+    "rating": 1582.67,
+    "n_partidos": 70
+  },
+  "Estrela": {
+    "rating": 1422.51,
+    "n_partidos": 76
+  },
+  "Rizespor": {
+    "rating": 1500.14,
+    "n_partidos": 82
+  },
+  "Enppi": {
+    "rating": 1384.24,
+    "n_partidos": 23
+  },
+  "Zamalek SC": {
+    "rating": 1497.41,
+    "n_partidos": 17
+  },
+  "Racing Montevideo": {
+    "rating": 1473.62,
+    "n_partidos": 51
+  },
+  "León": {
+    "rating": 1493.44,
+    "n_partidos": 1
+  },
+  "Samsunspor": {
+    "rating": 1597.52,
+    "n_partidos": 77
+  },
+  "Başakşehir": {
+    "rating": 1595.56,
+    "n_partidos": 79
+  },
+  "Trabzonspor": {
+    "rating": 1671.32,
+    "n_partidos": 79
+  },
+  "Cercle Brugge": {
+    "rating": 1490.3,
+    "n_partidos": 22
+  },
+  "Standard Liege": {
+    "rating": 1571.99,
+    "n_partidos": 37
+  },
+  "UTC Cajamarca": {
+    "rating": 1279.11,
+    "n_partidos": 58
+  },
+  "Deportivo Garcilaso": {
+    "rating": 1468.97,
+    "n_partidos": 53
+  },
+  "Independ. Rivadavia": {
+    "rating": 1587.48,
+    "n_partidos": 55
+  },
+  "Sporting Cristal": {
+    "rating": 1456.5,
+    "n_partidos": 69
+  },
+  "ADT": {
+    "rating": 1383.06,
+    "n_partidos": 53
+  },
+  "Cienciano": {
+    "rating": 1460.83,
+    "n_partidos": 68
+  },
+  "Comerciantes Unidos": {
+    "rating": 1358.67,
+    "n_partidos": 66
+  },
+  "Club Brugge KV": {
+    "rating": 1687.6,
+    "n_partidos": 30
+  },
+  "Kortrijk": {
+    "rating": 1373.94,
+    "n_partidos": 8
+  },
+  "PSV Eindhoven": {
+    "rating": 1741.21,
+    "n_partidos": 36
+  },
+  "Sport Huancayo": {
+    "rating": 1374.75,
+    "n_partidos": 61
+  },
+  "Beerschot VA": {
+    "rating": 1458.42,
+    "n_partidos": 10
+  },
+  "FBC Melgar": {
+    "rating": 1555.93,
+    "n_partidos": 56
+  },
+  "Alianza Atletico": {
+    "rating": 1419.38,
+    "n_partidos": 66
+  },
+  "Alianza Lima": {
+    "rating": 1566.27,
+    "n_partidos": 57
+  },
+  "Universitario": {
+    "rating": 1589.03,
+    "n_partidos": 62
+  },
+  "Club Deportivo Los Chankas": {
+    "rating": 1363.91,
+    "n_partidos": 61
+  },
+  "Cusco": {
+    "rating": 1445.37,
+    "n_partidos": 68
+  },
+  "Al Khaleej Saihat": {
+    "rating": 1458.06,
+    "n_partidos": 25
+  },
+  "Al-Ettifaq": {
+    "rating": 1577.88,
+    "n_partidos": 23
+  },
+  "Nublense": {
+    "rating": 1491.76,
+    "n_partidos": 44
+  },
+  "Real Salt Lake": {
+    "rating": 1394.56,
+    "n_partidos": 37
+  },
+  "Sport Boys": {
+    "rating": 1364.6,
+    "n_partidos": 48
+  },
+  "Atletico Grau": {
+    "rating": 1355.46,
+    "n_partidos": 59
+  },
+  "Al Okhdood": {
+    "rating": 1351.82,
+    "n_partidos": 27
+  },
+  "Al Riyadh": {
+    "rating": 1376.82,
+    "n_partidos": 24
+  },
+  "Smouha SC": {
+    "rating": 1264.18,
+    "n_partidos": 23
+  },
+  "Ceramica Cleopatra": {
+    "rating": 1351.09,
+    "n_partidos": 22
+  },
+  "Damac": {
+    "rating": 1424.6,
+    "n_partidos": 15
+  },
+  "Progreso": {
+    "rating": 1304.38,
+    "n_partidos": 43
+  },
+  "Sportivo Luqueno": {
+    "rating": 1428.42,
+    "n_partidos": 10
+  },
+  "Colorado Rapids": {
+    "rating": 1420.45,
+    "n_partidos": 41
+  },
+  "Leones del Norte": {
+    "rating": 1480.66,
+    "n_partidos": 45
+  },
+  "Gimnasia M.": {
+    "rating": 1566.6,
+    "n_partidos": 16
+  },
+  "Future FC": {
+    "rating": 1409.48,
+    "n_partidos": 39
+  },
+  "Patro Eisden": {
+    "rating": 1530.39,
+    "n_partidos": 20
+  },
+  "Al Taawon": {
+    "rating": 1533.54,
+    "n_partidos": 24
+  },
+  "Gualberto Villarroel SJ": {
+    "rating": 1341.56,
+    "n_partidos": 49
+  },
+  "Al Shabab": {
+    "rating": 1426.46,
+    "n_partidos": 19
+  },
+  "Universitario de Vinto": {
+    "rating": 1247.79,
+    "n_partidos": 48
+  },
+  "Always Ready": {
+    "rating": 1586.2,
+    "n_partidos": 58
+  },
+  "Rodez": {
+    "rating": 1424.61,
+    "n_partidos": 13
+  },
+  "AVS": {
+    "rating": 1422.71,
+    "n_partidos": 66
+  },
+  "Pyramids FC": {
+    "rating": 1554.77,
+    "n_partidos": 22
+  },
+  "Rangers de Talca": {
+    "rating": 1405.23,
+    "n_partidos": 8
+  },
+  "Fortaleza EC": {
+    "rating": 1562.1,
+    "n_partidos": 8
+  },
+  "San Antonio Bulo Bulo": {
+    "rating": 1360.04,
+    "n_partidos": 51
+  },
+  "Bayern München": {
+    "rating": 1941.37,
+    "n_partidos": 74
+  },
+  "Defensor Sporting": {
+    "rating": 1426.12,
+    "n_partidos": 47
+  },
+  "Al Kholood": {
+    "rating": 1418.83,
+    "n_partidos": 15
+  },
+  "KV Mechelen": {
+    "rating": 1358.35,
+    "n_partidos": 28
+  },
+  "Gent": {
+    "rating": 1467.2,
+    "n_partidos": 37
+  },
+  "St. Truiden": {
+    "rating": 1545.94,
+    "n_partidos": 19
+  },
+  "Club Brugge II": {
+    "rating": 1492.38,
+    "n_partidos": 5
+  },
+  "AS Eupen": {
+    "rating": 1446.88,
+    "n_partidos": 5
+  },
+  "Liège": {
+    "rating": 1444.85,
+    "n_partidos": 16
+  },
+  "RAAL La Louvière": {
+    "rating": 1485.06,
+    "n_partidos": 31
+  },
+  "RWDM": {
+    "rating": 1482.84,
+    "n_partidos": 5
+  },
+  "K. Lierse S.K.": {
+    "rating": 1500.69,
+    "n_partidos": 5
+  },
+  "RED Star FC 93": {
+    "rating": 1372.23,
+    "n_partidos": 9
+  },
+  "OH Leuven": {
+    "rating": 1398.36,
+    "n_partidos": 30
+  },
+  "RSC Anderlecht II": {
+    "rating": 1463.66,
+    "n_partidos": 4
+  },
+  "Waalwijk": {
+    "rating": 1442.84,
+    "n_partidos": 11
+  },
+  "San Marcos de Arica": {
+    "rating": 1346.15,
+    "n_partidos": 8
+  },
+  "Francs Borains": {
+    "rating": 1462.67,
+    "n_partidos": 5
+  },
+  "Den Bosch": {
+    "rating": 1327.81,
+    "n_partidos": 11
+  },
+  "Seraing United": {
+    "rating": 1462.43,
+    "n_partidos": 4
+  },
+  "Bastia": {
+    "rating": 1356.76,
+    "n_partidos": 5
+  },
+  "Palermo": {
+    "rating": 1499.73,
+    "n_partidos": 21
+  },
+  "Eintracht Braunschweig": {
+    "rating": 1374.55,
+    "n_partidos": 19
+  },
+  "Juve Stabia": {
+    "rating": 1387.25,
+    "n_partidos": 22
+  },
+  "Penafiel": {
+    "rating": 1462.22,
+    "n_partidos": 3
+  },
+  "Vitesse": {
+    "rating": 1488.06,
+    "n_partidos": 4
+  },
+  "Guingamp": {
+    "rating": 1369.54,
+    "n_partidos": 5
+  },
+  "Oliveirense": {
+    "rating": 1434.51,
+    "n_partidos": 3
+  },
+  "Torreense": {
+    "rating": 1553.63,
+    "n_partidos": 20
+  },
+  "SpVgg Greuther Fürth": {
+    "rating": 1433.23,
+    "n_partidos": 19
+  },
+  "Hannover 96": {
+    "rating": 1523.07,
+    "n_partidos": 6
+  },
+  "União de Leiria": {
+    "rating": 1410.45,
+    "n_partidos": 3
+  },
+  "Preußen Münster": {
+    "rating": 1395.47,
+    "n_partidos": 6
+  },
+  "PAU": {
+    "rating": 1372.13,
+    "n_partidos": 5
+  },
+  "SSV Ulm 1846": {
+    "rating": 1383.63,
+    "n_partidos": 6
+  },
+  "Amiens": {
+    "rating": 1329.26,
+    "n_partidos": 4
+  },
+  "Cittadella": {
+    "rating": 1449.09,
+    "n_partidos": 3
+  },
+  "Mantova": {
+    "rating": 1474.4,
+    "n_partidos": 19
+  },
+  "Felgueiras 1932": {
+    "rating": 1514.83,
+    "n_partidos": 2
+  },
+  "KRC Genk II": {
+    "rating": 1403.16,
+    "n_partidos": 5
+  },
+  "Curico Unido": {
+    "rating": 1509.86,
+    "n_partidos": 8
+  },
+  "FC Schalke 04": {
+    "rating": 1424.77,
+    "n_partidos": 5
+  },
+  "Academico Viseu": {
+    "rating": 1462.36,
+    "n_partidos": 6
+  },
+  "Jong Utrecht": {
+    "rating": 1310.86,
+    "n_partidos": 4
+  },
+  "Lokeren-Temse": {
+    "rating": 1491.01,
+    "n_partidos": 6
+  },
+  "Juan Pablo II College": {
+    "rating": 1345.02,
+    "n_partidos": 44
+  },
+  "Jong Ajax": {
+    "rating": 1354.42,
+    "n_partidos": 3
+  },
+  "U. Catolica": {
+    "rating": 1597.92,
+    "n_partidos": 27
+  },
+  "Manisa F.K.": {
+    "rating": 1451.91,
+    "n_partidos": 4
+  },
+  "Watford": {
+    "rating": 1362.26,
+    "n_partidos": 3
+  },
+  "Hull City": {
+    "rating": 1506.99,
+    "n_partidos": 16
+  },
+  "1. FC Magdeburg": {
+    "rating": 1475.5,
+    "n_partidos": 4
+  },
+  "Estac Troyes": {
+    "rating": 1495.8,
+    "n_partidos": 19
+  },
+  "Preston": {
+    "rating": 1434.63,
+    "n_partidos": 4
+  },
+  "Dunkerque": {
+    "rating": 1372.56,
+    "n_partidos": 5
+  },
+  "Brescia": {
+    "rating": 1399.2,
+    "n_partidos": 2
+  },
+  "Emmen": {
+    "rating": 1371.2,
+    "n_partidos": 5
+  },
+  "Mafra": {
+    "rating": 1490.25,
+    "n_partidos": 3
+  },
+  "Çorum FK": {
+    "rating": 1469.47,
+    "n_partidos": 6
+  },
+  "SSV Jahn Regensburg": {
+    "rating": 1463.98,
+    "n_partidos": 8
+  },
+  "Pendikspor": {
+    "rating": 1482.94,
+    "n_partidos": 5
+  },
+  "Helmond Sport": {
+    "rating": 1382.91,
+    "n_partidos": 4
+  },
+  "Cesena": {
+    "rating": 1277.0,
+    "n_partidos": 18
+  },
+  "Şanlıurfaspor": {
+    "rating": 1506.44,
+    "n_partidos": 5
+  },
+  "1. FC Kaiserslautern": {
+    "rating": 1394.34,
+    "n_partidos": 6
+  },
+  "Sampdoria": {
+    "rating": 1352.14,
+    "n_partidos": 18
+  },
+  "Sheffield Wednesday": {
+    "rating": 1403.53,
+    "n_partidos": 4
+  },
+  "Keçiörengücü": {
+    "rating": 1453.22,
+    "n_partidos": 9
+  },
+  "Laval": {
+    "rating": 1441.4,
+    "n_partidos": 5
+  },
+  "VVV Venlo": {
+    "rating": 1363.85,
+    "n_partidos": 2
+  },
+  "İstanbulspor": {
+    "rating": 1516.3,
+    "n_partidos": 8
+  },
+  "Ajaccio": {
+    "rating": 1457.62,
+    "n_partidos": 3
+  },
+  "Deportes Limache": {
+    "rating": 1434.16,
+    "n_partidos": 32
+  },
+  "Leixoes": {
+    "rating": 1455.32,
+    "n_partidos": 3
+  },
+  "FC Cartagena": {
+    "rating": 1405.53,
+    "n_partidos": 2
+  },
+  "Mirandes": {
+    "rating": 1422.32,
+    "n_partidos": 4
+  },
+  "Annecy": {
+    "rating": 1339.88,
+    "n_partidos": 5
+  },
+  "Charleroi": {
+    "rating": 1598.5,
+    "n_partidos": 28
+  },
+  "West Brom": {
+    "rating": 1440.0,
+    "n_partidos": 5
+  },
+  "Carrarese": {
+    "rating": 1361.8,
+    "n_partidos": 18
+  },
+  "Karlsruher SC": {
+    "rating": 1546.48,
+    "n_partidos": 6
+  },
+  "Roda": {
+    "rating": 1375.06,
+    "n_partidos": 20
+  },
+  "Sakaryaspor": {
+    "rating": 1426.09,
+    "n_partidos": 5
+  },
+  "Eldense": {
+    "rating": 1397.64,
+    "n_partidos": 2
+  },
+  "Jong AZ": {
+    "rating": 1378.53,
+    "n_partidos": 5
+  },
+  "Amed": {
+    "rating": 1499.42,
+    "n_partidos": 3
+  },
+  "Cardiff": {
+    "rating": 1425.63,
+    "n_partidos": 2
+  },
+  "Bandırmaspor": {
+    "rating": 1482.57,
+    "n_partidos": 5
+  },
+  "Ümraniyespor": {
+    "rating": 1460.7,
+    "n_partidos": 3
+  },
+  "Dordrecht": {
+    "rating": 1343.24,
+    "n_partidos": 4
+  },
+  "FC OSS": {
+    "rating": 1339.26,
+    "n_partidos": 3
+  },
+  "Catanzaro": {
+    "rating": 1482.04,
+    "n_partidos": 15
+  },
+  "Pacos Ferreira": {
+    "rating": 1439.41,
+    "n_partidos": 3
+  },
+  "Castellón": {
+    "rating": 1408.46,
+    "n_partidos": 2
+  },
+  "Portsmouth": {
+    "rating": 1456.63,
+    "n_partidos": 2
+  },
+  "Adanaspor": {
+    "rating": 1378.8,
+    "n_partidos": 4
+  },
+  "Bari": {
+    "rating": 1465.7,
+    "n_partidos": 8
+  },
+  "Spezia": {
+    "rating": 1334.39,
+    "n_partidos": 10
+  },
+  "Ankaragücü": {
+    "rating": 1438.11,
+    "n_partidos": 3
+  },
+  "Asyut Petrol": {
+    "rating": 1365.55,
+    "n_partidos": 19
+  },
+  "Millwall": {
+    "rating": 1417.32,
+    "n_partidos": 6
+  },
+  "FC Eindhoven": {
+    "rating": 1297.98,
+    "n_partidos": 4
+  },
+  "QPR": {
+    "rating": 1443.3,
+    "n_partidos": 3
+  },
+  "Swansea": {
+    "rating": 1425.94,
+    "n_partidos": 4
+  },
+  "Coventry": {
+    "rating": 1617.93,
+    "n_partidos": 20
+  },
+  "Benfica B": {
+    "rating": 1491.7,
+    "n_partidos": 2
+  },
+  "Huesca": {
+    "rating": 1417.89,
+    "n_partidos": 4
+  },
+  "Kahraba Ismailia": {
+    "rating": 1409.11,
+    "n_partidos": 36
+  },
+  "Tanta SC": {
+    "rating": 1272.5,
+    "n_partidos": 4
+  },
+  "Baladiyyat Al Mehalla": {
+    "rating": 1267.02,
+    "n_partidos": 6
+  },
+  "Tersana": {
+    "rating": 1283.27,
+    "n_partidos": 6
+  },
+  "Olympic El Qanah": {
+    "rating": 1449.13,
+    "n_partidos": 18
+  },
+  "La Viena FC": {
+    "rating": 1285.39,
+    "n_partidos": 4
+  },
+  "Proxy": {
+    "rating": 1311.19,
+    "n_partidos": 6
+  },
+  "Abu Qair Semad": {
+    "rating": 1395.97,
+    "n_partidos": 18
+  },
+  "Suez": {
+    "rating": 1303.01,
+    "n_partidos": 3
+  },
+  "El Dakhleya": {
+    "rating": 1309.02,
+    "n_partidos": 5
+  },
+  "Real Oruro": {
+    "rating": 1300.26,
+    "n_partidos": 39
+  },
+  "Yeni Malatyaspor": {
+    "rating": 1386.37,
+    "n_partidos": 4
+  },
+  "Grenoble": {
+    "rating": 1410.9,
+    "n_partidos": 4
+  },
+  "Cosenza": {
+    "rating": 1397.49,
+    "n_partidos": 1
+  },
+  "Bristol City": {
+    "rating": 1412.73,
+    "n_partidos": 4
+  },
+  "Reggiana": {
+    "rating": 1369.13,
+    "n_partidos": 11
+  },
+  "ABB": {
+    "rating": 1267.62,
+    "n_partidos": 39
+  },
+  "FC Porto B": {
+    "rating": 1537.77,
+    "n_partidos": 1
+  },
+  "Cordoba": {
+    "rating": 1401.63,
+    "n_partidos": 4
+  },
+  "Feirense": {
+    "rating": 1462.84,
+    "n_partidos": 2
+  },
+  "Caen": {
+    "rating": 1391.87,
+    "n_partidos": 3
+  },
+  "El Seka El Hadid": {
+    "rating": 1223.49,
+    "n_partidos": 5
+  },
+  "Dayrout": {
+    "rating": 1313.4,
+    "n_partidos": 5
+  },
+  "Sporting Alexandria": {
+    "rating": 1282.15,
+    "n_partidos": 2
+  },
+  "Jong PSV U21": {
+    "rating": 1379.69,
+    "n_partidos": 4
+  },
+  "MVV": {
+    "rating": 1354.63,
+    "n_partidos": 3
+  },
+  "1. FC Nürnberg": {
+    "rating": 1386.63,
+    "n_partidos": 6
+  },
+  "Eibar": {
+    "rating": 1426.32,
+    "n_partidos": 2
+  },
+  "Modena": {
+    "rating": 1369.19,
+    "n_partidos": 18
+  },
+  "Hertha BSC": {
+    "rating": 1485.91,
+    "n_partidos": 4
+  },
+  "Racing Ferrol": {
+    "rating": 1405.62,
+    "n_partidos": 2
+  },
+  "Norwich": {
+    "rating": 1430.4,
+    "n_partidos": 3
+  },
+  "Derby": {
+    "rating": 1449.67,
+    "n_partidos": 2
+  },
+  "Middlesbrough": {
+    "rating": 1402.05,
+    "n_partidos": 3
+  },
+  "Esenler Erokspor": {
+    "rating": 1508.04,
+    "n_partidos": 4
+  },
+  "Aswan Sc": {
+    "rating": 1251.0,
+    "n_partidos": 5
+  },
+  "Itesalat": {
+    "rating": 1239.87,
+    "n_partidos": 4
+  },
+  "Martigues": {
+    "rating": 1376.72,
+    "n_partidos": 3
+  },
+  "Deportes Iquique": {
+    "rating": 1512.26,
+    "n_partidos": 8
+  },
+  "El Mansura": {
+    "rating": 1307.82,
+    "n_partidos": 4
+  },
+  "Oxford United": {
+    "rating": 1454.53,
+    "n_partidos": 3
+  },
+  "Boluspor": {
+    "rating": 1496.58,
+    "n_partidos": 7
+  },
+  "Zaragoza": {
+    "rating": 1403.79,
+    "n_partidos": 3
+  },
+  "Raya Ghazl": {
+    "rating": 1290.11,
+    "n_partidos": 5
+  },
+  "Albacete": {
+    "rating": 1438.22,
+    "n_partidos": 2
+  },
+  "Blackburn": {
+    "rating": 1486.94,
+    "n_partidos": 2
+  },
+  "Stoke City": {
+    "rating": 1423.61,
+    "n_partidos": 2
+  },
+  "Plymouth": {
+    "rating": 1438.0,
+    "n_partidos": 1
+  },
+  "Burgos": {
+    "rating": 1402.13,
+    "n_partidos": 3
+  },
+  "Tenerife": {
+    "rating": 1429.13,
+    "n_partidos": 2
+  },
+  "Iğdır FK": {
+    "rating": 1564.06,
+    "n_partidos": 8
+  },
+  "Sudtirol": {
+    "rating": 1337.05,
+    "n_partidos": 10
+  },
+  "FC Cajamarca": {
+    "rating": 1444.44,
+    "n_partidos": 30
+  },
+  "San Marcos": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Carlos A. Mannucci": {
+    "rating": 1480.68,
+    "n_partidos": 5
+  },
+  "Molinos El Pirata": {
+    "rating": 1473.49,
+    "n_partidos": 1
+  },
+  "CF Pachuca": {
+    "rating": 1492.36,
+    "n_partidos": 37
+  },
+  "Chacaritas": {
+    "rating": 1511.91,
+    "n_partidos": 1
+  },
+  "Imbabura": {
+    "rating": 1437.86,
+    "n_partidos": 2
+  },
+  "Cesar Vallejo": {
+    "rating": 1412.47,
+    "n_partidos": 8
+  },
+  "Excursionistas": {
+    "rating": 1354.4,
+    "n_partidos": 1
+  },
+  "Midland": {
+    "rating": 1463.97,
+    "n_partidos": 17
+  },
+  "Bentín Tacna Heroica": {
+    "rating": 1526.77,
+    "n_partidos": 4
+  },
+  "Fenix": {
+    "rating": 1480.16,
+    "n_partidos": 4
+  },
+  "Tacuarembo": {
+    "rating": 1497.22,
+    "n_partidos": 3
+  },
+  "22 de Julio": {
+    "rating": 1511.84,
+    "n_partidos": 1
+  },
+  "Cumbayá": {
+    "rating": 1477.35,
+    "n_partidos": 1
+  },
+  "Sportivo Italiano": {
+    "rating": 1317.25,
+    "n_partidos": 1
+  },
+  "Atenas": {
+    "rating": 1486.55,
+    "n_partidos": 5
+  },
+  "Gualaceo SC": {
+    "rating": 1463.9,
+    "n_partidos": 5
+  },
+  "San Antonio": {
+    "rating": 1417.6,
+    "n_partidos": 5
+  },
+  "UCV Moquegua": {
+    "rating": 1460.96,
+    "n_partidos": 29
+  },
+  "Uruguay Montevideo": {
+    "rating": 1465.96,
+    "n_partidos": 3
+  },
+  "Oriental": {
+    "rating": 1435.63,
+    "n_partidos": 3
+  },
+  "Rampla Juniors": {
+    "rating": 1464.5,
+    "n_partidos": 3
+  },
+  "Vargas Torres": {
+    "rating": 1498.9,
+    "n_partidos": 1
+  },
+  "UAI Urquiza": {
+    "rating": 1302.27,
+    "n_partidos": 1
+  },
+  "Le Mans": {
+    "rating": 1533.39,
+    "n_partidos": 17
+  },
+  "Torre Fuerte": {
+    "rating": 1461.11,
+    "n_partidos": 2
+  },
+  "Real Pilar": {
+    "rating": 1367.95,
+    "n_partidos": 1
+  },
+  "Artigas": {
+    "rating": 1423.91,
+    "n_partidos": 3
+  },
+  "Colón": {
+    "rating": 1501.04,
+    "n_partidos": 5
+  },
+  "Villa San Carlos": {
+    "rating": 1335.37,
+    "n_partidos": 1
+  },
+  "Cerrito": {
+    "rating": 1446.7,
+    "n_partidos": 3
+  },
+  "Nacional Sucre": {
+    "rating": 1401.51,
+    "n_partidos": 2
+  },
+  "12 Bingölspor": {
+    "rating": 1519.9,
+    "n_partidos": 3
+  },
+  "Mardin 1969": {
+    "rating": 1474.8,
+    "n_partidos": 1
+  },
+  "Karaköprü Belediyespor": {
+    "rating": 1491.09,
+    "n_partidos": 3
+  },
+  "Hakkari Zapspor": {
+    "rating": 1469.41,
+    "n_partidos": 1
+  },
+  "Bursa Yıldırımspor": {
+    "rating": 1519.1,
+    "n_partidos": 3
+  },
+  "Altay": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Yalova Yeşilovaspor": {
+    "rating": 1539.48,
+    "n_partidos": 4
+  },
+  "Nilüfer Belediye": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "1926 Polatlı Belediye": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Çankaya FK": {
+    "rating": 1535.02,
+    "n_partidos": 4
+  },
+  "Ankaraspor": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Eskişehirspor": {
+    "rating": 1482.61,
+    "n_partidos": 2
+  },
+  "Bucaspor 1928": {
+    "rating": 1461.6,
+    "n_partidos": 1
+  },
+  "İzmir Çoruhlu FK": {
+    "rating": 1492.55,
+    "n_partidos": 2
+  },
+  "Yeni Mersin Idmanyurdu": {
+    "rating": 1461.6,
+    "n_partidos": 1
+  },
+  "Niğde Belediyesispor": {
+    "rating": 1533.15,
+    "n_partidos": 3
+  },
+  "Kars 36": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "24 Erzincanspor": {
+    "rating": 1486.32,
+    "n_partidos": 2
+  },
+  "Yeşilyurt Belediyespor": {
+    "rating": 1512.09,
+    "n_partidos": 3
+  },
+  "Kahta 02 Spor": {
+    "rating": 1531.6,
+    "n_partidos": 4
+  },
+  "İskenderunspor": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Kurtalanspor": {
+    "rating": 1453.61,
+    "n_partidos": 1
+  },
+  "Erbaaspor": {
+    "rating": 1497.5,
+    "n_partidos": 3
+  },
+  "Tokat Bld Plevnespor": {
+    "rating": 1505.6,
+    "n_partidos": 1
+  },
+  "Muş Sport Klübü": {
+    "rating": 1515.67,
+    "n_partidos": 4
+  },
+  "Şırnak İdmanyurdu": {
+    "rating": 1465.81,
+    "n_partidos": 1
+  },
+  "Kırklarelispor": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Galata": {
+    "rating": 1475.11,
+    "n_partidos": 2
+  },
+  "Dersimspor": {
+    "rating": 1495.0,
+    "n_partidos": 3
+  },
+  "Bucak Oğuzhanspor": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Kepezspor": {
+    "rating": 1481.07,
+    "n_partidos": 3
+  },
+  "Güzide Gebzespor": {
+    "rating": 1512.41,
+    "n_partidos": 2
+  },
+  "Kartal Bulvarspor": {
+    "rating": 1473.0,
+    "n_partidos": 1
+  },
+  "Bartınspor": {
+    "rating": 1461.6,
+    "n_partidos": 1
+  },
+  "Anadolu Üniversitesi": {
+    "rating": 1521.91,
+    "n_partidos": 2
+  },
+  "Alanya 1221 FK": {
+    "rating": 1455.2,
+    "n_partidos": 1
+  },
+  "Muğlaspor": {
+    "rating": 1589.47,
+    "n_partidos": 4
+  },
+  "Arnavutköy Belediyespor": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Beykoz İshaklıspor": {
+    "rating": 1485.21,
+    "n_partidos": 2
+  },
+  "İnegölspor": {
+    "rating": 1517.87,
+    "n_partidos": 3
+  },
+  "Ezinespor": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Aliağa FAŞ": {
+    "rating": 1484.67,
+    "n_partidos": 8
+  },
+  "İnegöl Kafkas Gençlik": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Çayelispor": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Şiran": {
+    "rating": 1509.82,
+    "n_partidos": 2
+  },
+  "Etimesgut SK": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Karadeniz Ereğli BSK": {
+    "rating": 1500.36,
+    "n_partidos": 2
+  },
+  "Bayburt İÖİ": {
+    "rating": 1442.39,
+    "n_partidos": 1
+  },
+  "Giresunspor": {
+    "rating": 1529.11,
+    "n_partidos": 2
+  },
+  "1461 Trabzon FK": {
+    "rating": 1530.39,
+    "n_partidos": 3
+  },
+  "Serhat Ardahanspor": {
+    "rating": 1473.0,
+    "n_partidos": 1
+  },
+  "Yozgat Bld Bozokspor": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Fatsa Belediyespor": {
+    "rating": 1522.68,
+    "n_partidos": 3
+  },
+  "1926 Bulancak": {
+    "rating": 1512.13,
+    "n_partidos": 3
+  },
+  "Artvin Hopaspor": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Kestel Çilek": {
+    "rating": 1489.18,
+    "n_partidos": 2
+  },
+  "Uşak Spor": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "İnkılapspor": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Beyoğlu Yeni Çarşı": {
+    "rating": 1559.34,
+    "n_partidos": 8
+  },
+  " Kahramanmaraş İstiklal Spor": {
+    "rating": 1482.16,
+    "n_partidos": 2
+  },
+  "Kilis Belediyespor": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Sinopspor": {
+    "rating": 1461.6,
+    "n_partidos": 1
+  },
+  "Orduspor 1967": {
+    "rating": 1554.54,
+    "n_partidos": 4
+  },
+  "Karaman FK": {
+    "rating": 1500.0,
+    "n_partidos": 2
+  },
+  "Kapadokyaspor": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Fethiyespor": {
+    "rating": 1525.23,
+    "n_partidos": 8
+  },
+  "Söke 1970": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Denizli İYG": {
+    "rating": 1527.41,
+    "n_partidos": 2
+  },
+  "Nazilli Spor": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Karabük İdman Yurdu": {
+    "rating": 1510.92,
+    "n_partidos": 3
+  },
+  "Ind. Juniors": {
+    "rating": 1441.42,
+    "n_partidos": 4
+  },
+  "Kahramanmaraşspor": {
+    "rating": 1502.04,
+    "n_partidos": 4
+  },
+  "Osmaniyespor": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Isparta 32 Spor": {
+    "rating": 1531.15,
+    "n_partidos": 3
+  },
+  "Kırşehir Belediyespor": {
+    "rating": 1473.0,
+    "n_partidos": 1
+  },
+  "Talasgücü Belediyespor": {
+    "rating": 1493.66,
+    "n_partidos": 3
+  },
+  "Türk Metal 1963": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Bursaspor": {
+    "rating": 1512.81,
+    "n_partidos": 3
+  },
+  "Bilecik Sogut": {
+    "rating": 1467.61,
+    "n_partidos": 1
+  },
+  "La Luz": {
+    "rating": 1465.03,
+    "n_partidos": 3
+  },
+  "Nueva Cliza": {
+    "rating": 1476.42,
+    "n_partidos": 2
+  },
+  "Dock Sud": {
+    "rating": 1316.88,
+    "n_partidos": 1
+  },
+  "Tigres FC": {
+    "rating": 1304.69,
+    "n_partidos": 3
+  },
+  "Real Cundinamarca": {
+    "rating": 1464.61,
+    "n_partidos": 15
+  },
+  "Rentistas": {
+    "rating": 1459.25,
+    "n_partidos": 2
+  },
+  "Deportivo Merlo": {
+    "rating": 1336.91,
+    "n_partidos": 1
+  },
+  "Ağrı 1970": {
+    "rating": 1501.5,
+    "n_partidos": 2
+  },
+  "Batman Petrolspor": {
+    "rating": 1474.8,
+    "n_partidos": 1
+  },
+  "Bitlis Özgüzelderespor": {
+    "rating": 1487.18,
+    "n_partidos": 1
+  },
+  "Adana Demirspor": {
+    "rating": 1486.36,
+    "n_partidos": 1
+  },
+  "Karacabey Belediyespor": {
+    "rating": 1533.11,
+    "n_partidos": 3
+  },
+  "Ankara Demirspor": {
+    "rating": 1494.4,
+    "n_partidos": 1
+  },
+  "Zonguldak Kömürspor": {
+    "rating": 1456.55,
+    "n_partidos": 2
+  },
+  "Kırıkkale Büyük Anadolu": {
+    "rating": 1456.97,
+    "n_partidos": 1
+  },
+  "Tire 2021 FK": {
+    "rating": 1474.4,
+    "n_partidos": 1
+  },
+  "Bodrum FK": {
+    "rating": 1528.54,
+    "n_partidos": 7
+  },
+  "Hatayspor": {
+    "rating": 1475.56,
+    "n_partidos": 1
+  },
+  "Mazıdağı Fosfatspor": {
+    "rating": 1474.72,
+    "n_partidos": 1
+  },
+  "Adana 01 FK": {
+    "rating": 1486.63,
+    "n_partidos": 1
+  },
+  "Silivrispor": {
+    "rating": 1495.78,
+    "n_partidos": 1
+  },
+  "Çorluspor 1947": {
+    "rating": 1499.36,
+    "n_partidos": 2
+  },
+  "Ayvalikgucu": {
+    "rating": 1485.6,
+    "n_partidos": 1
+  },
+  "Silifke Belediyespor": {
+    "rating": 1521.02,
+    "n_partidos": 3
+  },
+  "Küçükçekmece Sinopspor": {
+    "rating": 1463.34,
+    "n_partidos": 1
+  },
+  "Amasyaspor 1968": {
+    "rating": 1475.86,
+    "n_partidos": 1
+  },
+  "Kütahyaspor": {
+    "rating": 1494.99,
+    "n_partidos": 2
+  },
+  "Altınordu": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Beykoz Anadolu": {
+    "rating": 1511.74,
+    "n_partidos": 2
+  },
+  "Pazarspor": {
+    "rating": 1477.96,
+    "n_partidos": 1
+  },
+  "Somaspor": {
+    "rating": 1463.67,
+    "n_partidos": 1
+  },
+  "Kastamonuspor": {
+    "rating": 1495.78,
+    "n_partidos": 1
+  },
+  "Sivasspor": {
+    "rating": 1518.02,
+    "n_partidos": 3
+  },
+  "Elazığspor": {
+    "rating": 1475.76,
+    "n_partidos": 1
+  },
+  "Balıkesirspor": {
+    "rating": 1475.56,
+    "n_partidos": 1
+  },
+  "68 Aksaray Belediyespor": {
+    "rating": 1481.36,
+    "n_partidos": 1
+  },
+  "Bornova 1877": {
+    "rating": 1447.24,
+    "n_partidos": 1
+  },
+  "Sebat Gençlikspor": {
+    "rating": 1487.57,
+    "n_partidos": 1
+  },
+  "Karsiyaka": {
+    "rating": 1475.56,
+    "n_partidos": 1
+  },
+  "Menemen FK": {
+    "rating": 1504.29,
+    "n_partidos": 2
+  },
+  "Düzcespor": {
+    "rating": 1494.22,
+    "n_partidos": 1
+  },
+  "Yeni Orduspor": {
+    "rating": 1487.88,
+    "n_partidos": 2
+  },
+  "Quindio": {
+    "rating": 1365.36,
+    "n_partidos": 3
+  },
+  "Sacachispas": {
+    "rating": 1328.09,
+    "n_partidos": 1
+  },
+  "9 de Octubre": {
+    "rating": 1440.86,
+    "n_partidos": 4
+  },
+  "San Martín Burzaco": {
+    "rating": 1357.76,
+    "n_partidos": 1
+  },
+  "Barranquilla": {
+    "rating": 1376.11,
+    "n_partidos": 3
+  },
+  "Deportiva Agropecuaria": {
+    "rating": 1486.74,
+    "n_partidos": 1
+  },
+  "Deportivo Armenio": {
+    "rating": 1338.29,
+    "n_partidos": 2
+  },
+  "Orsomarso": {
+    "rating": 1364.8,
+    "n_partidos": 5
+  },
+  "Union Comercio": {
+    "rating": 1485.14,
+    "n_partidos": 2
+  },
+  "Comunicaciones": {
+    "rating": 1336.32,
+    "n_partidos": 1
+  },
+  "Bogota FC": {
+    "rating": 1312.97,
+    "n_partidos": 3
+  },
+  "CD Guadalajara": {
+    "rating": 1456.1,
+    "n_partidos": 2
+  },
+  "Liniers": {
+    "rating": 1327.6,
+    "n_partidos": 1
+  },
+  "Internacional Palmira": {
+    "rating": 1304.01,
+    "n_partidos": 3
+  },
+  "Serik Spor": {
+    "rating": 1488.94,
+    "n_partidos": 1
+  },
+  "Vanspor FK": {
+    "rating": 1493.39,
+    "n_partidos": 2
+  },
+  "Sarıyer": {
+    "rating": 1511.22,
+    "n_partidos": 2
+  },
+  "Deportivo Laferrere": {
+    "rating": 1300.14,
+    "n_partidos": 1
+  },
+  "Río San Juan Humi": {
+    "rating": 1448.9,
+    "n_partidos": 2
+  },
+  "Popayan": {
+    "rating": 1384.86,
+    "n_partidos": 4
+  },
+  "Fénix": {
+    "rating": 1321.28,
+    "n_partidos": 1
+  },
+  "Real Cartagena": {
+    "rating": 1390.24,
+    "n_partidos": 5
+  },
+  "Flandria": {
+    "rating": 1360.58,
+    "n_partidos": 1
+  },
+  "Primero Mayo": {
+    "rating": 1471.8,
+    "n_partidos": 2
+  },
+  "CD IN San Juan FC": {
+    "rating": 1445.09,
+    "n_partidos": 2
+  },
+  "NEOM": {
+    "rating": 1539.15,
+    "n_partidos": 12
+  },
+  "Al Najma": {
+    "rating": 1429.3,
+    "n_partidos": 12
+  },
+  "El Entag EL Harby": {
+    "rating": 1331.6,
+    "n_partidos": 3
+  },
+  "Antofagasta": {
+    "rating": 1585.41,
+    "n_partidos": 6
+  },
+  "Cobreloa": {
+    "rating": 1488.06,
+    "n_partidos": 6
+  },
+  "D. Puerto Montt": {
+    "rating": 1515.04,
+    "n_partidos": 6
+  },
+  "Deportes Temuco": {
+    "rating": 1429.07,
+    "n_partidos": 6
+  },
+  "Deportes Copiapo": {
+    "rating": 1418.86,
+    "n_partidos": 6
+  },
+  "San Luis": {
+    "rating": 1515.81,
+    "n_partidos": 6
+  },
+  "Deportes Santa Cruz": {
+    "rating": 1549.28,
+    "n_partidos": 6
+  },
+  "Magallanes": {
+    "rating": 1372.24,
+    "n_partidos": 6
+  },
+  "Union San Felipe": {
+    "rating": 1456.28,
+    "n_partidos": 6
+  },
+  "Recoleta": {
+    "rating": 1482.91,
+    "n_partidos": 5
+  },
+  "Union Espanola": {
+    "rating": 1443.09,
+    "n_partidos": 5
+  },
+  "Masar": {
+    "rating": 1302.19,
+    "n_partidos": 3
+  },
+  "Nancy": {
+    "rating": 1402.96,
+    "n_partidos": 2
+  },
+  "Arminia Bielefeld": {
+    "rating": 1459.28,
+    "n_partidos": 3
+  },
+  "Virtus Entella": {
+    "rating": 1401.63,
+    "n_partidos": 16
+  },
+  "Padova": {
+    "rating": 1397.9,
+    "n_partidos": 16
+  },
+  "FC Viktoria Köln": {
+    "rating": 1326.23,
+    "n_partidos": 7
+  },
+  "Erzgebirge Aue": {
+    "rating": 1307.86,
+    "n_partidos": 16
+  },
+  "Havelse": {
+    "rating": 1324.49,
+    "n_partidos": 5
+  },
+  "TSV 1860 München": {
+    "rating": 1342.52,
+    "n_partidos": 16
+  },
+  "SV Wehen": {
+    "rating": 1293.67,
+    "n_partidos": 16
+  },
+  "MSV Duisburg": {
+    "rating": 1393.19,
+    "n_partidos": 16
+  },
+  "Verl": {
+    "rating": 1426.81,
+    "n_partidos": 15
+  },
+  "Hoffenheim II": {
+    "rating": 1324.93,
+    "n_partidos": 5
+  },
+  "Energie Cottbus": {
+    "rating": 1460.22,
+    "n_partidos": 16
+  },
+  "Waldhof Mannheim": {
+    "rating": 1334.92,
+    "n_partidos": 6
+  },
+  "Avellino": {
+    "rating": 1411.93,
+    "n_partidos": 16
+  },
+  "Pescara": {
+    "rating": 1440.98,
+    "n_partidos": 7
+  },
+  "FC Schweinfurt 05": {
+    "rating": 1290.57,
+    "n_partidos": 4
+  },
+  "Alemannia Aachen": {
+    "rating": 1495.99,
+    "n_partidos": 5
+  },
+  "Hansa Rostock": {
+    "rating": 1433.83,
+    "n_partidos": 6
+  },
+  "FC Ingolstadt 04": {
+    "rating": 1322.14,
+    "n_partidos": 5
+  },
+  "VfL Osnabrück": {
+    "rating": 1449.39,
+    "n_partidos": 5
+  },
+  "Real Sociedad II": {
+    "rating": 1420.16,
+    "n_partidos": 1
+  },
+  "Stuttgart II": {
+    "rating": 1331.34,
+    "n_partidos": 3
+  },
+  "FC Saarbrücken": {
+    "rating": 1357.48,
+    "n_partidos": 5
+  },
+  "Maleyet Kafr El Zayiat": {
+    "rating": 1291.83,
+    "n_partidos": 3
+  },
+  "Nacional Asuncion": {
+    "rating": 1544.16,
+    "n_partidos": 8
+  },
+  "Deportivo Recoleta": {
+    "rating": 1458.72,
+    "n_partidos": 16
+  },
+  "Wrexham": {
+    "rating": 1420.25,
+    "n_partidos": 2
+  },
+  "Rot-Weiß Essen": {
+    "rating": 1424.19,
+    "n_partidos": 7
+  },
+  "AD Ceuta FC": {
+    "rating": 1418.56,
+    "n_partidos": 1
+  },
+  "Sporting Gijon": {
+    "rating": 1440.29,
+    "n_partidos": 1
+  },
+  "San Diego": {
+    "rating": 1439.46,
+    "n_partidos": 16
+  },
+  "Al-Fateh": {
+    "rating": 1426.27,
+    "n_partidos": 10
+  },
+  "Al-Qadisiyah FC": {
+    "rating": 1610.92,
+    "n_partidos": 10
+  },
+  "Concepción": {
+    "rating": 1588.04,
+    "n_partidos": 19
+  },
+  "Atletico-MG": {
+    "rating": 1632.66,
+    "n_partidos": 25
+  },
+  "Sportivo Ameliano": {
+    "rating": 1420.29,
+    "n_partidos": 8
+  },
+  "D. La Serena": {
+    "rating": 1433.17,
+    "n_partidos": 19
+  },
+  "Club Guarani": {
+    "rating": 1425.88,
+    "n_partidos": 8
+  },
+  "Dender": {
+    "rating": 1424.99,
+    "n_partidos": 8
+  },
+  "Masr": {
+    "rating": 1432.94,
+    "n_partidos": 14
+  },
+  "Sportivo Trinidense": {
+    "rating": 1459.56,
+    "n_partidos": 8
+  },
+  "Rubio NU": {
+    "rating": 1380.61,
+    "n_partidos": 8
+  },
+  "Al Ahly": {
+    "rating": 1519.54,
+    "n_partidos": 7
+  },
+  "San Martin Tucuman": {
+    "rating": 1506.24,
+    "n_partidos": 2
+  },
+  "Deportivo La Guaira": {
+    "rating": 1446.79,
+    "n_partidos": 6
+  },
+  "O'Higgins": {
+    "rating": 1492.09,
+    "n_partidos": 24
+  },
+  "Al-Fayha": {
+    "rating": 1373.83,
+    "n_partidos": 9
+  },
+  "Al-Ahli Jeddah": {
+    "rating": 1621.02,
+    "n_partidos": 9
+  },
+  "Al-Ittihad FC": {
+    "rating": 1508.68,
+    "n_partidos": 9
+  },
+  "Al-Hilal Saudi FC": {
+    "rating": 1653.28,
+    "n_partidos": 9
+  },
+  "A. Italiano": {
+    "rating": 1472.8,
+    "n_partidos": 24
+  },
+  "Olimpia": {
+    "rating": 1520.21,
+    "n_partidos": 14
+  },
+  "Tristan Suarez": {
+    "rating": 1481.51,
+    "n_partidos": 1
+  },
+  "Puerto Cabello": {
+    "rating": 1470.75,
+    "n_partidos": 6
+  },
+  "AEK Athens FC": {
+    "rating": 1520.75,
+    "n_partidos": 3
+  },
+  "Shakhtar Donetsk": {
+    "rating": 1499.57,
+    "n_partidos": 4
+  },
+  "Caracas FC": {
+    "rating": 1452.88,
+    "n_partidos": 8
+  },
+  "UCV": {
+    "rating": 1451.35,
+    "n_partidos": 8
+  },
+  "Deportivo Camioneros": {
+    "rating": 1472.77,
+    "n_partidos": 1
+  },
+  "Carabobo FC": {
+    "rating": 1512.15,
+    "n_partidos": 6
+  },
+  "2 de Mayo": {
+    "rating": 1395.94,
+    "n_partidos": 7
+  },
+  "Club Sp. San Lorenzo": {
+    "rating": 1409.06,
+    "n_partidos": 7
+  },
+  "Boulogne": {
+    "rating": 1416.68,
+    "n_partidos": 2
+  },
+  "Al-Hazm": {
+    "rating": 1487.45,
+    "n_partidos": 9
+  },
+  "Al-Nassr": {
+    "rating": 1612.85,
+    "n_partidos": 9
+  },
+  "Austin": {
+    "rating": 1369.32,
+    "n_partidos": 14
+  },
+  "Charlotte": {
+    "rating": 1502.19,
+    "n_partidos": 15
+  },
+  "St. Louis City": {
+    "rating": 1562.93,
+    "n_partidos": 15
+  },
+  "Gimnasia Y Tiro": {
+    "rating": 1490.02,
+    "n_partidos": 2
+  },
+  "Birmingham": {
+    "rating": 1462.87,
+    "n_partidos": 1
+  },
+  "Juventude": {
+    "rating": 1505.26,
+    "n_partidos": 4
+  },
+  "Confiança": {
+    "rating": 1435.33,
+    "n_partidos": 2
+  },
+  "Barra": {
+    "rating": 1472.87,
+    "n_partidos": 2
+  },
+  "Paysandu": {
+    "rating": 1468.97,
+    "n_partidos": 2
+  },
+  "Goias": {
+    "rating": 1486.99,
+    "n_partidos": 2
+  },
+  "Acassuso": {
+    "rating": 1456.02,
+    "n_partidos": 1
+  },
+  "CRB": {
+    "rating": 1485.51,
+    "n_partidos": 2
+  },
+  "Deportivo Moron": {
+    "rating": 1470.9,
+    "n_partidos": 1
+  },
+  "Fafe": {
+    "rating": 1481.28,
+    "n_partidos": 1
+  },
+  "Ceara": {
+    "rating": 1504.14,
+    "n_partidos": 2
+  },
+  "Jacuipense": {
+    "rating": 1457.61,
+    "n_partidos": 2
+  },
+  "Operario-PR": {
+    "rating": 1488.68,
+    "n_partidos": 2
+  },
+  "Atletico Goianiense": {
+    "rating": 1500.19,
+    "n_partidos": 2
+  },
+  "Genk W": {
+    "rating": 1565.92,
+    "n_partidos": 6
+  },
+  "Gent W": {
+    "rating": 1412.98,
+    "n_partidos": 5
+  },
+  "Westerlo W": {
+    "rating": 1447.74,
+    "n_partidos": 5
+  },
+  "Zulte-Waregem W": {
+    "rating": 1573.37,
+    "n_partidos": 6
+  },
+  "Anderlecht W": {
+    "rating": 1515.19,
+    "n_partidos": 5
+  },
+  "Standard Liege W": {
+    "rating": 1447.68,
+    "n_partidos": 5
+  },
+  "Charlton": {
+    "rating": 1471.85,
+    "n_partidos": 1
+  },
+  "OH Leuven W": {
+    "rating": 1561.95,
+    "n_partidos": 5
+  },
+  "Club Brugge W": {
+    "rating": 1475.18,
+    "n_partidos": 5
+  },
+  "Real Soacha": {
+    "rating": 1500.29,
+    "n_partidos": 4
+  },
+  "Depor FC": {
+    "rating": 1376.03,
+    "n_partidos": 4
+  },
+  "Ind. Yumbo": {
+    "rating": 1428.15,
+    "n_partidos": 3
+  },
+  "Real Santander": {
+    "rating": 1367.41,
+    "n_partidos": 4
+  },
+  "Leones FC": {
+    "rating": 1480.61,
+    "n_partidos": 4
+  },
+  "Dynamo Dresden": {
+    "rating": 1492.95,
+    "n_partidos": 2
+  },
+  "San Martin S.J.": {
+    "rating": 1503.7,
+    "n_partidos": 1
+  },
+  "FC Andorra": {
+    "rating": 1432.15,
+    "n_partidos": 1
+  },
+  "Boca Juniors de Cali": {
+    "rating": 1525.78,
+    "n_partidos": 1
+  },
+  "Gimnasia Jujuy": {
+    "rating": 1498.52,
+    "n_partidos": 1
+  },
+  "Sabah FA": {
+    "rating": 1578.71,
+    "n_partidos": 7
+  },
+  "The New Saints": {
+    "rating": 1459.52,
+    "n_partidos": 4
+  },
+  "Kauno Žalgiris": {
+    "rating": 1475.72,
+    "n_partidos": 7
+  },
+  "Drita": {
+    "rating": 1552.21,
+    "n_partidos": 7
+  },
+  "Ararat-Armenia": {
+    "rating": 1507.78,
+    "n_partidos": 7
+  },
+  "Riga": {
+    "rating": 1556.52,
+    "n_partidos": 7
+  },
+  "Lincoln Red Imps FC": {
+    "rating": 1434.33,
+    "n_partidos": 7
+  },
+  "Inter Club d'Escaldes": {
+    "rating": 1547.39,
+    "n_partidos": 5
+  },
+  "Vardar Skopje": {
+    "rating": 1445.25,
+    "n_partidos": 4
+  },
+  "KuPS": {
+    "rating": 1458.75,
+    "n_partidos": 7
+  },
+  "UNA Strassen": {
+    "rating": 1493.42,
+    "n_partidos": 4
+  },
+  "La Fiorita": {
+    "rating": 1449.54,
+    "n_partidos": 2
+  },
+  "Floriana": {
+    "rating": 1469.69,
+    "n_partidos": 4
+  },
+  "Shamrock Rovers": {
+    "rating": 1490.88,
+    "n_partidos": 7
+  },
+  "AF Elbasani": {
+    "rating": 1500.59,
+    "n_partidos": 2
+  },
+  "Bate Borisov": {
+    "rating": 1468.0,
+    "n_partidos": 4
+  },
+  "Borac Banja Luka": {
+    "rating": 1532.92,
+    "n_partidos": 7
+  },
+  "Levski Sofia": {
+    "rating": 1580.73,
+    "n_partidos": 7
+  },
+  "Tre Fiori": {
+    "rating": 1403.74,
+    "n_partidos": 4
+  },
+  "Larne": {
+    "rating": 1487.04,
+    "n_partidos": 7
+  },
+  "KI Klaksvik": {
+    "rating": 1451.35,
+    "n_partidos": 7
+  },
+  "Atert Bissen": {
+    "rating": 1426.46,
+    "n_partidos": 4
+  },
+  "Vikingur Reykjavik": {
+    "rating": 1456.46,
+    "n_partidos": 7
+  },
+  "Gyori ETO FC": {
+    "rating": 1500.69,
+    "n_partidos": 6
+  },
+  "Kairat Almaty": {
+    "rating": 1465.97,
+    "n_partidos": 7
+  },
+  "Sutjeska": {
+    "rating": 1400.9,
+    "n_partidos": 4
+  },
+  "Zira": {
+    "rating": 1543.09,
+    "n_partidos": 4
+  },
+  "Torpedo Kutaisi": {
+    "rating": 1434.84,
+    "n_partidos": 2
+  },
+  "Flora Tallinn": {
+    "rating": 1412.55,
+    "n_partidos": 6
+  },
+  "Saburtalo": {
+    "rating": 1503.49,
+    "n_partidos": 6
+  },
+  "ML Vitebsk": {
+    "rating": 1495.6,
+    "n_partidos": 6
+  },
+  "Universitatea Craiova": {
+    "rating": 1538.45,
+    "n_partidos": 7
+  },
+  "Petrocub": {
+    "rating": 1438.99,
+    "n_partidos": 4
+  },
+  "Egnatia Rrogozhinë": {
+    "rating": 1528.49,
+    "n_partidos": 7
+  },
+  "FC Differdange 03": {
+    "rating": 1473.68,
+    "n_partidos": 2
+  },
+  "Ilves": {
+    "rating": 1509.98,
+    "n_partidos": 6
+  },
+  "GAP Connah S Quay FC": {
+    "rating": 1480.59,
+    "n_partidos": 2
+  },
+  "Ballkani": {
+    "rating": 1521.53,
+    "n_partidos": 4
+  },
+  "Atlètic Club d'Escaldes": {
+    "rating": 1471.01,
+    "n_partidos": 4
+  },
+  "Mornar": {
+    "rating": 1461.56,
+    "n_partidos": 2
+  },
+  "Alashkert": {
+    "rating": 1470.74,
+    "n_partidos": 4
+  },
+  "Yelimay Semey": {
+    "rating": 1499.41,
+    "n_partidos": 2
+  },
+  "Qarabag": {
+    "rating": 1584.85,
+    "n_partidos": 7
+  },
+  "Vestri": {
+    "rating": 1420.98,
+    "n_partidos": 4
+  },
+  "Dila": {
+    "rating": 1438.95,
+    "n_partidos": 4
+  },
+  "Virtus": {
+    "rating": 1495.16,
+    "n_partidos": 2
+  },
+  "Hegelmann Litauen": {
+    "rating": 1470.23,
+    "n_partidos": 2
+  },
+  "Paide": {
+    "rating": 1493.92,
+    "n_partidos": 6
+  },
+  "Kalju Nomme": {
+    "rating": 1507.83,
+    "n_partidos": 4
+  },
+  "Linfield": {
+    "rating": 1481.56,
+    "n_partidos": 2
+  },
+  "FK Liepaja": {
+    "rating": 1478.87,
+    "n_partidos": 4
+  },
+  "Dečić": {
+    "rating": 1461.56,
+    "n_partidos": 2
+  },
+  "Dinamo Minsk": {
+    "rating": 1511.26,
+    "n_partidos": 6
+  },
+  "Sileks": {
+    "rating": 1497.41,
+    "n_partidos": 2
+  },
+  "Marsaxlokk": {
+    "rating": 1445.14,
+    "n_partidos": 2
+  },
+  "Pyunik Yerevan": {
+    "rating": 1530.8,
+    "n_partidos": 4
+  },
+  "Bohemians": {
+    "rating": 1467.14,
+    "n_partidos": 6
+  },
+  "St Joseph S Fc": {
+    "rating": 1475.16,
+    "n_partidos": 2
+  },
+  "Velež": {
+    "rating": 1461.25,
+    "n_partidos": 4
+  },
+  "Milsami Orhei": {
+    "rating": 1479.41,
+    "n_partidos": 2
+  },
+  "Sheriff Tiraspol": {
+    "rating": 1408.86,
+    "n_partidos": 6
+  },
+  "Aluminij": {
+    "rating": 1455.53,
+    "n_partidos": 4
+  },
+  "Dynamo Kyiv": {
+    "rating": 1460.82,
+    "n_partidos": 6
+  },
+  "Universitatea Cluj": {
+    "rating": 1473.17,
+    "n_partidos": 4
+  },
+  "US Mondorf-les-bains": {
+    "rating": 1482.59,
+    "n_partidos": 2
+  },
+  "Dinamo Tbilisi": {
+    "rating": 1514.13,
+    "n_partidos": 4
+  },
+  "Caernarfon Town": {
+    "rating": 1429.78,
+    "n_partidos": 2
+  },
+  "FC Levadia Tallinn": {
+    "rating": 1545.51,
+    "n_partidos": 4
+  },
+  "Europa": {
+    "rating": 1439.29,
+    "n_partidos": 2
+  },
+  "Shkendija": {
+    "rating": 1538.82,
+    "n_partidos": 6
+  },
+  "Vllaznia Shkodër": {
+    "rating": 1482.48,
+    "n_partidos": 2
+  },
+  "Malisheva": {
+    "rating": 1506.95,
+    "n_partidos": 4
+  },
+  "CSKA Sofia": {
+    "rating": 1514.37,
+    "n_partidos": 7
+  },
+  "Derry City": {
+    "rating": 1427.03,
+    "n_partidos": 4
+  },
+  "Vojvodina": {
+    "rating": 1419.43,
+    "n_partidos": 4
+  },
+  "Ferencvarosi TC": {
+    "rating": 1607.47,
+    "n_partidos": 7
+  },
+  "HNK Hajduk Split": {
+    "rating": 1567.09,
+    "n_partidos": 7
+  },
+  "Žilina": {
+    "rating": 1486.24,
+    "n_partidos": 4
+  },
+  "Glentoran": {
+    "rating": 1456.69,
+    "n_partidos": 2
+  },
+  "Rīgas FS": {
+    "rating": 1506.24,
+    "n_partidos": 6
+  },
+  "Petrovac": {
+    "rating": 1450.98,
+    "n_partidos": 2
+  },
+  "FK Zalgiris Vilnius": {
+    "rating": 1480.4,
+    "n_partidos": 6
+  },
+  "Penybont": {
+    "rating": 1453.74,
+    "n_partidos": 2
+  },
+  "FC Santa Coloma": {
+    "rating": 1480.95,
+    "n_partidos": 4
+  },
+  "NSI Runavik": {
+    "rating": 1503.12,
+    "n_partidos": 6
+  },
+  "Hamrun Spartans": {
+    "rating": 1479.41,
+    "n_partidos": 2
+  },
+  "Dinamo Tirana": {
+    "rating": 1553.53,
+    "n_partidos": 7
+  },
+  "FC Astana": {
+    "rating": 1476.26,
+    "n_partidos": 2
+  },
+  "FK Sarajevo": {
+    "rating": 1480.59,
+    "n_partidos": 2
+  },
+  "Inter Turku": {
+    "rating": 1571.97,
+    "n_partidos": 7
+  },
+  "Stjarnan": {
+    "rating": 1523.43,
+    "n_partidos": 4
+  },
+  "Vikingur Gota": {
+    "rating": 1475.16,
+    "n_partidos": 2
+  },
+  "Atlante FC": {
+    "rating": 1492.18,
+    "n_partidos": 5
+  },
+  "Slovan Bratislava": {
+    "rating": 1565.76,
+    "n_partidos": 5
+  },
+  "Mjallby AIF": {
+    "rating": 1464.21,
+    "n_partidos": 5
+  },
+  "Aarhus": {
+    "rating": 1499.44,
+    "n_partidos": 5
+  },
+  "Lech Poznan": {
+    "rating": 1583.6,
+    "n_partidos": 5
+  },
+  "IFK Goteborg": {
+    "rating": 1498.16,
+    "n_partidos": 4
+  },
+  "FC Thun": {
+    "rating": 1467.3,
+    "n_partidos": 5
+  },
+  "Dinamo Zagreb": {
+    "rating": 1564.78,
+    "n_partidos": 5
+  },
+  "Gornik Zabrze": {
+    "rating": 1475.81,
+    "n_partidos": 5
+  },
+  "Sturm Graz": {
+    "rating": 1538.7,
+    "n_partidos": 4
+  },
+  "Heart Of Midlothian": {
+    "rating": 1453.21,
+    "n_partidos": 5
+  },
+  "FK Crvena Zvezda": {
+    "rating": 1539.34,
+    "n_partidos": 5
+  },
+  "Hapoel Beer Sheva": {
+    "rating": 1585.86,
+    "n_partidos": 5
+  },
+  "Neftchi Baku": {
+    "rating": 1491.28,
+    "n_partidos": 2
+  },
+  "Omonia Nicosia": {
+    "rating": 1508.13,
+    "n_partidos": 5
+  },
+  "Spartak Trnava": {
+    "rating": 1500.59,
+    "n_partidos": 2
+  },
+  "CSKA 1948": {
+    "rating": 1480.61,
+    "n_partidos": 4
+  },
+  "Železničar Pančevo": {
+    "rating": 1475.39,
+    "n_partidos": 2
+  },
+  "Celje": {
+    "rating": 1521.88,
+    "n_partidos": 5
+  },
+  "Hibernian": {
+    "rating": 1536.28,
+    "n_partidos": 5
+  },
+  "CFR 1907 Cluj": {
+    "rating": 1459.24,
+    "n_partidos": 4
+  },
+  "Austria Vienna": {
+    "rating": 1540.01,
+    "n_partidos": 5
+  },
+  "Panevėžys": {
+    "rating": 1500.59,
+    "n_partidos": 2
+  },
+  "FK Tobol Kostanay": {
+    "rating": 1459.16,
+    "n_partidos": 4
+  },
+  "Apollon Limassol": {
+    "rating": 1544.61,
+    "n_partidos": 4
+  },
+  "Debreceni VSC": {
+    "rating": 1459.67,
+    "n_partidos": 4
+  },
+  "HJK Helsinki": {
+    "rating": 1541.02,
+    "n_partidos": 4
+  },
+  "Coleraine FC": {
+    "rating": 1431.95,
+    "n_partidos": 2
+  },
+  "AEK Larnaca": {
+    "rating": 1502.59,
+    "n_partidos": 2
+  },
+  "Beitar Jerusalem": {
+    "rating": 1505.9,
+    "n_partidos": 4
+  },
+  "Raków Częstochowa": {
+    "rating": 1582.11,
+    "n_partidos": 5
+  },
+  "Valletta FC": {
+    "rating": 1434.83,
+    "n_partidos": 2
+  },
+  "Dunajska Streda": {
+    "rating": 1521.9,
+    "n_partidos": 4
+  },
+  "Rapid Vienna": {
+    "rating": 1619.02,
+    "n_partidos": 5
+  },
+  "Gais": {
+    "rating": 1480.49,
+    "n_partidos": 2
+  },
+  "FC Nordsjaelland": {
+    "rating": 1593.11,
+    "n_partidos": 5
+  },
+  "Zimbru": {
+    "rating": 1480.59,
+    "n_partidos": 2
+  },
+  "FC Noah": {
+    "rating": 1501.19,
+    "n_partidos": 4
+  },
+  "FC Sion": {
+    "rating": 1521.71,
+    "n_partidos": 5
+  },
+  "Tromso": {
+    "rating": 1527.7,
+    "n_partidos": 5
+  },
+  "Hradec Králové": {
+    "rating": 1522.58,
+    "n_partidos": 5
+  },
+  "Hammarby FF": {
+    "rating": 1461.61,
+    "n_partidos": 4
+  },
+  "Maccabi Tel Aviv": {
+    "rating": 1546.94,
+    "n_partidos": 5
+  },
+  "PAOK": {
+    "rating": 1499.39,
+    "n_partidos": 5
+  },
+  "Brann": {
+    "rating": 1550.66,
+    "n_partidos": 5
+  },
+  "FC Vaduz": {
+    "rating": 1548.0,
+    "n_partidos": 4
+  },
+  "FCSB": {
+    "rating": 1453.74,
+    "n_partidos": 2
+  },
+  "Auda": {
+    "rating": 1530.94,
+    "n_partidos": 4
+  },
+  "Paks": {
+    "rating": 1482.59,
+    "n_partidos": 2
+  },
+  "Panathinaikos": {
+    "rating": 1529.55,
+    "n_partidos": 5
+  },
+  "FC Midtjylland": {
+    "rating": 1545.79,
+    "n_partidos": 5
+  },
+  "FC ST. Gallen": {
+    "rating": 1559.74,
+    "n_partidos": 5
+  },
+  "Polessya": {
+    "rating": 1480.59,
+    "n_partidos": 2
+  },
+  "FC Copenhagen": {
+    "rating": 1589.06,
+    "n_partidos": 5
+  },
+  "NK Varazdin": {
+    "rating": 1490.46,
+    "n_partidos": 2
+  },
+  "FK Jablonec": {
+    "rating": 1541.69,
+    "n_partidos": 5
+  },
+  "GKS Katowice": {
+    "rating": 1506.09,
+    "n_partidos": 4
+  },
+  "Hapoel Tel Aviv": {
+    "rating": 1540.49,
+    "n_partidos": 5
+  },
+  "Ludogorets": {
+    "rating": 1475.16,
+    "n_partidos": 2
+  },
+  "FC Lugano": {
+    "rating": 1593.19,
+    "n_partidos": 5
+  },
+  "Dukagjini": {
+    "rating": 1440.52,
+    "n_partidos": 2
+  },
+  "LNZ Cherkasy": {
+    "rating": 1493.39,
+    "n_partidos": 2
+  },
+  "Shelbourne": {
+    "rating": 1504.2,
+    "n_partidos": 4
+  },
+  "Koper": {
+    "rating": 1497.14,
+    "n_partidos": 2
+  },
+  "Motherwell": {
+    "rating": 1550.72,
+    "n_partidos": 5
+  },
+  "HB Torshavn": {
+    "rating": 1437.73,
+    "n_partidos": 2
+  },
+  "Bravo": {
+    "rating": 1498.12,
+    "n_partidos": 2
+  },
+  "HNK Rijeka": {
+    "rating": 1528.19,
+    "n_partidos": 5
+  },
+  "Pafos": {
+    "rating": 1494.81,
+    "n_partidos": 5
+  },
+  "FK Partizan": {
+    "rating": 1574.23,
+    "n_partidos": 5
+  },
+  "Valur Reykjavik": {
+    "rating": 1458.97,
+    "n_partidos": 4
+  },
+  "Zrinjski": {
+    "rating": 1481.56,
+    "n_partidos": 2
+  },
+  "Bodo/Glimt": {
+    "rating": 1571.78,
+    "n_partidos": 3
+  },
+  "Olympiakos Piraeus": {
+    "rating": 1481.48,
+    "n_partidos": 2
+  },
+  "Jagiellonia": {
+    "rating": 1543.63,
+    "n_partidos": 3
+  },
+  "Rangers": {
+    "rating": 1500.35,
+    "n_partidos": 3
+  },
+  "Red Bull Salzburg": {
+    "rating": 1542.81,
+    "n_partidos": 3
+  },
+  "Vitória SC": {
+    "rating": 1514.82,
+    "n_partidos": 3
+  },
+  "Vicenza Virtus": {
+    "rating": 1494.4,
+    "n_partidos": 1
+  },
+  "Catania": {
+    "rating": 1484.89,
+    "n_partidos": 2
+  },
+  "Ascoli": {
+    "rating": 1496.69,
+    "n_partidos": 2
+  },
+  "Potenza": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Arezzo": {
+    "rating": 1505.93,
+    "n_partidos": 2
+  },
+  "Union Brescia": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Benevento": {
+    "rating": 1497.29,
+    "n_partidos": 2
+  },
+  "Ravenna": {
+    "rating": 1478.4,
+    "n_partidos": 1
+  },
+  "Abha": {
+    "rating": 1440.72,
+    "n_partidos": 2
+  },
+  "Al Diriyah": {
+    "rating": 1488.81,
+    "n_partidos": 2
+  },
+  "Al-Faisaly FC": {
+    "rating": 1432.42,
+    "n_partidos": 2
+  },
+  "Viking": {
+    "rating": 1509.26,
+    "n_partidos": 1
+  },
+  "Celtic": {
+    "rating": 1525.2,
+    "n_partidos": 1
+  },
+  "Lask Linz": {
+    "rating": 1474.8,
+    "n_partidos": 1
+  },
+  "FC Iberia 1999": {
+    "rating": 1474.81,
+    "n_partidos": 1
+  },
+  "Lillestrom": {
+    "rating": 1507.45,
+    "n_partidos": 1
+  },
+  "Plzen": {
+    "rating": 1476.23,
+    "n_partidos": 1
+  },
+  "OFI": {
+    "rating": 1529.38,
+    "n_partidos": 1
+  },
+  "SC St. Tönis": {
+    "rating": 1439.28,
+    "n_partidos": 1
+  },
+  "Lüneburger SK Hansa": {
+    "rating": 1452.52,
+    "n_partidos": 1
+  },
+  "Hemelingen": {
+    "rating": 1433.99,
+    "n_partidos": 1
+  },
+  "SG Sonnenhof Grossaspach": {
+    "rating": 1491.92,
+    "n_partidos": 1
+  },
+  "Eintracht Trier": {
+    "rating": 1463.29,
+    "n_partidos": 1
+  },
+  "SSV Jeddeloh": {
+    "rating": 1519.01,
+    "n_partidos": 1
+  },
+  "Bahlinger SC": {
+    "rating": 1444.65,
+    "n_partidos": 1
+  },
+  "FC Carl Zeiss Jena": {
+    "rating": 1466.97,
+    "n_partidos": 1
+  },
+  "Westfalia Rhynern": {
+    "rating": 1438.35,
+    "n_partidos": 1
+  },
+  "Schott Mainz": {
+    "rating": 1447.12,
+    "n_partidos": 1
+  },
+  "Krieschow": {
+    "rating": 1445.54,
+    "n_partidos": 1
+  },
+  "Phönix Lübeck": {
+    "rating": 1466.53,
+    "n_partidos": 1
+  }
+}

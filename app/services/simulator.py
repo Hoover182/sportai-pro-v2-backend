@@ -3,6 +3,7 @@
 import numpy as np
 from collections import Counter
 from value_bet import normalizar_std
+from elo_ranking import VENTAJA_LOCAL_ELO, ESCALA_ELO
 
 
 # Minimos y maximos realistas para cualquier liga profesional
@@ -138,6 +139,9 @@ def simular_partido_futbol(
     k_corners_a=None,
     k_corners_b=None,
     k_tarjetas=None,
+    elo_local=None,
+    elo_visitante=None,
+    peso_elo=None,
 ):
     # Aplicar limites realistas a los inputs
     media_goles_a = float(np.clip(media_goles_a, GOLES_MIN, GOLES_MAX))
@@ -198,7 +202,25 @@ def simular_partido_futbol(
     prob_empate    = float(grid_goles[xs_grid == ys_grid].sum())
     prob_visitante = float(grid_goles[xs_grid < ys_grid].sum())
 
-    # DOBLE OPORTUNIDAD
+    # Ajuste de Elo -- SOLO toca estas 3 variables. No modifica grid_goles
+    # ni ninguna otra proyeccion (goles_ou, corners, tarjetas, handicap,
+    # ambos_marcan, marcador exacto, mitades siguen leyendo directo de
+    # grid_goles/corners_a/corners_b/media_tarjetas_total, sin pasar por
+    # este bloque). El empate no se toca -- se queda con lo que ya daba
+    # Dixon-Coles; Elo solo redistribuye el resto (todo lo que no es
+    # empate) entre local y visitante segun a quien favorece la
+    # diferencia de rating. Ver conversacion de diseno / elo_ranking.py.
+    if elo_local is not None and elo_visitante is not None and peso_elo:
+        dr = (elo_local + VENTAJA_LOCAL_ELO) - elo_visitante
+        e_local_elo = 1.0 / (1.0 + 10 ** (-dr / ESCALA_ELO))
+        no_empate = 1.0 - prob_empate
+        prob_local_elo = e_local_elo * no_empate
+        prob_visitante_elo = (1.0 - e_local_elo) * no_empate
+        prob_local = prob_local * (1 - peso_elo) + prob_local_elo * peso_elo
+        prob_visitante = prob_visitante * (1 - peso_elo) + prob_visitante_elo * peso_elo
+
+    # DOBLE OPORTUNIDAD (se calculan DESPUES del ajuste de Elo -- son una
+    # suma directa de los 3 valores de arriba, no un mercado independiente)
     prob_1x = prob_local + prob_empate
     prob_x2 = prob_empate + prob_visitante
     prob_12 = prob_local + prob_visitante
