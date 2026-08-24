@@ -25,7 +25,7 @@ LIGAS = [
     {"liga": "Coppa Italia",               "id": 137, "temporada": None, "inicio": "2025-08-01"},
     {"liga": "DFB Pokal",                  "id": 81,  "temporada": None, "inicio": "2025-08-01"},
     {"liga": "Coupe de France",            "id": 66,  "temporada": None, "inicio": "2025-08-01"},
-    {"liga": "Taca de Portugal",           "id": 96,  "temporada": None, "inicio": "2025-08-01"},
+    {"liga": "Taça de Portugal",           "id": 96,  "temporada": None, "inicio": "2025-08-01"},
     {"liga": "KNVB Beker",                 "id": 90,  "temporada": None, "inicio": "2025-08-01"},
     {"liga": "Copa Belgica",               "id": 146, "temporada": None, "inicio": "2025-08-01"},
     {"liga": "Turkiye Kupasi",             "id": 206, "temporada": None, "inicio": "2025-08-01"},
