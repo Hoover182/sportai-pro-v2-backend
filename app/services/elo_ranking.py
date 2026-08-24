@@ -35,7 +35,8 @@ PESO_ELO_MAX = 0.20
 N_PARTIDOS_ELO_CONFIANZA = 20
 
 
-ELO_RATINGS_PATH = "elo_ratings.json"
+import os as _os
+ELO_RATINGS_PATH = _os.path.join(_os.path.dirname(__file__), "elo_ratings.json")
 
 # Cache en memoria, sin TTL -- mismo criterio que _cache_ranking_fifa en
 # fifa_ranking.py: los ratings de Elo solo cambian una vez al dia (la
