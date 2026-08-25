@@ -1,6 +1,28 @@
-﻿import pandas as pd
+﻿import json
+import os
+
+import pandas as pd
 
 CSV_FUTBOL = "futbol_partidos.csv"
+
+LIGAS_AUTO_DETECTADAS_PATH = os.path.join(os.path.dirname(__file__), "ligas_auto_detectadas.json")
+
+_cache_ligas_auto_detectadas = None
+
+
+def _cargar_ligas_auto_detectadas():
+    global _cache_ligas_auto_detectadas
+    if _cache_ligas_auto_detectadas is not None:
+        return _cache_ligas_auto_detectadas
+    if not os.path.exists(LIGAS_AUTO_DETECTADAS_PATH):
+        _cache_ligas_auto_detectadas = {}
+        return _cache_ligas_auto_detectadas
+    try:
+        with open(LIGAS_AUTO_DETECTADAS_PATH, "r", encoding="utf-8") as f:
+            _cache_ligas_auto_detectadas = json.load(f)
+    except Exception:
+        _cache_ligas_auto_detectadas = {}
+    return _cache_ligas_auto_detectadas
 
 LIGAS_VALIDAS = [
     "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
@@ -60,7 +82,8 @@ def cargar_partidos_csv():
 def filtrar_ligas_validas(df):
     if df.empty:
         return df
-    return df[df["liga"].isin(LIGAS_VALIDAS)].copy()
+    ligas_validas = set(LIGAS_VALIDAS) | set(_cargar_ligas_auto_detectadas().values())
+    return df[df["liga"].isin(ligas_validas)].copy()
 
 
 def listar_equipos(df):
