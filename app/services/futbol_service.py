@@ -470,14 +470,27 @@ def _cargar_cuotas_cache():
     return _cache_cuotas
 
 
+PROB_MINIMA_TOP3 = 0.55  # piso de confianza -- sin esto, el edge puro
+                          # priorizaba underdogs de probabilidad muy baja
+                          # (ej. 14.9%) con cuotas largas, valor real pero
+                          # demasiado riesgo/varianza para un Top3 general
+CUOTA_MINIMA_TOP3 = 1.40  # descarta favoritos tan marcados que casi no
+                           # pagan, aunque tecnicamente tengan algo de edge
+
+
 def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
-    """Top3 por EDGE (valor) contra cuotas reales de Betano/1xBet, no por
-    probabilidad del modelo -- un pick de 65% con cuota que paga como si
-    fuera 40% tiene mas valor que uno de 90% que paga como 88%. Sin cuota
-    real disponible para un mercado, se EXCLUYE del Top3 en vez de
-    forzarlo con la probabilidad sola (ver conversacion de diseno:
-    cobertura real confirmada 98.2% en 1X2/goles/corners, 63.6% en
-    tarjetas contra 55 partidos reales)."""
+    """Top3 por EDGE (valor) contra cuotas reales de Betano/1xBet, DENTRO
+    de un piso de confianza minimo -- no es edge puro: un pick solo entra
+    si prob_modelo >= PROB_MINIMA_TOP3 Y cuota >= CUOTA_MINIMA_TOP3 (los
+    dos filtros a la vez). De los que pasan ambos, se ordena por mayor
+    edge, no por mayor probabilidad -- un pick de 65% con cuota que paga
+    como si fuera 40% sigue ganandole a uno de 90% que paga como 88%,
+    pero ya no entran picks de probabilidad muy baja aunque tengan buen
+    edge (ver conversacion: 14.9% con edge 98.7% quedaba primero con edge
+    puro, decision explicita de acotar eso). Sin cuota real disponible
+    para un mercado, se EXCLUYE del Top3 en vez de forzarlo con la
+    probabilidad sola (cobertura real confirmada 98.2% en 1X2/goles/
+    corners, 63.6% en tarjetas contra 55 partidos reales)."""
     stats_ok = (
         stats_a and stats_b and
         stats_a.get("n_partidos_stats", 0) >= 3 and
@@ -523,6 +536,8 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
     for nombre, prob in candidatos:
         cuota = cuotas_partido.get(nombre)
         if not cuota:
+            continue
+        if prob < PROB_MINIMA_TOP3 or cuota < CUOTA_MINIMA_TOP3:
             continue
         edge = edge_ratio(prob, cuota)
         if edge <= 0:
