@@ -8,7 +8,6 @@ def _safe(v):
 import os
 JUGADORES_DATA_DIR = os.path.join(os.path.dirname(__file__), "jugadores_data")
 import sys
-import json
 import time
 import pandas as pd
 from datetime import datetime
@@ -446,51 +445,32 @@ def simular(df, local, visitante):
     return sim, stats_a, stats_b
 
 
-CUOTAS_CACHE_PATH = os.path.join(os.path.dirname(__file__), "cuotas_cache.json")
-_cache_cuotas = None
+def _familia_mercado(nombre):
+    """Familia del mercado para evitar mostrar la misma apuesta de fondo
+    dos veces en el Top3 con distinta linea (ej. 'Over 1.5 tarjetas' y
+    'Over 2.5 tarjetas' son la misma apuesta con distinto numero, no dos
+    picks distintos). Los mercados Over/Under comparten familia por la
+    palabra final del nombre (goles/corners/tarjetas); el resto de los
+    mercados (resultado, doble oportunidad, ambos marcan) no se agrupan
+    entre si -- cada uno ya es una apuesta genuinamente distinta, no una
+    linea distinta de la misma apuesta."""
+    partes = nombre.split()
+    if partes and partes[0] in ("Over", "Under"):
+        return partes[-1]
+    return nombre
 
 
-def _cargar_cuotas_cache():
-    """Cuotas reales de Betano/1xBet por fixture_id, armadas por
-    actualizar_cuotas_cache() en el cron (api_to_csv.py) -- nunca se
-    llama a la API de cuotas en vivo desde un request de usuario. Cache
-    en memoria sin TTL, mismo criterio que _cache_ranking_fifa/
-    _cache_elo_ratings: el archivo solo cambia una vez al dia."""
-    global _cache_cuotas
-    if _cache_cuotas is not None:
-        return _cache_cuotas
-    if not os.path.exists(CUOTAS_CACHE_PATH):
-        _cache_cuotas = {}
-        return _cache_cuotas
-    try:
-        with open(CUOTAS_CACHE_PATH, "r", encoding="utf-8") as f:
-            _cache_cuotas = json.load(f)
-    except Exception:
-        _cache_cuotas = {}
-    return _cache_cuotas
-
-
-PROB_MINIMA_TOP3 = 0.55  # piso de confianza -- sin esto, el edge puro
-                          # priorizaba underdogs de probabilidad muy baja
-                          # (ej. 14.9%) con cuotas largas, valor real pero
-                          # demasiado riesgo/varianza para un Top3 general
-CUOTA_MINIMA_TOP3 = 1.40  # descarta favoritos tan marcados que casi no
-                           # pagan, aunque tecnicamente tengan algo de edge
-
-
-def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
-    """Top3 por EDGE (valor) contra cuotas reales de Betano/1xBet, DENTRO
-    de un piso de confianza minimo -- no es edge puro: un pick solo entra
-    si prob_modelo >= PROB_MINIMA_TOP3 Y cuota >= CUOTA_MINIMA_TOP3 (los
-    dos filtros a la vez). De los que pasan ambos, se ordena por mayor
-    edge, no por mayor probabilidad -- un pick de 65% con cuota que paga
-    como si fuera 40% sigue ganandole a uno de 90% que paga como 88%,
-    pero ya no entran picks de probabilidad muy baja aunque tengan buen
-    edge (ver conversacion: 14.9% con edge 98.7% quedaba primero con edge
-    puro, decision explicita de acotar eso). Sin cuota real disponible
-    para un mercado, se EXCLUYE del Top3 en vez de forzarlo con la
-    probabilidad sola (cobertura real confirmada 98.2% en 1X2/goles/
-    corners, 63.6% en tarjetas contra 55 partidos reales)."""
+def calcular_top3(sim, stats_a=None, stats_b=None):
+    """Top3 por PROBABILIDAD del modelo (revertido del criterio por edge
+    -- ver conversacion: se probo el sistema de valor contra cuotas
+    reales de Betano/1xBet y no convencio el resultado). Ademas de evitar
+    el opuesto exacto ya usado (OPUESTOS, ej. no mostrar 'Over 2.5 goles'
+    si ya esta 'Under 2.5 goles'), ahora tambien evita repetir la misma
+    FAMILIA de mercado con otra linea (ver _familia_mercado()) -- antes
+    esto no estaba cubierto: 'Over 1.5 tarjetas' y 'Over 2.5 tarjetas'
+    podian aparecer juntos en el Top3 porque OPUESTOS solo mapea cada
+    mercado a su opuesto en la MISMA linea, no a otras lineas de la misma
+    familia."""
     stats_ok = (
         stats_a and stats_b and
         stats_a.get("n_partidos_stats", 0) >= 3 and
@@ -522,42 +502,19 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
             ("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"]),
         ]
 
-    # fixture_id puede llegar como numpy.float64 (columnas del CSV con NaN
-    # en otro lado se vuelven float64 aunque este valor puntual sea un id
-    # entero) -- str() directo da "1549744.0" y nunca matchea la clave
-    # "1549744" del JSON. Normalizar a int primero.
-    try:
-        fixture_id_str = str(int(fixture_id)) if fixture_id is not None and pd.notna(fixture_id) else None
-    except (TypeError, ValueError):
-        fixture_id_str = None
-    cuotas_partido = _cargar_cuotas_cache().get(fixture_id_str, {}) if fixture_id_str else {}
-
-    con_edge = []
-    for nombre, prob in candidatos:
-        cuota = cuotas_partido.get(nombre)
-        if not cuota:
-            continue
-        if prob < PROB_MINIMA_TOP3 or cuota < CUOTA_MINIMA_TOP3:
-            continue
-        edge = edge_ratio(prob, cuota)
-        if edge <= 0:
-            continue
-        con_edge.append({
-            "mercado": nombre,
-            "prob": round(prob * 100, 1),
-            "cuota": cuota,
-            "edge": round(edge * 100, 1),
-        })
-
-    con_edge.sort(key=lambda x: x["edge"], reverse=True)
+    candidatos = sorted(candidatos, key=lambda x: x[1], reverse=True)
     resultado = []
     usados = set()
-    for c in con_edge:
-        nombre = c["mercado"]
-        if nombre in usados or OPUESTOS.get(nombre) in usados:
+    familias_usadas = set()
+    for nombre, prob in candidatos:
+        if prob < 0.60:
+            break
+        familia = _familia_mercado(nombre)
+        if nombre in usados or OPUESTOS.get(nombre) in usados or familia in familias_usadas:
             continue
-        resultado.append(c)
+        resultado.append({"mercado": nombre, "prob": round(prob * 100, 1)})
         usados.add(nombre)
+        familias_usadas.add(familia)
         if len(resultado) == 3:
             break
     return resultado
@@ -713,11 +670,10 @@ def _calcular_top_picks():
         local = row["equipo_local"]
         visitante = row["equipo_visitante"]
         liga = row["liga"]
-        fixture_id = row.get("fixture_id")
         sim, stats_a, stats_b = simular(df, local, visitante)
         if sim is None:
             continue
-        top3 = calcular_top3(sim, fixture_id, stats_a, stats_b)
+        top3 = calcular_top3(sim, stats_a, stats_b)
         if not top3:
             continue
         for pick in top3:
@@ -726,10 +682,8 @@ def _calcular_top_picks():
                 "partido": f"{local} vs {visitante}",
                 "mercado": pick["mercado"],
                 "prob": pick["prob"],
-                "cuota": pick["cuota"],
-                "edge": pick["edge"],
             })
-    resultados.sort(key=lambda x: x["edge"], reverse=True)
+    resultados.sort(key=lambda x: x["prob"], reverse=True)
     return resultados
 
 
@@ -755,23 +709,6 @@ def _obtener_ajuste_ia(df, local, visitante):
             "ajuste_visitante": float(r["ajuste_ia_visitante"]),
             "explicacion": str(r["ajuste_ia_explicacion"]) if not pd.isna(r.get("ajuste_ia_explicacion")) else "",
         }
-    except Exception:
-        return None
-
-
-def _obtener_fixture_id_pendiente(df, local, visitante):
-    """Fixture_id del proximo partido NS entre estos dos equipos (o el mas
-    reciente si no hay ninguno pendiente) -- mismo criterio de preferencia
-    que _obtener_ajuste_ia(), para buscar la cuota real del partido que se
-    va a jugar, no de un cruce historico viejo."""
-    try:
-        fila = df[(df["equipo_local"] == local) & (df["equipo_visitante"] == visitante)]
-        if fila.empty:
-            return None
-        pendientes = fila[fila["estado"] == "NS"]
-        fila_ordenada = (pendientes if not pendientes.empty else fila).sort_values("fecha", ascending=False)
-        fid = fila_ordenada.iloc[0].get("fixture_id")
-        return int(fid) if pd.notna(fid) else None
     except Exception:
         return None
 
@@ -922,8 +859,7 @@ def get_analisis_partido(local_input, visitante_input):
         liga = liga_series.iloc[0] if not liga_series.empty else "Desconocida"
     except Exception:
         liga = "Desconocida"
-    fixture_id_pendiente = _obtener_fixture_id_pendiente(df, local, visitante)
-    top3 = calcular_top3(sim, fixture_id_pendiente, stats_a, stats_b)
+    top3 = calcular_top3(sim, stats_a, stats_b)
     estado_real, goles_local_real, goles_visitante_real = _obtener_estado_real_partido(df, local, visitante)
     ultimos_local = []
     ultimos_visitante = []
