@@ -46,6 +46,7 @@ from data_loader import (
     obtener_partidos_hoy_futbol,
     obtener_partidos_mas_recientes,
     obtener_partidos_rango_futbol,
+    _cargar_ligas_auto_detectadas,
 )
 from football_model import (
     estadisticas_equipo_ultimos10,
@@ -130,12 +131,17 @@ _cache_equipos_nivel1 = None
 
 def obtener_equipos_nivel1(df):
     """Devuelve el set de equipos que juegan en ligas de Primera division.
-    Se cachea en memoria porque el CSV no cambia dentro del mismo proceso."""
+    Incluye tanto LIGAS_NIVEL_1 (lista fija) como las ligas auto-detectadas
+    por el backfill de equipos desconocidos en copas internacionales (ver
+    ligas_auto_detectadas.json) -- mismo criterio de union que ya usa
+    filtrar_ligas_validas() en data_loader.py, sin duplicar logica. Se
+    cachea en memoria porque el CSV no cambia dentro del mismo proceso."""
     global _cache_equipos_nivel1
     if _cache_equipos_nivel1 is not None:
         return _cache_equipos_nivel1
+    ligas_n1 = set(LIGAS_NIVEL_1) | set(_cargar_ligas_auto_detectadas().values())
     equipos = set()
-    for liga in LIGAS_NIVEL_1:
+    for liga in ligas_n1:
         sub = df[df["liga"] == liga]
         equipos.update(sub["equipo_local"].unique())
         equipos.update(sub["equipo_visitante"].unique())
