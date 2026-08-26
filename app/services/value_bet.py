@@ -95,3 +95,26 @@ def edge_porcentual(prob_real, cuota):
         return round((float(prob_real) - prob_implicita) * 100, 2)
     except (TypeError, ValueError):
         return 0.0
+
+
+def edge_ratio(prob_modelo, cuota):
+    """
+    Edge como RATIO sobre la probabilidad implicita (no diferencia de
+    puntos porcentuales como edge_porcentual() de arriba):
+        edge = (prob_modelo - prob_implicita) / prob_implicita
+    Devuelve un ratio (0.15 = 15%), no un porcentaje ya multiplicado.
+    Misma formula que ya usaba calcular_value_bet_manual() en
+    futbol_service.py (value betting manual con cuota escrita a mano) --
+    extraida aca para que el Top3 por edge (cuotas reales de Betano/1xBet)
+    la reuse sin duplicarla."""
+    try:
+        prob_modelo = float(prob_modelo)
+        cuota = float(cuota)
+        if cuota <= 1.0:
+            return 0.0
+        prob_implicita = 1 / cuota
+        if prob_implicita <= 0:
+            return 0.0
+        return (prob_modelo - prob_implicita) / prob_implicita
+    except (TypeError, ValueError, ZeroDivisionError):
+        return 0.0
