@@ -913,6 +913,180 @@ def _obtener_estado_real_partido(df, local, visitante):
         return None, None, None
 
 
+ESTADOS_TERMINALES = ("FT", "AET", "PEN")
+
+_cache_detalle_post_partido = {}
+
+
+def _formatear_alineaciones(lineups):
+    resultado = []
+    for equipo in lineups:
+        resultado.append({
+            "equipo": equipo["team"]["name"],
+            "formacion": equipo.get("formation"),
+            "titulares": [
+                {
+                    "nombre": j["player"]["name"],
+                    "dorsal": j["player"].get("number"),
+                    "posicion": j["player"].get("pos"),
+                    "grid": j["player"].get("grid"),
+                }
+                for j in equipo.get("startXI", [])
+            ],
+            "suplentes": [
+                {
+                    "nombre": j["player"]["name"],
+                    "dorsal": j["player"].get("number"),
+                    "posicion": j["player"].get("pos"),
+                }
+                for j in equipo.get("substitutes", [])
+            ],
+        })
+    return resultado
+
+
+def _formatear_eventos(events):
+    return [
+        {
+            "minuto": e.get("time", {}).get("elapsed"),
+            "extra": e.get("time", {}).get("extra"),
+            "equipo": e.get("team", {}).get("name"),
+            "tipo": e.get("type"),
+            "detalle": e.get("detail"),
+            "jugador": (e.get("player") or {}).get("name"),
+            "asistencia": (e.get("assist") or {}).get("name"),
+        }
+        for e in events
+    ]
+
+
+def _formatear_estadisticas_partido(statistics):
+    resultado = []
+    for equipo in statistics:
+        stats = {s.get("type"): s.get("value") for s in equipo.get("statistics", [])}
+        resultado.append({
+            "equipo": equipo["team"]["name"],
+            "posesion": stats.get("Ball Possession"),
+            "tiros_total": stats.get("Total Shots"),
+            "tiros_arco": stats.get("Shots on Goal"),
+            "corners": stats.get("Corner Kicks"),
+            "tarjetas_amarillas": stats.get("Yellow Cards"),
+            "tarjetas_rojas": stats.get("Red Cards"),
+            "faltas": stats.get("Fouls"),
+        })
+    return resultado
+
+
+def _formatear_jugadores_partido(players):
+    resultado = []
+    for equipo in players:
+        equipo_nombre = equipo["team"]["name"]
+        for j in equipo.get("players", []):
+            stat = (j.get("statistics") or [{}])[0] or {}
+            games = stat.get("games") or {}
+            rating_raw = games.get("rating")
+            try:
+                rating = round(float(rating_raw), 1) if rating_raw else None
+            except (TypeError, ValueError):
+                rating = None
+            resultado.append({
+                "equipo": equipo_nombre,
+                "nombre": j["player"]["name"],
+                "posicion": games.get("position"),
+                "titular": games.get("substitute") is False,
+                "minutos": games.get("minutes"),
+                "rating": rating,
+                "goles": (stat.get("goals") or {}).get("total") or 0,
+                "asistencias": (stat.get("goals") or {}).get("assists") or 0,
+                "tarjetas_amarillas": (stat.get("cards") or {}).get("yellow") or 0,
+                "tarjetas_rojas": (stat.get("cards") or {}).get("red") or 0,
+            })
+    return resultado
+
+
+def _cargar_detalle_post_partido(fixture_id):
+    """Alineaciones, linea de tiempo, estadisticas de equipo y stats
+    individuales de un partido YA TERMINADO -- 4 llamadas a api-football
+    (fixtures/lineups, fixtures/statistics, fixtures/events,
+    fixtures/players), cacheadas en memoria SIN TTL por fixture_id: un
+    partido terminado es un dato inmutable, la primera vez que alguien
+    pide el detalle paga las 4 llamadas, cualquier vista posterior de ese
+    mismo partido es gratis. Nunca se llama para un partido que no
+    termino -- el gate esta en get_detalle_post_partido()."""
+    if fixture_id in _cache_detalle_post_partido:
+        return _cache_detalle_post_partido[fixture_id]
+    try:
+        import requests as _requests
+        from player_model import API_KEY as _PM_API_KEY, BASE_URL as _PM_BASE_URL
+        headers = {"x-apisports-key": _PM_API_KEY}
+
+        def _get(endpoint):
+            resp = _requests.get(f"{_PM_BASE_URL}/{endpoint}", headers=headers, params={"fixture": fixture_id}, timeout=15)
+            return resp.json().get("response", [])
+
+        lineups = _get("fixtures/lineups")
+        statistics = _get("fixtures/statistics")
+        events = _get("fixtures/events")
+        players = _get("fixtures/players")
+
+        jugadores = _formatear_jugadores_partido(players)
+        con_rating = [j for j in jugadores if j["rating"] is not None]
+        mejor_jugador = max(con_rating, key=lambda j: j["rating"]) if con_rating else None
+
+        detalle = {
+            "alineaciones": _formatear_alineaciones(lineups),
+            "eventos": _formatear_eventos(events),
+            "estadisticas": _formatear_estadisticas_partido(statistics),
+            "jugadores": jugadores,
+            "mejor_jugador": mejor_jugador,
+        }
+        _cache_detalle_post_partido[fixture_id] = detalle
+        return detalle
+    except Exception:
+        return None
+
+
+def get_detalle_post_partido(local_input, visitante_input):
+    """Detalle completo de un partido YA TERMINADO -- alineaciones,
+    eventos, estadisticas y jugadores. Gateado por estado terminal
+    (FT/AET/PEN): prioriza estado_real (chequeo en vivo, igual que el
+    banner) y si no esta disponible (kickoff todavia no paso, o fallo la
+    consulta), cae al "estado" que ya tiene el CSV via el cron diario."""
+    df = cargar_df()
+    if df.empty:
+        return None, "No hay datos disponibles"
+    local = obtener_equipo_por_nombre(df, local_input)
+    visitante = obtener_equipo_por_nombre(df, visitante_input)
+    if local is None:
+        return None, f"Equipo no encontrado: {local_input}"
+    if visitante is None:
+        return None, f"Equipo no encontrado: {visitante_input}"
+
+    fixture_id = _obtener_fixture_id_pendiente(df, local, visitante)
+    if fixture_id is None:
+        return None, "No se encontro el partido"
+
+    # Si el detalle ya esta en cache, el partido ya se confirmo terminado
+    # en una llamada anterior -- un partido terminado no puede
+    # "des-terminarse", asi que no hace falta pagar el chequeo en vivo de
+    # estado_real (1 request) de nuevo cada vez que alguien lo pide.
+    if fixture_id in _cache_detalle_post_partido:
+        return _cache_detalle_post_partido[fixture_id], None
+
+    estado_real, _, _ = _obtener_estado_real_partido(df, local, visitante)
+    if estado_real is None:
+        fila = df[df["fixture_id"] == fixture_id]
+        estado_real = fila.iloc[0]["estado"] if not fila.empty else None
+
+    if estado_real not in ESTADOS_TERMINALES:
+        return None, "El partido todavia no termino"
+
+    detalle = _cargar_detalle_post_partido(fixture_id)
+    if detalle is None:
+        return None, "No se pudo obtener el detalle del partido"
+    return detalle, None
+
+
 def get_analisis_partido(local_input, visitante_input):
     df = cargar_df()
     if df.empty:
