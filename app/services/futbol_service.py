@@ -989,6 +989,13 @@ def _formatear_jugadores_partido(players):
                 rating = round(float(rating_raw), 1) if rating_raw else None
             except (TypeError, ValueError):
                 rating = None
+            passes = stat.get("passes") or {}
+            tackles = stat.get("tackles") or {}
+            precision_raw = passes.get("accuracy")
+            try:
+                precision_pases = int(precision_raw) if precision_raw is not None else None
+            except (TypeError, ValueError):
+                precision_pases = None
             resultado.append({
                 "equipo": equipo_nombre,
                 "nombre": j["player"]["name"],
@@ -1000,19 +1007,45 @@ def _formatear_jugadores_partido(players):
                 "asistencias": (stat.get("goals") or {}).get("assists") or 0,
                 "tarjetas_amarillas": (stat.get("cards") or {}).get("yellow") or 0,
                 "tarjetas_rojas": (stat.get("cards") or {}).get("red") or 0,
+                "pases_totales": passes.get("total") or 0,
+                "pases_clave": passes.get("key") or 0,
+                "precision_pases": precision_pases,
+                "atajadas": (stat.get("goals") or {}).get("saves") or 0,
+                "entradas": tackles.get("total") or 0,
+                "intercepciones": tackles.get("interceptions") or 0,
+                "bloqueos": tackles.get("blocks") or 0,
             })
     return resultado
 
 
-def _cargar_detalle_post_partido(fixture_id):
-    """Alineaciones, linea de tiempo, estadisticas de equipo y stats
-    individuales de un partido YA TERMINADO -- 4 llamadas a api-football
-    (fixtures/lineups, fixtures/statistics, fixtures/events,
-    fixtures/players), cacheadas en memoria SIN TTL por fixture_id: un
-    partido terminado es un dato inmutable, la primera vez que alguien
-    pide el detalle paga las 4 llamadas, cualquier vista posterior de ese
-    mismo partido es gratis. Nunca se llama para un partido que no
-    termino -- el gate esta en get_detalle_post_partido()."""
+def _formatear_info_partido(fixture_data):
+    """jornada/arbitro/estadio desde /fixtures?id= -- jornada vive en
+    league.round (no en fixture), estadio cae a venue.city cuando
+    venue.name es null (pasa en algunas ligas/estadios sin ese dato
+    cargado en api-football, confirmado en vivo con Copa do Brasil)."""
+    if not fixture_data:
+        return {"jornada": None, "arbitro": None, "estadio": None}
+    fx = fixture_data[0]
+    venue = fx.get("fixture", {}).get("venue") or {}
+    return {
+        "jornada": fx.get("league", {}).get("round"),
+        "arbitro": fx.get("fixture", {}).get("referee"),
+        "estadio": venue.get("name") or venue.get("city"),
+    }
+
+
+def _cargar_detalle_post_partido(fixture_id, df):
+    """Alineaciones, linea de tiempo, estadisticas de equipo, stats
+    individuales e info general de un partido YA TERMINADO -- 5 llamadas
+    a api-football (fixtures/lineups, fixtures/statistics,
+    fixtures/events, fixtures/players, fixtures), cacheadas en memoria
+    SIN TTL por fixture_id: un partido terminado es un dato inmutable, la
+    primera vez que alguien pide el detalle paga las 5 llamadas,
+    cualquier vista posterior de ese mismo partido es gratis. Nunca se
+    llama para un partido que no termino -- el gate esta en
+    get_detalle_post_partido(). fecha/hora salen del CSV (df) que
+    get_detalle_post_partido ya tiene cargado, sin llamada adicional a la
+    API."""
     if fixture_id in _cache_detalle_post_partido:
         return _cache_detalle_post_partido[fixture_id]
     try:
@@ -1020,20 +1053,32 @@ def _cargar_detalle_post_partido(fixture_id):
         from player_model import API_KEY as _PM_API_KEY, BASE_URL as _PM_BASE_URL
         headers = {"x-apisports-key": _PM_API_KEY}
 
-        def _get(endpoint):
-            resp = _requests.get(f"{_PM_BASE_URL}/{endpoint}", headers=headers, params={"fixture": fixture_id}, timeout=15)
+        def _get(endpoint, param="fixture"):
+            resp = _requests.get(f"{_PM_BASE_URL}/{endpoint}", headers=headers, params={param: fixture_id}, timeout=15)
             return resp.json().get("response", [])
 
         lineups = _get("fixtures/lineups")
         statistics = _get("fixtures/statistics")
         events = _get("fixtures/events")
         players = _get("fixtures/players")
+        fixture_data = _get("fixtures", param="id")
 
         jugadores = _formatear_jugadores_partido(players)
         con_rating = [j for j in jugadores if j["rating"] is not None]
         mejor_jugador = max(con_rating, key=lambda j: j["rating"]) if con_rating else None
 
+        fila = df[df["fixture_id"] == fixture_id]
+        if not fila.empty:
+            fecha_dt = fila.iloc[0]["fecha"]
+            fecha = str(fecha_dt.date()) if hasattr(fecha_dt, "date") else str(fecha_dt)[:10]
+            hora = str(fecha_dt.time())[:5] if hasattr(fecha_dt, "time") else ""
+        else:
+            fecha = hora = None
+
         detalle = {
+            "fecha": fecha,
+            "hora": hora,
+            **_formatear_info_partido(fixture_data),
             "alineaciones": _formatear_alineaciones(lineups),
             "eventos": _formatear_eventos(events),
             "estadisticas": _formatear_estadisticas_partido(statistics),
@@ -1081,7 +1126,7 @@ def get_detalle_post_partido(local_input, visitante_input):
     if estado_real not in ESTADOS_TERMINALES:
         return None, "El partido todavia no termino"
 
-    detalle = _cargar_detalle_post_partido(fixture_id)
+    detalle = _cargar_detalle_post_partido(fixture_id, df)
     if detalle is None:
         return None, "No se pudo obtener el detalle del partido"
     return detalle, None
