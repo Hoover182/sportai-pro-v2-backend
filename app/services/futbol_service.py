@@ -973,6 +973,9 @@ def _formatear_estadisticas_partido(statistics):
             "tarjetas_amarillas": stats.get("Yellow Cards"),
             "tarjetas_rojas": stats.get("Red Cards"),
             "faltas": stats.get("Fouls"),
+            "pases_totales": stats.get("Total passes"),
+            "pases_precisos": stats.get("Passes accurate"),
+            "precision_pases": stats.get("Passes %"),
         })
     return resultado
 
