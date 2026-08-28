@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 
-API_KEY = "7be9c4250da301a68726beedbe2b382a"
+API_KEY = "[APIFOOTBALL_KEY_REMOVIDA]"
 headers = {"x-apisports-key": API_KEY}
 
 team_id = 1198  # Remo, confirmado ayer

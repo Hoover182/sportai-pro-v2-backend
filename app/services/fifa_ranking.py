@@ -3,10 +3,11 @@ Modulo para obtener y gestionar el ranking FIFA.
 Descarga el ranking desde la API de API-Football (equipos nacionales)
 y lo guarda en SQLite para consulta rapida.
 """
+import os
 import requests
 from database import guardar_fifa_ranking, leer_fifa_ranking, iniciar_fifa_ranking
 
-API_KEY = "7be9c4250da301a68726beedbe2b382a"
+API_KEY = os.environ.get("APIFOOTBALL_KEY", "")
 BASE_URL = "https://v3.football.api-sports.io"
 
 # Ranking FIFA hardcodeado como fallback (junio 2026)

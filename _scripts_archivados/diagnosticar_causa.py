@@ -1,7 +1,7 @@
 ﻿import json
 import requests
 
-API_KEY = "7be9c4250da301a68726beedbe2b382a"
+API_KEY = "[APIFOOTBALL_KEY_REMOVIDA]"
 headers = {"x-apisports-key": API_KEY}
 
 archivos_test = ["Platense.json", "Junior.json", "Santa Fe.json"]

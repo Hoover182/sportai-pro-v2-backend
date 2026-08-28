@@ -1,9 +1,10 @@
+import os
 import requests
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 
-API_KEY = "7be9c4250da301a68726beedbe2b382a"
+API_KEY = os.environ.get("APIFOOTBALL_KEY", "")
 BASE_URL = "https://v3.football.api-sports.io"
 
 MINUTOS_MIN_TEMPORADA = 90

@@ -1,6 +1,6 @@
 ﻿import requests
 
-API_KEY = "7be9c4250da301a68726beedbe2b382a"
+API_KEY = "[APIFOOTBALL_KEY_REMOVIDA]"
 headers = {"x-apisports-key": API_KEY}
 
 fixture_ids = [1519427, 1519420, 1519410, 1519402, 1519392]
