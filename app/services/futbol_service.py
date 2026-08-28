@@ -1087,6 +1087,17 @@ def _cargar_detalle_post_partido(fixture_id, df):
             "estadisticas": _formatear_estadisticas_partido(statistics),
             "jugadores": jugadores,
             "mejor_jugador": mejor_jugador,
+            # True cuando api-football devuelve vacio ese bloque para un
+            # partido ya terminado -- cobertura real incompleta del
+            # proveedor (confirmado caso por caso, no es un descarte
+            # nuestro), varia por liga/ronda. El frontend usa esto para
+            # avisar en vez de mostrar la seccion vacia sin explicacion.
+            "cobertura_incompleta": {
+                "alineaciones": not lineups,
+                "eventos": not events,
+                "estadisticas": not statistics,
+                "jugadores": not players,
+            },
         }
         _cache_detalle_post_partido[fixture_id] = detalle
         return detalle
