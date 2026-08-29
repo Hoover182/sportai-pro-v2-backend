@@ -1,0 +1,57 @@
+name: Sync check - analista-futbol -> backend
+
+on:
+  schedule:
+    # 12:00 UTC = 2h despues del cron de analista-futbol (10:00 UTC),
+    # para darle margen a que termine su corrida completa.
+    - cron: "0 12 * * *"
+  workflow_dispatch: {}   # permite dispararlo a mano desde la pestaña Actions
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pandas requests
+
+      - name: Chequear cambios y armar reporte
+        id: check
+        run: |
+          set +e
+          python scripts/check_sync.py \
+            --write-csv app/services/futbol_partidos.csv.new \
+            --summary-out /tmp/summary.md
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Reemplazar CSV y armar rama
+        if: steps.check.outputs.exit_code == '2'
+        run: |
+          mv app/services/futbol_partidos.csv.new app/services/futbol_partidos.csv
+          git config user.name "sync-bot"
+          git config user.email "sync-bot@users.noreply.github.com"
+          BRANCH="sync/analista-futbol-$(date -u +%Y%m%d-%H%M)"
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          git checkout -b "$BRANCH"
+          git add app/services/futbol_partidos.csv
+          git commit -m "Sync: actualizar futbol_partidos.csv desde analista-futbol"
+          git push origin "$BRANCH"
+
+      - name: Abrir Pull Request
+        if: steps.check.outputs.exit_code == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create \
+            --title "Sync datos desde analista-futbol ($(date -u +%Y-%m-%d))" \
+            --body-file /tmp/summary.md \
+            --base main \
+            --head "$BRANCH"
