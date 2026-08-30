@@ -510,9 +510,10 @@ CUOTA_MINIMA_DISPONIBILIDAD = 1.15  # por debajo de esto, "practicamente
 
 
 def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
-    """Top3 por PROBABILIDAD del modelo (el criterio de siempre, no edge/
-    valor -- se probo el sistema por edge y no convencio, ver
-    conversacion). Tres reglas sobre la lista ordenada por probabilidad:
+    """Top3 por PROBABILIDAD PURA del modelo -- criterio original, sin la
+    verificacion de disponibilidad real (Betano/1xBet) que se agrego
+    despues y se volvio a sacar (ver conversacion). Dos reglas sobre la
+    lista ordenada por probabilidad:
 
     1. Orden por probabilidad descendente (igual que siempre).
     2. Sin mercados repetidos: ademas del opuesto exacto en la misma
@@ -520,17 +521,13 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
        goles'), tampoco se repite la FAMILIA de mercado con otra linea
        (ver _familia_mercado()) -- 'Over 1.5 tarjetas' y 'Over 2.5
        tarjetas' son la misma apuesta de fondo, no pueden entrar juntas.
-    3. Verificacion de disponibilidad real: un candidato solo entra si
-       Betano o 1xBet tienen esa linea especifica con cuota >=
-       CUOTA_MINIMA_DISPONIBILIDAD (via cuotas_cache.json, armado por el
-       cron -- nunca se llama a la API en vivo aca). Si no hay cuota o es
-       menor al piso, se SALTA ese candidato y se sigue bajando por
-       probabilidad -- IMPORTANTE: un candidato saltado por esta regla
-       NO marca su familia como usada, porque nunca llego a entrar al
-       resultado (si "Over 2.5 tarjetas" se salta por falta de cuota,
-       "Over 3.5 tarjetas" todavia puede entrar despues si tiene cuota
-       real). Si ningun candidato de un partido pasa las 3 reglas, mismo
-       fallback de siempre: menos de 3 picks, o ninguno."""
+
+    La cuota (via cuotas_cache.json) se sigue adjuntando a cada pick como
+    dato informativo, pero YA NO filtra ni descarta candidatos -- puede
+    venir None si no hay cuota real para esa linea. Todo el mecanismo de
+    verificacion de disponibilidad (CUOTA_MINIMA_DISPONIBILIDAD,
+    _cargar_cuotas_cache()) queda intacto sin usarse para el filtro, por
+    si se retoma mas adelante."""
     stats_ok = (
         stats_a and stats_b and
         stats_a.get("n_partidos_stats", 0) >= 3 and
@@ -583,9 +580,7 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
         familia = _familia_mercado(nombre)
         if nombre in usados or OPUESTOS.get(nombre) in usados or familia in familias_usadas:
             continue
-        cuota = cuotas_partido.get(nombre)
-        if not cuota or cuota < CUOTA_MINIMA_DISPONIBILIDAD:
-            continue  # sin disponibilidad real -- se salta, la familia sigue libre
+        cuota = cuotas_partido.get(nombre)  # informativo, ya no filtra (ver docstring)
         resultado.append({"mercado": nombre, "prob": round(prob * 100, 1), "cuota": cuota})
         usados.add(nombre)
         familias_usadas.add(familia)
