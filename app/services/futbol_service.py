@@ -98,6 +98,32 @@ LIGAS_IDS = {
     "Mundial 2026": (1, 2026),
 }
 
+# Lista completa de ligas trackeadas, para el selector "Mis Competiciones"
+# -- misma lista que LIGAS en api_to_csv.py / LIGAS_CONOCIDAS en
+# scripts/check_sync.py (una sola fuente real, pero repetida como
+# constante literal en los 3 lados a proposito: son 3 propositos
+# distintos -- que se descarga, que se considera "conocido" al
+# sincronizar, y que se puede elegir seguir -- no vale la pena la
+# complejidad de importar entre repos por esto).
+LIGAS_DISPONIBLES = [
+    "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1", "Primeira Liga",
+    "Eredivisie", "Pro League Belgica", "Super Lig Turquia", "Champions League",
+    "Europa League", "Conference League", "FA Cup", "Copa del Rey", "Coppa Italia",
+    "DFB Pokal", "Coupe de France", "Taça de Portugal", "KNVB Beker", "Copa Belgica",
+    "Turkiye Kupasi", "Premier League Egipto", "Copa Egipto", "Pro League Arabia",
+    "MLS", "Liga MX", "Liga Profesional Argentina", "Brasileirao", "Liga Colombia",
+    "Primera Division Chile", "Primera Division Uruguay", "Primera Division Peru",
+    "Liga Pro Ecuador", "Primera Division Venezuela", "Primera Division Bolivia",
+    "Division Profesional Paraguay", "Copa Libertadores", "Copa Sudamericana",
+    "Recopa Sudamericana", "Copa Argentina", "Copa do Brasil", "Copa Chile",
+    "Copa Colombia", "Copa Uruguay", "Mundial 2026",
+]
+
+
+def get_ligas_disponibles():
+    return LIGAS_DISPONIBLES
+
+
 ORDEN_COMPETENCIAS = [
     "Champions League", "Europa League", "Conference League",
     "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
@@ -472,6 +498,39 @@ def _cargar_cuotas_cache():
     return _cache_cuotas
 
 
+TEAM_IDS_PATH = os.path.join(os.path.dirname(__file__), "cache_team_ids.json")
+_cache_team_ids = None
+
+
+def _cargar_team_ids():
+    """Nombre de equipo -> id de api-football, sincronizado desde
+    analista-futbol por check_sync.py/GitHub Actions (ver
+    app/services/cache_team_ids.json) -- nunca se resuelve en vivo desde
+    un request de usuario, mismo criterio que _cargar_cuotas_cache().
+    Puede no tener un equipo puntual todavia si el cache de origen
+    (513 equipos a la fecha de este comentario) no llego a resolverlo."""
+    global _cache_team_ids
+    if _cache_team_ids is not None:
+        return _cache_team_ids
+    if not os.path.exists(TEAM_IDS_PATH):
+        _cache_team_ids = {}
+        return _cache_team_ids
+    try:
+        with open(TEAM_IDS_PATH, "r", encoding="utf-8") as f:
+            _cache_team_ids = json.load(f)
+    except Exception:
+        _cache_team_ids = {}
+    return _cache_team_ids
+
+
+def _logo_equipo(nombre):
+    """URL del escudo real del equipo (CDN publico de api-football, no
+    necesita API key ni gasta cuota). None si el equipo todavia no tiene
+    id cacheado -- el frontend cae al circulo de iniciales en ese caso."""
+    team_id = _cargar_team_ids().get(nombre)
+    return f"https://media.api-sports.io/football/teams/{team_id}.png" if team_id else None
+
+
 def _obtener_fixture_id_pendiente(df, local, visitante):
     """Fixture_id del proximo partido NS entre estos dos equipos (o el mas
     reciente si no hay ninguno pendiente) -- mismo criterio de preferencia
@@ -589,6 +648,126 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
     return resultado
 
 
+def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
+    """Hermana de calcular_top3(), para la pantalla de Inicio nueva
+    ("Top 10 picks del dia" filtrado por Mis Competiciones) -- NO
+    reemplaza ni modifica calcular_top3(), que sigue siendo probabilidad
+    pura para todo lo que ya la usa.
+
+    Mismas 2 reglas de candidatos/familia, MAS el criterio combinado que
+    se saco de calcular_top3(): un candidato solo entra si tiene
+    probabilidad >= 60% Y Betano o 1xBet tienen esa linea con cuota >=
+    CUOTA_MINIMA_DISPONIBILIDAD. Si no hay cuota real, se SALTA el
+    candidato sin marcar su familia como usada (la familia sigue libre
+    para una linea distinta que si tenga cuota).
+
+    Sin tope de cantidad -- el orquestador global
+    (_calcular_top10_mis_competiciones) es el que corta en 10 despues de
+    juntar los picks de todos los partidos filtrados y ordenar por
+    probabilidad."""
+    stats_ok = (
+        stats_a and stats_b and
+        stats_a.get("n_partidos_stats", 0) >= 3 and
+        stats_b.get("n_partidos_stats", 0) >= 3
+    )
+    candidatos = [
+        ("Gana local", sim["prob_local"]),
+        ("Empate", sim["prob_empate"]),
+        ("Gana visitante", sim["prob_visitante"]),
+        ("1X (Local o Empate)", sim["prob_1x"]),
+        ("X2 (Empate o Visitante)", sim["prob_x2"]),
+        ("Ambos marcan", sim["prob_ambos_marcan"]),
+        ("Over 1.5 goles", sim["goles_ou"][1.5]["over"]),
+        ("Under 1.5 goles", sim["goles_ou"][1.5]["under"]),
+        ("Over 2.5 goles", sim["goles_ou"][2.5]["over"]),
+        ("Under 2.5 goles", sim["goles_ou"][2.5]["under"]),
+        ("Over 3.5 goles", sim["goles_ou"][3.5]["over"]),
+        ("Under 3.5 goles", sim["goles_ou"][3.5]["under"]),
+    ]
+    if stats_ok:
+        candidatos += [
+            ("Over 7.5 corners", sim["corners_ou"][7.5]["over"]),
+            ("Under 7.5 corners", sim["corners_ou"][7.5]["under"]),
+            ("Over 8.5 corners", sim["corners_ou"][8.5]["over"]),
+            ("Under 8.5 corners", sim["corners_ou"][8.5]["under"]),
+            ("Over 2.5 tarjetas", sim["tarjetas_ou"][2.5]["over"]),
+            ("Under 2.5 tarjetas", sim["tarjetas_ou"][2.5]["under"]),
+            ("Over 3.5 tarjetas", sim["tarjetas_ou"][3.5]["over"]),
+            ("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"]),
+        ]
+
+    candidatos = sorted(candidatos, key=lambda x: x[1], reverse=True)
+
+    try:
+        fixture_id_str = str(int(fixture_id)) if fixture_id is not None and pd.notna(fixture_id) else None
+    except (TypeError, ValueError):
+        fixture_id_str = None
+    cuotas_partido = _cargar_cuotas_cache().get(fixture_id_str, {}) if fixture_id_str else {}
+
+    resultado = []
+    usados = set()
+    familias_usadas = set()
+    for nombre, prob in candidatos:
+        if prob < 0.60:
+            break
+        familia = _familia_mercado(nombre)
+        if nombre in usados or OPUESTOS.get(nombre) in usados or familia in familias_usadas:
+            continue
+        cuota = cuotas_partido.get(nombre)
+        if not cuota or cuota < CUOTA_MINIMA_DISPONIBILIDAD:
+            continue  # sin disponibilidad real -- se salta, la familia sigue libre
+        resultado.append({"mercado": nombre, "prob": round(prob * 100, 1), "cuota": cuota})
+        usados.add(nombre)
+        familias_usadas.add(familia)
+    return resultado
+
+
+def get_top10_mis_competiciones(ligas_elegidas):
+    return _calcular_top10_mis_competiciones(tuple(ligas_elegidas) if ligas_elegidas else None)
+
+
+def _calcular_top10_mis_competiciones(ligas_elegidas):
+    """Top 10 picks del dia, filtrado por las ligas que el usuario eligio
+    en Mis Competiciones, con el criterio COMBINADO (calcular_picks_
+    combinados). Distinto del /top-picks general: ese usa calcular_top3
+    (probabilidad pura, sin filtro de ligas, sin tope global). Sin cache
+    -- el resultado depende de que ligas mando cada usuario, no es un
+    calculo unico por dia como el resto de _obtener_o_calcular_cacheado."""
+    df = cargar_df()
+    if df.empty:
+        return []
+    partidos = obtener_partidos_hoy_futbol(df)
+    if partidos.empty:
+        return []
+    if ligas_elegidas:
+        partidos = partidos[partidos["liga"].isin(ligas_elegidas)]
+    if partidos.empty:
+        return []
+
+    resultados = []
+    for _, row in partidos.iterrows():
+        local = row["equipo_local"]
+        visitante = row["equipo_visitante"]
+        liga = row["liga"]
+        fixture_id = row.get("fixture_id")
+        try:
+            sim, stats_a, stats_b = simular(df, local, visitante)
+        except Exception:
+            continue
+        if sim is None:
+            continue
+        for pick in calcular_picks_combinados(sim, fixture_id, stats_a, stats_b):
+            resultados.append({
+                "liga": liga,
+                "partido": f"{local} vs {visitante}",
+                "mercado": pick["mercado"],
+                "prob": pick["prob"],
+                "cuota": pick["cuota"],
+            })
+    resultados.sort(key=lambda x: x["prob"], reverse=True)
+    return resultados[:10]
+
+
 def get_partidos_hoy():
     return _obtener_o_calcular_cacheado("partidos_hoy", _calcular_partidos_hoy)
 
@@ -643,6 +822,8 @@ def _calcular_partidos_hoy():
                 "visitante": visitante,
                 "fecha": fecha,
                 "hora": hora,
+                "logo_local": _logo_equipo(local),
+                "logo_visitante": _logo_equipo(visitante),
                 "prob_local": prob_local,
                 "prob_empate": prob_empate,
                 "prob_visitante": prob_visitante,
@@ -713,6 +894,8 @@ def _calcular_partidos_rango(dias=4):
                 "fecha": fecha,
                 "hora": hora,
                 "dia_offset": dia_offset,
+                "logo_local": _logo_equipo(local),
+                "logo_visitante": _logo_equipo(visitante),
                 "prob_local": prob_local,
                 "prob_empate": prob_empate,
                 "prob_visitante": prob_visitante,

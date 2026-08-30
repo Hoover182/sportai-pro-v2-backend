@@ -19,6 +19,16 @@ async def top_picks():
     picks = futbol_service.get_top_picks()
     return {"picks": picks}
 
+@router.get("/top10-mis-competiciones")
+async def top10_mis_competiciones(ligas: str = ""):
+    ligas_elegidas = [l for l in ligas.split(",") if l] if ligas else []
+    picks = futbol_service.get_top10_mis_competiciones(ligas_elegidas)
+    return {"picks": picks}
+
+@router.get("/ligas")
+async def ligas_disponibles():
+    return {"ligas": futbol_service.get_ligas_disponibles()}
+
 @router.get("/partido/{local}/{visitante}")
 async def partido(local: str, visitante: str):
     try:
