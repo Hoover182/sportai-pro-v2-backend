@@ -7,14 +7,21 @@ mergeando el Pull Request que arma el workflow de GitHub Actions.
 
 Tambien compara cache_team_ids.json (nombre de equipo -> id de
 api-football, usado para armar la URL del escudo real sin gastar cuota
-en vivo) -- ese archivo solo se generaba en analista-futbol, nunca se
-sincronizaba al backend a proposito, hasta que la pantalla de Inicio
-nueva necesito escudos reales.
+en vivo) y cuotas_cache.json (cuotas reales de Betano/1xBet por
+fixture_id, usado por el Top picks combinado) -- los dos se generaban
+solo en analista-futbol, nunca se sincronizaban al backend a proposito,
+hasta que la pantalla de Inicio nueva los necesito.
+
+cuotas_cache.json se REEMPLAZA entero (no se mergea como el de ids):
+analista-futbol lo regenera de cero en cada corrida del cron, asi que
+arrastrar entradas viejas del lado del backend solo acumularia cuotas
+de partidos que ya pasaron.
 
 Uso:
     python check_sync.py                                   # solo imprime el reporte
     python check_sync.py --write-csv SALIDA.csv             # ademas escribe el CSV combinado
     python check_sync.py --write-teamids SALIDA.json        # ademas escribe el cache de ids combinado
+    python check_sync.py --write-cuotas SALIDA.json         # ademas escribe el cache de cuotas
     python check_sync.py --summary-out resumen.md           # ademas escribe el reporte a archivo
 
 Exit code 0: sin cambios. Exit code 2: hay cambios (para que el
@@ -34,6 +41,9 @@ BACKEND_CSV_PATH = "app/services/futbol_partidos.csv"
 
 ANALISTA_FUTBOL_TEAMIDS_URL = "https://raw.githubusercontent.com/Hoover182/analista-futbol/main/cache_team_ids.json"
 BACKEND_TEAMIDS_PATH = "app/services/cache_team_ids.json"
+
+ANALISTA_FUTBOL_CUOTAS_URL = "https://raw.githubusercontent.com/Hoover182/analista-futbol/main/cuotas_cache.json"
+BACKEND_CUOTAS_PATH = "app/services/cuotas_cache.json"
 
 # Mismo listado de nombres que LIGAS en api_to_csv.py -- cualquier liga
 # en los datos nuevos que no este aca se marca para revisar (o es una
@@ -95,6 +105,19 @@ def comparar_team_ids(nuevo, actual):
     return id_nuevos, id_cambiados
 
 
+def descargar_cuotas_cache():
+    resp = requests.get(ANALISTA_FUTBOL_CUOTAS_URL, timeout=30)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def cargar_cuotas_cache_backend():
+    if not os.path.exists(BACKEND_CUOTAS_PATH):
+        return {}
+    with open(BACKEND_CUOTAS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
 def detectar_filas_nuevas_y_actualizadas(df_nuevo, df_actual):
     actual_por_id = df_actual.set_index("fixture_id")
     ids_actuales = set(actual_por_id.index)
@@ -152,10 +175,15 @@ def chequear_encoding_roto(df_nuevo):
 
 def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
                    dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
-                   id_nuevos, id_cambiados):
+                   id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo):
     lineas = []
     alertas = []
 
+    if cuotas_actual and not cuotas_nuevo:
+        alertas.append(
+            f"⚠️ **cuotas_cache.json nuevo viene vacio** (el backend tenia {len(cuotas_actual)} "
+            "fixtures con cuota real) -- revisar si el paso de cuotas del cron fallo antes de mergear"
+        )
     if id_cambiados:
         alertas.append(
             f"⚠️ **{len(id_cambiados)} equipo(s) con id de api-football cambiado** "
@@ -219,6 +247,12 @@ def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
                 lineas.append(f"  - ... y {len(id_cambiados) - 10} mas")
         lineas.append("")
 
+    if cuotas_actual != cuotas_nuevo:
+        lineas.append("## Cuotas reales (Betano/1xBet)")
+        lineas.append(f"- Fixtures con cuota antes: **{len(cuotas_actual)}**")
+        lineas.append(f"- Fixtures con cuota ahora: **{len(cuotas_nuevo)}**")
+        lineas.append("")
+
     lineas.append("---")
     lineas.append(
         "_Chequeos automaticos: pertenencia a la lista de ~45 ligas conocidas, similitud con "
@@ -250,6 +284,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--write-csv", metavar="RUTA", help="Escribir el CSV combinado en esta ruta")
     parser.add_argument("--write-teamids", metavar="RUTA", help="Escribir el cache de ids combinado en esta ruta")
+    parser.add_argument("--write-cuotas", metavar="RUTA", help="Escribir el cache de cuotas nuevo en esta ruta")
     parser.add_argument("--summary-out", metavar="RUTA", help="Escribir el resumen en este archivo")
     args = parser.parse_args()
 
@@ -263,11 +298,16 @@ def main():
     teamids_actual = cargar_cache_team_ids_backend()
     id_nuevos, id_cambiados = comparar_team_ids(teamids_nuevo, teamids_actual)
 
+    print("Descargando cuotas_cache.json de analista-futbol...", file=sys.stderr)
+    cuotas_nuevo = descargar_cuotas_cache()
+    cuotas_actual = cargar_cuotas_cache_backend()
+
     hay_cambios_csv = not nuevas.empty or bool(actualizadas)
     hay_cambios_teamids = bool(id_nuevos) or bool(id_cambiados)
+    hay_cambios_cuotas = cuotas_nuevo != cuotas_actual
 
-    if not hay_cambios_csv and not hay_cambios_teamids:
-        print("Sin cambios. futbol_partidos.csv y cache_team_ids.json del backend ya estan al dia.")
+    if not hay_cambios_csv and not hay_cambios_teamids and not hay_cambios_cuotas:
+        print("Sin cambios. futbol_partidos.csv, cache_team_ids.json y cuotas_cache.json del backend ya estan al dia.")
         sys.exit(0)
 
     ligas_desconocidas = chequear_ligas_desconocidas(df_nuevo)
@@ -279,7 +319,7 @@ def main():
     reporte = armar_reporte(
         nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
         dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
-        id_nuevos, id_cambiados,
+        id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo,
     )
     print(reporte)
 
@@ -295,6 +335,10 @@ def main():
         combinado_ids = combinar_team_ids(teamids_actual, teamids_nuevo)
         with open(args.write_teamids, "w", encoding="utf-8") as f:
             json.dump(combinado_ids, f, ensure_ascii=False, indent=2)
+
+    if args.write_cuotas and hay_cambios_cuotas:
+        with open(args.write_cuotas, "w", encoding="utf-8") as f:
+            json.dump(cuotas_nuevo, f, ensure_ascii=False, indent=2)
 
     sys.exit(2)
 
