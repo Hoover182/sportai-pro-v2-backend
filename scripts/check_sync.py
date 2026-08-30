@@ -5,15 +5,24 @@ actual de este repo, y arma un reporte de que cambiaria si se
 sincronizara. NUNCA aplica el cambio solo -- eso lo decide un humano
 mergeando el Pull Request que arma el workflow de GitHub Actions.
 
+Tambien compara cache_team_ids.json (nombre de equipo -> id de
+api-football, usado para armar la URL del escudo real sin gastar cuota
+en vivo) -- ese archivo solo se generaba en analista-futbol, nunca se
+sincronizaba al backend a proposito, hasta que la pantalla de Inicio
+nueva necesito escudos reales.
+
 Uso:
     python check_sync.py                                   # solo imprime el reporte
     python check_sync.py --write-csv SALIDA.csv             # ademas escribe el CSV combinado
+    python check_sync.py --write-teamids SALIDA.json        # ademas escribe el cache de ids combinado
     python check_sync.py --summary-out resumen.md           # ademas escribe el reporte a archivo
 
 Exit code 0: sin cambios. Exit code 2: hay cambios (para que el
 workflow de GitHub Actions sepa si abrir el Pull Request o no).
 """
 import sys
+import os
+import json
 import argparse
 import io
 
@@ -22,6 +31,9 @@ import pandas as pd
 
 ANALISTA_FUTBOL_CSV_URL = "https://raw.githubusercontent.com/Hoover182/analista-futbol/main/futbol_partidos.csv"
 BACKEND_CSV_PATH = "app/services/futbol_partidos.csv"
+
+ANALISTA_FUTBOL_TEAMIDS_URL = "https://raw.githubusercontent.com/Hoover182/analista-futbol/main/cache_team_ids.json"
+BACKEND_TEAMIDS_PATH = "app/services/cache_team_ids.json"
 
 # Mismo listado de nombres que LIGAS en api_to_csv.py -- cualquier liga
 # en los datos nuevos que no este aca se marca para revisar (o es una
@@ -57,6 +69,30 @@ def descargar_csv_analista_futbol():
 
 def cargar_csv_backend():
     return pd.read_csv(BACKEND_CSV_PATH)
+
+
+def descargar_cache_team_ids():
+    resp = requests.get(ANALISTA_FUTBOL_TEAMIDS_URL, timeout=30)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def cargar_cache_team_ids_backend():
+    if not os.path.exists(BACKEND_TEAMIDS_PATH):
+        return {}
+    with open(BACKEND_TEAMIDS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def comparar_team_ids(nuevo, actual):
+    """id_nuevos: nombres de equipo que el backend todavia no tiene.
+    id_cambiados: mismo nombre pero id distinto -- un id de api-football
+    no deberia cambiar nunca para el mismo equipo, asi que esto es una
+    señal de alerta real (nombre ambiguo resuelto a un equipo distinto
+    en cada corrida), no un caso esperado."""
+    id_nuevos = {k: v for k, v in nuevo.items() if k not in actual}
+    id_cambiados = {k: (actual[k], v) for k, v in nuevo.items() if k in actual and actual[k] != v}
+    return id_nuevos, id_cambiados
 
 
 def detectar_filas_nuevas_y_actualizadas(df_nuevo, df_actual):
@@ -115,10 +151,16 @@ def chequear_encoding_roto(df_nuevo):
 
 
 def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
-                   dup_fixture_id, dup_partido, fechas_raras, encoding_roto):
+                   dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
+                   id_nuevos, id_cambiados):
     lineas = []
     alertas = []
 
+    if id_cambiados:
+        alertas.append(
+            f"⚠️ **{len(id_cambiados)} equipo(s) con id de api-football cambiado** "
+            "(un id no deberia cambiar para el mismo nombre -- revisar antes de mergear)"
+        )
     if ligas_ambiguas:
         alertas.append(
             f"⚠️ **{len(ligas_ambiguas)} liga(s) con nombre ambiguo/posible contaminacion**: "
@@ -166,6 +208,17 @@ def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
             lineas.append(f"- ... y {len(actualizadas) - 10} mas")
         lineas.append("")
 
+    if id_nuevos or id_cambiados:
+        lineas.append("## Cache de equipos (escudos)")
+        lineas.append(f"- Equipos nuevos: **{len(id_nuevos)}**")
+        lineas.append(f"- Equipos con id cambiado: **{len(id_cambiados)}**")
+        if id_cambiados:
+            for nombre, (id_viejo, id_nuevo) in list(id_cambiados.items())[:10]:
+                lineas.append(f"  - `{nombre}`: {id_viejo} -> {id_nuevo}")
+            if len(id_cambiados) > 10:
+                lineas.append(f"  - ... y {len(id_cambiados) - 10} mas")
+        lineas.append("")
+
     lineas.append("---")
     lineas.append(
         "_Chequeos automaticos: pertenencia a la lista de ~45 ligas conocidas, similitud con "
@@ -187,20 +240,34 @@ def combinar(df_actual, df_nuevo):
     return combinado.sort_values(["fecha", "liga"])
 
 
+def combinar_team_ids(actual, nuevo):
+    combinado = dict(actual)
+    combinado.update(nuevo)
+    return combinado
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--write-csv", metavar="RUTA", help="Escribir el CSV combinado en esta ruta")
+    parser.add_argument("--write-teamids", metavar="RUTA", help="Escribir el cache de ids combinado en esta ruta")
     parser.add_argument("--summary-out", metavar="RUTA", help="Escribir el resumen en este archivo")
     args = parser.parse_args()
 
     print("Descargando futbol_partidos.csv de analista-futbol...", file=sys.stderr)
     df_nuevo = descargar_csv_analista_futbol()
     df_actual = cargar_csv_backend()
-
     nuevas, actualizadas = detectar_filas_nuevas_y_actualizadas(df_nuevo, df_actual)
 
-    if nuevas.empty and not actualizadas:
-        print("Sin cambios. futbol_partidos.csv del backend ya esta al dia.")
+    print("Descargando cache_team_ids.json de analista-futbol...", file=sys.stderr)
+    teamids_nuevo = descargar_cache_team_ids()
+    teamids_actual = cargar_cache_team_ids_backend()
+    id_nuevos, id_cambiados = comparar_team_ids(teamids_nuevo, teamids_actual)
+
+    hay_cambios_csv = not nuevas.empty or bool(actualizadas)
+    hay_cambios_teamids = bool(id_nuevos) or bool(id_cambiados)
+
+    if not hay_cambios_csv and not hay_cambios_teamids:
+        print("Sin cambios. futbol_partidos.csv y cache_team_ids.json del backend ya estan al dia.")
         sys.exit(0)
 
     ligas_desconocidas = chequear_ligas_desconocidas(df_nuevo)
@@ -212,6 +279,7 @@ def main():
     reporte = armar_reporte(
         nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
         dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
+        id_nuevos, id_cambiados,
     )
     print(reporte)
 
@@ -219,9 +287,14 @@ def main():
         with open(args.summary_out, "w", encoding="utf-8") as f:
             f.write(reporte)
 
-    if args.write_csv:
+    if args.write_csv and hay_cambios_csv:
         combinado = combinar(df_actual, df_nuevo)
         combinado.to_csv(args.write_csv, index=False, encoding="utf-8-sig")
+
+    if args.write_teamids and hay_cambios_teamids:
+        combinado_ids = combinar_team_ids(teamids_actual, teamids_nuevo)
+        with open(args.write_teamids, "w", encoding="utf-8") as f:
+            json.dump(combinado_ids, f, ensure_ascii=False, indent=2)
 
     sys.exit(2)
 

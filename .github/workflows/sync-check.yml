@@ -29,20 +29,29 @@ jobs:
           set +e
           python scripts/check_sync.py \
             --write-csv app/services/futbol_partidos.csv.new \
+            --write-teamids app/services/cache_team_ids.json.new \
             --summary-out /tmp/summary.md
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
 
-      - name: Reemplazar CSV y armar rama
+      - name: Reemplazar archivos y armar rama
         if: steps.check.outputs.exit_code == '2'
         run: |
-          mv app/services/futbol_partidos.csv.new app/services/futbol_partidos.csv
           git config user.name "sync-bot"
           git config user.email "sync-bot@users.noreply.github.com"
           BRANCH="sync/analista-futbol-$(date -u +%Y%m%d-%H%M)"
           echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
           git checkout -b "$BRANCH"
-          git add app/services/futbol_partidos.csv
-          git commit -m "Sync: actualizar futbol_partidos.csv desde analista-futbol"
+          # Cada .new solo existe si ese archivo puntual tuvo cambios --
+          # el otro puede no haber cambiado ese dia (ver check_sync.py).
+          if [ -f app/services/futbol_partidos.csv.new ]; then
+            mv app/services/futbol_partidos.csv.new app/services/futbol_partidos.csv
+            git add app/services/futbol_partidos.csv
+          fi
+          if [ -f app/services/cache_team_ids.json.new ]; then
+            mv app/services/cache_team_ids.json.new app/services/cache_team_ids.json
+            git add app/services/cache_team_ids.json
+          fi
+          git commit -m "Sync: actualizar datos desde analista-futbol"
           git push origin "$BRANCH"
 
       - name: Abrir Pull Request
