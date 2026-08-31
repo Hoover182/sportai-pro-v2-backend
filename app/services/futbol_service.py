@@ -584,6 +584,37 @@ def _logo_equipo(nombre):
     return f"https://media.api-sports.io/football/teams/{team_id}.png" if team_id else None
 
 
+ESTADOS_FINALIZADOS_FORMA = ("FT", "AET", "PEN")  # PEN = empate en el marcador
+                                                    # de 90/120' definido por penales;
+                                                    # el gol de la tanda no esta en el
+                                                    # CSV, así que cuenta como empate
+                                                    # para "forma" -- mismo criterio
+                                                    # que usan la mayoria de apps
+
+
+def _ultimos_resultados_equipo(df, equipo, n=5):
+    """Ultimos n resultados (W/D/L) de un equipo contra CUALQUIER rival, para
+    la fila de 'ultimos 5' de la tarjeta de partido en Inicio -- no confundir
+    con ultimos_enfrentamientos_directos() (esa es H2H entre 2 equipos
+    puntuales). Devuelve del mas antiguo al mas reciente (izquierda->derecha
+    cronologico, mismo criterio que el mockup aprobado)."""
+    finalizados = df[df["estado"].isin(ESTADOS_FINALIZADOS_FORMA)]
+    partidos = finalizados[
+        (finalizados["equipo_local"] == equipo) | (finalizados["equipo_visitante"] == equipo)
+    ].sort_values("fecha", ascending=False).head(n)
+    resultados = []
+    for _, row in partidos.iterrows():
+        if row["equipo_local"] == equipo:
+            gf, gc = row["goles_local"], row["goles_visitante"]
+        else:
+            gf, gc = row["goles_visitante"], row["goles_local"]
+        if pd.isna(gf) or pd.isna(gc):
+            continue
+        resultados.append("W" if gf > gc else ("L" if gf < gc else "D"))
+    resultados.reverse()
+    return resultados
+
+
 def _obtener_fixture_id_pendiente(df, local, visitante):
     """Fixture_id del proximo partido NS entre estos dos equipos (o el mas
     reciente si no hay ninguno pendiente) -- mismo criterio de preferencia
@@ -895,6 +926,8 @@ def _calcular_partidos_hoy():
                 "cuota_empate": cuota_empate,
                 "cuota_visitante": cuota_visitante,
                 "cuota_origen": cuota_origen,
+                "forma_local": _ultimos_resultados_equipo(df, local),
+                "forma_visitante": _ultimos_resultados_equipo(df, visitante),
                 "ajuste_ia": ajuste_ia,
             })
     return resultado
@@ -982,6 +1015,8 @@ def _calcular_partidos_rango(dias=4):
                 "cuota_empate": cuota_empate,
                 "cuota_visitante": cuota_visitante,
                 "cuota_origen": cuota_origen,
+                "forma_local": _ultimos_resultados_equipo(df, local),
+                "forma_visitante": _ultimos_resultados_equipo(df, visitante),
                 "ajuste_ia": ajuste_ia,
             })
     return resultado
