@@ -498,6 +498,59 @@ def _cargar_cuotas_cache():
     return _cache_cuotas
 
 
+def _calcular_cuotas_1x2(fixture_id, prob_local, prob_empate, prob_visitante):
+    """Cuota Local/Empate/Visitante para las barras de 'Partidos de hoy' --
+    SIEMPRE devuelve una cuota, real o aproximada, nunca None (pedido
+    explicito: el usuario quiere ver un numero de cuota siempre, con un
+    badge que distinga el origen).
+
+    - Real: si cuotas_cache.json tiene las 3 lineas de Match Winner para
+      este fixture (promedio Betano/1xBet ya armado por el cron, sin
+      prioridad entre las 2 casas -- confirmado, no hace falta cambiar
+      api_to_csv.py).
+    - Aproximada: si no hay cuota real, se calcula con la formula inversa
+      de la probabilidad ya ajustada del modelo (cuota = 1 / probabilidad),
+      mismo criterio que calcular_value_bet_manual().
+
+    En los dos casos las cuotas se vuelven a convertir a probabilidad
+    implicita (1 / cuota) y se normalizan para que sumen 100 -- las cuotas
+    reales solas suman mas de 100% por el margen de la casa, y esto
+    mantiene el mismo pipeline para real y aproximada en vez de dos
+    caminos distintos (ver conversacion de diseno)."""
+    try:
+        fixture_id_str = str(int(fixture_id)) if fixture_id is not None and pd.notna(fixture_id) else None
+    except (TypeError, ValueError):
+        fixture_id_str = None
+    entry = _cargar_cuotas_cache().get(fixture_id_str) if fixture_id_str else None
+
+    if entry and "Gana local" in entry and "Empate" in entry and "Gana visitante" in entry:
+        origen = "real"
+        cuota_local = entry["Gana local"]
+        cuota_empate = entry["Empate"]
+        cuota_visitante = entry["Gana visitante"]
+    else:
+        origen = "aproximada"
+        cuota_local = round(1 / max(prob_local / 100, 0.001), 2)
+        cuota_empate = round(1 / max(prob_empate / 100, 0.001), 2)
+        cuota_visitante = round(1 / max(prob_visitante / 100, 0.001), 2)
+
+    imp_local = 1 / cuota_local
+    imp_empate = 1 / cuota_empate
+    imp_visitante = 1 / cuota_visitante
+    total = imp_local + imp_empate + imp_visitante
+    factor = 100 / total if total > 0 else 0
+
+    return {
+        "cuota_local": cuota_local,
+        "cuota_empate": cuota_empate,
+        "cuota_visitante": cuota_visitante,
+        "cuota_origen": origen,
+        "prob_local": round(imp_local * factor, 1),
+        "prob_empate": round(imp_empate * factor, 1),
+        "prob_visitante": round(imp_visitante * factor, 1),
+    }
+
+
 TEAM_IDS_PATH = os.path.join(os.path.dirname(__file__), "cache_team_ids.json")
 _cache_team_ids = None
 
@@ -816,6 +869,17 @@ def _calcular_partidos_hoy():
             except Exception:
                 pass
 
+            cuota_local = cuota_empate = cuota_visitante = cuota_origen = None
+            if prob_local is not None:
+                cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante)
+                prob_local = cuotas_1x2["prob_local"]
+                prob_empate = cuotas_1x2["prob_empate"]
+                prob_visitante = cuotas_1x2["prob_visitante"]
+                cuota_local = cuotas_1x2["cuota_local"]
+                cuota_empate = cuotas_1x2["cuota_empate"]
+                cuota_visitante = cuotas_1x2["cuota_visitante"]
+                cuota_origen = cuotas_1x2["cuota_origen"]
+
             resultado.append({
                 "liga": liga,
                 "local": local,
@@ -827,6 +891,10 @@ def _calcular_partidos_hoy():
                 "prob_local": prob_local,
                 "prob_empate": prob_empate,
                 "prob_visitante": prob_visitante,
+                "cuota_local": cuota_local,
+                "cuota_empate": cuota_empate,
+                "cuota_visitante": cuota_visitante,
+                "cuota_origen": cuota_origen,
                 "ajuste_ia": ajuste_ia,
             })
     return resultado
@@ -887,6 +955,17 @@ def _calcular_partidos_rango(dias=4):
             except Exception:
                 pass
 
+            cuota_local = cuota_empate = cuota_visitante = cuota_origen = None
+            if prob_local is not None:
+                cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante)
+                prob_local = cuotas_1x2["prob_local"]
+                prob_empate = cuotas_1x2["prob_empate"]
+                prob_visitante = cuotas_1x2["prob_visitante"]
+                cuota_local = cuotas_1x2["cuota_local"]
+                cuota_empate = cuotas_1x2["cuota_empate"]
+                cuota_visitante = cuotas_1x2["cuota_visitante"]
+                cuota_origen = cuotas_1x2["cuota_origen"]
+
             resultado.append({
                 "liga": liga,
                 "local": local,
@@ -899,6 +978,10 @@ def _calcular_partidos_rango(dias=4):
                 "prob_local": prob_local,
                 "prob_empate": prob_empate,
                 "prob_visitante": prob_visitante,
+                "cuota_local": cuota_local,
+                "cuota_empate": cuota_empate,
+                "cuota_visitante": cuota_visitante,
+                "cuota_origen": cuota_origen,
                 "ajuste_ia": ajuste_ia,
             })
     return resultado
