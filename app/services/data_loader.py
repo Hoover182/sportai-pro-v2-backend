@@ -48,6 +48,18 @@ LIGAS_VALIDAS = [
     "Copa Libertadores", "Copa Sudamericana", "Recopa Sudamericana",
     "Copa Argentina", "Copa do Brasil", "Copa Chile", "Copa Colombia",
     "Copa Uruguay",
+    # 18 competencias nuevas agregadas en analista-futbol esta sesion (ver
+    # conversacion de diseno) -- sin esto, filtrar_ligas_validas() las
+    # descarta en silencio aunque ya esten en el CSV y en
+    # LIGAS_DISPONIBLES (causa real de por que no aparecian partidos
+    # aunque el deploy ya tenia el CSV correcto).
+    "EFL Cup Inglaterra", "Liga 3 Portugal", "Taça da Liga Portugal",
+    "2. Lig Turquia", "Super Cup Turquia", "Division 1 Arabia Saudita",
+    "King Cup Arabia Saudita", "Super Cup Arabia Saudita",
+    "Liga de Expansion MX", "Primera Nacional Argentina",
+    "Primera C Argentina", "Serie D Brasil", "Supercopa do Brasil",
+    "Superliga Colombia", "Super Cup Chile", "Super Copa Uruguay",
+    "Copa de la Division Profesional Bolivia", "Supercopa de Ecuador",
 ]
 
 ESTADOS_EN_JUEGO   = ("NS", "1H", "HT", "2H", "ET", "BT", "LIVE")
