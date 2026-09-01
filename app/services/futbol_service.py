@@ -117,6 +117,23 @@ LIGAS_DISPONIBLES = [
     "Division Profesional Paraguay", "Copa Libertadores", "Copa Sudamericana",
     "Recopa Sudamericana", "Copa Argentina", "Copa do Brasil", "Copa Chile",
     "Copa Colombia", "Copa Uruguay", "Mundial 2026",
+    # 5 supercopas que ya estaban en LIGAS de analista-futbol desde una
+    # sesion anterior pero nunca se agregaron aca -- el mismo paso manual
+    # que se esta arreglando ahora se habia olvidado una vez ya. Ver
+    # conversacion de diseno (unificacion de fondo via JSON generado por
+    # check_sync.py queda para otra ronda, esto es el fix manual mientras
+    # tanto).
+    "Community Shield", "Trophée des Champions", "Super Cup Italia",
+    "Super Cup Espana", "Super Cup Alemania",
+    # 18 competencias nuevas agregadas a LIGAS_VALIDAS/LIGAS de
+    # analista-futbol en esta sesion (ver conversacion de diseno).
+    "EFL Cup Inglaterra", "Liga 3 Portugal", "Taça da Liga Portugal",
+    "2. Lig Turquia", "Super Cup Turquia", "Division 1 Arabia Saudita",
+    "King Cup Arabia Saudita", "Super Cup Arabia Saudita",
+    "Liga de Expansion MX", "Primera Nacional Argentina",
+    "Primera C Argentina", "Serie D Brasil", "Supercopa do Brasil",
+    "Superliga Colombia", "Super Cup Chile", "Super Copa Uruguay",
+    "Copa de la Division Profesional Bolivia", "Supercopa de Ecuador",
 ]
 
 
