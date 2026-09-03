@@ -56,6 +56,13 @@ jobs:
             mv app/services/cuotas_cache.json.new app/services/cuotas_cache.json
             git add app/services/cuotas_cache.json
           fi
+          # Timestamp real de esta sincronizacion, para el subtitulo
+          # "actualizado hace X min" del frontend -- NUNCA usar mtime de
+          # los archivos de datos en el backend (git checkout en cada
+          # deploy de Render lo pisa con la hora del deploy, no la de
+          # este sync).
+          printf '{\n  "datos_actualizados_en": "%s"\n}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > app/services/datos_meta.json
+          git add app/services/datos_meta.json
           git commit -m "Sync: actualizar datos desde analista-futbol"
           git push origin "$BRANCH"
 

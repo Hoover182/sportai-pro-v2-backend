@@ -515,6 +515,24 @@ def _cargar_cuotas_cache():
     return _cache_cuotas
 
 
+DATOS_META_PATH = os.path.join(os.path.dirname(__file__), "datos_meta.json")
+
+
+def get_meta():
+    """Cuando se sincronizaron por ultima vez futbol_partidos.csv y
+    cuotas_cache.json desde analista-futbol (ver sync-check.yml). Ese
+    archivo lo escribe el workflow en el mismo commit que actualiza los
+    datos -- NO usar mtime de los CSV/JSON aca: git checkout en cada
+    deploy de Render pisa el mtime real con la hora del deploy."""
+    if not os.path.exists(DATOS_META_PATH):
+        return {"datos_actualizados_en": None}
+    try:
+        with open(DATOS_META_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {"datos_actualizados_en": None}
+
+
 def _calcular_cuotas_1x2(fixture_id, prob_local, prob_empate, prob_visitante):
     """Cuota Local/Empate/Visitante para las barras de 'Partidos de hoy' --
     SIEMPRE devuelve una cuota, real o aproximada, nunca None (pedido

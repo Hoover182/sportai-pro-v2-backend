@@ -29,6 +29,10 @@ async def top10_mis_competiciones(ligas: str = ""):
 async def ligas_disponibles():
     return {"ligas": futbol_service.get_ligas_disponibles()}
 
+@router.get("/meta")
+async def meta():
+    return futbol_service.get_meta()
+
 @router.get("/partido/{local}/{visitante}")
 async def partido(local: str, visitante: str):
     try:
