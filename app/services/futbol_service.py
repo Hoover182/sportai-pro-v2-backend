@@ -539,19 +539,81 @@ def get_meta():
         return {"datos_actualizados_en": None}
 
 
-def _calcular_cuotas_1x2(fixture_id, prob_local, prob_empate, prob_visitante):
+CASAS_CUOTAS = ("1xBet", "Betano")  # orden de preferencia/fallback por defecto
+                                     # -- primera opcion a probar, despues
+                                     # se recorre el resto en este orden.
+                                     # Mismas 2 casas que ya trackea
+                                     # analista_futbol/api_to_csv.py.
+
+
+def _es_formato_nuevo_cuotas(entry):
+    """cuotas_cache.json paso de {mercado: cuota} (promedio, sin casa) a
+    {casa: {mercado: cuota}} (cuota real de cada casa por separado, ver
+    conversacion de diseno). Distingue el formato mirando si los VALORES
+    del entry son dicts (nuevo) o numeros (viejo) -- soporta ambos
+    durante la transicion (el cron de analista_futbol y el deploy de
+    este backend no se sincronizan el mismo dia, ver check_sync.py)."""
+    return any(isinstance(v, dict) for v in entry.values())
+
+
+def _resolver_cuota_mercado(entry, mercado, casa_preferida="1xBet"):
+    """Cuota real de UN mercado (ej. "Over 2.5 goles"), con fallback por
+    partido: si casa_preferida no cubre este mercado en este partido
+    puntual, prueba las demas casas en el orden de CASAS_CUOTAS. Nunca
+    oculta de que casa salio -- devuelve (cuota, fuente_real).
+    fuente_real=None si no hay cobertura real en ninguna casa, o si el
+    dato viene del formato viejo (plano, sin casa) durante la transicion."""
+    if not entry:
+        return None, None
+    if not _es_formato_nuevo_cuotas(entry):
+        valor = entry.get(mercado)
+        return (valor, None) if valor is not None else (None, None)
+    orden = (casa_preferida,) + tuple(c for c in CASAS_CUOTAS if c != casa_preferida)
+    for casa in orden:
+        valor = entry.get(casa, {}).get(mercado)
+        if valor is not None:
+            return valor, casa
+    return None, None
+
+
+def _resolver_1x2_casa(entry, casa_preferida="1xBet"):
+    """Como _resolver_cuota_mercado(), pero para 1X2 completo: las 3 patas
+    (local/empate/visitante) tienen que salir de LA MISMA casa -- mezclar
+    "local de Betano" con "empate de 1xBet" deja de ser un mercado
+    coherente (cada casa arma su propia distribucion de probabilidad
+    entre los 3 resultados). Devuelve (cuota_local, cuota_empate,
+    cuota_visitante, fuente_real), con fuente_real=None si ninguna casa
+    cubre las 3 patas completas (o si es formato viejo)."""
+    if not entry:
+        return None, None, None, None
+    if not _es_formato_nuevo_cuotas(entry):
+        if all(k in entry for k in ("Gana local", "Empate", "Gana visitante")):
+            return entry["Gana local"], entry["Empate"], entry["Gana visitante"], None
+        return None, None, None, None
+    orden = (casa_preferida,) + tuple(c for c in CASAS_CUOTAS if c != casa_preferida)
+    for casa in orden:
+        datos = entry.get(casa)
+        if datos and all(k in datos for k in ("Gana local", "Empate", "Gana visitante")):
+            return datos["Gana local"], datos["Empate"], datos["Gana visitante"], casa
+    return None, None, None, None
+
+
+def _calcular_cuotas_1x2(fixture_id, prob_local, prob_empate, prob_visitante, casa_preferida="1xBet"):
     """Cuota Local/Empate/Visitante para las barras de 'Partidos de hoy' --
     SIEMPRE devuelve una cuota, real o aproximada, nunca None (pedido
     explicito: el usuario quiere ver un numero de cuota siempre, con un
     badge que distinga el origen).
 
-    - Real: si cuotas_cache.json tiene las 3 lineas de Match Winner para
-      este fixture (promedio Betano/1xBet ya armado por el cron, sin
-      prioridad entre las 2 casas -- confirmado, no hace falta cambiar
-      api_to_csv.py).
-    - Aproximada: si no hay cuota real, se calcula con la formula inversa
-      de la probabilidad ya ajustada del modelo (cuota = 1 / probabilidad),
-      mismo criterio que calcular_value_bet_manual().
+    - Real: si alguna casa (empezando por casa_preferida, con fallback
+      automatico por partido a las demas en CASAS_CUOTAS) cubre las 3
+      lineas de Match Winner para este fixture. fuente_real dice de que
+      casa salio realmente; casa_solicitada es la que se pidio;
+      es_fallback es True cuando la casa usada no es la solicitada --
+      el frontend nunca tiene que adivinar de donde salio la cuota.
+    - Aproximada: si ninguna casa cubre este fixture, se calcula con la
+      formula inversa de la probabilidad ya ajustada del modelo
+      (cuota = 1 / probabilidad), mismo criterio que
+      calcular_value_bet_manual().
 
     En los dos casos las cuotas se vuelven a convertir a probabilidad
     implicita (1 / cuota) y se normalizan para que sumen 100 -- las cuotas
@@ -564,11 +626,10 @@ def _calcular_cuotas_1x2(fixture_id, prob_local, prob_empate, prob_visitante):
         fixture_id_str = None
     entry = _cargar_cuotas_cache().get(fixture_id_str) if fixture_id_str else None
 
-    if entry and "Gana local" in entry and "Empate" in entry and "Gana visitante" in entry:
+    cuota_local, cuota_empate, cuota_visitante, fuente_real = _resolver_1x2_casa(entry, casa_preferida)
+
+    if cuota_local is not None:
         origen = "real"
-        cuota_local = entry["Gana local"]
-        cuota_empate = entry["Empate"]
-        cuota_visitante = entry["Gana visitante"]
     else:
         origen = "aproximada"
         cuota_local = round(1 / max(prob_local / 100, 0.001), 2)
@@ -586,6 +647,9 @@ def _calcular_cuotas_1x2(fixture_id, prob_local, prob_empate, prob_visitante):
         "cuota_empate": cuota_empate,
         "cuota_visitante": cuota_visitante,
         "cuota_origen": origen,
+        "casa_solicitada": casa_preferida,
+        "fuente_real": fuente_real,
+        "es_fallback": bool(fuente_real and fuente_real != casa_preferida),
         "prob_local": round(imp_local * factor, 1),
         "prob_empate": round(imp_empate * factor, 1),
         "prob_visitante": round(imp_visitante * factor, 1),
@@ -711,7 +775,13 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
     venir None si no hay cuota real para esa linea. Todo el mecanismo de
     verificacion de disponibilidad (CUOTA_MINIMA_DISPONIBILIDAD,
     _cargar_cuotas_cache()) queda intacto sin usarse para el filtro, por
-    si se retoma mas adelante."""
+    si se retoma mas adelante.
+
+    Cada pick trae ademas "fuente_real" (de que casa salio la cuota,
+    resuelta por partido via _resolver_cuota_mercado() con fallback
+    automatico a la otra casa si casa_preferida no cubre ese mercado
+    puntual) -- nunca se oculta de donde salio, aunque dos partidos
+    distintos del mismo Top Picks terminen mostrando casas distintas."""
     stats_ok = (
         stats_a and stats_b and
         stats_a.get("n_partidos_stats", 0) >= 3 and
@@ -764,8 +834,8 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
         familia = _familia_mercado(nombre)
         if nombre in usados or OPUESTOS.get(nombre) in usados or familia in familias_usadas:
             continue
-        cuota = cuotas_partido.get(nombre)  # informativo, ya no filtra (ver docstring)
-        resultado.append({"mercado": nombre, "prob": round(prob * 100, 1), "cuota": cuota})
+        cuota, fuente_real = _resolver_cuota_mercado(cuotas_partido, nombre)  # informativo, ya no filtra (ver docstring)
+        resultado.append({"mercado": nombre, "prob": round(prob * 100, 1), "cuota": cuota, "fuente_real": fuente_real})
         usados.add(nombre)
         familias_usadas.add(familia)
         if len(resultado) == 3:
@@ -893,11 +963,26 @@ def _calcular_top10_mis_competiciones(ligas_elegidas):
     return resultados[:10]
 
 
-def get_partidos_hoy():
-    return _obtener_o_calcular_cacheado("partidos_hoy", _calcular_partidos_hoy)
+def _normalizar_casa(casa):
+    """Normaliza la casa pedida por query param (?casa=betano, ?casa=1xbet,
+    case-insensitive) al nombre canonico que usa cuotas_cache.json. None
+    o cualquier valor no reconocido cae al default (primera de
+    CASAS_CUOTAS)."""
+    if not casa:
+        return CASAS_CUOTAS[0]
+    casa_lower = casa.strip().lower()
+    for candidata in CASAS_CUOTAS:
+        if candidata.lower() == casa_lower:
+            return candidata
+    return CASAS_CUOTAS[0]
 
 
-def _calcular_partidos_hoy():
+def get_partidos_hoy(casa=None):
+    casa = _normalizar_casa(casa)
+    return _obtener_o_calcular_cacheado(f"partidos_hoy_{casa}", lambda: _calcular_partidos_hoy(casa))
+
+
+def _calcular_partidos_hoy(casa="1xBet"):
     df = cargar_df()
     if df.empty:
         return []
@@ -942,8 +1027,10 @@ def _calcular_partidos_hoy():
                 pass
 
             cuota_local = cuota_empate = cuota_visitante = cuota_origen = None
+            casa_solicitada = fuente_real = None
+            es_fallback = False
             if prob_local is not None:
-                cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante)
+                cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante, casa_preferida=casa)
                 prob_local = cuotas_1x2["prob_local"]
                 prob_empate = cuotas_1x2["prob_empate"]
                 prob_visitante = cuotas_1x2["prob_visitante"]
@@ -951,6 +1038,9 @@ def _calcular_partidos_hoy():
                 cuota_empate = cuotas_1x2["cuota_empate"]
                 cuota_visitante = cuotas_1x2["cuota_visitante"]
                 cuota_origen = cuotas_1x2["cuota_origen"]
+                casa_solicitada = cuotas_1x2["casa_solicitada"]
+                fuente_real = cuotas_1x2["fuente_real"]
+                es_fallback = cuotas_1x2["es_fallback"]
 
             resultado.append({
                 "liga": liga,
@@ -967,6 +1057,9 @@ def _calcular_partidos_hoy():
                 "cuota_empate": cuota_empate,
                 "cuota_visitante": cuota_visitante,
                 "cuota_origen": cuota_origen,
+                "casa_solicitada": casa_solicitada,
+                "fuente_real": fuente_real,
+                "es_fallback": es_fallback,
                 "forma_local": _ultimos_resultados_equipo(df, local),
                 "forma_visitante": _ultimos_resultados_equipo(df, visitante),
                 "ajuste_ia": ajuste_ia,
@@ -974,11 +1067,12 @@ def _calcular_partidos_hoy():
     return resultado
 
 
-def get_partidos_rango(dias=4):
-    return _obtener_o_calcular_cacheado(f"partidos_rango_{dias}", lambda: _calcular_partidos_rango(dias))
+def get_partidos_rango(dias=4, casa=None):
+    casa = _normalizar_casa(casa)
+    return _obtener_o_calcular_cacheado(f"partidos_rango_{dias}_{casa}", lambda: _calcular_partidos_rango(dias, casa))
 
 
-def _calcular_partidos_rango(dias=4):
+def _calcular_partidos_rango(dias=4, casa="1xBet"):
     import pytz
     df = cargar_df()
     if df.empty:
@@ -1030,8 +1124,10 @@ def _calcular_partidos_rango(dias=4):
                 pass
 
             cuota_local = cuota_empate = cuota_visitante = cuota_origen = None
+            casa_solicitada = fuente_real = None
+            es_fallback = False
             if prob_local is not None:
-                cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante)
+                cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante, casa_preferida=casa)
                 prob_local = cuotas_1x2["prob_local"]
                 prob_empate = cuotas_1x2["prob_empate"]
                 prob_visitante = cuotas_1x2["prob_visitante"]
@@ -1039,6 +1135,9 @@ def _calcular_partidos_rango(dias=4):
                 cuota_empate = cuotas_1x2["cuota_empate"]
                 cuota_visitante = cuotas_1x2["cuota_visitante"]
                 cuota_origen = cuotas_1x2["cuota_origen"]
+                casa_solicitada = cuotas_1x2["casa_solicitada"]
+                fuente_real = cuotas_1x2["fuente_real"]
+                es_fallback = cuotas_1x2["es_fallback"]
 
             resultado.append({
                 "liga": liga,
@@ -1056,6 +1155,9 @@ def _calcular_partidos_rango(dias=4):
                 "cuota_empate": cuota_empate,
                 "cuota_visitante": cuota_visitante,
                 "cuota_origen": cuota_origen,
+                "casa_solicitada": casa_solicitada,
+                "fuente_real": fuente_real,
+                "es_fallback": es_fallback,
                 "forma_local": _ultimos_resultados_equipo(df, local),
                 "forma_visitante": _ultimos_resultados_equipo(df, visitante),
                 "ajuste_ia": ajuste_ia,
