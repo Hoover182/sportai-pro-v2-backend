@@ -1761,6 +1761,15 @@ def get_analisis_partido(local_input, visitante_input):
         "prob_hcp_local_p1": round(sim["prob_hcp_local_p1"] * 100, 1),
         "prob_hcp_empate_p1": round(sim["prob_hcp_empate_p1"] * 100, 1),
         "prob_hcp_visit_p1": round(sim["prob_hcp_visit_p1"] * 100, 1),
+        "handicap_asiatico": {
+            str(linea): {
+                "tipo": v["tipo"],
+                "cubre": round(v["cubre"] * 100, 1),
+                "push": round(v["push"] * 100, 1),
+                "no_cubre": round(v["no_cubre"] * 100, 1),
+            }
+            for linea, v in sim["handicap_asiatico"].items()
+        },
         "prob_ambos_marcan": round(sim["prob_ambos_marcan"] * 100, 1),
         "goles_proj": f"{sim['goles_local_proj']:.2f} - {sim['goles_visitante_proj']:.2f}",
         "corners_proj": round(sim["corners_totales_proj"], 2),

@@ -139,23 +139,53 @@ def _reescalar_grid_por_elo(grid_goles, dif_grid, prob_local_pre, prob_visitante
     empate (dif_grid == 0) intacto -- mismo principio que el ajuste
     actual (Elo clasico no tiene concepto de empate).
 
-    Usada SOLO para handicap (ver grid_handicap en
-    simular_partido_futbol) -- backtest de 1456 partidos (mismo criterio
-    de muestra/random_state que el backtest de Elo sobre 1X2) confirmo
-    mejora real y consistente en Brier score y log loss de handicap con
-    este reescalado. Medido tambien sobre goles_ou (las 8 lineas) y
-    ambos_marcan, sin encontrar mejora practica en ninguno de los dos
-    (goles_ou: diferencia de Brier <=0.00004 en todas las lineas;
-    ambos_marcan: Brier/log loss iguales, accuracy del pick top empeoro
-    0.07 puntos) -- por eso esos mercados y marcador exacto/proyecciones
-    siguen leyendo de grid_goles sin reescalar, sin pasar por esta
-    funcion. Ver conversacion de diseno."""
+    Usada SOLO para handicap -- europeo (+/-1, ver grid_handicap en
+    simular_partido_futbol) y asiatico (ver probabilidad_handicap_
+    asiatico() mas abajo, mismas 13 lineas leyendo de esta misma grilla
+    reescalada, sin recalcular nada nuevo) -- backtest de 1456 partidos
+    (mismo criterio de muestra/random_state que el backtest de Elo sobre
+    1X2) confirmo mejora real y consistente en Brier score y log loss
+    de handicap con este reescalado (validado de nuevo especificamente
+    para las 13 lineas del asiatico, misma metodologia, misma mejora
+    consistente sin excepcion). Medido tambien sobre goles_ou (las 8
+    lineas) y ambos_marcan, sin encontrar mejora practica en ninguno de
+    los dos (goles_ou: diferencia de Brier <=0.00004 en todas las
+    lineas; ambos_marcan: Brier/log loss iguales, accuracy del pick top
+    empeoro 0.07 puntos) -- por eso esos mercados y marcador exacto/
+    proyecciones siguen leyendo de grid_goles sin reescalar, sin pasar
+    por esta funcion. Ver conversacion de diseno."""
     scale_local = (prob_local_post / prob_local_pre) if prob_local_pre > 0 else 1.0
     scale_visit = (prob_visitante_post / prob_visitante_pre) if prob_visitante_pre > 0 else 1.0
     grid_elo = grid_goles.copy()
     grid_elo[dif_grid > 0] *= scale_local
     grid_elo[dif_grid < 0] *= scale_visit
     return grid_elo / grid_elo.sum()
+
+
+LINEAS_HANDICAP_ASIATICO = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+
+
+def probabilidad_handicap_asiatico(dif_grid, grid, linea):
+    """(cubre, push, no_cubre) para UNA linea de handicap asiatico sobre
+    el equipo LOCAL (negativo = local favorito, ej. -1.5 = "Local -1.5").
+    "Visitante +1.5" es la misma apuesta vista del otro lado -- no hace
+    falta un campo separado, no_cubre YA es la probabilidad de que el
+    visitante cubra (descontando push).
+
+    Una sola formula sirve para lineas enteras (con push, ej. -1) y
+    medias (sin push, ej. -1.5): dif_grid es siempre entero, asi que
+    dif_grid == linea da exactamente 0 cuando linea es .5 -- no hace
+    falta ramificar el codigo por tipo de linea.
+
+    grid tiene que ser grid_handicap (reescalada por Elo si hay Elo
+    disponible), no grid_goles sin reescalar -- backtest de 1461
+    partidos confirmo mejora real y consistente en las 13 lineas de
+    LINEAS_HANDICAP_ASIATICO con el reescalado, sin ninguna excepcion
+    (ver conversacion de diseno)."""
+    cubre = float(grid[dif_grid > linea].sum())
+    push = float(grid[dif_grid == linea].sum())
+    no_cubre = float(grid[dif_grid < linea].sum())
+    return cubre, push, no_cubre
 
 
 def simular_partido_futbol(
@@ -330,6 +360,20 @@ def simular_partido_futbol(
     prob_hcp_empate_p1   = float(grid_handicap[dif_grid == -1].sum())
     prob_hcp_visit_p1    = float(grid_handicap[dif_grid < -1].sum())
 
+    # HANDICAP ASIATICO -- 13 lineas, misma grid_handicap que el europeo
+    # (backtest de 1461 partidos confirmo mejora real y consistente con
+    # el reescalado en las 13, sin excepcion, ver probabilidad_handicap_
+    # asiatico()). Sin cuartos de linea (.25/.75) en esta entrega.
+    handicap_asiatico = {}
+    for linea in LINEAS_HANDICAP_ASIATICO:
+        cubre, push, no_cubre = probabilidad_handicap_asiatico(dif_grid, grid_handicap, linea)
+        handicap_asiatico[linea] = {
+            "tipo": "entera" if linea == int(linea) else "media",
+            "cubre": cubre,
+            "push": push,
+            "no_cubre": no_cubre,
+        }
+
     # AMBOS MARCAN (grid_goles sin reescalar -- ver nota de grid_handicap arriba)
     prob_ambos = float(grid_goles[(xs_grid >= 1) & (ys_grid >= 1)].sum())
 
@@ -424,6 +468,8 @@ def simular_partido_futbol(
         "prob_hcp_local_p1": prob_hcp_local_p1,
         "prob_hcp_empate_p1": prob_hcp_empate_p1,
         "prob_hcp_visit_p1": prob_hcp_visit_p1,
+        # HANDICAP ASIATICO
+        "handicap_asiatico": handicap_asiatico,
         # AMBOS MARCAN
         "prob_ambos_marcan": prob_ambos,
         # OVER/UNDER
