@@ -4,14 +4,14 @@ from app.services import futbol_service
 router = APIRouter()
 
 @router.get("/partidos-hoy")
-async def partidos_hoy():
-    partidos = futbol_service.get_partidos_hoy()
+async def partidos_hoy(casa: str = "1xbet"):
+    partidos = futbol_service.get_partidos_hoy(casa=casa)
     return {"partidos": partidos}
 
 
 @router.get("/partidos-rango")
-async def partidos_rango(dias: int = 3):
-    partidos = futbol_service.get_partidos_rango(dias=dias)
+async def partidos_rango(dias: int = 3, casa: str = "1xbet"):
+    partidos = futbol_service.get_partidos_rango(dias=dias, casa=casa)
     return {"partidos": partidos}
 
 @router.get("/top-picks")
