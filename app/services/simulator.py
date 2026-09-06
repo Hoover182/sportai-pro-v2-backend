@@ -13,6 +13,10 @@ CORNERS_MIN = 3.0     # minimo realista de corners por equipo
 CORNERS_MAX = 8.0     # maximo realista de corners por equipo
 TARJETAS_MIN = 1.5    # minimo realista de tarjetas totales
 TARJETAS_MAX = 6.0    # maximo realista de tarjetas totales
+TIROS_ARCO_MIN = 1.5    # minimo realista de tiros al arco por equipo
+TIROS_ARCO_MAX = 9.0    # maximo realista de tiros al arco por equipo
+TIROS_TOTAL_MIN = 5.0   # minimo realista de tiros totales por equipo
+TIROS_TOTAL_MAX = 22.0  # maximo realista de tiros totales por equipo
 
 # Correccion Dixon-Coles (1997) sobre la correlacion de goles entre ambos
 # equipos en marcadores bajos. Bajo Poisson independiente puro (lo que se
@@ -162,12 +166,20 @@ def simular_partido_futbol(
     media_corners_a,
     media_corners_b,
     media_tarjetas_total,
+    media_tiros_arco_a=None,
+    media_tiros_arco_b=None,
+    media_tiros_total_a=None,
+    media_tiros_total_b=None,
     sims=10000,
     k_goles_a=None,
     k_goles_b=None,
     k_corners_a=None,
     k_corners_b=None,
     k_tarjetas=None,
+    k_tiros_arco_a=None,
+    k_tiros_arco_b=None,
+    k_tiros_total_a=None,
+    k_tiros_total_b=None,
     elo_local=None,
     elo_visitante=None,
     peso_elo=None,
@@ -178,6 +190,15 @@ def simular_partido_futbol(
     media_corners_a = float(np.clip(media_corners_a, CORNERS_MIN, CORNERS_MAX))
     media_corners_b = float(np.clip(media_corners_b, CORNERS_MIN, CORNERS_MAX))
     media_tarjetas_total = float(np.clip(media_tarjetas_total, TARJETAS_MIN, TARJETAS_MAX))
+    # Tiros son opcionales (default None) para no romper otros callers que
+    # todavia no los pasan (ej. probabilidad_linea_personalizada no los usa).
+    tiene_tiros = media_tiros_arco_a is not None and media_tiros_arco_b is not None \
+        and media_tiros_total_a is not None and media_tiros_total_b is not None
+    if tiene_tiros:
+        media_tiros_arco_a = float(np.clip(media_tiros_arco_a, TIROS_ARCO_MIN, TIROS_ARCO_MAX))
+        media_tiros_arco_b = float(np.clip(media_tiros_arco_b, TIROS_ARCO_MIN, TIROS_ARCO_MAX))
+        media_tiros_total_a = float(np.clip(media_tiros_total_a, TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
+        media_tiros_total_b = float(np.clip(media_tiros_total_b, TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
 
     # Goles: matriz de probabilidad conjunta cerrada (no Monte Carlo) con
     # la correccion Dixon-Coles sobre marcadores bajos -- ver
@@ -210,6 +231,30 @@ def simular_partido_futbol(
     # entre corners y goles, ver conversacion de diseno).
     corners_a = _muestrear_conteo(media_corners_a, k_corners_a, sims)
     corners_b = _muestrear_conteo(media_corners_b, k_corners_b, sims)
+
+    # Tiros: mismo patron que corners (Gamma-Poisson independiente, sin
+    # ajuste de parejez). Opcional -- si el caller no los paso, quedan
+    # como None y no se calculan tiros_arco_ou/tiros_total_ou mas abajo.
+    #
+    # Guardar/restaurar el estado del generador global alrededor de este
+    # bloque -- sin esto, agregar estas 4 llamadas nuevas corre la
+    # posicion del stream para TODO lo que viene despues en la misma
+    # corrida seedeada por partido (tarjetas mas abajo, el re-muestreo de
+    # corners_ou/tarjetas_ou en futbol_service.simular() cuando hay
+    # multiplicador de presion/intensidad, y goles_1t en
+    # get_analisis_partido()) -- ninguno de esos cambiaria de VALOR
+    # esperado, pero silenciosamente dejarian de dar el mismo numero
+    # concreto que antes de agregar tiros, con partidos ya consultados
+    # antes por un usuario. Restaurar el estado deja esa parte del
+    # pipeline byte-identica, tiros incluido (mismo seed determinista
+    # por partido, solo en una sub-porcion propia del stream).
+    if tiene_tiros:
+        _rng_state_pre_tiros = np.random.get_state()
+        tiros_arco_a = _muestrear_conteo(media_tiros_arco_a, k_tiros_arco_a, sims)
+        tiros_arco_b = _muestrear_conteo(media_tiros_arco_b, k_tiros_arco_b, sims)
+        tiros_total_a = _muestrear_conteo(media_tiros_total_a, k_tiros_total_a, sims)
+        tiros_total_b = _muestrear_conteo(media_tiros_total_b, k_tiros_total_b, sims)
+        np.random.set_state(_rng_state_pre_tiros)
 
     # Tarjetas: ajuste suave segun que tan pareja resulta la simulacion
     # de goles (grilla Dixon-Coles) -- partidos parejos tienden a tener
@@ -312,6 +357,32 @@ def simular_partido_futbol(
             "under": float(np.mean(tarjetas < linea))
         }
 
+    # OVER/UNDER TIROS AL ARCO 3.5 a 18.5, TIROS TOTALES 15.5 a 42.5 --
+    # mismo criterio de tope que corners/tarjetas (~p99 real + 1.5), ver
+    # conversacion de diseno del Bloque 1. None si el caller no paso
+    # medias de tiros (backward-compatible con probabilidad_linea_
+    # personalizada, que no las usa).
+    tiros_arco_ou = None
+    tiros_total_ou = None
+    total_tiros_arco = None
+    total_tiros_total = None
+    if tiene_tiros:
+        total_tiros_arco = tiros_arco_a + tiros_arco_b
+        total_tiros_total = tiros_total_a + tiros_total_b
+        tiros_arco_ou = {}
+        for linea in [3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5]:
+            tiros_arco_ou[linea] = {
+                "over":  float(np.mean(total_tiros_arco > linea)),
+                "under": float(np.mean(total_tiros_arco < linea))
+            }
+        tiros_total_ou = {}
+        for linea in [15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5,
+                       29.5, 30.5, 31.5, 32.5, 33.5, 34.5, 35.5, 36.5, 37.5, 38.5, 39.5, 40.5, 41.5, 42.5]:
+            tiros_total_ou[linea] = {
+                "over":  float(np.mean(total_tiros_total > linea)),
+                "under": float(np.mean(total_tiros_total < linea))
+            }
+
     # MARCADOR EXACTO top 6 (probabilidad exacta de la grilla, no conteo
     # de muestras; grid_goles sin reescalar -- ver nota de grid_handicap arriba)
     marcadores_flat = [((x, y), grid_goles[x, y]) for x in range(n_grid) for y in range(n_grid)]
@@ -359,6 +430,8 @@ def simular_partido_futbol(
         "goles_ou": goles_ou,
         "corners_ou": corners_ou,
         "tarjetas_ou": tarjetas_ou,
+        "tiros_arco_ou": tiros_arco_ou,
+        "tiros_total_ou": tiros_total_ou,
         # MARCADOR EXACTO
         "marcadores_prob": marcadores_prob,
         # MITADES
@@ -373,7 +446,15 @@ def simular_partido_futbol(
         "goles_local_proj": float(np.sum(np.arange(n_grid) * grid_goles.sum(axis=1))),
         "goles_visitante_proj": float(np.sum(np.arange(n_grid) * grid_goles.sum(axis=0))),
         "corners_totales_proj": float(total_corners.mean()),
-        "tarjetas_totales_proj": float(tarjetas.mean())
+        "corners_local_proj": float(corners_a.mean()),
+        "corners_visitante_proj": float(corners_b.mean()),
+        "tarjetas_totales_proj": float(tarjetas.mean()),
+        "tiros_arco_totales_proj": float(total_tiros_arco.mean()) if tiene_tiros else None,
+        "tiros_arco_local_proj": float(tiros_arco_a.mean()) if tiene_tiros else None,
+        "tiros_arco_visitante_proj": float(tiros_arco_b.mean()) if tiene_tiros else None,
+        "tiros_total_totales_proj": float(total_tiros_total.mean()) if tiene_tiros else None,
+        "tiros_total_local_proj": float(tiros_total_a.mean()) if tiene_tiros else None,
+        "tiros_total_visitante_proj": float(tiros_total_b.mean()) if tiene_tiros else None,
     }
 
 

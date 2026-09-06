@@ -386,7 +386,7 @@ def simular(df, local, visitante):
         multiplicador_corners = 1.0
         multiplicador_goles_local = 1.0
         multiplicador_goles_visitante = 1.0
-    goles_a, goles_b, corners_a, corners_b, tarjetas = ajustar_medias_con_rival(
+    goles_a, goles_b, corners_a, corners_b, tarjetas, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b = ajustar_medias_con_rival(
         stats_a, stats_b, h2h, equipo_local=local, equipo_visitante=visitante
     )
     goles_a = goles_a * multiplicador_goles_local
@@ -421,9 +421,15 @@ def simular(df, local, visitante):
         goles_a, goles_b,
         stats_a["std_goles_favor"], stats_b["std_goles_favor"],
         corners_a, corners_b, tarjetas,
+        tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b,
         k_goles_a=k_goles_a, k_goles_b=k_goles_b,
         k_corners_a=k_corners_a, k_corners_b=k_corners_b,
         k_tarjetas=k_tarjetas,
+        # Mismo k que corners -- ambos vienen de n_partidos_stats (misma
+        # llamada a la API que trae corners/tarjetas/tiros juntos, ver
+        # conversacion de diseno del Bloque 1).
+        k_tiros_arco_a=k_corners_a, k_tiros_arco_b=k_corners_b,
+        k_tiros_total_a=k_corners_a, k_tiros_total_b=k_corners_b,
         elo_local=elo_local, elo_visitante=elo_visitante, peso_elo=peso_elo,
     )
 
@@ -1368,6 +1374,38 @@ def _formatear_info_partido(fixture_data):
     }
 
 
+_cache_jornada_pre_partido = {}
+
+
+def _obtener_jornada_pre_partido(fixture_id):
+    """Jornada (league.round) para un partido que TODAVIA NO SE JUGO --
+    confirmado en vivo contra 4 fixtures NS reales que api-football
+    devuelve el campo igual que para partidos terminados (es metadata de
+    calendario, no un resultado). Una sola llamada liviana a /fixtures?id=
+    (no las 5 de _cargar_detalle_post_partido, que trae ademas
+    alineaciones/eventos/stats que no existen todavia para un partido sin
+    jugar). Cache en memoria sin TTL por fixture_id: la jornada tampoco
+    cambia antes del kickoff, mismo criterio que el post-partido."""
+    if fixture_id is None:
+        return None
+    if fixture_id in _cache_jornada_pre_partido:
+        return _cache_jornada_pre_partido[fixture_id]
+    try:
+        import requests as _requests
+        from player_model import API_KEY as _PM_API_KEY, BASE_URL as _PM_BASE_URL
+        headers = {"x-apisports-key": _PM_API_KEY}
+        resp = _requests.get(f"{_PM_BASE_URL}/fixtures", headers=headers, params={"id": fixture_id}, timeout=15)
+        fixture_data = resp.json().get("response", [])
+        jornada = _formatear_info_partido(fixture_data)["jornada"]
+    except Exception:
+        # No cachear un fallo transitorio de red/API -- solo se cachea un
+        # resultado real (incluido None si la API respondio pero sin
+        # league.round), para que un proximo request pueda reintentar.
+        return None
+    _cache_jornada_pre_partido[fixture_id] = jornada
+    return jornada
+
+
 def _cargar_detalle_post_partido(fixture_id, df):
     """Alineaciones, linea de tiempo, estadisticas de equipo, stats
     individuales e info general de un partido YA TERMINADO -- 5 llamadas
@@ -1602,6 +1640,7 @@ def get_analisis_partido(local_input, visitante_input):
         "local": local,
         "visitante": visitante,
         "liga": liga,
+        "jornada": _obtener_jornada_pre_partido(fixture_id_pendiente),
         "estado_real": estado_real,
         "goles_local_real": goles_local_real,
         "goles_visitante_real": goles_visitante_real,
@@ -1623,7 +1662,15 @@ def get_analisis_partido(local_input, visitante_input):
         "prob_ambos_marcan": round(sim["prob_ambos_marcan"] * 100, 1),
         "goles_proj": f"{sim['goles_local_proj']:.2f} - {sim['goles_visitante_proj']:.2f}",
         "corners_proj": round(sim["corners_totales_proj"], 2),
+        "corners_local_proj": round(sim["corners_local_proj"], 2),
+        "corners_visitante_proj": round(sim["corners_visitante_proj"], 2),
         "tarjetas_proj": round(sim["tarjetas_totales_proj"], 2),
+        "tiros_arco_proj": _safe(sim.get("tiros_arco_totales_proj")),
+        "tiros_arco_local_proj": _safe(sim.get("tiros_arco_local_proj")),
+        "tiros_arco_visitante_proj": _safe(sim.get("tiros_arco_visitante_proj")),
+        "tiros_total_proj": _safe(sim.get("tiros_total_totales_proj")),
+        "tiros_total_local_proj": _safe(sim.get("tiros_total_local_proj")),
+        "tiros_total_visitante_proj": _safe(sim.get("tiros_total_visitante_proj")),
         "goles_ou": {
             str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
             for k, v in sim["goles_ou"].items()
@@ -1635,6 +1682,14 @@ def get_analisis_partido(local_input, visitante_input):
         "tarjetas_ou": {
             str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
             for k, v in sim["tarjetas_ou"].items()
+        },
+        "tiros_arco_ou": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tiros_arco_ou") or {}).items()
+        },
+        "tiros_total_ou": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tiros_total_ou") or {}).items()
         },
         "goles_1t": _calcular_goles_1t(df, local, visitante),
         "ajuste_ia": _obtener_ajuste_ia(df, local, visitante),

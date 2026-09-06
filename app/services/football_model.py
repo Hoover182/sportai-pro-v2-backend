@@ -12,6 +12,10 @@ CORNERS_MIN = 3.0
 CORNERS_MAX = 9.0     # subido de 8 a 9 - equipos top promedian 6-7
 TARJETAS_MIN = 0.5    # por equipo
 TARJETAS_MAX = 4.0    # por equipo
+TIROS_ARCO_MIN = 1.5    # por equipo -- percentil 1 real ronda 0, piso realista
+TIROS_ARCO_MAX = 9.0    # por equipo -- mediana real 4.1, p99 7.4
+TIROS_TOTAL_MIN = 5.0   # por equipo
+TIROS_TOTAL_MAX = 22.0  # por equipo -- mediana real 11.9, p99 18.7
 
 # Constantes especificas para torneos de selecciones (Mundial, Copas)
 # Basadas en datos reales del Mundial 2026: 2.97 goles, 8.96 corners, 2.53 tarjetas por partido
@@ -695,6 +699,13 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_a = (stats_a["corners_favor"] + stats_b["corners_contra"]) / 2
     corners_b = (stats_b["corners_favor"] + stats_a["corners_contra"]) / 2
     tarjetas_total = stats_a["tarjetas_favor"] + stats_b["tarjetas_favor"]
+    # Tiros: misma base que corners (ataque propio + defensa rival). Sin
+    # ajuste de liga ni FIFA todavia -- ver conversacion de diseno, Bloque
+    # 1 de Fase 2 (solo base + H2H, liga/FIFA quedan para otro bloque).
+    tiros_arco_a   = (stats_a["tiros_arco_favor"]   + stats_b["tiros_arco_contra"])   / 2
+    tiros_arco_b   = (stats_b["tiros_arco_favor"]   + stats_a["tiros_arco_contra"])   / 2
+    tiros_total_a  = (stats_a["tiros_total_favor"]  + stats_b["tiros_total_contra"])  / 2
+    tiros_total_b  = (stats_b["tiros_total_favor"]  + stats_a["tiros_total_contra"])  / 2
 
     # Ajuste H2H - mas peso cuando hay mas partidos directos
     if not h2h.empty:
@@ -754,6 +765,31 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
             if prom_corners_b_h2h is not None:
                 corners_b = corners_b * peso_base + prom_corners_b_h2h * peso_h2h
 
+            # Ajuste H2H para tiros -- mismo patron que corners (split por
+            # equipo real via _promedios_h2h_por_equipo, filtrando cruces
+            # sin dato real antes de promediar).
+            h2h_con_tiros_arco = h2h[
+                (h2h["tiros_arco_local"] + h2h["tiros_arco_visitante"] > 0)
+            ]
+            tiros_arco_a_h2h, tiros_arco_b_h2h = _promedios_h2h_por_equipo(h2h_con_tiros_arco, "tiros_arco", equipo_local)
+            prom_ta_a_h2h = _promedio_ponderado_pares(tiros_arco_a_h2h)
+            prom_ta_b_h2h = _promedio_ponderado_pares(tiros_arco_b_h2h)
+            if prom_ta_a_h2h is not None:
+                tiros_arco_a = tiros_arco_a * peso_base + prom_ta_a_h2h * peso_h2h
+            if prom_ta_b_h2h is not None:
+                tiros_arco_b = tiros_arco_b * peso_base + prom_ta_b_h2h * peso_h2h
+
+            h2h_con_tiros_total = h2h[
+                (h2h["tiros_total_local"] + h2h["tiros_total_visitante"] > 0)
+            ]
+            tiros_total_a_h2h, tiros_total_b_h2h = _promedios_h2h_por_equipo(h2h_con_tiros_total, "tiros_total", equipo_local)
+            prom_tt_a_h2h = _promedio_ponderado_pares(tiros_total_a_h2h)
+            prom_tt_b_h2h = _promedio_ponderado_pares(tiros_total_b_h2h)
+            if prom_tt_a_h2h is not None:
+                tiros_total_a = tiros_total_a * peso_base + prom_tt_a_h2h * peso_h2h
+            if prom_tt_b_h2h is not None:
+                tiros_total_b = tiros_total_b * peso_base + prom_tt_b_h2h * peso_h2h
+
         # Ajuste H2H para tarjetas si hay datos
         h2h_con_tarjetas = h2h[
             h2h["tarjetas_local"].notna() & h2h["tarjetas_visitante"].notna()
@@ -769,6 +805,10 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     corners_a      = float(np.clip(corners_a,      CORNERS_MIN,  CORNERS_MAX))
     corners_b      = float(np.clip(corners_b,      CORNERS_MIN,  CORNERS_MAX))
     tarjetas_total = float(np.clip(tarjetas_total, 1.5,          8.0))
+    tiros_arco_a   = float(np.clip(tiros_arco_a,   TIROS_ARCO_MIN,  TIROS_ARCO_MAX))
+    tiros_arco_b   = float(np.clip(tiros_arco_b,   TIROS_ARCO_MIN,  TIROS_ARCO_MAX))
+    tiros_total_a  = float(np.clip(tiros_total_a,  TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
+    tiros_total_b  = float(np.clip(tiros_total_b,  TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
 
     # Ajuste de fuerza de liga - solo aplica entre clubes (no selecciones)
     # cuando se conoce la liga domestica de referencia de ambos equipos y
@@ -816,4 +856,4 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
                 corners_b = corners_b * f_visit
     except Exception:
         pass
-    return goles_a, goles_b, corners_a, corners_b, tarjetas_total
+    return goles_a, goles_b, corners_a, corners_b, tarjetas_total, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b
