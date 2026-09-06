@@ -386,19 +386,28 @@ def simular(df, local, visitante):
         multiplicador_corners = 1.0
         multiplicador_goles_local = 1.0
         multiplicador_goles_visitante = 1.0
-    goles_a, goles_b, corners_a, corners_b, tarjetas, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b = ajustar_medias_con_rival(
+    goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b = ajustar_medias_con_rival(
         stats_a, stats_b, h2h, equipo_local=local, equipo_visitante=visitante
     )
     goles_a = goles_a * multiplicador_goles_local
     goles_b = goles_b * multiplicador_goles_visitante
+    # tarjetas_a + tarjetas_b ya es el mismo total que devolvia
+    # ajustar_medias_con_rival() antes del split (Bloque 2 de Fase 2) --
+    # el clip de 1.5-8.0 se aplico sobre la suma antes de repartir, ver
+    # ajustar_medias_con_rival(). media_tarjetas_a se pasa ademas a
+    # simular_partido_futbol() SOLO para el reparto proporcional final
+    # (tarjetas_local_proj/tarjetas_visitante_proj), no cambia el
+    # muestreo del total (Opcion A, ver conversacion de diseno).
+    tarjetas = tarjetas_a + tarjetas_b
 
     # Confianza (k) en cada promedio para la mezcla Gamma-Poisson -- ver
     # n_efectivo_estimacion() y la conversacion de calibracion. Goles usa
     # n_partidos/n_partidos_condicion (siempre disponibles); corners/
     # tarjetas usan n_partidos_stats/n_partidos_condicion (solo partidos
-    # con esos datos reales). Tarjetas es un unico total combinado, asi
-    # que usa la muestra mas chica de los dos equipos (el eslabon mas
-    # debil determina cuanto ensanchar).
+    # con esos datos reales). El muestreo de tarjetas sigue siendo sobre
+    # el TOTAL combinado (Opcion A, ver ajustar_medias_con_rival()), asi
+    # que k_tarjetas usa la muestra mas chica de los dos equipos (el
+    # eslabon mas debil determina cuanto ensanchar) igual que siempre.
     k_goles_a = n_efectivo_estimacion(stats_a["n_partidos"], stats_a["n_partidos_condicion"])
     k_goles_b = n_efectivo_estimacion(stats_b["n_partidos"], stats_b["n_partidos_condicion"])
     k_corners_a = n_efectivo_estimacion(stats_a["n_partidos_stats"], stats_a["n_partidos_condicion"])
@@ -422,6 +431,7 @@ def simular(df, local, visitante):
         stats_a["std_goles_favor"], stats_b["std_goles_favor"],
         corners_a, corners_b, tarjetas,
         tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b,
+        media_tarjetas_a=tarjetas_a,
         k_goles_a=k_goles_a, k_goles_b=k_goles_b,
         k_corners_a=k_corners_a, k_corners_b=k_corners_b,
         k_tarjetas=k_tarjetas,
@@ -463,6 +473,16 @@ def simular(df, local, visitante):
     # Aplicar el multiplicador de arbitro/presion/agresividad/clasico a las tarjetas
     if multiplicador_tarjetas != 1.0 and "tarjetas_totales_proj" in sim:
         sim["tarjetas_totales_proj"] = sim["tarjetas_totales_proj"] * multiplicador_tarjetas
+        # Mismo factor a la proyeccion por equipo (Bloque 2 de Fase 2) --
+        # sin esto, tarjetas_local_proj + tarjetas_visitante_proj dejaba
+        # de sumar tarjetas_totales_proj apenas el multiplicador no daba
+        # exactamente 1.0 (la enorme mayoria de los partidos). Multiplicar
+        # ambos por el mismo factor preserva la identidad Y el reparto
+        # proporcional que ya se habia calculado.
+        if sim.get("tarjetas_local_proj") is not None:
+            sim["tarjetas_local_proj"] = sim["tarjetas_local_proj"] * multiplicador_tarjetas
+        if sim.get("tarjetas_visitante_proj") is not None:
+            sim["tarjetas_visitante_proj"] = sim["tarjetas_visitante_proj"] * multiplicador_tarjetas
         if "tarjetas_ou" in sim:
             media_ajustada = max(sim["tarjetas_totales_proj"], 0.1)
             # Mismo k_tarjetas que ya uso simular_partido_futbol() para
@@ -1776,6 +1796,8 @@ def get_analisis_partido(local_input, visitante_input):
         "corners_local_proj": round(sim["corners_local_proj"], 2),
         "corners_visitante_proj": round(sim["corners_visitante_proj"], 2),
         "tarjetas_proj": round(sim["tarjetas_totales_proj"], 2),
+        "tarjetas_local_proj": _safe(sim.get("tarjetas_local_proj")),
+        "tarjetas_visitante_proj": _safe(sim.get("tarjetas_visitante_proj")),
         "tiros_arco_proj": _safe(sim.get("tiros_arco_totales_proj")),
         "tiros_arco_local_proj": _safe(sim.get("tiros_arco_local_proj")),
         "tiros_arco_visitante_proj": _safe(sim.get("tiros_arco_visitante_proj")),

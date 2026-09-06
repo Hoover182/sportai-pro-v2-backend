@@ -297,20 +297,20 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
         goles_contra.append(float(gc_val) * peso)
 
     corners_favor, corners_contra = [], []
-    tarjetas_favor = []
+    tarjetas_favor, tarjetas_contra = [], []
     tiros_arco_favor, tiros_arco_contra = [], []
     tiros_total_favor, tiros_total_contra = [], []
     for _, row in partidos_stats.iterrows():
         if row["equipo_local"] == equipo:
             cf_val, cc_val = row["corners_local"], row["corners_visitante"]
-            tf_val = row["tarjetas_local"]
+            tf_val, tc_val = row["tarjetas_local"], row["tarjetas_visitante"]
             ta_f_val, ta_c_val = row["tiros_arco_local"], row["tiros_arco_visitante"]
             tt_f_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
             tt_c_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
             rival_stats = str(row["equipo_visitante"])
         else:
             cf_val, cc_val = row["corners_visitante"], row["corners_local"]
-            tf_val = row["tarjetas_visitante"]
+            tf_val, tc_val = row["tarjetas_visitante"], row["tarjetas_local"]
             ta_f_val, ta_c_val = row["tiros_arco_visitante"], row["tiros_arco_local"]
             tt_f_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
             tt_c_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
@@ -325,6 +325,7 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
         if pd.notna(cf_val):   corners_favor.append(float(cf_val) * peso_stats)
         if pd.notna(cc_val):   corners_contra.append(float(cc_val) * peso_stats)
         if pd.notna(tf_val):   tarjetas_favor.append(float(tf_val) * peso_stats)
+        if pd.notna(tc_val):   tarjetas_contra.append(float(tc_val) * peso_stats)
         if pd.notna(ta_f_val): tiros_arco_favor.append(float(ta_f_val) * peso_stats)
         if pd.notna(ta_c_val): tiros_arco_contra.append(float(ta_c_val) * peso_stats)
         if pd.notna(tt_f_val): tiros_total_favor.append(float(tt_f_val) * peso_stats)
@@ -345,6 +346,7 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
         "corners_favor": _media(corners_favor),
         "corners_contra": _media(corners_contra),
         "tarjetas_favor": _media(tarjetas_favor),
+        "tarjetas_contra": _media(tarjetas_contra),
         "tiros_arco_favor": _media(tiros_arco_favor),
         "tiros_arco_contra": _media(tiros_arco_contra),
         "tiros_total_favor": _media(tiros_total_favor),
@@ -379,6 +381,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
     corners_favor = []
     corners_contra = []
     tarjetas_favor = []
+    tarjetas_contra = []
     tiros_arco_favor = []
     tiros_arco_contra = []
     tiros_total_favor = []
@@ -443,7 +446,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
     for _, row in partidos_stats.iterrows():
         if row["equipo_local"] == equipo:
             cf_val, cc_val = row["corners_local"], row["corners_visitante"]
-            tf_val = row["tarjetas_local"]
+            tf_val, tc_val = row["tarjetas_local"], row["tarjetas_visitante"]
             ta_f_val, ta_c_val = row["tiros_arco_local"], row["tiros_arco_visitante"]
             tt_f_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
             tt_c_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
@@ -452,7 +455,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
             rival_stats = str(row["equipo_visitante"])
         else:
             cf_val, cc_val = row["corners_visitante"], row["corners_local"]
-            tf_val = row["tarjetas_visitante"]
+            tf_val, tc_val = row["tarjetas_visitante"], row["tarjetas_local"]
             ta_f_val, ta_c_val = row["tiros_arco_visitante"], row["tiros_arco_local"]
             tt_f_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
             tt_c_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
@@ -471,6 +474,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         if pd.notna(cf_val):   corners_favor.append(float(cf_val) * peso_stats)
         if pd.notna(cc_val):   corners_contra.append(float(cc_val) * peso_stats)
         if pd.notna(tf_val):   tarjetas_favor.append(float(tf_val) * peso_stats)
+        if pd.notna(tc_val):   tarjetas_contra.append(float(tc_val) * peso_stats)
         if pd.notna(ta_f_val): tiros_arco_favor.append(float(ta_f_val) * peso_stats)
         if pd.notna(ta_c_val): tiros_arco_contra.append(float(ta_c_val) * peso_stats)
         if pd.notna(tt_f_val): tiros_total_favor.append(float(tt_f_val) * peso_stats)
@@ -491,6 +495,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         corners_favor = [prom_liga["corners"]]
         corners_contra = [prom_liga["corners"]]
         tarjetas_favor = [prom_liga["tarjetas"]]
+        tarjetas_contra = [prom_liga["tarjetas"]]
         tiros_arco_favor = [prom_liga["tiros_arco"]]
         tiros_arco_contra = [prom_liga["tiros_arco"]]
         tiros_total_favor = [prom_liga["tiros_total"]]
@@ -508,6 +513,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_cf  = np.mean(corners_favor)  * peso_real + prom_liga["corners"]    * peso_liga
         media_cc  = np.mean(corners_contra) * peso_real + prom_liga["corners"]    * peso_liga
         media_tf  = np.mean(tarjetas_favor) * peso_real + prom_liga["tarjetas"]   * peso_liga
+        media_tc  = np.mean(tarjetas_contra) * peso_real + prom_liga["tarjetas"]  * peso_liga
         media_ta_f = np.mean(tiros_arco_favor)  * peso_real + prom_liga["tiros_arco"] * peso_liga
         media_ta_c = np.mean(tiros_arco_contra) * peso_real + prom_liga["tiros_arco"] * peso_liga
         media_tt_f = np.mean(tiros_total_favor)  * peso_real + prom_liga["tiros_total"] * peso_liga
@@ -519,6 +525,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_cf   = np.mean(corners_favor)  if corners_favor  else 0.0
         media_cc   = np.mean(corners_contra) if corners_contra else 0.0
         media_tf   = np.mean(tarjetas_favor) if tarjetas_favor else 0.0
+        media_tc   = np.mean(tarjetas_contra) if tarjetas_contra else 0.0
         media_ta_f = np.mean(tiros_arco_favor)   if tiros_arco_favor   else 0.0
         media_ta_c = np.mean(tiros_arco_contra)  if tiros_arco_contra  else 0.0
         media_tt_f = np.mean(tiros_total_favor)  if tiros_total_favor  else 0.0
@@ -564,6 +571,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
                 media_cc = media_cc * (1 - peso_cond) + prom_condicion["corners_contra"] * peso_cond
             if prom_condicion["tarjetas_favor"] is not None:
                 media_tf = media_tf * (1 - peso_cond) + prom_condicion["tarjetas_favor"] * peso_cond
+            if prom_condicion["tarjetas_contra"] is not None:
+                media_tc = media_tc * (1 - peso_cond) + prom_condicion["tarjetas_contra"] * peso_cond
             if prom_condicion["tiros_arco_favor"] is not None:
                 media_ta_f = media_ta_f * (1 - peso_cond) + prom_condicion["tiros_arco_favor"] * peso_cond
             if prom_condicion["tiros_arco_contra"] is not None:
@@ -583,12 +592,14 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_cf  = float(np.clip(media_cf,  CORNERS_MIN_SELECC,  CORNERS_MAX_SELECC))
         media_cc  = float(np.clip(media_cc,  CORNERS_MIN_SELECC,  CORNERS_MAX_SELECC))
         media_tf  = float(np.clip(media_tf,  TARJETAS_MIN_SELECC, TARJETAS_MAX_SELECC))
+        media_tc  = float(np.clip(media_tc,  TARJETAS_MIN_SELECC, TARJETAS_MAX_SELECC))
     else:
         media_gf  = float(np.clip(media_gf,  GOLES_MIN,    GOLES_MAX))
         media_gc  = float(np.clip(media_gc,  GOLES_MIN,    GOLES_MAX))
         media_cf  = float(np.clip(media_cf,  CORNERS_MIN,  CORNERS_MAX))
         media_cc  = float(np.clip(media_cc,  CORNERS_MIN,  CORNERS_MAX))
         media_tf  = float(np.clip(media_tf,  TARJETAS_MIN, TARJETAS_MAX))
+        media_tc  = float(np.clip(media_tc,  TARJETAS_MIN, TARJETAS_MAX))
 
     return {
         "log": partidos,
@@ -606,6 +617,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         "corners_contra": media_cc,
         "std_corners_favor": normalizar_std(np.std(corners_favor),  1.0),
         "tarjetas_favor": media_tf,
+        "tarjetas_contra": media_tc,
         "std_tarjetas_favor": normalizar_std(np.std(tarjetas_favor), 0.8),
         "tiros_arco_favor": media_ta_f,
         "tiros_arco_contra": media_ta_c,
@@ -698,7 +710,30 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     goles_b   = (stats_b["goles_favor"]   + stats_a["goles_contra"])   / 2
     corners_a = (stats_a["corners_favor"] + stats_b["corners_contra"]) / 2
     corners_b = (stats_b["corners_favor"] + stats_a["corners_contra"]) / 2
-    tarjetas_total = stats_a["tarjetas_favor"] + stats_b["tarjetas_favor"]
+    # Tarjetas: BASE identica a la de siempre (suma directa de "favor" de
+    # cada equipo, SIN promediar con tarjetas_contra del rival) -- a
+    # proposito distinto del patron de corners/tiros. Decision explicita
+    # (ver conversacion de diseno, Bloque 2 de Fase 2): "exponer el split
+    # por equipo" y "cambiar la formula del modelo a ataque propio +
+    # defensa rival" son dos riesgos distintos que no se mezclan en el
+    # mismo cambio -- el segundo tocaria un numero ya validado y en
+    # produccion para todos los usuarios, y esta casa no aplica cambios
+    # de modelo sin su propio backtest (mismo criterio que Elo en
+    # handicap europeo/asiatico). tarjetas_contra ya existe como
+    # infraestructura (ver mas arriba en este archivo) para el dia que
+    # se evalue esa Opcion B como tarea aparte, con su propio backtest.
+    #
+    # tarjetas_a/tarjetas_b son la base ANTES de H2H y del ajuste de
+    # parejez (en simulator.py) -- se usan SOLO para fijar la proporcion
+    # de reparto local/visitante (peso_tarjetas_a mas abajo), nunca se
+    # les aplica H2H directamente. tarjetas_total (siguiente linea) es la
+    # que efectivamente recibe H2H/clip/parejez, con la MISMA formula de
+    # siempre -- ver nota extendida junto al ajuste H2H de tarjetas, mas
+    # abajo, sobre por que esta capa tambien preserva el numero validado
+    # en vez de copiar el patron por-equipo de corners/tiros.
+    tarjetas_a = stats_a["tarjetas_favor"]
+    tarjetas_b = stats_b["tarjetas_favor"]
+    tarjetas_total = tarjetas_a + tarjetas_b
     # Tiros: misma base que corners (ataque propio + defensa rival). Sin
     # ajuste de liga ni FIFA todavia -- ver conversacion de diseno, Bloque
     # 1 de Fase 2 (solo base + H2H, liga/FIFA quedan para otro bloque).
@@ -790,7 +825,24 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
             if prom_tt_b_h2h is not None:
                 tiros_total_b = tiros_total_b * peso_base + prom_tt_b_h2h * peso_h2h
 
-        # Ajuste H2H para tarjetas si hay datos
+        # Ajuste H2H para tarjetas -- formula COMBINADA de siempre (NO
+        # por equipo, sin peso de antiguedad por cruce individual), a
+        # diferencia de goles/corners/tiros arriba. Decision explicita
+        # (ver conversacion de diseno, Bloque 2 de Fase 2): se probo
+        # primero un H2H por equipo igual al de corners/tiros
+        # (_promedios_h2h_por_equipo, con peso de antiguedad por cruce),
+        # pero esa formula NO es algebraicamente equivalente a este
+        # .mean() simple sobre el total combinado -- daba una diferencia
+        # chica pero real (hasta +/-0.01 en tarjetas_totales_proj en
+        # partidos reales) frente al numero ya validado y en produccion.
+        # Mismo criterio que la Opcion A de la formula base: ningun
+        # cambio al modelo (ni siquiera un peso de antiguedad "mas
+        # correcto") se aplica sin su propio backtest -- se prefirio
+        # preservar el numero exacto de siempre y perder la ponderacion
+        # por antiguedad en esta metrica puntual, no es un descuido.
+        # Fuera del "if equipo_local and equipo_visitante" a proposito
+        # (igual que el codigo original): esta formula nunca necesito
+        # esos nombres, solo opera sobre el total combinado.
         h2h_con_tarjetas = h2h[
             h2h["tarjetas_local"].notna() & h2h["tarjetas_visitante"].notna()
         ]
@@ -804,7 +856,18 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     goles_b        = float(np.clip(goles_b,        GOLES_MIN,    GOLES_MAX))
     corners_a      = float(np.clip(corners_a,      CORNERS_MIN,  CORNERS_MAX))
     corners_b      = float(np.clip(corners_b,      CORNERS_MIN,  CORNERS_MAX))
-    tarjetas_total = float(np.clip(tarjetas_total, 1.5,          8.0))
+    # Tarjetas: clipear el TOTAL ya ajustado por H2H (formula de siempre,
+    # ver arriba) preserva exactamente el mismo rango y el mismo numero
+    # ya validado (1.5 a 8.0). El reparto local/visitante es proporcional
+    # al peso BASE -- tarjetas_a/tarjetas_b siguen siendo el valor de
+    # favor_a/favor_b sin tocar (nunca se les aplico H2H, esa capa vive
+    # aparte en tarjetas_total), asi que esta proporcion es estable y no
+    # se contamina con la ponderacion de antiguedad que si tiene el H2H
+    # de corners/tiros.
+    peso_tarjetas_a = (tarjetas_a / (tarjetas_a + tarjetas_b)) if (tarjetas_a + tarjetas_b) > 0 else 0.5
+    tarjetas_total = float(np.clip(tarjetas_total, 1.5, 8.0))
+    tarjetas_a = tarjetas_total * peso_tarjetas_a
+    tarjetas_b = tarjetas_total * (1 - peso_tarjetas_a)
     tiros_arco_a   = float(np.clip(tiros_arco_a,   TIROS_ARCO_MIN,  TIROS_ARCO_MAX))
     tiros_arco_b   = float(np.clip(tiros_arco_b,   TIROS_ARCO_MIN,  TIROS_ARCO_MAX))
     tiros_total_a  = float(np.clip(tiros_total_a,  TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
@@ -856,4 +919,4 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
                 corners_b = corners_b * f_visit
     except Exception:
         pass
-    return goles_a, goles_b, corners_a, corners_b, tarjetas_total, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b
+    return goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b

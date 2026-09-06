@@ -200,6 +200,7 @@ def simular_partido_futbol(
     media_tiros_arco_b=None,
     media_tiros_total_a=None,
     media_tiros_total_b=None,
+    media_tarjetas_a=None,
     sims=10000,
     k_goles_a=None,
     k_goles_b=None,
@@ -219,6 +220,18 @@ def simular_partido_futbol(
     media_goles_b = float(np.clip(media_goles_b, GOLES_MIN, GOLES_MAX))
     media_corners_a = float(np.clip(media_corners_a, CORNERS_MIN, CORNERS_MAX))
     media_corners_b = float(np.clip(media_corners_b, CORNERS_MIN, CORNERS_MAX))
+    # Peso proporcional para el reparto local/visitante de tarjetas (ver
+    # mas abajo, despues del ajuste de parejez) -- calculado ANTES de
+    # cualquier clip de esta funcion, sobre los mismos numeros que ya
+    # arma ajustar_medias_con_rival() (Opcion A: el total se ajusta y
+    # clipea sin cambios, el reparto es aritmetica aparte que no toca el
+    # muestreo). None si el caller no lo paso (compatibilidad con
+    # probabilidad_linea_personalizada, que no lo usa).
+    peso_tarjetas_local = (
+        media_tarjetas_a / media_tarjetas_total
+        if media_tarjetas_a is not None and media_tarjetas_total > 0
+        else None
+    )
     media_tarjetas_total = float(np.clip(media_tarjetas_total, TARJETAS_MIN, TARJETAS_MAX))
     # Tiros son opcionales (default None) para no romper otros callers que
     # todavia no los pasan (ej. probabilidad_linea_personalizada no los usa).
@@ -495,6 +508,15 @@ def simular_partido_futbol(
         "corners_local_proj": float(corners_a.mean()),
         "corners_visitante_proj": float(corners_b.mean()),
         "tarjetas_totales_proj": float(tarjetas.mean()),
+        # Reparto proporcional (Opcion A) sobre la MISMA muestra de
+        # arriba -- no es una simulacion independiente por equipo, es
+        # tarjetas.mean() repartido segun peso_tarjetas_local. Por
+        # construccion, tarjetas_local_proj + tarjetas_visitante_proj ==
+        # tarjetas_totales_proj siempre (identidad algebraica, no una
+        # aproximacion). None si el caller no paso media_tarjetas_a (ver
+        # conversacion de diseno, Bloque 2 de Fase 2).
+        "tarjetas_local_proj": float(tarjetas.mean()) * peso_tarjetas_local if peso_tarjetas_local is not None else None,
+        "tarjetas_visitante_proj": float(tarjetas.mean()) * (1 - peso_tarjetas_local) if peso_tarjetas_local is not None else None,
         "tiros_arco_totales_proj": float(total_tiros_arco.mean()) if tiene_tiros else None,
         "tiros_arco_local_proj": float(tiros_arco_a.mean()) if tiene_tiros else None,
         "tiros_arco_visitante_proj": float(tiros_arco_b.mean()) if tiene_tiros else None,
