@@ -1713,7 +1713,6 @@ def get_analisis_partido(local_input, visitante_input):
         "cuotas": get_cuotas_partido(local, visitante, liga),
         "stats_local_temporada": _stats_temporada_actual(df, local),
         "stats_visitante_temporada": _stats_temporada_actual(df, visitante),
-        "tiros_arco_local": 0,
         "stats_local": {
             "goles_favor": round(stats_a["goles_favor"], 2),
             "goles_contra": round(stats_a["goles_contra"], 2),
@@ -1740,9 +1739,6 @@ def get_analisis_partido(local_input, visitante_input):
             "derrotas": stats_b["derrotas"],
             "n_partidos": stats_b["n_partidos"],
         },
-        "tiros_arco_visitante": 0,
-        "tiros_total_local": 0,
-        "tiros_total_visitante": 0,
     }, None
 
 
