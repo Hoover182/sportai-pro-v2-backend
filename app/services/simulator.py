@@ -125,6 +125,35 @@ def _tarjetas_esperadas_por_parejez(grid_goles):
     return float(np.interp(diferencia_esperada, puntos_x, puntos_y))
 
 
+def _reescalar_grid_por_elo(grid_goles, dif_grid, prob_local_pre, prob_visitante_pre, prob_local_post, prob_visitante_post):
+    """Generaliza el ajuste de Elo -- que sobre 1X2 solo redistribuye masa
+    entre los 3 agregados -- a la grilla Dixon-Coles completa, para que el
+    HANDICAP quede en la misma base que el 1X2 que ya ve el usuario:
+    reescala proporcionalmente el bloque "gana local" (dif_grid > 0) por
+    el mismo factor en que Elo movio prob_local, y el bloque "gana
+    visitante" (dif_grid < 0) por el factor de prob_visitante, dejando el
+    empate (dif_grid == 0) intacto -- mismo principio que el ajuste
+    actual (Elo clasico no tiene concepto de empate).
+
+    Usada SOLO para handicap (ver grid_handicap en
+    simular_partido_futbol) -- backtest de 1456 partidos (mismo criterio
+    de muestra/random_state que el backtest de Elo sobre 1X2) confirmo
+    mejora real y consistente en Brier score y log loss de handicap con
+    este reescalado. Medido tambien sobre goles_ou (las 8 lineas) y
+    ambos_marcan, sin encontrar mejora practica en ninguno de los dos
+    (goles_ou: diferencia de Brier <=0.00004 en todas las lineas;
+    ambos_marcan: Brier/log loss iguales, accuracy del pick top empeoro
+    0.07 puntos) -- por eso esos mercados y marcador exacto/proyecciones
+    siguen leyendo de grid_goles sin reescalar, sin pasar por esta
+    funcion. Ver conversacion de diseno."""
+    scale_local = (prob_local_post / prob_local_pre) if prob_local_pre > 0 else 1.0
+    scale_visit = (prob_visitante_post / prob_visitante_pre) if prob_visitante_pre > 0 else 1.0
+    grid_elo = grid_goles.copy()
+    grid_elo[dif_grid > 0] *= scale_local
+    grid_elo[dif_grid < 0] *= scale_visit
+    return grid_elo / grid_elo.sum()
+
+
 def simular_partido_futbol(
     media_goles_a,
     media_goles_b,
@@ -202,14 +231,20 @@ def simular_partido_futbol(
     prob_empate    = float(grid_goles[xs_grid == ys_grid].sum())
     prob_visitante = float(grid_goles[xs_grid < ys_grid].sum())
 
-    # Ajuste de Elo -- SOLO toca estas 3 variables. No modifica grid_goles
-    # ni ninguna otra proyeccion (goles_ou, corners, tarjetas, handicap,
-    # ambos_marcan, marcador exacto, mitades siguen leyendo directo de
-    # grid_goles/corners_a/corners_b/media_tarjetas_total, sin pasar por
-    # este bloque). El empate no se toca -- se queda con lo que ya daba
-    # Dixon-Coles; Elo solo redistribuye el resto (todo lo que no es
-    # empate) entre local y visitante segun a quien favorece la
-    # diferencia de rating. Ver conversacion de diseno / elo_ranking.py.
+    # Ajuste de Elo -- SOLO toca estas 3 variables (y por extension el
+    # handicap, ver grid_handicap mas abajo). No modifica grid_goles ni
+    # ninguna otra proyeccion (goles_ou, corners, tarjetas, ambos_marcan,
+    # marcador exacto, mitades siguen leyendo directo de grid_goles/
+    # corners_a/corners_b/media_tarjetas_total, sin pasar por este
+    # bloque ni por grid_handicap -- backtest confirmo que ahi el
+    # reescalado no aporta, ver _reescalar_grid_por_elo()). El empate no
+    # se toca -- se queda con lo que ya daba Dixon-Coles; Elo solo
+    # redistribuye el resto (todo lo que no es empate) entre local y
+    # visitante segun a quien favorece la diferencia de rating. Ver
+    # conversacion de diseno / elo_ranking.py.
+    prob_local_pre_elo = prob_local
+    prob_visitante_pre_elo = prob_visitante
+
     if elo_local is not None and elo_visitante is not None and peso_elo:
         dr = (elo_local + VENTAJA_LOCAL_ELO) - elo_visitante
         e_local_elo = 1.0 / (1.0 + 10 ** (-dr / ESCALA_ELO))
@@ -225,18 +260,35 @@ def simular_partido_futbol(
     prob_x2 = prob_empate + prob_visitante
     prob_12 = prob_local + prob_visitante
 
-    # HANDICAP 3-WAY
-    prob_hcp_local_m1    = float(grid_goles[dif_grid > 1].sum())
-    prob_hcp_empate_m1   = float(grid_goles[dif_grid == 1].sum())
-    prob_hcp_visit_m1    = float(grid_goles[dif_grid < 1].sum())
-    prob_hcp_local_p1    = float(grid_goles[dif_grid > -1].sum())
-    prob_hcp_empate_p1   = float(grid_goles[dif_grid == -1].sum())
-    prob_hcp_visit_p1    = float(grid_goles[dif_grid < -1].sum())
+    # GRILLA DE HANDICAP -- unica y exclusivamente para los 6 prob_hcp_*
+    # de abajo. Si hay Elo disponible, reescala grid_goles proporcional
+    # al mismo movimiento que el Elo ya le aplico a prob_local/
+    # prob_visitante (ver _reescalar_grid_por_elo()); si no hay Elo,
+    # grid_handicap == grid_goles. Backtest de 1456 partidos (mismo
+    # criterio de muestra que el backtest de Elo sobre 1X2) confirmo
+    # mejora real en Brier score y log loss de handicap con este
+    # reescalado -- medido tambien sobre goles_ou y ambos_marcan sin
+    # encontrar mejora practica en ninguno de los dos, por eso esos
+    # mercados (y marcador exacto/proyecciones) siguen leyendo de
+    # grid_goles sin reescalar, mas abajo.
+    grid_handicap = grid_goles
+    if elo_local is not None and elo_visitante is not None and peso_elo:
+        grid_handicap = _reescalar_grid_por_elo(
+            grid_goles, dif_grid, prob_local_pre_elo, prob_visitante_pre_elo, prob_local, prob_visitante
+        )
 
-    # AMBOS MARCAN
+    # HANDICAP 3-WAY
+    prob_hcp_local_m1    = float(grid_handicap[dif_grid > 1].sum())
+    prob_hcp_empate_m1   = float(grid_handicap[dif_grid == 1].sum())
+    prob_hcp_visit_m1    = float(grid_handicap[dif_grid < 1].sum())
+    prob_hcp_local_p1    = float(grid_handicap[dif_grid > -1].sum())
+    prob_hcp_empate_p1   = float(grid_handicap[dif_grid == -1].sum())
+    prob_hcp_visit_p1    = float(grid_handicap[dif_grid < -1].sum())
+
+    # AMBOS MARCAN (grid_goles sin reescalar -- ver nota de grid_handicap arriba)
     prob_ambos = float(grid_goles[(xs_grid >= 1) & (ys_grid >= 1)].sum())
 
-    # OVER/UNDER GOLES 0.5 a 7.5
+    # OVER/UNDER GOLES 0.5 a 7.5 (grid_goles sin reescalar -- ver nota de grid_handicap arriba)
     goles_ou = {}
     for linea in [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5]:
         goles_ou[linea] = {
@@ -261,7 +313,7 @@ def simular_partido_futbol(
         }
 
     # MARCADOR EXACTO top 6 (probabilidad exacta de la grilla, no conteo
-    # de muestras)
+    # de muestras; grid_goles sin reescalar -- ver nota de grid_handicap arriba)
     marcadores_flat = [((x, y), grid_goles[x, y]) for x in range(n_grid) for y in range(n_grid)]
     top_marcadores = sorted(marcadores_flat, key=lambda item: item[1], reverse=True)[:6]
     marcadores_prob = [(f"{x}-{y}", round(p * 100, 1)) for (x, y), p in top_marcadores]
@@ -316,8 +368,8 @@ def simular_partido_futbol(
         "prob_2t_local": prob_2t_local,
         "prob_2t_empate": prob_2t_empate,
         "prob_2t_visitante": prob_2t_visitante,
-        # PROYECCIONES (esperanza de la grilla Dixon-Coles, no de las
-        # muestras de mitades)
+        # PROYECCIONES (esperanza de la grilla Dixon-Coles sin reescalar,
+        # no de las muestras de mitades -- ver nota de grid_handicap arriba)
         "goles_local_proj": float(np.sum(np.arange(n_grid) * grid_goles.sum(axis=1))),
         "goles_visitante_proj": float(np.sum(np.arange(n_grid) * grid_goles.sum(axis=0))),
         "corners_totales_proj": float(total_corners.mean()),
