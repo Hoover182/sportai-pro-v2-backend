@@ -490,7 +490,23 @@ def simular(df, local, visitante):
             # Gamma-Poisson con un Poisson puro, anulando la correccion
             # de calibracion en la enorme mayoria de partidos (el
             # multiplicador casi nunca da exactamente 1.0).
+            #
+            # Guardar/restaurar el estado del RNG alrededor de este
+            # remuestreo -- mismo patron que ya se uso para tiros en
+            # simular_partido_futbol() (ver ese comentario). El numero de
+            # llamadas internas que hace _muestrear_conteo() a np.random
+            # depende del VALOR de media_ajustada (Poisson con distinto
+            # lambda consume una cantidad de bits variable), asi que un
+            # cambio legitimo en el multiplicador de presion/tarjetas
+            # (ej. el fix de calcular_tabla()) corria en silencio la
+            # posicion del stream para el remuestreo de corners_ou de
+            # abajo Y para el Monte Carlo de goles_1t en
+            # get_analisis_partido() -- confirmado en vivo: sus valores de
+            # entrada (corners_totales_proj, medias de goles_1t) no
+            # cambiaban, solo el numero puntual del remuestreo.
+            _rng_state_pre_tarjetas_ou = np.random.get_state()
             valores_sim = _muestrear_conteo(media_ajustada, k_tarjetas, 10000)
+            np.random.set_state(_rng_state_pre_tarjetas_ou)
             for linea_ou in list(sim["tarjetas_ou"].keys()):
                 sim["tarjetas_ou"][linea_ou] = {
                     "over": float(np.mean(valores_sim > linea_ou)),
@@ -504,8 +520,12 @@ def simular(df, local, visitante):
             media_ajustada_c = max(sim["corners_totales_proj"], 0.1)
             # Mismo criterio que arriba -- k combinado (el mas chico de
             # los dos equipos) ya que este resampleo trabaja sobre el
-            # total combinado, no por separado local/visitante.
+            # total combinado, no por separado local/visitante. Mismo
+            # guardado/restauracion de RNG que el bloque de tarjetas_ou
+            # de arriba, y por la misma razon.
+            _rng_state_pre_corners_ou = np.random.get_state()
             valores_sim_c = _muestrear_conteo(media_ajustada_c, min(k_corners_a, k_corners_b), 10000)
+            np.random.set_state(_rng_state_pre_corners_ou)
             for linea_ou in list(sim["corners_ou"].keys()):
                 sim["corners_ou"][linea_ou] = {
                     "over": float(np.mean(valores_sim_c > linea_ou)),
