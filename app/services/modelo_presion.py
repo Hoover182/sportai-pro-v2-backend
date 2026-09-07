@@ -1,4 +1,5 @@
 ﻿import time
+from datetime import date
 
 import pandas as pd
 
@@ -14,8 +15,59 @@ import pandas as pd
 _CACHE_TABLA_TTL_SEGUNDOS = 300
 _cache_tablas = {}
 
+# Ligas de calendario anual (temporada = año calendario, no agosto-mayo).
+# Curada a mano en vez de derivada del campo "temporada" de LIGAS en
+# api_to_csv.py -- ese campo controla que "season" pedirle a la API, no
+# declara el calendario real de la liga, y ya encontramos 2 casos donde
+# difieren: Liga MX y Liga de Expansion MX figuran alli con
+# "temporada: None" (agrupadas junto a las ligas agosto-mayo) pero su
+# propio "inicio" ya las delata como calendario anual (2026-01-01, no
+# 2025-08-01 como el resto de ese grupo) -- Apertura/Clausura dentro del
+# mismo año, no un ciclo agosto-mayo. Ver conversacion de diseno del fix
+# de calcular_tabla().
+LIGAS_CALENDARIO_ANUAL = {
+    "MLS", "Liga Profesional Argentina", "Brasileirao", "Liga Colombia",
+    "Primera Division Chile", "Primera Division Uruguay", "Primera Division Peru",
+    "Liga Pro Ecuador", "Primera Division Venezuela", "Primera Division Bolivia",
+    "Division Profesional Paraguay", "Copa Libertadores", "Copa Sudamericana",
+    "Recopa Sudamericana", "Copa Argentina", "Copa do Brasil", "Copa Chile",
+    "Copa Colombia", "Copa Uruguay", "Mundial 2026", "Primera Nacional Argentina",
+    "Primera C Argentina", "Serie D Brasil", "Supercopa do Brasil",
+    "Superliga Colombia", "Super Cup Chile", "Super Copa Uruguay",
+    "Copa de la Division Profesional Bolivia", "Supercopa de Ecuador",
+    "Liga MX", "Liga de Expansion MX",
+}
+
+
+def _temporada_actual_desde(liga_nombre, hoy=None):
+    """Fecha de arranque de la temporada EN CURSO para esta liga, calculada
+    dinamicamente (no un valor fijo guardado) -- mismo criterio que ya usa
+    api_to_csv.py para el parametro "season" de la API (temporada_europea =
+    hoy.year if hoy.month >= 8 else hoy.year - 1), pero convertido a fecha
+    de corte para no mezclar temporadas en la tabla de posiciones. No se
+    puede reusar el campo "inicio" de LIGAS tal cual: es un ancla fija de
+    cuando arranco el tracking, no se actualiza cuando empieza una
+    temporada nueva (confirmado: La Liga sigue con inicio=2025-08-01 en el
+    config pese a que ya hay partidos de la temporada 2026-27 en el CSV)."""
+    hoy = hoy or date.today()
+    if liga_nombre in LIGAS_CALENDARIO_ANUAL:
+        return f"{hoy.year}-01-01"
+    temporada_europea = hoy.year if hoy.month >= 8 else hoy.year - 1
+    return f"{temporada_europea}-08-01"
+
 
 def calcular_tabla(df, liga_nombre, temporada_desde=None):
+    # None ya no significa "todo el historial sin filtro" -- significa
+    # "temporada actual, calculada automaticamente" (ver
+    # _temporada_actual_desde()). Es el unico caller de esta funcion en
+    # produccion (futbol_service.py, para el multiplicador de presion de
+    # tarjetas) y siempre llamaba con el default, asi que cambiar el
+    # significado de None es el fix en si -- no hay otro caso de uso real
+    # que dependiera del comportamiento viejo (confirmado revisando los
+    # dos repos). Pasar una fecha explicita sigue funcionando igual que
+    # antes, por si hiciera falta un corte puntual distinto.
+    if temporada_desde is None:
+        temporada_desde = _temporada_actual_desde(liga_nombre)
     clave = (liga_nombre, temporada_desde)
     ahora = time.time()
     cacheada = _cache_tablas.get(clave)
