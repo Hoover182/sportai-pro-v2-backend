@@ -386,7 +386,7 @@ def simular(df, local, visitante):
         multiplicador_corners = 1.0
         multiplicador_goles_local = 1.0
         multiplicador_goles_visitante = 1.0
-    goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b = ajustar_medias_con_rival(
+    goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b, atajadas_a, atajadas_b = ajustar_medias_con_rival(
         stats_a, stats_b, h2h, equipo_local=local, equipo_visitante=visitante
     )
     goles_a = goles_a * multiplicador_goles_local
@@ -413,6 +413,11 @@ def simular(df, local, visitante):
     k_corners_a = n_efectivo_estimacion(stats_a["n_partidos_stats"], stats_a["n_partidos_condicion"])
     k_corners_b = n_efectivo_estimacion(stats_b["n_partidos_stats"], stats_b["n_partidos_condicion"])
     k_tarjetas = min(k_corners_a, k_corners_b)
+    # Atajadas: mismo k que corners/tiros -- misma llamada de n_partidos_
+    # stats (partidos con stats reales), atajadas es subconjunto de esas
+    # filas (ver backfill, requeria corners_local ya poblado).
+    k_atajadas_a = k_corners_a
+    k_atajadas_b = k_corners_b
 
     # Elo casero -- SOLO influye en prob_local/prob_empate/prob_visitante
     # (ver elo_ranking.py y simular_partido_futbol). Si el equipo no tiene
@@ -432,6 +437,7 @@ def simular(df, local, visitante):
         corners_a, corners_b, tarjetas,
         tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b,
         media_tarjetas_a=tarjetas_a,
+        media_atajadas_a=atajadas_a, media_atajadas_b=atajadas_b,
         k_goles_a=k_goles_a, k_goles_b=k_goles_b,
         k_corners_a=k_corners_a, k_corners_b=k_corners_b,
         k_tarjetas=k_tarjetas,
@@ -440,6 +446,7 @@ def simular(df, local, visitante):
         # conversacion de diseno del Bloque 1).
         k_tiros_arco_a=k_corners_a, k_tiros_arco_b=k_corners_b,
         k_tiros_total_a=k_corners_a, k_tiros_total_b=k_corners_b,
+        k_atajadas_a=k_atajadas_a, k_atajadas_b=k_atajadas_b,
         elo_local=elo_local, elo_visitante=elo_visitante, peso_elo=peso_elo,
     )
 

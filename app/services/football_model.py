@@ -16,6 +16,12 @@ TIROS_ARCO_MIN = 1.5    # por equipo -- percentil 1 real ronda 0, piso realista
 TIROS_ARCO_MAX = 9.0    # por equipo -- mediana real 4.1, p99 7.4
 TIROS_TOTAL_MIN = 5.0   # por equipo
 TIROS_TOTAL_MAX = 22.0  # por equipo -- mediana real 11.9, p99 18.7
+ATAJADAS_MIN = 1.0     # por equipo -- p1/p5 reales dan 0, pero 0 como
+                       # PROMEDIO de un equipo en 10 partidos no es
+                       # realista (mismo criterio que TIROS_ARCO_MIN);
+                       # p10 real ya da 1.0, se usa como piso
+ATAJADAS_MAX = 11.0    # por equipo -- p99 real 9.0, +2 de margen (mismo
+                       # criterio que TIROS_ARCO_MAX)
 
 # Constantes especificas para torneos de selecciones (Mundial, Copas)
 # Basadas en datos reales del Mundial 2026: 2.97 goles, 8.96 corners, 2.53 tarjetas por partido
@@ -213,7 +219,8 @@ def _promedio_liga_con_stats(df, liga):
         "corners": 5.0,
         "tarjetas": 1.5,
         "tiros_arco": 4.0,
-        "tiros_total": 12.0
+        "tiros_total": 12.0,
+        "atajadas": 3.0,
     }
 
     if not df_liga.empty:
@@ -233,6 +240,10 @@ def _promedio_liga_con_stats(df, liga):
         if "tiros_total_local" in df_liga_stats.columns:
             tt = (df_liga_stats["tiros_total_local"].mean() + df_liga_stats["tiros_total_visitante"].mean()) / 2
             if not np.isnan(tt): resultado["tiros_total"] = float(tt)
+
+        if "atajadas_local" in df_liga_stats.columns:
+            at = (df_liga_stats["atajadas_local"].mean() + df_liga_stats["atajadas_visitante"].mean()) / 2
+            if not np.isnan(at): resultado["atajadas"] = float(at)
 
     return resultado
 
@@ -300,6 +311,7 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
     tarjetas_favor, tarjetas_contra = [], []
     tiros_arco_favor, tiros_arco_contra = [], []
     tiros_total_favor, tiros_total_contra = [], []
+    atajadas_favor, atajadas_contra = [], []
     for _, row in partidos_stats.iterrows():
         if row["equipo_local"] == equipo:
             cf_val, cc_val = row["corners_local"], row["corners_visitante"]
@@ -307,6 +319,8 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
             ta_f_val, ta_c_val = row["tiros_arco_local"], row["tiros_arco_visitante"]
             tt_f_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
             tt_c_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
+            at_f_val = row["atajadas_local"] if "atajadas_local" in row.index else None
+            at_c_val = row["atajadas_visitante"] if "atajadas_visitante" in row.index else None
             rival_stats = str(row["equipo_visitante"])
         else:
             cf_val, cc_val = row["corners_visitante"], row["corners_local"]
@@ -314,6 +328,8 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
             ta_f_val, ta_c_val = row["tiros_arco_visitante"], row["tiros_arco_local"]
             tt_f_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
             tt_c_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
+            at_f_val = row["atajadas_visitante"] if "atajadas_visitante" in row.index else None
+            at_c_val = row["atajadas_local"] if "atajadas_local" in row.index else None
             rival_stats = str(row["equipo_local"])
 
         peso_stats = 1.0
@@ -330,6 +346,8 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
         if pd.notna(ta_c_val): tiros_arco_contra.append(float(ta_c_val) * peso_stats)
         if pd.notna(tt_f_val): tiros_total_favor.append(float(tt_f_val) * peso_stats)
         if pd.notna(tt_c_val): tiros_total_contra.append(float(tt_c_val) * peso_stats)
+        if pd.notna(at_f_val): atajadas_favor.append(float(at_f_val) * peso_stats)
+        if pd.notna(at_c_val): atajadas_contra.append(float(at_c_val) * peso_stats)
 
     def _media(valores, pesos=None):
         if not valores:
@@ -351,6 +369,8 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
         "tiros_arco_contra": _media(tiros_arco_contra),
         "tiros_total_favor": _media(tiros_total_favor),
         "tiros_total_contra": _media(tiros_total_contra),
+        "atajadas_favor": _media(atajadas_favor),
+        "atajadas_contra": _media(atajadas_contra),
     }
 
 
@@ -386,6 +406,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
     tiros_arco_contra = []
     tiros_total_favor = []
     tiros_total_contra = []
+    atajadas_favor = []
+    atajadas_contra = []
     xg_favor = []
     xg_contra = []
 
@@ -450,6 +472,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
             ta_f_val, ta_c_val = row["tiros_arco_local"], row["tiros_arco_visitante"]
             tt_f_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
             tt_c_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
+            at_f_val = row["atajadas_local"] if "atajadas_local" in row.index else None
+            at_c_val = row["atajadas_visitante"] if "atajadas_visitante" in row.index else None
             xg_f_val = row["xg_local"] if "xg_local" in row.index else None
             xg_c_val = row["xg_visitante"] if "xg_visitante" in row.index else None
             rival_stats = str(row["equipo_visitante"])
@@ -459,6 +483,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
             ta_f_val, ta_c_val = row["tiros_arco_visitante"], row["tiros_arco_local"]
             tt_f_val = row["tiros_total_visitante"] if "tiros_total_visitante" in row.index else None
             tt_c_val = row["tiros_total_local"] if "tiros_total_local" in row.index else None
+            at_f_val = row["atajadas_visitante"] if "atajadas_visitante" in row.index else None
+            at_c_val = row["atajadas_local"] if "atajadas_local" in row.index else None
             xg_f_val = row["xg_visitante"] if "xg_visitante" in row.index else None
             xg_c_val = row["xg_local"] if "xg_local" in row.index else None
             rival_stats = str(row["equipo_local"])
@@ -479,6 +505,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         if pd.notna(ta_c_val): tiros_arco_contra.append(float(ta_c_val) * peso_stats)
         if pd.notna(tt_f_val): tiros_total_favor.append(float(tt_f_val) * peso_stats)
         if pd.notna(tt_c_val): tiros_total_contra.append(float(tt_c_val) * peso_stats)
+        if pd.notna(at_f_val): atajadas_favor.append(float(at_f_val) * peso_stats)
+        if pd.notna(at_c_val): atajadas_contra.append(float(at_c_val) * peso_stats)
         if pd.notna(xg_f_val): xg_favor.append(float(xg_f_val) * peso_stats)
         if pd.notna(xg_c_val): xg_contra.append(float(xg_c_val) * peso_stats)
 
@@ -500,6 +528,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         tiros_arco_contra = [prom_liga["tiros_arco"]]
         tiros_total_favor = [prom_liga["tiros_total"]]
         tiros_total_contra = [prom_liga["tiros_total"]]
+        atajadas_favor = [prom_liga["atajadas"]]
+        atajadas_contra = [prom_liga["atajadas"]]
 
     if pocos_datos:
         peso_real = n_partidos / min_partidos
@@ -518,6 +548,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_ta_c = np.mean(tiros_arco_contra) * peso_real + prom_liga["tiros_arco"] * peso_liga
         media_tt_f = np.mean(tiros_total_favor)  * peso_real + prom_liga["tiros_total"] * peso_liga
         media_tt_c = np.mean(tiros_total_contra) * peso_real + prom_liga["tiros_total"] * peso_liga
+        media_at_f = np.mean(atajadas_favor)  * peso_real + prom_liga["atajadas"] * peso_liga
+        media_at_c = np.mean(atajadas_contra) * peso_real + prom_liga["atajadas"] * peso_liga
     else:
         suma_pesos = sum(pesos_partidos) if pesos_partidos else len(goles_favor)
         media_gf   = sum(goles_favor)  / suma_pesos if suma_pesos > 0 else np.mean(goles_favor)
@@ -530,6 +562,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_ta_c = np.mean(tiros_arco_contra)  if tiros_arco_contra  else 0.0
         media_tt_f = np.mean(tiros_total_favor)  if tiros_total_favor  else 0.0
         media_tt_c = np.mean(tiros_total_contra) if tiros_total_contra else 0.0
+        media_at_f = np.mean(atajadas_favor)   if atajadas_favor   else 0.0
+        media_at_c = np.mean(atajadas_contra)  if atajadas_contra  else 0.0
 
     # Blend con xG (expected goals) cuando hay cobertura real -- fallback
     # total a goles reales si no. Cobertura muy despareja segun competencia
@@ -581,6 +615,10 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
                 media_tt_f = media_tt_f * (1 - peso_cond) + prom_condicion["tiros_total_favor"] * peso_cond
             if prom_condicion["tiros_total_contra"] is not None:
                 media_tt_c = media_tt_c * (1 - peso_cond) + prom_condicion["tiros_total_contra"] * peso_cond
+            if prom_condicion["atajadas_favor"] is not None:
+                media_at_f = media_at_f * (1 - peso_cond) + prom_condicion["atajadas_favor"] * peso_cond
+            if prom_condicion["atajadas_contra"] is not None:
+                media_at_c = media_at_c * (1 - peso_cond) + prom_condicion["atajadas_contra"] * peso_cond
 
     # Detectar si es torneo de selecciones para usar constantes correctas
     es_torneo_selecc = liga in TORNEOS_SELECCIONES
@@ -623,6 +661,8 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         "tiros_arco_contra": media_ta_c,
         "tiros_total_favor": media_tt_f,
         "tiros_total_contra": media_tt_c,
+        "atajadas_favor": media_at_f,
+        "atajadas_contra": media_at_c,
         "victorias": victorias,
         "empates": empates,
         "derrotas": derrotas,
@@ -741,6 +781,12 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     tiros_arco_b   = (stats_b["tiros_arco_favor"]   + stats_a["tiros_arco_contra"])   / 2
     tiros_total_a  = (stats_a["tiros_total_favor"]  + stats_b["tiros_total_contra"])  / 2
     tiros_total_b  = (stats_b["tiros_total_favor"]  + stats_a["tiros_total_contra"])  / 2
+    # Atajadas: misma base que tiros/corners (ataque propio + defensa
+    # rival), sin H2H (muestra mas chica que corners/tiros, ver
+    # conversacion de diseno) y sin ajuste de liga ni FIFA todavia --
+    # mismo alcance que tiros en su bloque inicial.
+    atajadas_a     = (stats_a["atajadas_favor"]     + stats_b["atajadas_contra"])     / 2
+    atajadas_b     = (stats_b["atajadas_favor"]     + stats_a["atajadas_contra"])     / 2
 
     # Ajuste H2H - mas peso cuando hay mas partidos directos
     if not h2h.empty:
@@ -872,6 +918,8 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     tiros_arco_b   = float(np.clip(tiros_arco_b,   TIROS_ARCO_MIN,  TIROS_ARCO_MAX))
     tiros_total_a  = float(np.clip(tiros_total_a,  TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
     tiros_total_b  = float(np.clip(tiros_total_b,  TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
+    atajadas_a     = float(np.clip(atajadas_a,     ATAJADAS_MIN,    ATAJADAS_MAX))
+    atajadas_b     = float(np.clip(atajadas_b,     ATAJADAS_MIN,    ATAJADAS_MAX))
 
     # Ajuste de fuerza de liga - solo aplica entre clubes (no selecciones)
     # cuando se conoce la liga domestica de referencia de ambos equipos y
@@ -919,4 +967,4 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
                 corners_b = corners_b * f_visit
     except Exception:
         pass
-    return goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b
+    return goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b, atajadas_a, atajadas_b

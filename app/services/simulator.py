@@ -17,6 +17,8 @@ TIROS_ARCO_MIN = 1.5    # minimo realista de tiros al arco por equipo
 TIROS_ARCO_MAX = 9.0    # maximo realista de tiros al arco por equipo
 TIROS_TOTAL_MIN = 5.0   # minimo realista de tiros totales por equipo
 TIROS_TOTAL_MAX = 22.0  # maximo realista de tiros totales por equipo
+ATAJADAS_MIN = 1.0      # minimo realista de atajadas por equipo
+ATAJADAS_MAX = 11.0     # maximo realista de atajadas por equipo
 
 # Correccion Dixon-Coles (1997) sobre la correlacion de goles entre ambos
 # equipos en marcadores bajos. Bajo Poisson independiente puro (lo que se
@@ -201,6 +203,8 @@ def simular_partido_futbol(
     media_tiros_total_a=None,
     media_tiros_total_b=None,
     media_tarjetas_a=None,
+    media_atajadas_a=None,
+    media_atajadas_b=None,
     sims=10000,
     k_goles_a=None,
     k_goles_b=None,
@@ -211,6 +215,8 @@ def simular_partido_futbol(
     k_tiros_arco_b=None,
     k_tiros_total_a=None,
     k_tiros_total_b=None,
+    k_atajadas_a=None,
+    k_atajadas_b=None,
     elo_local=None,
     elo_visitante=None,
     peso_elo=None,
@@ -242,6 +248,12 @@ def simular_partido_futbol(
         media_tiros_arco_b = float(np.clip(media_tiros_arco_b, TIROS_ARCO_MIN, TIROS_ARCO_MAX))
         media_tiros_total_a = float(np.clip(media_tiros_total_a, TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
         media_tiros_total_b = float(np.clip(media_tiros_total_b, TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
+    # Atajadas: mismo patron opcional que tiros (default None para no
+    # romper otros callers), chequeado y clipeado aparte.
+    tiene_atajadas = media_atajadas_a is not None and media_atajadas_b is not None
+    if tiene_atajadas:
+        media_atajadas_a = float(np.clip(media_atajadas_a, ATAJADAS_MIN, ATAJADAS_MAX))
+        media_atajadas_b = float(np.clip(media_atajadas_b, ATAJADAS_MIN, ATAJADAS_MAX))
 
     # Goles: matriz de probabilidad conjunta cerrada (no Monte Carlo) con
     # la correccion Dixon-Coles sobre marcadores bajos -- ver
@@ -298,6 +310,17 @@ def simular_partido_futbol(
         tiros_total_a = _muestrear_conteo(media_tiros_total_a, k_tiros_total_a, sims)
         tiros_total_b = _muestrear_conteo(media_tiros_total_b, k_tiros_total_b, sims)
         np.random.set_state(_rng_state_pre_tiros)
+
+    # Atajadas: mismo patron Gamma-Poisson independiente que tiros, en su
+    # PROPIO bloque de guardado/restauracion de RNG -- separado del de
+    # tiros de arriba a proposito, para no tocar esa ventana ya validada
+    # byte a byte. Aislado desde el principio (no se espera a que
+    # aparezca el problema, ver conversacion de diseno).
+    if tiene_atajadas:
+        _rng_state_pre_atajadas = np.random.get_state()
+        atajadas_a = _muestrear_conteo(media_atajadas_a, k_atajadas_a, sims)
+        atajadas_b = _muestrear_conteo(media_atajadas_b, k_atajadas_b, sims)
+        np.random.set_state(_rng_state_pre_atajadas)
 
     # Tarjetas: ajuste suave segun que tan pareja resulta la simulacion
     # de goles (grilla Dixon-Coles) -- partidos parejos tienden a tener
@@ -440,6 +463,21 @@ def simular_partido_futbol(
                 "under": float(np.mean(total_tiros_total < linea))
             }
 
+    # OVER/UNDER ATAJADAS 1.5 a 14.5 -- percentiles reales sobre el
+    # dataset ya sincronizado: p1=1, p99=13 (total del partido), mismo
+    # margen de +1.5 sobre p99 que ya usan tarjetas_ou/tiros_arco_ou.
+    # None si el caller no paso medias de atajadas.
+    atajadas_ou = None
+    total_atajadas = None
+    if tiene_atajadas:
+        total_atajadas = atajadas_a + atajadas_b
+        atajadas_ou = {}
+        for linea in [1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5]:
+            atajadas_ou[linea] = {
+                "over":  float(np.mean(total_atajadas > linea)),
+                "under": float(np.mean(total_atajadas < linea))
+            }
+
     # MARCADOR EXACTO top 6 (probabilidad exacta de la grilla, no conteo
     # de muestras; grid_goles sin reescalar -- ver nota de grid_handicap arriba)
     marcadores_flat = [((x, y), grid_goles[x, y]) for x in range(n_grid) for y in range(n_grid)]
@@ -491,6 +529,7 @@ def simular_partido_futbol(
         "tarjetas_ou": tarjetas_ou,
         "tiros_arco_ou": tiros_arco_ou,
         "tiros_total_ou": tiros_total_ou,
+        "atajadas_ou": atajadas_ou,
         # MARCADOR EXACTO
         "marcadores_prob": marcadores_prob,
         # MITADES
@@ -523,6 +562,11 @@ def simular_partido_futbol(
         "tiros_total_totales_proj": float(total_tiros_total.mean()) if tiene_tiros else None,
         "tiros_total_local_proj": float(tiros_total_a.mean()) if tiene_tiros else None,
         "tiros_total_visitante_proj": float(tiros_total_b.mean()) if tiene_tiros else None,
+        # Directo (mean() de cada array por separado), sin el truco de
+        # reparto proporcional de tarjetas -- mismo criterio que tiros_arco.
+        "atajadas_totales_proj": float(total_atajadas.mean()) if tiene_atajadas else None,
+        "atajadas_local_proj": float(atajadas_a.mean()) if tiene_atajadas else None,
+        "atajadas_visitante_proj": float(atajadas_b.mean()) if tiene_atajadas else None,
     }
 
 
