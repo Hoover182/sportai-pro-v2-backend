@@ -1664,7 +1664,8 @@ def get_detalle_post_partido(local_input, visitante_input):
     return detalle, None
 
 
-def get_analisis_partido(local_input, visitante_input):
+def get_analisis_partido(local_input, visitante_input, casa=None):
+    casa_normalizada = _normalizar_casa(casa)
     df = cargar_df()
     if df.empty:
         return None, "No hay datos disponibles"
@@ -1785,6 +1786,20 @@ def get_analisis_partido(local_input, visitante_input):
         prob_visitante_final = max(1, min(98, prob_visitante_final))
         prob_empate_final = max(1, 100 - prob_local_final - prob_visitante_final)
 
+    # Cuotas reales Betano/1xBet para el mercado 1X2 -- mismo mecanismo
+    # que ya usan /partidos-hoy y /partidos-rango (_calcular_cuotas_1x2,
+    # con fallback automatico a la otra casa si casa_preferida no cubre
+    # este fixture puntual). A diferencia de esos 2 endpoints, ACA no
+    # reemplaza prob_local/prob_empate/prob_visitante de la raiz (que
+    # siguen siendo las del modelo con ajuste IA) -- queda anidado,
+    # informativo, al lado del campo "cuotas" existente (the-odds-api,
+    # sin tocar). Reutiliza fixture_id_pendiente, ya resuelto arriba para
+    # calcular_top3().
+    cuotas_1x2 = _calcular_cuotas_1x2(
+        fixture_id_pendiente, prob_local_final, prob_empate_final, prob_visitante_final,
+        casa_preferida=casa_normalizada,
+    )
+
     return {
         "local": local,
         "visitante": visitante,
@@ -1831,6 +1846,10 @@ def get_analisis_partido(local_input, visitante_input):
         "tiros_total_proj": _safe(sim.get("tiros_total_totales_proj")),
         "tiros_total_local_proj": _safe(sim.get("tiros_total_local_proj")),
         "tiros_total_visitante_proj": _safe(sim.get("tiros_total_visitante_proj")),
+        "atajadas_proj": _safe(sim.get("atajadas_totales_proj")),
+        "atajadas_local_proj": _safe(sim.get("atajadas_local_proj")),
+        "atajadas_visitante_proj": _safe(sim.get("atajadas_visitante_proj")),
+        "cuotas_1x2": cuotas_1x2,
         "goles_ou": {
             str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
             for k, v in sim["goles_ou"].items()
@@ -1850,6 +1869,10 @@ def get_analisis_partido(local_input, visitante_input):
         "tiros_total_ou": {
             str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
             for k, v in (sim.get("tiros_total_ou") or {}).items()
+        },
+        "atajadas_ou": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("atajadas_ou") or {}).items()
         },
         "goles_1t": _calcular_goles_1t(df, local, visitante),
         "ajuste_ia": _obtener_ajuste_ia(df, local, visitante),

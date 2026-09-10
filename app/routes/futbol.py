@@ -34,9 +34,9 @@ async def meta():
     return futbol_service.get_meta()
 
 @router.get("/partido/{local}/{visitante}")
-async def partido(local: str, visitante: str):
+async def partido(local: str, visitante: str, casa: str = "1xbet"):
     try:
-        resultado, error = futbol_service.get_analisis_partido(local, visitante)
+        resultado, error = futbol_service.get_analisis_partido(local, visitante, casa=casa)
         if error:
             return {"error": error}
         return resultado
