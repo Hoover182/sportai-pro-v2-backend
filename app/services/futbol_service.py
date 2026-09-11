@@ -1076,11 +1076,19 @@ def _calcular_partidos_hoy(casa="1xBet"):
             cuota_local = cuota_empate = cuota_visitante = cuota_origen = None
             casa_solicitada = fuente_real = None
             es_fallback = False
+            cuotas_1x2 = None
             if prob_local is not None:
+                # No pisar prob_local/prob_empate/prob_visitante con la
+                # probabilidad IMPLICITA de la cuota -- esos campos son
+                # la fuente unica de verdad (modelo + ajuste IA) y tienen
+                # que coincidir con /futbol/partido, que nunca los pisa
+                # (ver comentario en get_analisis_partido). Antes de este
+                # fix, esta pantalla mostraba la implicita del mercado
+                # mientras el detalle del mismo partido mostraba la del
+                # modelo -- mismo nombre de campo, dos numeros distintos.
+                # La implicita queda anidada en cuotas_1x2, mismo shape
+                # que ya usa /futbol/partido.
                 cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante, casa_preferida=casa)
-                prob_local = cuotas_1x2["prob_local"]
-                prob_empate = cuotas_1x2["prob_empate"]
-                prob_visitante = cuotas_1x2["prob_visitante"]
                 cuota_local = cuotas_1x2["cuota_local"]
                 cuota_empate = cuotas_1x2["cuota_empate"]
                 cuota_visitante = cuotas_1x2["cuota_visitante"]
@@ -1107,6 +1115,7 @@ def _calcular_partidos_hoy(casa="1xBet"):
                 "casa_solicitada": casa_solicitada,
                 "fuente_real": fuente_real,
                 "es_fallback": es_fallback,
+                "cuotas_1x2": cuotas_1x2,
                 "forma_local": _ultimos_resultados_equipo(df, local),
                 "forma_visitante": _ultimos_resultados_equipo(df, visitante),
                 "ajuste_ia": ajuste_ia,
@@ -1173,11 +1182,19 @@ def _calcular_partidos_rango(dias=4, casa="1xBet"):
             cuota_local = cuota_empate = cuota_visitante = cuota_origen = None
             casa_solicitada = fuente_real = None
             es_fallback = False
+            cuotas_1x2 = None
             if prob_local is not None:
+                # No pisar prob_local/prob_empate/prob_visitante con la
+                # probabilidad IMPLICITA de la cuota -- esos campos son
+                # la fuente unica de verdad (modelo + ajuste IA) y tienen
+                # que coincidir con /futbol/partido, que nunca los pisa
+                # (ver comentario en get_analisis_partido). Antes de este
+                # fix, esta pantalla mostraba la implicita del mercado
+                # mientras el detalle del mismo partido mostraba la del
+                # modelo -- mismo nombre de campo, dos numeros distintos.
+                # La implicita queda anidada en cuotas_1x2, mismo shape
+                # que ya usa /futbol/partido.
                 cuotas_1x2 = _calcular_cuotas_1x2(row.get("fixture_id"), prob_local, prob_empate, prob_visitante, casa_preferida=casa)
-                prob_local = cuotas_1x2["prob_local"]
-                prob_empate = cuotas_1x2["prob_empate"]
-                prob_visitante = cuotas_1x2["prob_visitante"]
                 cuota_local = cuotas_1x2["cuota_local"]
                 cuota_empate = cuotas_1x2["cuota_empate"]
                 cuota_visitante = cuotas_1x2["cuota_visitante"]
@@ -1205,6 +1222,7 @@ def _calcular_partidos_rango(dias=4, casa="1xBet"):
                 "casa_solicitada": casa_solicitada,
                 "fuente_real": fuente_real,
                 "es_fallback": es_fallback,
+                "cuotas_1x2": cuotas_1x2,
                 "forma_local": _ultimos_resultados_equipo(df, local),
                 "forma_visitante": _ultimos_resultados_equipo(df, visitante),
                 "ajuste_ia": ajuste_ia,
