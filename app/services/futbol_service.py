@@ -159,6 +159,12 @@ OPUESTOS = {
     "Over 9.5 corners": "Under 9.5 corners", "Under 9.5 corners": "Over 9.5 corners",
     "Over 2.5 tarjetas": "Under 2.5 tarjetas", "Under 2.5 tarjetas": "Over 2.5 tarjetas",
     "Over 3.5 tarjetas": "Under 3.5 tarjetas", "Under 3.5 tarjetas": "Over 3.5 tarjetas",
+    "Over 6.5 tiros al arco": "Under 6.5 tiros al arco", "Under 6.5 tiros al arco": "Over 6.5 tiros al arco",
+    "Over 7.5 tiros al arco": "Under 7.5 tiros al arco", "Under 7.5 tiros al arco": "Over 7.5 tiros al arco",
+    "Over 23.5 tiros totales": "Under 23.5 tiros totales", "Under 23.5 tiros totales": "Over 23.5 tiros totales",
+    "Over 24.5 tiros totales": "Under 24.5 tiros totales", "Under 24.5 tiros totales": "Over 24.5 tiros totales",
+    "Over 4.5 atajadas": "Under 4.5 atajadas", "Under 4.5 atajadas": "Over 4.5 atajadas",
+    "Over 5.5 atajadas": "Under 5.5 atajadas", "Under 5.5 atajadas": "Over 5.5 atajadas",
     "Gana local": "Gana visitante", "Gana visitante": "Gana local",
 }
 
@@ -859,6 +865,37 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
             ("Over 3.5 tarjetas", sim["tarjetas_ou"][3.5]["over"]),
             ("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"]),
         ]
+        # Tiros/atajadas (Bloque 1): mismo patron que corners/tarjetas de
+        # arriba, pero con guard defensivo -- a diferencia de corners_ou/
+        # tarjetas_ou (siempre presentes), tiros_arco_ou/tiros_total_ou/
+        # atajadas_ou pueden venir None de simulator.py para otros callers
+        # que no pasan esas medias (ver simular_partido_futbol()). En el
+        # camino real de simular() de este archivo siempre vienen, este
+        # guard es solo para no asumirlo.
+        tiros_arco_ou = sim.get("tiros_arco_ou")
+        if tiros_arco_ou:
+            candidatos += [
+                ("Over 6.5 tiros al arco", tiros_arco_ou[6.5]["over"]),
+                ("Under 6.5 tiros al arco", tiros_arco_ou[6.5]["under"]),
+                ("Over 7.5 tiros al arco", tiros_arco_ou[7.5]["over"]),
+                ("Under 7.5 tiros al arco", tiros_arco_ou[7.5]["under"]),
+            ]
+        tiros_total_ou = sim.get("tiros_total_ou")
+        if tiros_total_ou:
+            candidatos += [
+                ("Over 23.5 tiros totales", tiros_total_ou[23.5]["over"]),
+                ("Under 23.5 tiros totales", tiros_total_ou[23.5]["under"]),
+                ("Over 24.5 tiros totales", tiros_total_ou[24.5]["over"]),
+                ("Under 24.5 tiros totales", tiros_total_ou[24.5]["under"]),
+            ]
+        atajadas_ou = sim.get("atajadas_ou")
+        if atajadas_ou:
+            candidatos += [
+                ("Over 4.5 atajadas", atajadas_ou[4.5]["over"]),
+                ("Under 4.5 atajadas", atajadas_ou[4.5]["under"]),
+                ("Over 5.5 atajadas", atajadas_ou[5.5]["over"]),
+                ("Under 5.5 atajadas", atajadas_ou[5.5]["under"]),
+            ]
 
     candidatos = sorted(candidatos, key=lambda x: x[1], reverse=True)
 
@@ -937,6 +974,37 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
             ("Over 3.5 tarjetas", sim["tarjetas_ou"][3.5]["over"]),
             ("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"]),
         ]
+        # Tiros/atajadas (Bloque 1): mismo patron que corners/tarjetas de
+        # arriba, pero con guard defensivo -- a diferencia de corners_ou/
+        # tarjetas_ou (siempre presentes), tiros_arco_ou/tiros_total_ou/
+        # atajadas_ou pueden venir None de simulator.py para otros callers
+        # que no pasan esas medias (ver simular_partido_futbol()). En el
+        # camino real de simular() de este archivo siempre vienen, este
+        # guard es solo para no asumirlo.
+        tiros_arco_ou = sim.get("tiros_arco_ou")
+        if tiros_arco_ou:
+            candidatos += [
+                ("Over 6.5 tiros al arco", tiros_arco_ou[6.5]["over"]),
+                ("Under 6.5 tiros al arco", tiros_arco_ou[6.5]["under"]),
+                ("Over 7.5 tiros al arco", tiros_arco_ou[7.5]["over"]),
+                ("Under 7.5 tiros al arco", tiros_arco_ou[7.5]["under"]),
+            ]
+        tiros_total_ou = sim.get("tiros_total_ou")
+        if tiros_total_ou:
+            candidatos += [
+                ("Over 23.5 tiros totales", tiros_total_ou[23.5]["over"]),
+                ("Under 23.5 tiros totales", tiros_total_ou[23.5]["under"]),
+                ("Over 24.5 tiros totales", tiros_total_ou[24.5]["over"]),
+                ("Under 24.5 tiros totales", tiros_total_ou[24.5]["under"]),
+            ]
+        atajadas_ou = sim.get("atajadas_ou")
+        if atajadas_ou:
+            candidatos += [
+                ("Over 4.5 atajadas", atajadas_ou[4.5]["over"]),
+                ("Under 4.5 atajadas", atajadas_ou[4.5]["under"]),
+                ("Over 5.5 atajadas", atajadas_ou[5.5]["over"]),
+                ("Under 5.5 atajadas", atajadas_ou[5.5]["under"]),
+            ]
 
     candidatos = sorted(candidatos, key=lambda x: x[1], reverse=True)
 
