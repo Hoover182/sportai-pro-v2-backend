@@ -75,6 +75,58 @@ def _muestrear_conteo(media, k, sims):
     return np.random.poisson(lam)
 
 
+def _ou_desde_pmf(pmf, lineas):
+    """Over/under de una pmf discreta indexada 0..N-1 (ej. marginal de
+    grid_goles, P(goles_a=k)) para cada linea -- cerrado, sin Monte
+    Carlo, mismo criterio exacto que ya usa goles_ou sobre grid_goles."""
+    ks = np.arange(len(pmf))
+    return {
+        linea: {
+            "over": float(pmf[ks > linea].sum()),
+            "under": float(pmf[ks < linea].sum()),
+        }
+        for linea in lineas
+    }
+
+
+def _ou_desde_muestra(muestra, lineas):
+    """Over/under de una muestra Monte Carlo (ej. corners_a) para cada
+    linea -- generaliza el patron que ya usan corners_ou/tarjetas_ou/
+    tiros_arco_ou/tiros_total_ou/atajadas_ou mas abajo (todos con el
+    mismo calculo escrito a mano); no reemplaza esos bloques, solo se
+    usa para las tablas por equipo nuevas (Bloque 3, ver conversacion
+    de diseno), para no tocar codigo ya validado sin necesidad."""
+    return {
+        linea: {
+            "over": float(np.mean(muestra > linea)),
+            "under": float(np.mean(muestra < linea)),
+        }
+        for linea in lineas
+    }
+
+
+# Lineas O/U POR EQUIPO (local/visitante por separado) -- calibradas con
+# percentiles reales del CSV (15,780+ partidos FT/AET/PEN), separando la
+# columna _local de la _visitante en vez de usar el total combinado:
+# ventaja de local real y medible en todo salvo atajadas (ahi se invierte,
+# el arquero visitante ataja mas porque el local ataca mas). Piso = p1 +
+# 0.5, techo = p99 + 1.5 sobre el RANGO MAS AMPLIO entre local y
+# visitante -- mismo set de lineas para ambos lados a proposito (ver
+# conversacion de diseno, Bloque 2): evita tener que exponer tablas de
+# distinto tamano/rango por lado para el mismo partido, al costo de
+# alguna linea con probabilidad extrema del lado mas debil, mismo
+# comportamiento que ya conviven en las tablas del total de mas abajo.
+LINEAS_GOLES_EQUIPO = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5]
+LINEAS_CORNERS_EQUIPO = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5,
+                         10.5, 11.5, 12.5, 13.5, 14.5, 15.5]
+LINEAS_TIROS_ARCO_EQUIPO = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5,
+                            10.5, 11.5, 12.5, 13.5]
+LINEAS_TIROS_TOTAL_EQUIPO = [2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5,
+                             12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5,
+                             21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5, 29.5, 30.5]
+LINEAS_ATAJADAS_EQUIPO = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5]
+
+
 def _tau_dixon_coles(x, y, lam, mu, rho):
     if x == 0 and y == 0:
         return 1 - (lam * mu * rho)
@@ -429,6 +481,21 @@ def simular_partido_futbol(
             "under": float(np.mean(total_corners < linea))
         }
 
+    # OVER/UNDER GOLES/CORNERS POR EQUIPO (Bloque 3) -- goles_ou_local/
+    # visitante salen de la marginal de grid_goles (cerrado, sin Monte
+    # Carlo, mismo criterio que goles_local_proj/goles_visitante_proj
+    # mas abajo); corners_ou_local/visitante reusan corners_a/corners_b
+    # ya muestreados arriba, sin ningun muestreo nuevo -- ver
+    # conversacion de diseno (Bloque 3) sobre por que esto no necesita
+    # guardar/restaurar el estado del RNG como si hizo falta con tiros/
+    # atajadas: no hay ninguna llamada nueva a np.random en este bloque.
+    marginal_goles_a = grid_goles.sum(axis=1)
+    marginal_goles_b = grid_goles.sum(axis=0)
+    goles_ou_local = _ou_desde_pmf(marginal_goles_a, LINEAS_GOLES_EQUIPO)
+    goles_ou_visitante = _ou_desde_pmf(marginal_goles_b, LINEAS_GOLES_EQUIPO)
+    corners_ou_local = _ou_desde_muestra(corners_a, LINEAS_CORNERS_EQUIPO)
+    corners_ou_visitante = _ou_desde_muestra(corners_b, LINEAS_CORNERS_EQUIPO)
+
     # OVER/UNDER TARJETAS 0.5 a 11.5
     tarjetas_ou = {}
     for linea in [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5]:
@@ -463,12 +530,27 @@ def simular_partido_futbol(
                 "under": float(np.mean(total_tiros_total < linea))
             }
 
+    # OVER/UNDER TIROS POR EQUIPO (Bloque 3) -- reusan tiros_arco_a/b y
+    # tiros_total_a/b ya muestreados arriba (tiene_tiros), sin muestreo
+    # nuevo. None si tiene_tiros es False, mismo criterio que tiros_arco_ou.
+    tiros_arco_ou_local = None
+    tiros_arco_ou_visitante = None
+    tiros_total_ou_local = None
+    tiros_total_ou_visitante = None
+    if tiene_tiros:
+        tiros_arco_ou_local = _ou_desde_muestra(tiros_arco_a, LINEAS_TIROS_ARCO_EQUIPO)
+        tiros_arco_ou_visitante = _ou_desde_muestra(tiros_arco_b, LINEAS_TIROS_ARCO_EQUIPO)
+        tiros_total_ou_local = _ou_desde_muestra(tiros_total_a, LINEAS_TIROS_TOTAL_EQUIPO)
+        tiros_total_ou_visitante = _ou_desde_muestra(tiros_total_b, LINEAS_TIROS_TOTAL_EQUIPO)
+
     # OVER/UNDER ATAJADAS 1.5 a 14.5 -- percentiles reales sobre el
     # dataset ya sincronizado: p1=1, p99=13 (total del partido), mismo
     # margen de +1.5 sobre p99 que ya usan tarjetas_ou/tiros_arco_ou.
     # None si el caller no paso medias de atajadas.
     atajadas_ou = None
     total_atajadas = None
+    atajadas_ou_local = None
+    atajadas_ou_visitante = None
     if tiene_atajadas:
         total_atajadas = atajadas_a + atajadas_b
         atajadas_ou = {}
@@ -477,6 +559,10 @@ def simular_partido_futbol(
                 "over":  float(np.mean(total_atajadas > linea)),
                 "under": float(np.mean(total_atajadas < linea))
             }
+        # OVER/UNDER ATAJADAS POR EQUIPO (Bloque 3) -- reusa atajadas_a/b
+        # ya muestreados arriba, sin muestreo nuevo.
+        atajadas_ou_local = _ou_desde_muestra(atajadas_a, LINEAS_ATAJADAS_EQUIPO)
+        atajadas_ou_visitante = _ou_desde_muestra(atajadas_b, LINEAS_ATAJADAS_EQUIPO)
 
     # MARCADOR EXACTO top 6 (probabilidad exacta de la grilla, no conteo
     # de muestras; grid_goles sin reescalar -- ver nota de grid_handicap arriba)
@@ -530,6 +616,18 @@ def simular_partido_futbol(
         "tiros_arco_ou": tiros_arco_ou,
         "tiros_total_ou": tiros_total_ou,
         "atajadas_ou": atajadas_ou,
+        # OVER/UNDER POR EQUIPO (Bloque 3, local/visitante por separado --
+        # ver conversacion de diseno sobre percentiles y lineas)
+        "goles_ou_local": goles_ou_local,
+        "goles_ou_visitante": goles_ou_visitante,
+        "corners_ou_local": corners_ou_local,
+        "corners_ou_visitante": corners_ou_visitante,
+        "tiros_arco_ou_local": tiros_arco_ou_local,
+        "tiros_arco_ou_visitante": tiros_arco_ou_visitante,
+        "tiros_total_ou_local": tiros_total_ou_local,
+        "tiros_total_ou_visitante": tiros_total_ou_visitante,
+        "atajadas_ou_local": atajadas_ou_local,
+        "atajadas_ou_visitante": atajadas_ou_visitante,
         # MARCADOR EXACTO
         "marcadores_prob": marcadores_prob,
         # MITADES

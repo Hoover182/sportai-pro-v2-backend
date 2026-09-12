@@ -1960,6 +1960,51 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
             str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
             for k, v in (sim.get("atajadas_ou") or {}).items()
         },
+        # OVER/UNDER POR EQUIPO (Bloque 3) -- goles_ou_local/visitante y
+        # corners_ou_local/visitante siempre vienen (mismo dato que ya
+        # arma simular_partido_futbol() siempre); tiros/atajadas por
+        # equipo usan el mismo guard defensivo que ya usan sus totales
+        # (pueden venir None si el partido no tiene esas medias).
+        "goles_ou_local": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in sim["goles_ou_local"].items()
+        },
+        "goles_ou_visitante": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in sim["goles_ou_visitante"].items()
+        },
+        "corners_ou_local": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in sim["corners_ou_local"].items()
+        },
+        "corners_ou_visitante": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in sim["corners_ou_visitante"].items()
+        },
+        "tiros_arco_ou_local": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tiros_arco_ou_local") or {}).items()
+        },
+        "tiros_arco_ou_visitante": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tiros_arco_ou_visitante") or {}).items()
+        },
+        "tiros_total_ou_local": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tiros_total_ou_local") or {}).items()
+        },
+        "tiros_total_ou_visitante": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tiros_total_ou_visitante") or {}).items()
+        },
+        "atajadas_ou_local": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("atajadas_ou_local") or {}).items()
+        },
+        "atajadas_ou_visitante": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("atajadas_ou_visitante") or {}).items()
+        },
         "goles_1t": _calcular_goles_1t(df, local, visitante),
         "ajuste_ia": _obtener_ajuste_ia(df, local, visitante),
         "top3": top3,
