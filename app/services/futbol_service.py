@@ -150,23 +150,59 @@ ORDEN_COMPETENCIAS = [
     "Liga Colombia", "Liga Pro Ecuador",
 ]
 
-OPUESTOS = {
-    "Over 1.5 goles": "Under 1.5 goles", "Under 1.5 goles": "Over 1.5 goles",
-    "Over 2.5 goles": "Under 2.5 goles", "Under 2.5 goles": "Over 2.5 goles",
-    "Over 3.5 goles": "Under 3.5 goles", "Under 3.5 goles": "Over 3.5 goles",
-    "Over 7.5 corners": "Under 7.5 corners", "Under 7.5 corners": "Over 7.5 corners",
-    "Over 8.5 corners": "Under 8.5 corners", "Under 8.5 corners": "Over 8.5 corners",
-    "Over 9.5 corners": "Under 9.5 corners", "Under 9.5 corners": "Over 9.5 corners",
-    "Over 2.5 tarjetas": "Under 2.5 tarjetas", "Under 2.5 tarjetas": "Over 2.5 tarjetas",
-    "Over 3.5 tarjetas": "Under 3.5 tarjetas", "Under 3.5 tarjetas": "Over 3.5 tarjetas",
-    "Over 6.5 tiros al arco": "Under 6.5 tiros al arco", "Under 6.5 tiros al arco": "Over 6.5 tiros al arco",
-    "Over 7.5 tiros al arco": "Under 7.5 tiros al arco", "Under 7.5 tiros al arco": "Over 7.5 tiros al arco",
-    "Over 23.5 tiros totales": "Under 23.5 tiros totales", "Under 23.5 tiros totales": "Over 23.5 tiros totales",
-    "Over 24.5 tiros totales": "Under 24.5 tiros totales", "Under 24.5 tiros totales": "Over 24.5 tiros totales",
-    "Over 4.5 atajadas": "Under 4.5 atajadas", "Under 4.5 atajadas": "Over 4.5 atajadas",
-    "Over 5.5 atajadas": "Under 5.5 atajadas", "Under 5.5 atajadas": "Over 5.5 atajadas",
-    "Gana local": "Gana visitante", "Gana visitante": "Gana local",
-}
+from collections import namedtuple
+
+Candidato = namedtuple("Candidato", ["nombre", "prob", "mercado", "equipo"])
+"""Un candidato a pick de Top3, con la familia YA explicita en vez de
+derivada del texto de `nombre` (ver conversacion de diseno, Bloque 4):
+- nombre: string de display, SIN CAMBIOS -- sigue siendo la clave que usa
+  _resolver_cuota_mercado() contra cuotas_cache.json, no se puede tocar.
+- mercado: id canonico del mercado (ej. "corners_ou", "resultado_local"),
+  igual sin importar la linea -- reemplaza la heuristica de "ultima
+  palabra del nombre" que tenia _familia_mercado().
+- equipo: None (total/categorico) | "local" | "visitante". Bloque 4 no
+  agrega ningun candidato con equipo != None todavia (eso es Bloque 5+),
+  pero la familia ya queda preparada como (mercado, equipo) explicito,
+  no como un string a parsear -- necesario para que un futuro "Over 2.5
+  corners del Sevilla" (equipo="local") y "Over 8.5 corners" (equipo=
+  None, total) queden en familias DISTINTAS a proposito (ver mas abajo),
+  en vez de colisionar por compartir la palabra final "corners"."""
+
+GRUPOS_EXCLUYENTES = [
+    {"resultado_local", "resultado_visitante"},
+]
+"""Generaliza el viejo OPUESTOS a GRUPOS en vez de PARES -- un grupo de
+N mercados reemplaza los N*(N-1) pares que haria falta enumerar a mano
+(necesario porque con equipos y lineas de por medio, enumerar pares
+explota). Solo hace falta declarar un grupo cuando dos outcomes
+mutuamente excluyentes NO comparten `mercado` id -- los mercados Over/
+Under (goles_ou, corners_ou, etc.) ya se bloquean entre si solos porque
+comparten el mismo `mercado` sin importar la linea (ver
+_mercados_bloqueados_por() y la conversacion de diseno sobre por que
+esto vuelve innecesario un OPUESTOS por cada linea).
+
+Unica entrada necesaria hoy: resultado_local/visitante son mercados
+DISTINTOS (no comparten `mercado` id, a diferencia de goles/corners) y
+sin este grupo podrian en teoria aparecer juntos -- en la practica es
+matematicamente imposible (prob_local + prob_visitante <= 100%, no
+pueden estar ambos >=60% al mismo tiempo), pero se declara igual para
+preservar exactamente la proteccion que ya tenia el viejo OPUESTOS
+["Gana local"]. doble_oportunidad_1x/x2 NO entran en ningun grupo a
+proposito: prob_1x + prob_x2 SI puede superar 100% (el empate se cuenta
+en los dos), asi que pueden coexistir de verdad hoy -- agruparlos seria
+un cambio de comportamiento real, no cosmetico (ver conversacion de
+diseno)."""
+
+
+def _mercados_bloqueados_por(mercado):
+    """Todos los `mercado` que quedan bloqueados si `mercado` ya fue
+    usado: el propio mercado siempre, mas cualquier otro que comparta
+    grupo excluyente con el (ver GRUPOS_EXCLUYENTES)."""
+    bloqueados = {mercado}
+    for grupo in GRUPOS_EXCLUYENTES:
+        if mercado in grupo:
+            bloqueados |= grupo
+    return bloqueados
 
 
 LIGAS_NIVEL_1 = [
@@ -790,21 +826,6 @@ def _obtener_fixture_id_pendiente(df, local, visitante):
         return None
 
 
-def _familia_mercado(nombre):
-    """Familia del mercado para evitar mostrar la misma apuesta de fondo
-    dos veces en el Top3 con distinta linea (ej. 'Over 1.5 tarjetas' y
-    'Over 2.5 tarjetas' son la misma apuesta con distinto numero, no dos
-    picks distintos). Los mercados Over/Under comparten familia por la
-    palabra final del nombre (goles/corners/tarjetas); el resto de los
-    mercados (resultado, doble oportunidad, ambos marcan) no se agrupan
-    entre si -- cada uno ya es una apuesta genuinamente distinta, no una
-    linea distinta de la misma apuesta."""
-    partes = nombre.split()
-    if partes and partes[0] in ("Over", "Under"):
-        return partes[-1]
-    return nombre
-
-
 CUOTA_MINIMA_DISPONIBILIDAD = 1.15  # por debajo de esto, "practicamente
                                      # sin pago" -- se descarta igual que
                                      # si no hubiera cuota
@@ -817,11 +838,15 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
     lista ordenada por probabilidad:
 
     1. Orden por probabilidad descendente (igual que siempre).
-    2. Sin mercados repetidos: ademas del opuesto exacto en la misma
-       linea (OPUESTOS, ej. no 'Over 2.5 goles' si ya esta 'Under 2.5
-       goles'), tampoco se repite la FAMILIA de mercado con otra linea
-       (ver _familia_mercado()) -- 'Over 1.5 tarjetas' y 'Over 2.5
-       tarjetas' son la misma apuesta de fondo, no pueden entrar juntas.
+    2. Sin mercados repetidos: cada candidato trae su `mercado`/`equipo`
+       explicitos (ver Candidato, Bloque 4) en vez de derivarlos del
+       texto de `nombre` -- dos candidatos con el mismo (mercado, equipo)
+       no pueden entrar juntos ('Over 1.5 tarjetas' y 'Over 2.5 tarjetas'
+       son la misma apuesta de fondo con distinta linea), y
+       GRUPOS_EXCLUYENTES cubre los pocos casos donde dos outcomes
+       mutuamente excluyentes NO comparten `mercado` id (ej. resultado_
+       local/visitante) -- generaliza el viejo OPUESTOS sin enumerar
+       pares a mano.
 
     La cuota (via cuotas_cache.json) se sigue adjuntando a cada pick como
     dato informativo, pero YA NO filtra ni descarta candidatos -- puede
@@ -841,29 +866,29 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
         stats_b.get("n_partidos_stats", 0) >= 3
     )
     candidatos = [
-        ("Gana local", sim["prob_local"]),
-        ("Empate", sim["prob_empate"]),
-        ("Gana visitante", sim["prob_visitante"]),
-        ("1X (Local o Empate)", sim["prob_1x"]),
-        ("X2 (Empate o Visitante)", sim["prob_x2"]),
-        ("Ambos marcan", sim["prob_ambos_marcan"]),
-        ("Over 1.5 goles", sim["goles_ou"][1.5]["over"]),
-        ("Under 1.5 goles", sim["goles_ou"][1.5]["under"]),
-        ("Over 2.5 goles", sim["goles_ou"][2.5]["over"]),
-        ("Under 2.5 goles", sim["goles_ou"][2.5]["under"]),
-        ("Over 3.5 goles", sim["goles_ou"][3.5]["over"]),
-        ("Under 3.5 goles", sim["goles_ou"][3.5]["under"]),
+        Candidato("Gana local", sim["prob_local"], "resultado_local", None),
+        Candidato("Empate", sim["prob_empate"], "resultado_empate", None),
+        Candidato("Gana visitante", sim["prob_visitante"], "resultado_visitante", None),
+        Candidato("1X (Local o Empate)", sim["prob_1x"], "doble_oportunidad_1x", None),
+        Candidato("X2 (Empate o Visitante)", sim["prob_x2"], "doble_oportunidad_x2", None),
+        Candidato("Ambos marcan", sim["prob_ambos_marcan"], "ambos_marcan", None),
+        Candidato("Over 1.5 goles", sim["goles_ou"][1.5]["over"], "goles_ou", None),
+        Candidato("Under 1.5 goles", sim["goles_ou"][1.5]["under"], "goles_ou", None),
+        Candidato("Over 2.5 goles", sim["goles_ou"][2.5]["over"], "goles_ou", None),
+        Candidato("Under 2.5 goles", sim["goles_ou"][2.5]["under"], "goles_ou", None),
+        Candidato("Over 3.5 goles", sim["goles_ou"][3.5]["over"], "goles_ou", None),
+        Candidato("Under 3.5 goles", sim["goles_ou"][3.5]["under"], "goles_ou", None),
     ]
     if stats_ok:
         candidatos += [
-            ("Over 7.5 corners", sim["corners_ou"][7.5]["over"]),
-            ("Under 7.5 corners", sim["corners_ou"][7.5]["under"]),
-            ("Over 8.5 corners", sim["corners_ou"][8.5]["over"]),
-            ("Under 8.5 corners", sim["corners_ou"][8.5]["under"]),
-            ("Over 2.5 tarjetas", sim["tarjetas_ou"][2.5]["over"]),
-            ("Under 2.5 tarjetas", sim["tarjetas_ou"][2.5]["under"]),
-            ("Over 3.5 tarjetas", sim["tarjetas_ou"][3.5]["over"]),
-            ("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"]),
+            Candidato("Over 7.5 corners", sim["corners_ou"][7.5]["over"], "corners_ou", None),
+            Candidato("Under 7.5 corners", sim["corners_ou"][7.5]["under"], "corners_ou", None),
+            Candidato("Over 8.5 corners", sim["corners_ou"][8.5]["over"], "corners_ou", None),
+            Candidato("Under 8.5 corners", sim["corners_ou"][8.5]["under"], "corners_ou", None),
+            Candidato("Over 2.5 tarjetas", sim["tarjetas_ou"][2.5]["over"], "tarjetas_ou", None),
+            Candidato("Under 2.5 tarjetas", sim["tarjetas_ou"][2.5]["under"], "tarjetas_ou", None),
+            Candidato("Over 3.5 tarjetas", sim["tarjetas_ou"][3.5]["over"], "tarjetas_ou", None),
+            Candidato("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"], "tarjetas_ou", None),
         ]
         # Tiros/atajadas (Bloque 1): mismo patron que corners/tarjetas de
         # arriba, pero con guard defensivo -- a diferencia de corners_ou/
@@ -875,29 +900,29 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
         tiros_arco_ou = sim.get("tiros_arco_ou")
         if tiros_arco_ou:
             candidatos += [
-                ("Over 6.5 tiros al arco", tiros_arco_ou[6.5]["over"]),
-                ("Under 6.5 tiros al arco", tiros_arco_ou[6.5]["under"]),
-                ("Over 7.5 tiros al arco", tiros_arco_ou[7.5]["over"]),
-                ("Under 7.5 tiros al arco", tiros_arco_ou[7.5]["under"]),
+                Candidato("Over 6.5 tiros al arco", tiros_arco_ou[6.5]["over"], "tiros_arco_ou", None),
+                Candidato("Under 6.5 tiros al arco", tiros_arco_ou[6.5]["under"], "tiros_arco_ou", None),
+                Candidato("Over 7.5 tiros al arco", tiros_arco_ou[7.5]["over"], "tiros_arco_ou", None),
+                Candidato("Under 7.5 tiros al arco", tiros_arco_ou[7.5]["under"], "tiros_arco_ou", None),
             ]
         tiros_total_ou = sim.get("tiros_total_ou")
         if tiros_total_ou:
             candidatos += [
-                ("Over 23.5 tiros totales", tiros_total_ou[23.5]["over"]),
-                ("Under 23.5 tiros totales", tiros_total_ou[23.5]["under"]),
-                ("Over 24.5 tiros totales", tiros_total_ou[24.5]["over"]),
-                ("Under 24.5 tiros totales", tiros_total_ou[24.5]["under"]),
+                Candidato("Over 23.5 tiros totales", tiros_total_ou[23.5]["over"], "tiros_total_ou", None),
+                Candidato("Under 23.5 tiros totales", tiros_total_ou[23.5]["under"], "tiros_total_ou", None),
+                Candidato("Over 24.5 tiros totales", tiros_total_ou[24.5]["over"], "tiros_total_ou", None),
+                Candidato("Under 24.5 tiros totales", tiros_total_ou[24.5]["under"], "tiros_total_ou", None),
             ]
         atajadas_ou = sim.get("atajadas_ou")
         if atajadas_ou:
             candidatos += [
-                ("Over 4.5 atajadas", atajadas_ou[4.5]["over"]),
-                ("Under 4.5 atajadas", atajadas_ou[4.5]["under"]),
-                ("Over 5.5 atajadas", atajadas_ou[5.5]["over"]),
-                ("Under 5.5 atajadas", atajadas_ou[5.5]["under"]),
+                Candidato("Over 4.5 atajadas", atajadas_ou[4.5]["over"], "atajadas_ou", None),
+                Candidato("Under 4.5 atajadas", atajadas_ou[4.5]["under"], "atajadas_ou", None),
+                Candidato("Over 5.5 atajadas", atajadas_ou[5.5]["over"], "atajadas_ou", None),
+                Candidato("Under 5.5 atajadas", atajadas_ou[5.5]["under"], "atajadas_ou", None),
             ]
 
-    candidatos = sorted(candidatos, key=lambda x: x[1], reverse=True)
+    candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     # fixture_id puede llegar como numpy.float64 (columnas del CSV con NaN
     # en otro lado se vuelven float64 aunque este valor puntual sea un id
@@ -912,16 +937,16 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
     resultado = []
     usados = set()
     familias_usadas = set()
-    for nombre, prob in candidatos:
-        if prob < 0.60:
+    for c in candidatos:
+        if c.prob < 0.60:
             break
-        familia = _familia_mercado(nombre)
-        if nombre in usados or OPUESTOS.get(nombre) in usados or familia in familias_usadas:
+        bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
+        if c.nombre in usados or bloqueados & familias_usadas:
             continue
-        cuota, fuente_real = _resolver_cuota_mercado(cuotas_partido, nombre)  # informativo, ya no filtra (ver docstring)
-        resultado.append({"mercado": nombre, "prob": round(prob * 100, 1), "cuota": cuota, "fuente_real": fuente_real})
-        usados.add(nombre)
-        familias_usadas.add(familia)
+        cuota, fuente_real = _resolver_cuota_mercado(cuotas_partido, c.nombre)  # informativo, ya no filtra (ver docstring)
+        resultado.append({"mercado": c.nombre, "prob": round(c.prob * 100, 1), "cuota": cuota, "fuente_real": fuente_real})
+        usados.add(c.nombre)
+        familias_usadas |= bloqueados
         if len(resultado) == 3:
             break
     return resultado
@@ -950,29 +975,29 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
         stats_b.get("n_partidos_stats", 0) >= 3
     )
     candidatos = [
-        ("Gana local", sim["prob_local"]),
-        ("Empate", sim["prob_empate"]),
-        ("Gana visitante", sim["prob_visitante"]),
-        ("1X (Local o Empate)", sim["prob_1x"]),
-        ("X2 (Empate o Visitante)", sim["prob_x2"]),
-        ("Ambos marcan", sim["prob_ambos_marcan"]),
-        ("Over 1.5 goles", sim["goles_ou"][1.5]["over"]),
-        ("Under 1.5 goles", sim["goles_ou"][1.5]["under"]),
-        ("Over 2.5 goles", sim["goles_ou"][2.5]["over"]),
-        ("Under 2.5 goles", sim["goles_ou"][2.5]["under"]),
-        ("Over 3.5 goles", sim["goles_ou"][3.5]["over"]),
-        ("Under 3.5 goles", sim["goles_ou"][3.5]["under"]),
+        Candidato("Gana local", sim["prob_local"], "resultado_local", None),
+        Candidato("Empate", sim["prob_empate"], "resultado_empate", None),
+        Candidato("Gana visitante", sim["prob_visitante"], "resultado_visitante", None),
+        Candidato("1X (Local o Empate)", sim["prob_1x"], "doble_oportunidad_1x", None),
+        Candidato("X2 (Empate o Visitante)", sim["prob_x2"], "doble_oportunidad_x2", None),
+        Candidato("Ambos marcan", sim["prob_ambos_marcan"], "ambos_marcan", None),
+        Candidato("Over 1.5 goles", sim["goles_ou"][1.5]["over"], "goles_ou", None),
+        Candidato("Under 1.5 goles", sim["goles_ou"][1.5]["under"], "goles_ou", None),
+        Candidato("Over 2.5 goles", sim["goles_ou"][2.5]["over"], "goles_ou", None),
+        Candidato("Under 2.5 goles", sim["goles_ou"][2.5]["under"], "goles_ou", None),
+        Candidato("Over 3.5 goles", sim["goles_ou"][3.5]["over"], "goles_ou", None),
+        Candidato("Under 3.5 goles", sim["goles_ou"][3.5]["under"], "goles_ou", None),
     ]
     if stats_ok:
         candidatos += [
-            ("Over 7.5 corners", sim["corners_ou"][7.5]["over"]),
-            ("Under 7.5 corners", sim["corners_ou"][7.5]["under"]),
-            ("Over 8.5 corners", sim["corners_ou"][8.5]["over"]),
-            ("Under 8.5 corners", sim["corners_ou"][8.5]["under"]),
-            ("Over 2.5 tarjetas", sim["tarjetas_ou"][2.5]["over"]),
-            ("Under 2.5 tarjetas", sim["tarjetas_ou"][2.5]["under"]),
-            ("Over 3.5 tarjetas", sim["tarjetas_ou"][3.5]["over"]),
-            ("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"]),
+            Candidato("Over 7.5 corners", sim["corners_ou"][7.5]["over"], "corners_ou", None),
+            Candidato("Under 7.5 corners", sim["corners_ou"][7.5]["under"], "corners_ou", None),
+            Candidato("Over 8.5 corners", sim["corners_ou"][8.5]["over"], "corners_ou", None),
+            Candidato("Under 8.5 corners", sim["corners_ou"][8.5]["under"], "corners_ou", None),
+            Candidato("Over 2.5 tarjetas", sim["tarjetas_ou"][2.5]["over"], "tarjetas_ou", None),
+            Candidato("Under 2.5 tarjetas", sim["tarjetas_ou"][2.5]["under"], "tarjetas_ou", None),
+            Candidato("Over 3.5 tarjetas", sim["tarjetas_ou"][3.5]["over"], "tarjetas_ou", None),
+            Candidato("Under 3.5 tarjetas", sim["tarjetas_ou"][3.5]["under"], "tarjetas_ou", None),
         ]
         # Tiros/atajadas (Bloque 1): mismo patron que corners/tarjetas de
         # arriba, pero con guard defensivo -- a diferencia de corners_ou/
@@ -984,29 +1009,29 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
         tiros_arco_ou = sim.get("tiros_arco_ou")
         if tiros_arco_ou:
             candidatos += [
-                ("Over 6.5 tiros al arco", tiros_arco_ou[6.5]["over"]),
-                ("Under 6.5 tiros al arco", tiros_arco_ou[6.5]["under"]),
-                ("Over 7.5 tiros al arco", tiros_arco_ou[7.5]["over"]),
-                ("Under 7.5 tiros al arco", tiros_arco_ou[7.5]["under"]),
+                Candidato("Over 6.5 tiros al arco", tiros_arco_ou[6.5]["over"], "tiros_arco_ou", None),
+                Candidato("Under 6.5 tiros al arco", tiros_arco_ou[6.5]["under"], "tiros_arco_ou", None),
+                Candidato("Over 7.5 tiros al arco", tiros_arco_ou[7.5]["over"], "tiros_arco_ou", None),
+                Candidato("Under 7.5 tiros al arco", tiros_arco_ou[7.5]["under"], "tiros_arco_ou", None),
             ]
         tiros_total_ou = sim.get("tiros_total_ou")
         if tiros_total_ou:
             candidatos += [
-                ("Over 23.5 tiros totales", tiros_total_ou[23.5]["over"]),
-                ("Under 23.5 tiros totales", tiros_total_ou[23.5]["under"]),
-                ("Over 24.5 tiros totales", tiros_total_ou[24.5]["over"]),
-                ("Under 24.5 tiros totales", tiros_total_ou[24.5]["under"]),
+                Candidato("Over 23.5 tiros totales", tiros_total_ou[23.5]["over"], "tiros_total_ou", None),
+                Candidato("Under 23.5 tiros totales", tiros_total_ou[23.5]["under"], "tiros_total_ou", None),
+                Candidato("Over 24.5 tiros totales", tiros_total_ou[24.5]["over"], "tiros_total_ou", None),
+                Candidato("Under 24.5 tiros totales", tiros_total_ou[24.5]["under"], "tiros_total_ou", None),
             ]
         atajadas_ou = sim.get("atajadas_ou")
         if atajadas_ou:
             candidatos += [
-                ("Over 4.5 atajadas", atajadas_ou[4.5]["over"]),
-                ("Under 4.5 atajadas", atajadas_ou[4.5]["under"]),
-                ("Over 5.5 atajadas", atajadas_ou[5.5]["over"]),
-                ("Under 5.5 atajadas", atajadas_ou[5.5]["under"]),
+                Candidato("Over 4.5 atajadas", atajadas_ou[4.5]["over"], "atajadas_ou", None),
+                Candidato("Under 4.5 atajadas", atajadas_ou[4.5]["under"], "atajadas_ou", None),
+                Candidato("Over 5.5 atajadas", atajadas_ou[5.5]["over"], "atajadas_ou", None),
+                Candidato("Under 5.5 atajadas", atajadas_ou[5.5]["under"], "atajadas_ou", None),
             ]
 
-    candidatos = sorted(candidatos, key=lambda x: x[1], reverse=True)
+    candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     try:
         fixture_id_str = str(int(fixture_id)) if fixture_id is not None and pd.notna(fixture_id) else None
@@ -1017,18 +1042,18 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
     resultado = []
     usados = set()
     familias_usadas = set()
-    for nombre, prob in candidatos:
-        if prob < 0.60:
+    for c in candidatos:
+        if c.prob < 0.60:
             break
-        familia = _familia_mercado(nombre)
-        if nombre in usados or OPUESTOS.get(nombre) in usados or familia in familias_usadas:
+        bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
+        if c.nombre in usados or bloqueados & familias_usadas:
             continue
-        cuota = cuotas_partido.get(nombre)
+        cuota = cuotas_partido.get(c.nombre)
         if not cuota or cuota < CUOTA_MINIMA_DISPONIBILIDAD:
             continue  # sin disponibilidad real -- se salta, la familia sigue libre
-        resultado.append({"mercado": nombre, "prob": round(prob * 100, 1), "cuota": cuota})
-        usados.add(nombre)
-        familias_usadas.add(familia)
+        resultado.append({"mercado": c.nombre, "prob": round(c.prob * 100, 1), "cuota": cuota})
+        usados.add(c.nombre)
+        familias_usadas |= bloqueados
     return resultado
 
 
