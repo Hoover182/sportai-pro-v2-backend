@@ -592,6 +592,17 @@ def simular(df, local, visitante):
     # Aplicar el multiplicador de intensidad ofensiva a los corners
     if multiplicador_corners != 1.0 and "corners_totales_proj" in sim:
         sim["corners_totales_proj"] = sim["corners_totales_proj"] * multiplicador_corners
+        # Mismo factor a la proyeccion por equipo (mismo criterio que ya
+        # se aplica a tarjetas mas arriba) -- sin esto, corners_local_proj
+        # + corners_visitante_proj dejaba de sumar corners_totales_proj
+        # apenas el multiplicador no daba exactamente 1.0 (la enorme
+        # mayoria de los partidos). Gap real de Bloque 3 (esas dos claves
+        # y las tablas por equipo de mas abajo no se tocaban aca, quedaban
+        # inconsistentes con el total ya ajustado) -- corregido en Bloque 5.
+        if sim.get("corners_local_proj") is not None:
+            sim["corners_local_proj"] = sim["corners_local_proj"] * multiplicador_corners
+        if sim.get("corners_visitante_proj") is not None:
+            sim["corners_visitante_proj"] = sim["corners_visitante_proj"] * multiplicador_corners
         if "corners_ou" in sim:
             media_ajustada_c = max(sim["corners_totales_proj"], 0.1)
             # Mismo criterio que arriba -- k combinado (el mas chico de
@@ -607,6 +618,32 @@ def simular(df, local, visitante):
                     "over": float(np.mean(valores_sim_c > linea_ou)),
                     "under": float(np.mean(valores_sim_c < linea_ou)),
                 }
+
+            # Corners por equipo (gap de Bloque 3, corregido aca): a
+            # diferencia de tarjetas (que reparte un unico total con una
+            # Binomial), corners_a/corners_b siempre fueron independientes
+            # entre si desde su muestreo original en simulator.py -- asi
+            # que se re-muestrean cada uno por separado con su propia
+            # media ya ajustada y su propio k, en vez de derivarlos del
+            # resampleo del total de arriba (valores_sim_c). Propio
+            # guardado/restauracion de RNG, separado del de arriba.
+            if sim.get("corners_ou_local") is not None:
+                media_ajustada_local = max(sim["corners_local_proj"], 0.1)
+                media_ajustada_visit = max(sim["corners_visitante_proj"], 0.1)
+                _rng_state_pre_corners_equipo_ou = np.random.get_state()
+                valores_sim_local = _muestrear_conteo(media_ajustada_local, k_corners_a, 10000)
+                valores_sim_visit = _muestrear_conteo(media_ajustada_visit, k_corners_b, 10000)
+                np.random.set_state(_rng_state_pre_corners_equipo_ou)
+                for linea_ou in list(sim["corners_ou_local"].keys()):
+                    sim["corners_ou_local"][linea_ou] = {
+                        "over": float(np.mean(valores_sim_local > linea_ou)),
+                        "under": float(np.mean(valores_sim_local < linea_ou)),
+                    }
+                for linea_ou in list(sim["corners_ou_visitante"].keys()):
+                    sim["corners_ou_visitante"][linea_ou] = {
+                        "over": float(np.mean(valores_sim_visit > linea_ou)),
+                        "under": float(np.mean(valores_sim_visit < linea_ou)),
+                    }
 
     return sim, stats_a, stats_b
 
