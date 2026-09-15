@@ -1112,7 +1112,18 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
         bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
         if c.nombre in usados or bloqueados & familias_usadas:
             continue
-        cuota = cuotas_partido.get(c.nombre)
+        # Bug fix: cuotas_partido esta anidado por casa desde que se migro
+        # el formato de cuotas_cache.json (ver _resolver_cuota_mercado(),
+        # ya usada por calcular_top3() desde el commit 01ebf95) -- un
+        # lookup plano cuotas_partido.get(c.nombre) nunca matchea porque
+        # las claves de primer nivel ahora son nombres de casa ("1xBet",
+        # "Betano"), no nombres de mercado. Esta funcion se quedo con el
+        # lookup viejo cuando se hizo esa migracion (bug preexistente,
+        # confirmado que ya estaba asi antes de los Bloques 1-5 de hoy),
+        # asi que TODO candidato fallaba este filtro sin importar si
+        # habia cuota real disponible -- "Top picks del dia" quedaba
+        # vacio para el 100% de los partidos.
+        cuota, _fuente_real = _resolver_cuota_mercado(cuotas_partido, c.nombre)
         if not cuota or cuota < CUOTA_MINIMA_DISPONIBILIDAD:
             continue  # sin disponibilidad real -- se salta, la familia sigue libre
         resultado.append({"mercado": c.nombre, "prob": round(c.prob * 100, 1), "cuota": cuota})
