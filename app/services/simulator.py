@@ -125,6 +125,12 @@ LINEAS_TIROS_TOTAL_EQUIPO = [2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5,
                              12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5,
                              21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5, 29.5, 30.5]
 LINEAS_ATAJADAS_EQUIPO = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5]
+# Tarjetas por equipo (Bloque 5, no en el Bloque 2 original -- tarjetas
+# quedo afuera de esa calibracion a proposito, pendiente de que el reparto
+# por equipo pasara su propio backtest). Mismo criterio piso=p1+0.5/
+# techo=p99+1.5 sobre el CSV real: local y visitante dan p1=0, p99=6 por
+# separado (mismo rango en ambos lados a esta granularidad).
+LINEAS_TARJETAS_EQUIPO = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5]
 
 
 def _tau_dixon_coles(x, y, lam, mu, rho):
@@ -387,6 +393,31 @@ def simular_partido_futbol(
     media_tarjetas_total = float(np.clip(media_tarjetas_total, TARJETAS_MIN, TARJETAS_MAX))
     tarjetas = _muestrear_conteo(media_tarjetas_total, k_tarjetas, sims)
 
+    # Reparto Binomial de tarjetas por equipo (Bloque 5) -- sobre la
+    # MISMA muestra del total de arriba, que nunca se toca: por
+    # construccion algebraica, tarjetas_a_muestra + tarjetas_b_muestra ==
+    # tarjetas siempre, exacto (no aproximado). peso_tarjetas_local ya
+    # viene clippeado a 0.15-0.85 desde ajustar_medias_con_rival() en
+    # football_model.py. Backtest aprobado (ver conversacion de diseno):
+    # mejora consistente en Brier score y log loss del reparto, sin
+    # ninguna excepcion en las 5 lineas evaluadas ni en 2 semillas
+    # distintas (~1470 partidos held-out cada una). None si el caller no
+    # paso media_tarjetas_a (compatibilidad con probabilidad_linea_
+    # personalizada), igual que ya pasaba con el reparto proporcional
+    # de antes de este bloque.
+    #
+    # Guardar/restaurar el estado del RNG alrededor de esta llamada nueva
+    # -- mismo motivo que tiros/atajadas: sin esto correria el stream
+    # para todo lo que viene despues en la misma corrida (mitades, mas
+    # abajo).
+    tarjetas_a_muestra = None
+    tarjetas_b_muestra = None
+    if peso_tarjetas_local is not None:
+        _rng_state_pre_tarjetas_equipo = np.random.get_state()
+        tarjetas_a_muestra = np.random.binomial(tarjetas, peso_tarjetas_local)
+        tarjetas_b_muestra = tarjetas - tarjetas_a_muestra
+        np.random.set_state(_rng_state_pre_tarjetas_equipo)
+
     total_corners = corners_a + corners_b
 
     # RESULTADO 1X2 (desde la grilla Dixon-Coles)
@@ -503,6 +534,16 @@ def simular_partido_futbol(
             "over":  float(np.mean(tarjetas > linea)),
             "under": float(np.mean(tarjetas < linea))
         }
+
+    # OVER/UNDER TARJETAS POR EQUIPO (Bloque 5) -- reusa tarjetas_a_
+    # muestra/tarjetas_b_muestra del reparto Binomial de arriba, sin
+    # muestreo nuevo en este punto. None si peso_tarjetas_local no vino
+    # (mismo criterio que el resto de los mercados opcionales).
+    tarjetas_ou_local = None
+    tarjetas_ou_visitante = None
+    if tarjetas_a_muestra is not None:
+        tarjetas_ou_local = _ou_desde_muestra(tarjetas_a_muestra, LINEAS_TARJETAS_EQUIPO)
+        tarjetas_ou_visitante = _ou_desde_muestra(tarjetas_b_muestra, LINEAS_TARJETAS_EQUIPO)
 
     # OVER/UNDER TIROS AL ARCO 3.5 a 18.5, TIROS TOTALES 15.5 a 42.5 --
     # mismo criterio de tope que corners/tarjetas (~p99 real + 1.5), ver
@@ -628,6 +669,11 @@ def simular_partido_futbol(
         "tiros_total_ou_visitante": tiros_total_ou_visitante,
         "atajadas_ou_local": atajadas_ou_local,
         "atajadas_ou_visitante": atajadas_ou_visitante,
+        # Tarjetas por equipo (Bloque 5) -- reparto Binomial sobre la
+        # muestra del total, no reparto proporcional de la media (ver
+        # tarjetas_a_muestra mas arriba y conversacion de diseno)
+        "tarjetas_ou_local": tarjetas_ou_local,
+        "tarjetas_ou_visitante": tarjetas_ou_visitante,
         # MARCADOR EXACTO
         "marcadores_prob": marcadores_prob,
         # MITADES
@@ -645,15 +691,16 @@ def simular_partido_futbol(
         "corners_local_proj": float(corners_a.mean()),
         "corners_visitante_proj": float(corners_b.mean()),
         "tarjetas_totales_proj": float(tarjetas.mean()),
-        # Reparto proporcional (Opcion A) sobre la MISMA muestra de
-        # arriba -- no es una simulacion independiente por equipo, es
-        # tarjetas.mean() repartido segun peso_tarjetas_local. Por
-        # construccion, tarjetas_local_proj + tarjetas_visitante_proj ==
-        # tarjetas_totales_proj siempre (identidad algebraica, no una
-        # aproximacion). None si el caller no paso media_tarjetas_a (ver
-        # conversacion de diseno, Bloque 2 de Fase 2).
-        "tarjetas_local_proj": float(tarjetas.mean()) * peso_tarjetas_local if peso_tarjetas_local is not None else None,
-        "tarjetas_visitante_proj": float(tarjetas.mean()) * (1 - peso_tarjetas_local) if peso_tarjetas_local is not None else None,
+        # Bloque 5: media de tarjetas_a_muestra/tarjetas_b_muestra (el
+        # reparto Binomial de arriba), ya no el reparto proporcional
+        # deterministico de la media (Opcion A, antes de este bloque).
+        # Por construccion, tarjetas_local_proj + tarjetas_visitante_proj
+        # == tarjetas_totales_proj sigue siendo una identidad algebraica
+        # exacta (tarjetas_a_muestra + tarjetas_b_muestra == tarjetas en
+        # CADA muestra, no solo en promedio) -- None si el caller no paso
+        # media_tarjetas_a (mismo criterio que siempre).
+        "tarjetas_local_proj": float(tarjetas_a_muestra.mean()) if tarjetas_a_muestra is not None else None,
+        "tarjetas_visitante_proj": float(tarjetas_b_muestra.mean()) if tarjetas_b_muestra is not None else None,
         "tiros_arco_totales_proj": float(total_tiros_arco.mean()) if tiene_tiros else None,
         "tiros_arco_local_proj": float(tiros_arco_a.mean()) if tiene_tiros else None,
         "tiros_arco_visitante_proj": float(tiros_arco_b.mean()) if tiene_tiros else None,

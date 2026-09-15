@@ -750,30 +750,25 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     goles_b   = (stats_b["goles_favor"]   + stats_a["goles_contra"])   / 2
     corners_a = (stats_a["corners_favor"] + stats_b["corners_contra"]) / 2
     corners_b = (stats_b["corners_favor"] + stats_a["corners_contra"]) / 2
-    # Tarjetas: BASE identica a la de siempre (suma directa de "favor" de
-    # cada equipo, SIN promediar con tarjetas_contra del rival) -- a
-    # proposito distinto del patron de corners/tiros. Decision explicita
-    # (ver conversacion de diseno, Bloque 2 de Fase 2): "exponer el split
-    # por equipo" y "cambiar la formula del modelo a ataque propio +
-    # defensa rival" son dos riesgos distintos que no se mezclan en el
-    # mismo cambio -- el segundo tocaria un numero ya validado y en
-    # produccion para todos los usuarios, y esta casa no aplica cambios
-    # de modelo sin su propio backtest (mismo criterio que Elo en
-    # handicap europeo/asiatico). tarjetas_contra ya existe como
-    # infraestructura (ver mas arriba en este archivo) para el dia que
-    # se evalue esa Opcion B como tarea aparte, con su propio backtest.
+    # Tarjetas (Bloque 5): tarjetas_total sigue con la formula validada de
+    # siempre (suma directa de "favor" de cada equipo, SIN promediar con
+    # tarjetas_contra del rival) -- NO se toca, sigue calculandose aparte
+    # mas abajo con su propio ajuste H2H combinado, igual que antes de
+    # este cambio (ver nota extendida junto a ese ajuste).
     #
-    # tarjetas_a/tarjetas_b son la base ANTES de H2H y del ajuste de
-    # parejez (en simulator.py) -- se usan SOLO para fijar la proporcion
-    # de reparto local/visitante (peso_tarjetas_a mas abajo), nunca se
-    # les aplica H2H directamente. tarjetas_total (siguiente linea) es la
-    # que efectivamente recibe H2H/clip/parejez, con la MISMA formula de
-    # siempre -- ver nota extendida junto al ajuste H2H de tarjetas, mas
-    # abajo, sobre por que esta capa tambien preserva el numero validado
-    # en vez de copiar el patron por-equipo de corners/tiros.
-    tarjetas_a = stats_a["tarjetas_favor"]
-    tarjetas_b = stats_b["tarjetas_favor"]
-    tarjetas_total = tarjetas_a + tarjetas_b
+    # tarjetas_a/tarjetas_b ahora SI usan ataque propio + defensa rival
+    # (la "Opcion B" mencionada en versiones anteriores de este
+    # comentario) -- evaluada con su propio backtest antes de aplicarse
+    # (ver conversacion de diseno): mejora consistente en Brier score y
+    # log loss del reparto local/visitante, en las 5 lineas evaluadas y
+    # en 2 semillas distintas (~1470 partidos held-out cada una), sin
+    # ninguna excepcion. Solo alimentan la PROPORCION de reparto
+    # (peso_tarjetas_a mas abajo, clippeado a 0.15-0.85, y de ahi el
+    # reparto Binomial sobre la muestra ya validada en simulator.py) --
+    # nunca reemplazan tarjetas_total.
+    tarjetas_total = stats_a["tarjetas_favor"] + stats_b["tarjetas_favor"]
+    tarjetas_a = (stats_a["tarjetas_favor"] + stats_b["tarjetas_contra"]) / 2
+    tarjetas_b = (stats_b["tarjetas_favor"] + stats_a["tarjetas_contra"]) / 2
     # Tiros: misma base que corners (ataque propio + defensa rival). Sin
     # ajuste de liga ni FIFA todavia -- ver conversacion de diseno, Bloque
     # 1 de Fase 2 (solo base + H2H, liga/FIFA quedan para otro bloque).
@@ -871,24 +866,42 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
             if prom_tt_b_h2h is not None:
                 tiros_total_b = tiros_total_b * peso_base + prom_tt_b_h2h * peso_h2h
 
-        # Ajuste H2H para tarjetas -- formula COMBINADA de siempre (NO
-        # por equipo, sin peso de antiguedad por cruce individual), a
-        # diferencia de goles/corners/tiros arriba. Decision explicita
-        # (ver conversacion de diseno, Bloque 2 de Fase 2): se probo
-        # primero un H2H por equipo igual al de corners/tiros
-        # (_promedios_h2h_por_equipo, con peso de antiguedad por cruce),
-        # pero esa formula NO es algebraicamente equivalente a este
-        # .mean() simple sobre el total combinado -- daba una diferencia
-        # chica pero real (hasta +/-0.01 en tarjetas_totales_proj en
-        # partidos reales) frente al numero ya validado y en produccion.
-        # Mismo criterio que la Opcion A de la formula base: ningun
-        # cambio al modelo (ni siquiera un peso de antiguedad "mas
-        # correcto") se aplica sin su propio backtest -- se prefirio
-        # preservar el numero exacto de siempre y perder la ponderacion
-        # por antiguedad en esta metrica puntual, no es un descuido.
-        # Fuera del "if equipo_local and equipo_visitante" a proposito
-        # (igual que el codigo original): esta formula nunca necesito
-        # esos nombres, solo opera sobre el total combinado.
+            # Ajuste H2H para la PROPORCION de tarjetas (Bloque 5) --
+            # mismo patron que corners/tiros arriba (split por equipo real
+            # via _promedios_h2h_por_equipo, filtrando cruces sin dato
+            # real antes de promediar). Backtest aprobado (ver conversacion
+            # de diseno). tarjetas_total (el numero validado) sigue con su
+            # propio ajuste COMBINADO, sin tocar, un poco mas abajo -- este
+            # bloque es exclusivamente para tarjetas_a/tarjetas_b, que solo
+            # alimentan peso_tarjetas_a.
+            h2h_con_tarjetas_equipo = h2h[
+                (h2h["tarjetas_local"] + h2h["tarjetas_visitante"] > 0)
+            ]
+            tarjetas_a_h2h, tarjetas_b_h2h = _promedios_h2h_por_equipo(h2h_con_tarjetas_equipo, "tarjetas", equipo_local)
+            prom_tj_a_h2h = _promedio_ponderado_pares(tarjetas_a_h2h)
+            prom_tj_b_h2h = _promedio_ponderado_pares(tarjetas_b_h2h)
+            if prom_tj_a_h2h is not None:
+                tarjetas_a = tarjetas_a * peso_base + prom_tj_a_h2h * peso_h2h
+            if prom_tj_b_h2h is not None:
+                tarjetas_b = tarjetas_b * peso_base + prom_tj_b_h2h * peso_h2h
+
+        # Ajuste H2H para tarjetas_total -- sigue con la formula COMBINADA
+        # de siempre (NO por equipo, sin peso de antiguedad por cruce
+        # individual) -- a diferencia de tarjetas_a/tarjetas_b (la
+        # PROPORCION de reparto, bloque de arriba, Bloque 5), que ya
+        # tienen su propio ajuste H2H por equipo desde que ese cambio paso
+        # su backtest. tarjetas_total en si sigue intacto: se probo un H2H
+        # por equipo igual al de corners/tiros (_promedios_h2h_por_equipo,
+        # con peso de antiguedad por cruce), pero esa formula NO es
+        # algebraicamente equivalente a este .mean() simple sobre el total
+        # combinado -- daba una diferencia chica pero real (hasta +/-0.01
+        # en tarjetas_totales_proj en partidos reales) frente al numero ya
+        # validado y en produccion. Se preserva el numero exacto de
+        # siempre para el TOTAL -- cambiar esa formula tambien seria una
+        # tarea aparte, con su propio backtest (no forma parte de este
+        # bloque). Fuera del "if equipo_local and equipo_visitante" a
+        # proposito (igual que el codigo original): esta formula nunca
+        # necesito esos nombres, solo opera sobre el total combinado.
         h2h_con_tarjetas = h2h[
             h2h["tarjetas_local"].notna() & h2h["tarjetas_visitante"].notna()
         ]
@@ -902,15 +915,15 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     goles_b        = float(np.clip(goles_b,        GOLES_MIN,    GOLES_MAX))
     corners_a      = float(np.clip(corners_a,      CORNERS_MIN,  CORNERS_MAX))
     corners_b      = float(np.clip(corners_b,      CORNERS_MIN,  CORNERS_MAX))
-    # Tarjetas: clipear el TOTAL ya ajustado por H2H (formula de siempre,
-    # ver arriba) preserva exactamente el mismo rango y el mismo numero
-    # ya validado (1.5 a 8.0). El reparto local/visitante es proporcional
-    # al peso BASE -- tarjetas_a/tarjetas_b siguen siendo el valor de
-    # favor_a/favor_b sin tocar (nunca se les aplico H2H, esa capa vive
-    # aparte en tarjetas_total), asi que esta proporcion es estable y no
-    # se contamina con la ponderacion de antiguedad que si tiene el H2H
-    # de corners/tiros.
+    # Tarjetas: tarjetas_total se sigue clipeando igual que siempre
+    # (formula validada, rango 1.5-8.0, sin cambios). El reparto local/
+    # visitante (Bloque 5) usa peso_tarjetas_a de la formula candidata
+    # (ataque propio + defensa rival + H2H por equipo, arriba), clippeado
+    # a 0.15-0.85 -- salvaguarda para que una muestra chica no empuje el
+    # reparto a un extremo degenerado, el backtest en si no tuvo muestras
+    # tan extremas como para necesitarlo (ver conversacion de diseno).
     peso_tarjetas_a = (tarjetas_a / (tarjetas_a + tarjetas_b)) if (tarjetas_a + tarjetas_b) > 0 else 0.5
+    peso_tarjetas_a = float(np.clip(peso_tarjetas_a, 0.15, 0.85))
     tarjetas_total = float(np.clip(tarjetas_total, 1.5, 8.0))
     tarjetas_a = tarjetas_total * peso_tarjetas_a
     tarjetas_b = tarjetas_total * (1 - peso_tarjetas_a)

@@ -562,6 +562,33 @@ def simular(df, local, visitante):
                     "under": float(np.mean(valores_sim < linea_ou)),
                 }
 
+            # Tarjetas por equipo (Bloque 5): re-repartir con la MISMA
+            # muestra ya resampleada de arriba (valores_sim) -- sin esto,
+            # tarjetas_ou_local/visitante quedarian con el reparto de
+            # ANTES del multiplicador de presion/tarjetas, inconsistente
+            # con tarjetas_totales_proj/tarjetas_ou ya actualizados unas
+            # lineas arriba. El ratio local/total no lo cambia el
+            # reescalado uniforme (misma razon por la que tarjetas_local_
+            # proj/visitante_proj arriba solo se multiplicaron por el
+            # factor en vez de recalcularse), asi que se puede leer
+            # directo de los proj ya reescalados.
+            if sim.get("tarjetas_ou_local") is not None and sim["tarjetas_totales_proj"] > 0:
+                peso_tarjetas_local_resampleo = sim["tarjetas_local_proj"] / sim["tarjetas_totales_proj"]
+                _rng_state_pre_tarjetas_equipo_ou = np.random.get_state()
+                tarjetas_a_resim = np.random.binomial(valores_sim, peso_tarjetas_local_resampleo)
+                tarjetas_b_resim = valores_sim - tarjetas_a_resim
+                np.random.set_state(_rng_state_pre_tarjetas_equipo_ou)
+                for linea_ou in list(sim["tarjetas_ou_local"].keys()):
+                    sim["tarjetas_ou_local"][linea_ou] = {
+                        "over": float(np.mean(tarjetas_a_resim > linea_ou)),
+                        "under": float(np.mean(tarjetas_a_resim < linea_ou)),
+                    }
+                for linea_ou in list(sim["tarjetas_ou_visitante"].keys()):
+                    sim["tarjetas_ou_visitante"][linea_ou] = {
+                        "over": float(np.mean(tarjetas_b_resim > linea_ou)),
+                        "under": float(np.mean(tarjetas_b_resim < linea_ou)),
+                    }
+
     # Aplicar el multiplicador de intensidad ofensiva a los corners
     if multiplicador_corners != 1.0 and "corners_totales_proj" in sim:
         sim["corners_totales_proj"] = sim["corners_totales_proj"] * multiplicador_corners
@@ -2029,6 +2056,16 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
         "atajadas_ou_visitante": {
             str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
             for k, v in (sim.get("atajadas_ou_visitante") or {}).items()
+        },
+        # Tarjetas por equipo (Bloque 5) -- reparto Binomial sobre el
+        # total ya validado, no reparto proporcional de la media.
+        "tarjetas_ou_local": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tarjetas_ou_local") or {}).items()
+        },
+        "tarjetas_ou_visitante": {
+            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
+            for k, v in (sim.get("tarjetas_ou_visitante") or {}).items()
         },
         "goles_1t": _calcular_goles_1t(df, local, visitante),
         "ajuste_ia": _obtener_ajuste_ia(df, local, visitante),
