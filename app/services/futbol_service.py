@@ -84,7 +84,7 @@ LIGAS_IDS = {
     "Primera Division Chile": (265, 2026),
     "Primera Division Uruguay": (268, 2026),
     "Primera Division Peru": (281, 2026),
-    "Primera Division Venezuela": (337, 2026),
+    "Primera Division Venezuela": (299, 2026),
     "Primera Division Bolivia": (344, 2026),
     "Division Profesional Paraguay": (250, 2026),
     "Liga MX": (262, None),
