@@ -94,7 +94,7 @@ LIGAS_IDS = {
     "Copa Colombia": (241, 2026),
     "Copa Uruguay": (270, 2026),
     "Copa do Brasil": (73, 2026),
-    "Recopa Sudamericana": (12, 2026),
+    "Recopa Sudamericana": (541, 2026),
     "Mundial 2026": (1, 2026),
 }
 
