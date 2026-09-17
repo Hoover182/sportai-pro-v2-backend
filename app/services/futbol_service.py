@@ -194,6 +194,87 @@ un cambio de comportamiento real, no cosmetico (ver conversacion de
 diseno)."""
 
 
+LINEAS_EQUIPO_CANDIDATOS = {
+    ("goles", "local"): (0.5, 1.5),
+    ("goles", "visitante"): (0.5, 1.5),
+    ("corners", "local"): (4.5, 5.5),
+    ("corners", "visitante"): (3.5, 4.5),
+    ("tarjetas", "local"): (1.5, 2.5),
+    ("tarjetas", "visitante"): (1.5, 2.5),
+    ("tiros_arco", "local"): (3.5, 4.5),
+    ("tiros_arco", "visitante"): (3.5, 4.5),
+    ("tiros_total", "local"): (12.5, 13.5),
+    ("tiros_total", "visitante"): (10.5, 11.5),
+    ("atajadas", "local"): (1.5, 2.5),
+    ("atajadas", "visitante"): (2.5, 3.5),
+}
+"""2 lineas por (mercado, lado) para los candidatos por equipo (Bloque 6):
+mediana real del CSV (FT/AET/PEN) +/-0.5 por lado, separando local/
+visitante (mismas tablas del Bloque 2/3, ver LINEAS_*_EQUIPO en
+simulator.py). NO es el mismo criterio que las lineas TOTAL de mas abajo
+(mediana-1.5/-0.5): probado primero con ese mismo margen y descartado --
+la mediana por equipo es la mitad de la del total, así que mediana-1.5
+caia casi en el piso de la tabla (ej. "Over 0.5 atajadas" con 88% de
+probabilidad promedio medido en partidos reales, candidato casi seguro,
+sin valor informativo). Centrado en la mediana da candidatos con
+probabilidad real de incertidumbre (ej. "Over 1.5 atajadas" ~69% promedio).
+Verificado en regresion de 185+ partidos reales (partidos-rango, 14 dias).
+
+mercado id reusa el mismo string que la version total (ej. "corners_ou")
+-- equipo="local"/"visitante" ya alcanza para que sea una familia
+distinta via _mercados_bloqueados_por() (Bloque 4), sin necesitar un id
+nuevo."""
+
+SIM_KEY_EQUIPO = {
+    "goles": "goles_ou",
+    "corners": "corners_ou",
+    "tarjetas": "tarjetas_ou",
+    "tiros_arco": "tiros_arco_ou",
+    "tiros_total": "tiros_total_ou",
+    "atajadas": "atajadas_ou",
+}
+
+NOMBRE_MERCADO_EQUIPO = {
+    "goles": "goles",
+    "corners": "corners",
+    "tarjetas": "tarjetas",
+    "tiros_arco": "tiros al arco",
+    "tiros_total": "tiros totales",
+    "atajadas": "atajadas",
+}
+
+
+def _candidatos_equipo(sim, local, visitante):
+    """Genera los candidatos por equipo (Bloque 6) para calcular_top3()/
+    calcular_picks_combinados(): 6 mercados x 2 equipos x 2 lineas x
+    over/under = 48 candidatos por partido, leyendo directo de las
+    tablas _local/_visitante que ya calcula simulator.py (Bloque 3),
+    sin recalcular nada. Guard con sim.get() en vez de indexado directo
+    porque tiros_arco_ou_local/tiros_total_ou_local/atajadas_ou_local
+    (y sus pares _visitante) pueden venir None del mismo modo que sus
+    equivalentes TOTAL (ver comentario en calcular_top3)."""
+    nuevos = []
+    for (mercado, lado), (linea_baja, linea_alta) in LINEAS_EQUIPO_CANDIDATOS.items():
+        key = SIM_KEY_EQUIPO[mercado] + ("_local" if lado == "local" else "_visitante")
+        tabla = sim.get(key)
+        if not tabla:
+            continue
+        equipo_nombre = local if lado == "local" else visitante
+        equipo_tag = "local" if lado == "local" else "visitante"
+        for linea in (linea_baja, linea_alta):
+            if linea not in tabla:
+                continue
+            nuevos.append(Candidato(
+                f"Over {linea} {NOMBRE_MERCADO_EQUIPO[mercado]} ({equipo_nombre})",
+                tabla[linea]["over"], SIM_KEY_EQUIPO[mercado], equipo_tag,
+            ))
+            nuevos.append(Candidato(
+                f"Under {linea} {NOMBRE_MERCADO_EQUIPO[mercado]} ({equipo_nombre})",
+                tabla[linea]["under"], SIM_KEY_EQUIPO[mercado], equipo_tag,
+            ))
+    return nuevos
+
+
 def _mercados_bloqueados_por(mercado):
     """Todos los `mercado` que quedan bloqueados si `mercado` ya fue
     usado: el propio mercado siempre, mas cualquier otro que comparta
@@ -895,10 +976,10 @@ CUOTA_MINIMA_DISPONIBILIDAD = 1.15  # por debajo de esto, "practicamente
                                      # si no hubiera cuota
 
 
-def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
+def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None, equipo_visitante=None):
     """Top3 por PROBABILIDAD PURA del modelo -- criterio original, sin la
     verificacion de disponibilidad real (Betano/1xBet) que se agrego
-    despues y se volvio a sacar (ver conversacion). Dos reglas sobre la
+    despues y se volvio a sacar (ver conversacion). Tres reglas sobre la
     lista ordenada por probabilidad:
 
     1. Orden por probabilidad descendente (igual que siempre).
@@ -911,6 +992,24 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
        mutuamente excluyentes NO comparten `mercado` id (ej. resultado_
        local/visitante) -- generaliza el viejo OPUESTOS sin enumerar
        pares a mano.
+    3. Sin "sabor" repetido (Bloque 6): ademas de la regla 2 (familia
+       exacta por (mercado, equipo)), un segundo set (`sabores_usados`)
+       bloquea repetir el mismo `mercado` sin importar equipo -- evita
+       que "Over 8.5 corners" (total) y "Over 4.5 corners (Equipo)"
+       convivan en el mismo Top3 aunque tecnicamente sean familias
+       distintas. Es una regla de PRESENTACION, no cambia la definicion
+       de familia del Bloque 4 (que sigue siendo correcta para lo que
+       resuelve: excluir apuestas de fondo iguales). Sin este cap,
+       medido en 185+ partidos reales: 62-71% de los Top3 mostraban 2-3
+       picks del mismo mercado base (ej. 3 picks de tarjetas en un
+       partido) -- con el cap, 0/186 en la misma regresion, sin dejar
+       ningun Top3 con menos de 3 picks (siempre hay suficientes sabores
+       distintos con prob >=60%).
+
+    equipo_local/equipo_visitante: nombres reales de los equipos, solo
+    para el DISPLAY de los candidatos por equipo (Bloque 6) -- si no se
+    pasan (compatibilidad), simplemente no se agregan esos candidatos,
+    Top3 sigue funcionando igual que antes del Bloque 6.
 
     La cuota (via cuotas_cache.json) se sigue adjuntando a cada pick como
     dato informativo, pero YA NO filtra ni descarta candidatos -- puede
@@ -986,6 +1085,9 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
                 Candidato("Under 5.5 atajadas", atajadas_ou[5.5]["under"], "atajadas_ou", None),
             ]
 
+        if equipo_local and equipo_visitante:
+            candidatos += _candidatos_equipo(sim, equipo_local, equipo_visitante)
+
     candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     # fixture_id puede llegar como numpy.float64 (columnas del CSV con NaN
@@ -1001,22 +1103,24 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None):
     resultado = []
     usados = set()
     familias_usadas = set()
+    sabores_usados = set()  # Bloque 6, ver regla 3 del docstring
     for c in candidatos:
         if c.prob < 0.60:
             break
         bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
-        if c.nombre in usados or bloqueados & familias_usadas:
+        if c.nombre in usados or bloqueados & familias_usadas or c.mercado in sabores_usados:
             continue
         cuota, fuente_real = _resolver_cuota_mercado(cuotas_partido, c.nombre)  # informativo, ya no filtra (ver docstring)
         resultado.append({"mercado": c.nombre, "prob": round(c.prob * 100, 1), "cuota": cuota, "fuente_real": fuente_real})
         usados.add(c.nombre)
         familias_usadas |= bloqueados
+        sabores_usados.add(c.mercado)
         if len(resultado) == 3:
             break
     return resultado
 
 
-def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
+def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None, equipo_visitante=None):
     """Hermana de calcular_top3(), para la pantalla de Inicio nueva
     ("Top 10 picks del dia" filtrado por Mis Competiciones) -- NO
     reemplaza ni modifica calcular_top3(), que sigue siendo probabilidad
@@ -1032,7 +1136,20 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
     Sin tope de cantidad -- el orquestador global
     (_calcular_top10_mis_competiciones) es el que corta en 10 despues de
     juntar los picks de todos los partidos filtrados y ordenar por
-    probabilidad."""
+    probabilidad.
+
+    Hallazgo del Bloque 6 (candidatos por equipo): por el filtro de
+    cuota real de arriba, los candidatos por equipo casi no aparecen en
+    "Top 10 mis competiciones" todavia -- cuotas_cache.json no tiene
+    ninguna linea para los nombres de mercado nuevos (nunca vistos por
+    el scraper de Betano/1xBet), asi que el candidato pierde el filtro
+    de cuota casi siempre aunque tenga probabilidad >=60%. Confirmado
+    en vivo: 0 picks por equipo en una muestra real de 10 resultados de
+    esta funcion, contra 28/55 en calcular_top3() (que no exige cuota)
+    para los mismos partidos. No es un bug de esta funcion ni del
+    Bloque 6 -- es simplemente que el scraper de cuotas todavia no
+    cubre estos mercados. Se resuelve solo apenas haya cobertura real,
+    sin tocar este codigo."""
     stats_ok = (
         stats_a and stats_b and
         stats_a.get("n_partidos_stats", 0) >= 3 and
@@ -1095,6 +1212,9 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
                 Candidato("Under 5.5 atajadas", atajadas_ou[5.5]["under"], "atajadas_ou", None),
             ]
 
+        if equipo_local and equipo_visitante:
+            candidatos += _candidatos_equipo(sim, equipo_local, equipo_visitante)
+
     candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     try:
@@ -1106,11 +1226,12 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
     resultado = []
     usados = set()
     familias_usadas = set()
+    sabores_usados = set()  # Bloque 6, misma regla 3 que calcular_top3()
     for c in candidatos:
         if c.prob < 0.60:
             break
         bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
-        if c.nombre in usados or bloqueados & familias_usadas:
+        if c.nombre in usados or bloqueados & familias_usadas or c.mercado in sabores_usados:
             continue
         # Bug fix: cuotas_partido esta anidado por casa desde que se migro
         # el formato de cuotas_cache.json (ver _resolver_cuota_mercado(),
@@ -1125,10 +1246,11 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None):
         # vacio para el 100% de los partidos.
         cuota, _fuente_real = _resolver_cuota_mercado(cuotas_partido, c.nombre)
         if not cuota or cuota < CUOTA_MINIMA_DISPONIBILIDAD:
-            continue  # sin disponibilidad real -- se salta, la familia sigue libre
+            continue  # sin disponibilidad real -- se salta, la familia y el sabor siguen libres
         resultado.append({"mercado": c.nombre, "prob": round(c.prob * 100, 1), "cuota": cuota})
         usados.add(c.nombre)
         familias_usadas |= bloqueados
+        sabores_usados.add(c.mercado)
     return resultado
 
 
@@ -1166,7 +1288,7 @@ def _calcular_top10_mis_competiciones(ligas_elegidas):
             continue
         if sim is None:
             continue
-        for pick in calcular_picks_combinados(sim, fixture_id, stats_a, stats_b):
+        for pick in calcular_picks_combinados(sim, fixture_id, stats_a, stats_b, local, visitante):
             resultados.append({
                 "liga": liga,
                 "partido": f"{local} vs {visitante}",
@@ -1420,7 +1542,7 @@ def _calcular_top_picks():
         sim, stats_a, stats_b = simular(df, local, visitante)
         if sim is None:
             continue
-        top3 = calcular_top3(sim, fixture_id, stats_a, stats_b)
+        top3 = calcular_top3(sim, fixture_id, stats_a, stats_b, local, visitante)
         if not top3:
             continue
         for pick in top3:
@@ -1873,7 +1995,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     except Exception:
         liga = "Desconocida"
     fixture_id_pendiente = _obtener_fixture_id_pendiente(df, local, visitante)
-    top3 = calcular_top3(sim, fixture_id_pendiente, stats_a, stats_b)
+    top3 = calcular_top3(sim, fixture_id_pendiente, stats_a, stats_b, local, visitante)
     estado_real, goles_local_real, goles_visitante_real = _obtener_estado_real_partido(df, local, visitante)
     ultimos_local = []
     ultimos_visitante = []
