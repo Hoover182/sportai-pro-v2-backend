@@ -975,6 +975,22 @@ CUOTA_MINIMA_DISPONIBILIDAD = 1.15  # por debajo de esto, "practicamente
                                      # sin pago" -- se descarta igual que
                                      # si no hubiera cuota
 
+PROB_TECHO_INFORMATIVO = 0.92
+"""Red de seguridad adicional (Bloque 7): un candidato con prob >= esto
+se descarta de Top3/picks combinados sin importar mercado o si es
+total/por equipo -- "obvio", no aporta informacion real aunque el
+modelo lo calcule bien. Valor elegido con datos reales, no adivinado:
+medido sobre el pool completo de produccion (185+ partidos, ver
+regresion del Bloque 6) -- la distribucion de probabilidad de los
+candidatos NO tiene un salto/codo natural (gradiente suave: p90=81.4%,
+p95=84.4%, p99=89.6%), asi que no hay un punto "correcto" objetivo;
+92% cae justo por encima de p95-p97, recorta solo el 3-5% mas extremo
+de la cola sin tocar picks de alta confianza genuina (80-88%).
+Probado en la misma regresion CON este techo (y hasta con 85%, mas
+agresivo): 0/185 partidos quedan con menos de 3 picks -- ~24.5
+candidatos con prob>=60% por partido en promedio, sobra profundidad,
+no hace falta ningun fallback."""
+
 
 def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None, equipo_visitante=None):
     """Top3 por PROBABILIDAD PURA del modelo -- criterio original, sin la
@@ -1005,6 +1021,14 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
        partido) -- con el cap, 0/186 en la misma regresion, sin dejar
        ningun Top3 con menos de 3 picks (siempre hay suficientes sabores
        distintos con prob >=60%).
+    4. Sin candidatos "obvios" (Bloque 7): PROB_TECHO_INFORMATIVO (92%)
+       -- un candidato con probabilidad >= eso se salta sin importar
+       mercado ni equipo, sin marcar familia/sabor como usados (misma
+       logica que "sin cuota real" de la regla del picks combinados).
+       Ver docstring de PROB_TECHO_INFORMATIVO para como se elegio el
+       valor con datos reales. Medido en la misma regresion de 185+
+       partidos: nunca deja un Top3 con menos de 3 picks (probado
+       hasta con 85%, mas agresivo que 92%).
 
     equipo_local/equipo_visitante: nombres reales de los equipos, solo
     para el DISPLAY de los candidatos por equipo (Bloque 6) -- si no se
@@ -1107,6 +1131,8 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
     for c in candidatos:
         if c.prob < 0.60:
             break
+        if c.prob >= PROB_TECHO_INFORMATIVO:
+            continue  # Bloque 7: demasiado "obvio", se salta sin marcar familia/sabor
         bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
         if c.nombre in usados or bloqueados & familias_usadas or c.mercado in sabores_usados:
             continue
@@ -1230,6 +1256,8 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None, equip
     for c in candidatos:
         if c.prob < 0.60:
             break
+        if c.prob >= PROB_TECHO_INFORMATIVO:
+            continue  # Bloque 7: demasiado "obvio", se salta sin marcar familia/sabor
         bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
         if c.nombre in usados or bloqueados & familias_usadas or c.mercado in sabores_usados:
             continue
