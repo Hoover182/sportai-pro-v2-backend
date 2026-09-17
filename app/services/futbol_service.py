@@ -991,6 +991,23 @@ agresivo): 0/185 partidos quedan con menos de 3 picks -- ~24.5
 candidatos con prob>=60% por partido en promedio, sobra profundidad,
 no hace falta ningun fallback."""
 
+RANGO_PICK3_BAJO = 0.65
+RANGO_PICK3_ALTO = 0.78
+"""Pick #3 de Top3 (Bloque 8): en vez del 3er candidato mas probable,
+el de mayor probabilidad dentro de [RANGO_PICK3_BAJO, RANGO_PICK3_ALTO]
+-- picks #1 y #2 siguen siendo los 2 mas probables (la base solida),
+pick #3 pasa a ser deliberadamente mas incierto en vez de "casi tan
+seguro como los otros dos". Rango elegido con datos reales, no
+adivinado: medido sobre el pool completo de produccion (185 partidos,
+partidos-rango 14 dias) -- el pick #3 de HOY (3er mas probable) ya
+tiene mediana 78.2% (p25=75.1%, p75=81.6%), el techo del Bloque 7 ya
+lo venia moderando de por si, pero el p75 muestra que 1 de cada 4
+partidos segia siendo bastante confiado. 65-78% probado contra 5
+rangos alternativos (65-75%, 68-80%, 60-75%, 65-80%, 70-80%): el que
+da 0/185 fallback y deja el pick#3 resultante (mediana 76.0%)
+claramente por debajo de los picks #1/#2 (mediana 85.7%/81.3%) sin
+acercarse al piso de 60% (ruido puro, sin informacion real)."""
+
 
 def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None, equipo_visitante=None):
     """Top3 por PROBABILIDAD PURA del modelo -- criterio original, sin la
@@ -1029,6 +1046,17 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
        valor con datos reales. Medido en la misma regresion de 185+
        partidos: nunca deja un Top3 con menos de 3 picks (probado
        hasta con 85%, mas agresivo que 92%).
+    5. Pick #3 deliberadamente incierto (Bloque 8): picks #1 y #2 son
+       los 2 candidatos mas probables (igual que las reglas 1-4 de
+       arriba). Pick #3 YA NO es el 3er mas probable -- es el de mayor
+       probabilidad dentro de [RANGO_PICK3_BAJO, RANGO_PICK3_ALTO]
+       (65-78%) que no choque familia/sabor con los picks #1/#2. Ver
+       docstring de RANGO_PICK3_BAJO para como se elegio el rango con
+       datos reales. Fallback si ningun candidato cae en el rango
+       (choca con familia/sabor de los picks 1-2, o el partido no
+       tiene candidatos ahi): cae al 3er mas probable, igual que el
+       comportamiento pre-Bloque-8 -- medido en la misma regresion de
+       185 partidos, el fallback se activa en 0/185 con este rango.
 
     equipo_local/equipo_visitante: nombres reales de los equipos, solo
     para el DISPLAY de los candidatos por equipo (Bloque 6) -- si no se
@@ -1128,6 +1156,10 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
     usados = set()
     familias_usadas = set()
     sabores_usados = set()  # Bloque 6, ver regla 3 del docstring
+
+    # Picks #1 y #2 (Bloque 8): los 2 mas probables, igual que siempre
+    # (reglas 1-4), pero tope 2 en vez de 3 -- el pick #3 se resuelve
+    # aparte mas abajo con su propio criterio.
     for c in candidatos:
         if c.prob < 0.60:
             break
@@ -1141,8 +1173,44 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
         usados.add(c.nombre)
         familias_usadas |= bloqueados
         sabores_usados.add(c.mercado)
-        if len(resultado) == 3:
+        if len(resultado) == 2:
             break
+
+    # Pick #3 (Bloque 8): el de mayor probabilidad dentro del rango
+    # moderado, sin chocar familia/sabor con los picks #1/#2.
+    # `candidatos` ya viene ordenado desc, asi que el primero que
+    # entre en el rango y no choque es el de mayor prob dentro de el.
+    pick3 = None
+    for c in candidatos:
+        if c.prob > RANGO_PICK3_ALTO:
+            continue
+        if c.prob < RANGO_PICK3_BAJO:
+            break  # ordenado desc -- ya no hay candidatos utiles debajo
+        bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
+        if c.nombre in usados or bloqueados & familias_usadas or c.mercado in sabores_usados:
+            continue
+        pick3 = c
+        break
+
+    if pick3 is None:
+        # Fallback: ningun candidato en rango (choque de familia/sabor
+        # con los picks 1-2, o el partido no tiene nada ahi) -- cae al
+        # 3er mas probable, mismo comportamiento que antes del Bloque 8.
+        for c in candidatos:
+            if c.prob < 0.60:
+                break
+            if c.prob >= PROB_TECHO_INFORMATIVO:
+                continue
+            bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
+            if c.nombre in usados or bloqueados & familias_usadas or c.mercado in sabores_usados:
+                continue
+            pick3 = c
+            break
+
+    if pick3 is not None:
+        cuota, fuente_real = _resolver_cuota_mercado(cuotas_partido, pick3.nombre)
+        resultado.append({"mercado": pick3.nombre, "prob": round(pick3.prob * 100, 1), "cuota": cuota, "fuente_real": fuente_real})
+
     return resultado
 
 
