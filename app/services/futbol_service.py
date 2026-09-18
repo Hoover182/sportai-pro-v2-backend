@@ -890,6 +890,49 @@ def _calcular_cuotas_1x2(fixture_id, prob_local, prob_empate, prob_visitante, ca
     }
 
 
+def _ou_con_cuotas(ou_sim, sufijo, fixture_id, casa_preferida="1xBet"):
+    """Bloque Over/Under de un mercado total (goles/corners/tarjetas) con la
+    cuota REAL de cada linea al lado de la probabilidad del modelo:
+    {linea: {over, under, over_cuota, under_cuota, fuente_real, es_fallback}}.
+
+    Las dos patas de una linea salen de LA MISMA casa (misma razon que
+    _resolver_1x2_casa: cada casa arma su propio margen entre Over y
+    Under). Empieza por casa_preferida y prueba las demas en el orden de
+    CASAS_CUOTAS. Sin cobertura real -> over_cuota/under_cuota/fuente_real
+    en None (nunca una cuota aproximada, a diferencia de cuotas_1x2). Solo
+    las lineas que cuotas_cache.json realmente trae (ver
+    MAPEO_MERCADOS_CUOTAS en analista_futbol) resuelven una cuota; el resto
+    queda en None sin necesidad de una lista de lineas aca. Los campos
+    over/under (probabilidad, en %) no cambian."""
+    try:
+        fixture_id_str = str(int(fixture_id)) if fixture_id is not None and pd.notna(fixture_id) else None
+    except (TypeError, ValueError):
+        fixture_id_str = None
+    entry = _cargar_cuotas_cache().get(fixture_id_str) if fixture_id_str else None
+    orden = (casa_preferida,) + tuple(c for c in CASAS_CUOTAS if c != casa_preferida)
+
+    resultado = {}
+    for linea, v in ou_sim.items():
+        over_cuota = under_cuota = fuente_real = None
+        if entry and _es_formato_nuevo_cuotas(entry):
+            for casa in orden:
+                datos = entry.get(casa) or {}
+                o = datos.get(f"Over {linea} {sufijo}")
+                u = datos.get(f"Under {linea} {sufijo}")
+                if o is not None and u is not None:
+                    over_cuota, under_cuota, fuente_real = o, u, casa
+                    break
+        resultado[str(linea)] = {
+            "over": round(v["over"] * 100, 1),
+            "under": round(v["under"] * 100, 1),
+            "over_cuota": over_cuota,
+            "under_cuota": under_cuota,
+            "fuente_real": fuente_real,
+            "es_fallback": bool(fuente_real and fuente_real != casa_preferida),
+        }
+    return resultado
+
+
 TEAM_IDS_PATH = os.path.join(os.path.dirname(__file__), "cache_team_ids.json")
 _cache_team_ids = None
 
@@ -2254,26 +2297,16 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
         "atajadas_local_proj": _safe(sim.get("atajadas_local_proj")),
         "atajadas_visitante_proj": _safe(sim.get("atajadas_visitante_proj")),
         "cuotas_1x2": cuotas_1x2,
-        "goles_ou": {
-            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
-            for k, v in sim["goles_ou"].items()
-        },
-        "corners_ou": {
-            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
-            for k, v in sim["corners_ou"].items()
-        },
-        "tarjetas_ou": {
-            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
-            for k, v in sim["tarjetas_ou"].items()
-        },
-        "tiros_arco_ou": {
-            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
-            for k, v in (sim.get("tiros_arco_ou") or {}).items()
-        },
-        "tiros_total_ou": {
-            str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
-            for k, v in (sim.get("tiros_total_ou") or {}).items()
-        },
+        # goles/corners/tarjetas: ademas de la probabilidad del modelo,
+        # cuota real Betano/1xBet por linea (null si la linea no tiene
+        # cobertura) -- ver _ou_con_cuotas(). Lo mismo para tiros al arco y
+        # tiros totales mas abajo. atajadas_ou NO: ninguna casa ofrece el
+        # total de atajadas del partido (solo por arquero).
+        "goles_ou": _ou_con_cuotas(sim["goles_ou"], "goles", fixture_id_pendiente, casa_normalizada),
+        "corners_ou": _ou_con_cuotas(sim["corners_ou"], "corners", fixture_id_pendiente, casa_normalizada),
+        "tarjetas_ou": _ou_con_cuotas(sim["tarjetas_ou"], "tarjetas", fixture_id_pendiente, casa_normalizada),
+        "tiros_arco_ou": _ou_con_cuotas(sim.get("tiros_arco_ou") or {}, "tiros al arco", fixture_id_pendiente, casa_normalizada),
+        "tiros_total_ou": _ou_con_cuotas(sim.get("tiros_total_ou") or {}, "tiros totales", fixture_id_pendiente, casa_normalizada),
         "atajadas_ou": {
             str(k): {"over": round(v["over"]*100,1), "under": round(v["under"]*100,1)}
             for k, v in (sim.get("atajadas_ou") or {}).items()
