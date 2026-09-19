@@ -569,12 +569,17 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_cc   = np.mean(corners_contra) if corners_contra else 0.0
         media_tf   = np.mean(tarjetas_favor) if tarjetas_favor else 0.0
         media_tc   = np.mean(tarjetas_contra) if tarjetas_contra else 0.0
-        media_ta_f = np.mean(tiros_arco_favor)   if tiros_arco_favor   else 0.0
-        media_ta_c = np.mean(tiros_arco_contra)  if tiros_arco_contra  else 0.0
-        media_tt_f = np.mean(tiros_total_favor)  if tiros_total_favor  else 0.0
-        media_tt_c = np.mean(tiros_total_contra) if tiros_total_contra else 0.0
-        media_at_f = np.mean(atajadas_favor)   if atajadas_favor   else 0.0
-        media_at_c = np.mean(atajadas_contra)  if atajadas_contra  else 0.0
+        # Tiros/atajadas: sin ningun valor real, NaN (no 0.0). Un 0.0 no
+        # es "dato faltante": el clip del simulador lo subia al minimo y
+        # salia un mercado que parecia del equipo sin serlo (ej. "Under
+        # 2.5 atajadas" de un equipo sin atajadas registradas). NaN llega
+        # al simulador como "sin metrica" (_media_valida) y no se ofrece.
+        media_ta_f = np.mean(tiros_arco_favor)   if tiros_arco_favor   else np.nan
+        media_ta_c = np.mean(tiros_arco_contra)  if tiros_arco_contra  else np.nan
+        media_tt_f = np.mean(tiros_total_favor)  if tiros_total_favor  else np.nan
+        media_tt_c = np.mean(tiros_total_contra) if tiros_total_contra else np.nan
+        media_at_f = np.mean(atajadas_favor)   if atajadas_favor   else np.nan
+        media_at_c = np.mean(atajadas_contra)  if atajadas_contra  else np.nan
 
     # Blend con xG (expected goals) cuando hay cobertura real -- fallback
     # total a goles reales si no. Cobertura muy despareja segun competencia
