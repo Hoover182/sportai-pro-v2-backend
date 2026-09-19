@@ -374,6 +374,17 @@ def _promedios_ponderados_condicion(historial, equipo, condicion, n=10, liga=Non
     }
 
 
+def _mezcla_con_liga(valores, prom_liga, peso_real, peso_liga):
+    """Media del equipo mezclada con el promedio de liga (rama pocos_datos).
+    Si el equipo no tiene NINGUN valor de esa metrica (ej. tiene corners
+    pero no atajadas), np.mean([]) daba nan y ese nan llegaba al
+    simulador (issue #27): se usa el promedio de liga puro. Con al menos
+    un valor la cuenta es identica a la de siempre."""
+    if not valores:
+        return prom_liga
+    return np.mean(valores) * peso_real + prom_liga * peso_liga
+
+
 def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condicion=None):
     """liga: liga del partido que se esta analizando (ver obtener_liga_partido).
     Si no se pasa (compatibilidad con llamadas existentes que no la conocen),
@@ -544,12 +555,12 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_cc  = np.mean(corners_contra) * peso_real + prom_liga["corners"]    * peso_liga
         media_tf  = np.mean(tarjetas_favor) * peso_real + prom_liga["tarjetas"]   * peso_liga
         media_tc  = np.mean(tarjetas_contra) * peso_real + prom_liga["tarjetas"]  * peso_liga
-        media_ta_f = np.mean(tiros_arco_favor)  * peso_real + prom_liga["tiros_arco"] * peso_liga
-        media_ta_c = np.mean(tiros_arco_contra) * peso_real + prom_liga["tiros_arco"] * peso_liga
-        media_tt_f = np.mean(tiros_total_favor)  * peso_real + prom_liga["tiros_total"] * peso_liga
-        media_tt_c = np.mean(tiros_total_contra) * peso_real + prom_liga["tiros_total"] * peso_liga
-        media_at_f = np.mean(atajadas_favor)  * peso_real + prom_liga["atajadas"] * peso_liga
-        media_at_c = np.mean(atajadas_contra) * peso_real + prom_liga["atajadas"] * peso_liga
+        media_ta_f = _mezcla_con_liga(tiros_arco_favor, prom_liga["tiros_arco"], peso_real, peso_liga)
+        media_ta_c = _mezcla_con_liga(tiros_arco_contra, prom_liga["tiros_arco"], peso_real, peso_liga)
+        media_tt_f = _mezcla_con_liga(tiros_total_favor, prom_liga["tiros_total"], peso_real, peso_liga)
+        media_tt_c = _mezcla_con_liga(tiros_total_contra, prom_liga["tiros_total"], peso_real, peso_liga)
+        media_at_f = _mezcla_con_liga(atajadas_favor, prom_liga["atajadas"], peso_real, peso_liga)
+        media_at_c = _mezcla_con_liga(atajadas_contra, prom_liga["atajadas"], peso_real, peso_liga)
     else:
         suma_pesos = sum(pesos_partidos) if pesos_partidos else len(goles_favor)
         media_gf   = sum(goles_favor)  / suma_pesos if suma_pesos > 0 else np.mean(goles_favor)

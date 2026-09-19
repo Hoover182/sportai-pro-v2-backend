@@ -320,6 +320,7 @@ def obtener_equipos_nivel1(df):
 import unicodedata
 
 _cache_equipos_todos = None
+_cache_equipos_exactos = None
 
 
 def _normalizar_nombre(nombre):
@@ -333,13 +334,27 @@ def resolver_nombre_equipo(df, nombre_input):
     distintas) al nombre exacto tal como esta guardado en el CSV.
     Devuelve (nombre_resuelto, hubo_correccion_aproximada).
     Si no encuentra nada ni por aproximacion, devuelve (nombre_input, False)."""
-    global _cache_equipos_todos
+    global _cache_equipos_todos, _cache_equipos_exactos
     if _cache_equipos_todos is None:
         equipos = set(df["equipo_local"].dropna().unique()) | set(df["equipo_visitante"].dropna().unique())
-        _cache_equipos_todos = {_normalizar_nombre(eq): eq for eq in equipos}
+        # Dos nombres distintos pueden normalizar igual (ej. "Leon"/"Leon" con
+        # tilde). Antes ganaba el ultimo en iterar el set, que cambia entre
+        # procesos (hash aleatorio de strings): el mismo input resolvia a un
+        # equipo u otro segun el arranque. Ahora gana el nombre con mas
+        # partidos en el CSV (desempate por nombre), siempre el mismo.
+        partidos = pd.concat([df["equipo_local"], df["equipo_visitante"]]).value_counts()
+        _cache_equipos_todos = {
+            _normalizar_nombre(eq): eq
+            for eq in sorted(equipos, key=lambda e: (int(partidos.get(e, 0)), e))
+        }
+        _cache_equipos_exactos = equipos
 
     nombre_normalizado = _normalizar_nombre(nombre_input)
     exacto = _cache_equipos_todos.get(nombre_normalizado)
+    # Un input que ya es, letra por letra, un nombre real del CSV nunca se
+    # reemplaza por otro que solo normaliza igual.
+    if nombre_input in _cache_equipos_exactos:
+        exacto = nombre_input
 
     # El match "exacto" es TOTALMENTE confiable cuando el input ya
     # coincide letra por letra (salvo mayusculas) con el nombre real --

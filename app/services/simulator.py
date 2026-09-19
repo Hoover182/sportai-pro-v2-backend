@@ -61,6 +61,15 @@ def _neg_binom_pmf_vector(lam, k, max_k=MAX_GOLES_GRID):
     return np.exp(log_pmf)
 
 
+def _media_valida(media):
+    """True si media es un numero finito. None (el caller no la paso) y
+    NaN/inf (equipo sin datos de esa metrica que se filtro hasta aca)
+    cuentan igual: sin esa metrica, no se simula ni se expone su O/U.
+    np.clip(nan) devuelve nan, asi que sin este chequeo el NaN llegaba a
+    np.random.poisson y explotaba con "lam value too large"."""
+    return media is not None and bool(np.isfinite(media))
+
+
 def _muestrear_conteo(media, k, sims):
     """Muestrea sims conteos de una variable con incertidumbre
     parametrica sobre su tasa (Gamma-Poisson) si se pasa k, o Poisson
@@ -299,8 +308,8 @@ def simular_partido_futbol(
     media_tarjetas_total = float(np.clip(media_tarjetas_total, TARJETAS_MIN, TARJETAS_MAX))
     # Tiros son opcionales (default None) para no romper otros callers que
     # todavia no los pasan (ej. probabilidad_linea_personalizada no los usa).
-    tiene_tiros = media_tiros_arco_a is not None and media_tiros_arco_b is not None \
-        and media_tiros_total_a is not None and media_tiros_total_b is not None
+    tiene_tiros = _media_valida(media_tiros_arco_a) and _media_valida(media_tiros_arco_b) \
+        and _media_valida(media_tiros_total_a) and _media_valida(media_tiros_total_b)
     if tiene_tiros:
         media_tiros_arco_a = float(np.clip(media_tiros_arco_a, TIROS_ARCO_MIN, TIROS_ARCO_MAX))
         media_tiros_arco_b = float(np.clip(media_tiros_arco_b, TIROS_ARCO_MIN, TIROS_ARCO_MAX))
@@ -308,7 +317,7 @@ def simular_partido_futbol(
         media_tiros_total_b = float(np.clip(media_tiros_total_b, TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
     # Atajadas: mismo patron opcional que tiros (default None para no
     # romper otros callers), chequeado y clipeado aparte.
-    tiene_atajadas = media_atajadas_a is not None and media_atajadas_b is not None
+    tiene_atajadas = _media_valida(media_atajadas_a) and _media_valida(media_atajadas_b)
     if tiene_atajadas:
         media_atajadas_a = float(np.clip(media_atajadas_a, ATAJADAS_MIN, ATAJADAS_MAX))
         media_atajadas_b = float(np.clip(media_atajadas_b, ATAJADAS_MIN, ATAJADAS_MAX))
