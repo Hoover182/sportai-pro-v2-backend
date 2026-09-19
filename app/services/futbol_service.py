@@ -5,6 +5,16 @@ def _safe(v):
     except:
         return 0.0
 
+
+def _safe_o(v):
+    """Como _safe, pero None (no 0.0) cuando no hay valor: NaN/None es
+    "sin dato", no una proyeccion de cero. Mismo redondeo si hay valor."""
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    return None if f != f else round(f, 2)
+
 import os
 JUGADORES_DATA_DIR = os.path.join(os.path.dirname(__file__), "jugadores_data")
 import sys
@@ -2302,15 +2312,15 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
         "tarjetas_proj": round(sim["tarjetas_totales_proj"], 2),
         "tarjetas_local_proj": _safe(sim.get("tarjetas_local_proj")),
         "tarjetas_visitante_proj": _safe(sim.get("tarjetas_visitante_proj")),
-        "tiros_arco_proj": _safe(sim.get("tiros_arco_totales_proj")),
-        "tiros_arco_local_proj": _safe(sim.get("tiros_arco_local_proj")),
-        "tiros_arco_visitante_proj": _safe(sim.get("tiros_arco_visitante_proj")),
-        "tiros_total_proj": _safe(sim.get("tiros_total_totales_proj")),
-        "tiros_total_local_proj": _safe(sim.get("tiros_total_local_proj")),
-        "tiros_total_visitante_proj": _safe(sim.get("tiros_total_visitante_proj")),
-        "atajadas_proj": _safe(sim.get("atajadas_totales_proj")),
-        "atajadas_local_proj": _safe(sim.get("atajadas_local_proj")),
-        "atajadas_visitante_proj": _safe(sim.get("atajadas_visitante_proj")),
+        "tiros_arco_proj": _safe_o(sim.get("tiros_arco_totales_proj")),
+        "tiros_arco_local_proj": _safe_o(sim.get("tiros_arco_local_proj")),
+        "tiros_arco_visitante_proj": _safe_o(sim.get("tiros_arco_visitante_proj")),
+        "tiros_total_proj": _safe_o(sim.get("tiros_total_totales_proj")),
+        "tiros_total_local_proj": _safe_o(sim.get("tiros_total_local_proj")),
+        "tiros_total_visitante_proj": _safe_o(sim.get("tiros_total_visitante_proj")),
+        "atajadas_proj": _safe_o(sim.get("atajadas_totales_proj")),
+        "atajadas_local_proj": _safe_o(sim.get("atajadas_local_proj")),
+        "atajadas_visitante_proj": _safe_o(sim.get("atajadas_visitante_proj")),
         "cuotas_1x2": cuotas_1x2,
         # goles/corners/tarjetas: ademas de la probabilidad del modelo,
         # cuota real Betano/1xBet por linea (null si la linea no tiene
