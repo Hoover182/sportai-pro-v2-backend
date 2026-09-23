@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.services import futbol_service, tracking_picks
+from app.services import futbol_service, tracking_picks, alineaciones
 
 router = APIRouter()
 
@@ -67,6 +67,23 @@ async def picks_registrados_por_nombres(local: str, visitante: str):
         if error:
             return {"error": error}
         return tracking_picks.get_picks_registrados(fixture_id)
+    except Exception as e:
+        return {"error": str(e)}
+
+@router.get("/alineaciones")
+async def alineaciones_partido(fixture_id: int):
+    try:
+        return alineaciones.get_alineaciones(fixture_id)
+    except Exception as e:
+        return {"error": str(e)}
+
+@router.get("/alineaciones/{local}/{visitante}")
+async def alineaciones_por_nombres(local: str, visitante: str):
+    try:
+        fixture_id, error = futbol_service.get_fixture_id_partido(local, visitante)
+        if error:
+            return {"error": error}
+        return alineaciones.get_alineaciones(fixture_id)
     except Exception as e:
         return {"error": str(e)}
 
