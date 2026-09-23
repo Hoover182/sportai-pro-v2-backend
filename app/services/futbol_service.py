@@ -2157,6 +2157,83 @@ def get_detalle_post_partido(local_input, visitante_input):
     return detalle, None
 
 
+def _hechos_para_analisis(df, local, visitante, stats_a, stats_b):
+    """Datos reales para los bullets del Analisis IA (analisis_mercados.py)
+    que la respuesta de /partido no trae armados: forma general y por
+    condicion (local en casa / visitante afuera), % con gol de ambos,
+    H2H resumido y cuantos partidos recientes tienen stats de corners/
+    tarjetas/tiros. Solo partidos terminados (obtener_partidos_equipo y
+    ultimos_enfrentamientos_directos ya filtran FT/AET/PEN)."""
+    from analisis_mercados import MIN_PARTIDOS
+
+    def _con_dato(filas, col_l, col_v, exigir_positivo):
+        ok = filas[col_l].notna() & filas[col_v].notna()
+        if exigir_positivo:
+            ok &= (filas[col_l].fillna(0) + filas[col_v].fillna(0)) > 0
+        return ok
+
+    def _equipo(equipo, stats, condicion):
+        historial = obtener_partidos_equipo(df, equipo, n=10 ** 6)
+        ultimos10 = historial.head(10)
+        ultimos5 = historial.head(5)
+        v = e = d = 0
+        for _, r in ultimos5.iterrows():
+            es_local = r["equipo_local"] == equipo
+            gf = r["goles_local"] if es_local else r["goles_visitante"]
+            gc = r["goles_visitante"] if es_local else r["goles_local"]
+            v += gf > gc; e += gf == gc; d += gf < gc
+        n5 = len(ultimos5)
+        col = "equipo_local" if condicion == "local" else "equipo_visitante"
+        cond = historial[historial[col] == equipo].head(5)
+        if condicion == "local":
+            cv = int((cond["goles_local"] > cond["goles_visitante"]).sum())
+        else:
+            cv = int((cond["goles_visitante"] > cond["goles_local"]).sum())
+        btts = int(((ultimos10["goles_local"] > 0) & (ultimos10["goles_visitante"] > 0)).sum())
+        return {
+            "n_total": len(historial),
+            "pocos_datos": bool(stats.get("pocos_datos")) or len(historial) < MIN_PARTIDOS,
+            "forma5": {"v": int(v), "e": int(e), "d": int(d), "n": n5,
+                       "ppg": round((3 * v + e) / n5, 2) if n5 else None},
+            "condicion": {"v": cv, "n": len(cond)},
+            "btts": {"x": btts, "n": len(ultimos10)},
+            "n_ventana": len(ultimos10),
+            "n_corners": int(_con_dato(ultimos10, "corners_local", "corners_visitante", True).sum()),
+            "n_tarjetas": int(_con_dato(ultimos10, "tarjetas_local", "tarjetas_visitante", False).sum()),
+            "n_tiros_arco": int(_con_dato(ultimos10, "tiros_arco_local", "tiros_arco_visitante", True).sum()),
+            "n_tiros_total": int(_con_dato(ultimos10, "tiros_total_local", "tiros_total_visitante", True).sum()),
+        }
+
+    h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=10)
+    g = e = p = 0
+    for _, r in h2h.iterrows():
+        es_local = r["equipo_local"] == local
+        gf = r["goles_local"] if es_local else r["goles_visitante"]
+        gc = r["goles_visitante"] if es_local else r["goles_local"]
+        g += gf > gc; e += gf == gc; p += gf < gc
+    con_corners = h2h[_con_dato(h2h, "corners_local", "corners_visitante", True)] if not h2h.empty else h2h
+    con_tarjetas = h2h[_con_dato(h2h, "tarjetas_local", "tarjetas_visitante", False)] if not h2h.empty else h2h
+    ultima = h2h["fecha"].max() if not h2h.empty else None
+    hl = _equipo(local, stats_a, "local")
+    hv = _equipo(visitante, stats_b, "visitante")
+    return {
+        "local": hl,
+        "visitante": hv,
+        "pocos_datos": hl["pocos_datos"] or hv["pocos_datos"],
+        "h2h": {
+            "n": len(h2h), "g": int(g), "e": int(e), "p": int(p),
+            "btts": int(((h2h["goles_local"] > 0) & (h2h["goles_visitante"] > 0)).sum()) if not h2h.empty else 0,
+            "goles_prom": round(float((h2h["goles_local"] + h2h["goles_visitante"]).mean()), 1) if not h2h.empty else None,
+            "n_corners": len(con_corners),
+            "corners_prom": round(float((con_corners["corners_local"] + con_corners["corners_visitante"]).mean()), 1) if len(con_corners) else None,
+            "n_tarjetas": len(con_tarjetas),
+            "tarjetas_prom": round(float((con_tarjetas["tarjetas_local"] + con_tarjetas["tarjetas_visitante"]).mean()), 1) if len(con_tarjetas) else None,
+            "ultima_fecha": str(ultima)[:10] if ultima is not None else None,
+            "ultimo_antiguo": bool(ultima is not None and (pd.Timestamp.now(tz=ultima.tzinfo) - ultima).days > 365),
+        },
+    }
+
+
 def get_analisis_partido(local_input, visitante_input, casa=None):
     casa_normalizada = _normalizar_casa(casa)
     df = cargar_df()
@@ -2293,7 +2370,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
         casa_preferida=casa_normalizada,
     )
 
-    return {
+    resultado = {
         "local": local,
         "visitante": visitante,
         "fixture_id": fixture_id_pendiente,
@@ -2461,7 +2538,21 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
             "derrotas": stats_b["derrotas"],
             "n_partidos": stats_b["n_partidos"],
         },
-    }, None
+    }
+    # Analisis IA por mercado (texto por reglas, analisis_mercados.py):
+    # se arma sobre ESTA misma respuesta para que cada numero del texto
+    # coincida con el que muestra la tarjeta. Clave de variante =
+    # fixture_id (semilla fija por partido y mercado). Si falla, la
+    # respuesta sale igual, sin analisis_ia.
+    try:
+        from analisis_mercados import armar_analisis_ia
+        hechos = _hechos_para_analisis(df, local, visitante, stats_a, stats_b)
+        clave = fixture_id_pendiente if fixture_id_pendiente is not None else f"{local}|{visitante}"
+        resultado["analisis_ia"] = armar_analisis_ia(resultado, hechos, clave)
+    except Exception as e:
+        print(f"AVISO analisis_ia: {type(e).__name__}: {e}")
+        resultado["analisis_ia"] = None
+    return resultado, None
 
 
 MERCADOS_VALIDOS = ("goles", "corners", "tarjetas")
