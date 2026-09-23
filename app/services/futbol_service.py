@@ -2069,6 +2069,7 @@ def _cargar_detalle_post_partido(fixture_id, df):
             fecha = hora = None
 
         detalle = {
+            "fixture_id": fixture_id,
             "fecha": fecha,
             "hora": hora,
             **_formatear_info_partido(fixture_data),
@@ -2093,6 +2094,26 @@ def _cargar_detalle_post_partido(fixture_id, df):
         return detalle
     except Exception:
         return None
+
+
+def get_fixture_id_partido(local_input, visitante_input):
+    """fixture_id que usan /partido y /partido-detalle para este cruce
+    (mismo _obtener_fixture_id_pendiente), para /picks-registrados por
+    nombres. Consultar por fixture_id directo es preferible: evita la
+    ambiguedad de nombres y de revanchas."""
+    df = cargar_df()
+    if df.empty:
+        return None, "No hay datos disponibles"
+    local = obtener_equipo_por_nombre(df, local_input)
+    visitante = obtener_equipo_por_nombre(df, visitante_input)
+    if local is None:
+        return None, f"Equipo no encontrado: {local_input}"
+    if visitante is None:
+        return None, f"Equipo no encontrado: {visitante_input}"
+    fixture_id = _obtener_fixture_id_pendiente(df, local, visitante)
+    if fixture_id is None:
+        return None, "No se encontro el partido"
+    return fixture_id, None
 
 
 def get_detalle_post_partido(local_input, visitante_input):
@@ -2275,6 +2296,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     return {
         "local": local,
         "visitante": visitante,
+        "fixture_id": fixture_id_pendiente,
         "liga": liga,
         "jornada": _obtener_jornada_pre_partido(fixture_id_pendiente),
         "estado_real": estado_real,
