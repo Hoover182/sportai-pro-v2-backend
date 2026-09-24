@@ -14,7 +14,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from app.services import analisis_mercados as A
 
 CAMPOS = {"tono", "emoji", "titulo", "resumen", "bullets", "disclaimer"}
-MERCADOS = ["1x2", "doble_oportunidad", "ambos_marcan", "goles", "corners", "tarjetas", "tiros_arco", "tiros_total"]
+MERCADOS = ["1x2", "doble_oportunidad", "ambos_marcan", "goles", "corners", "tarjetas", "tiros_arco", "tiros_total",
+            "hcp_europeo", "hcp_asiatico", "atajadas_local", "atajadas_visitante"]
+LINEAS_ASIATICO = [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 
 
 def ou(proj, lineas):
@@ -26,8 +28,38 @@ def ou(proj, lineas):
     return out
 
 
-def respuesta(pl=36.0, pe=26.4, pv=37.6, btts=59.7, gl=1.53, gv=1.50, local="Union La Calera", visitante="U. Catolica"):
+def handicap(pl, pe, pv):
+    """prob_hcp_* y handicap_asiatico coherentes con el 1X2, desde una
+    distribucion de dif = goles local - visitante (convencion corregida:
+    "Local L" cubre si dif > -L)."""
+    pesos = [0.5, 0.3, 0.15, 0.05]
+    dist = {0: pe / 100}
+    for i, w in enumerate(pesos, start=1):
+        dist[i] = pl / 100 * w
+        dist[-i] = pv / 100 * w
+    P = lambda cond: round(100 * sum(p for d, p in dist.items() if cond(d)), 1)
+    out = {}
+    for k in (1, 2, 3):
+        out[f"prob_hcp_local_m{k}"] = P(lambda d: d > k)
+        out[f"prob_hcp_empate_m{k}"] = P(lambda d: d == k)
+        out[f"prob_hcp_visit_m{k}"] = P(lambda d: d < k)
+        out[f"prob_hcp_local_p{k}"] = P(lambda d: d > -k)
+        out[f"prob_hcp_empate_p{k}"] = P(lambda d: d == -k)
+        out[f"prob_hcp_visit_p{k}"] = P(lambda d: d < -k)
+    out["handicap_asiatico"] = {
+        str(l): {"tipo": "entera" if l == int(l) else "media", "cubre": P(lambda d: d > -l),
+                 "push": P(lambda d: d == -l), "no_cubre": P(lambda d: d < -l)} for l in LINEAS_ASIATICO}
+    return out
+
+
+def respuesta(pl=36.0, pe=26.4, pv=37.6, btts=59.7, gl=1.53, gv=1.50, local="Union La Calera", visitante="U. Catolica",
+              ataj_l=3.3, ataj_v=2.4):
+    lineas_ataj = [0.5, 1.5, 2.5, 3.5, 4.5]
     return {
+        **handicap(pl, pe, pv),
+        "atajadas_local_proj": ataj_l, "atajadas_visitante_proj": ataj_v,
+        "atajadas_ou_local": ou(ataj_l, lineas_ataj), "atajadas_ou_visitante": ou(ataj_v, lineas_ataj),
+        "tiros_arco_local_proj": 4.1, "tiros_arco_visitante_proj": 5.07,
         "local": local, "visitante": visitante,
         "prob_local": pl, "prob_empate": pe, "prob_visitante": pv,
         "prob_1x": round(pl + pe, 1), "prob_x2": round(pe + pv, 1), "prob_12": round(pl + pv, 1),
@@ -44,12 +76,15 @@ def respuesta(pl=36.0, pe=26.4, pv=37.6, btts=59.7, gl=1.53, gv=1.50, local="Uni
     }
 
 
-def equipo(v=2, e=1, d=2, cv=2, cn=5, btts=6, n_total=40, pocos=False, cobertura=10):
+def equipo(v=2, e=1, d=2, cv=2, cn=5, btts=6, n_total=40, pocos=False, cobertura=10, gan=5, gan2=2,
+           n_atajadas=6, atajadas_prom=3.1, ventana=10):
     n5 = v + e + d
     return {"n_total": n_total, "pocos_datos": pocos,
             "forma5": {"v": v, "e": e, "d": d, "n": n5, "ppg": round((3 * v + e) / n5, 2) if n5 else None},
-            "condicion": {"v": cv, "n": cn}, "btts": {"x": btts, "n": 10}, "n_ventana": 10,
-            "n_corners": cobertura, "n_tarjetas": cobertura, "n_tiros_arco": cobertura, "n_tiros_total": cobertura}
+            "condicion": {"v": cv, "n": cn}, "btts": {"x": btts, "n": 10}, "n_ventana": ventana,
+            "n_corners": cobertura, "n_tarjetas": cobertura, "n_tiros_arco": cobertura, "n_tiros_total": cobertura,
+            "margen": {"gan": gan, "gan2": gan2, "n": ventana},
+            "n_atajadas": n_atajadas, "atajadas_prom": atajadas_prom if n_atajadas else None}
 
 
 def hechos(local=None, visitante=None, h2h_n=3):
@@ -96,6 +131,18 @@ def numeros_permitidos(r, h):
     gl, gv = (float(x) for x in r["goles_proj"].split(" - "))
     vals.add(f"{gl + gv:.2f}")
     vals.update({"1", "2", "12", "50"})   # "(1)", "(2)", "X2"/"1X", "12 (gana cualquiera)", "50-50"
+    # handicap: diferencias entre desenlaces de cada trio/par y nombres de linea
+    for k in (1, 2, 3):
+        for s in ("m", "p"):
+            t = [r[f"prob_hcp_{x}_{s}{k}"] for x in ("local", "empate", "visit")]
+            vals.update(f"{a - b:.1f}" for a in t for b in t)
+    for v in r["handicap_asiatico"].values():
+        vals.add(f"{v['cubre'] - v['no_cubre']:.1f}")
+        vals.add(f"{v['no_cubre'] - v['cubre']:.1f}")
+    for m in ("atajadas_ou_local", "atajadas_ou_visitante"):
+        for v in r[m].values():
+            vals.add(f"{abs(v['over'] - v['under']):.1f}")
+    vals.update({"0", "0.5", "1.5", "3", "4"})   # "-0.5", "-1.5", "linea 0", "3 o mas", "4 o mas"
     vals.discard(None)
     return vals
 
@@ -277,6 +324,83 @@ class SinInventar(unittest.TestCase):
         self.assertIn("El único cruce directo con datos sumó 9.0 corners.", a["bullets"])
         a = A.analisis_1x2(respuesta(), hechos(h2h_n=0), "k")
         self.assertIn("No hay cruces directos en la base", " ".join(a["bullets"]))
+
+
+class SegundaPasada(unittest.TestCase):
+    def texto(self, a):
+        return " ".join([a["resumen"]] + a["bullets"])
+
+    def test_favorito_del_handicap_es_el_del_1x2_en_ambas_direcciones(self):
+        casos = [(50.0, 25.0, 25.0, "Iquique", "Antofagasta"), (20.0, 25.0, 55.0, "Antofagasta", "Iquique"),
+                 (38.0, 26.8, 35.2, "Iquique", "Antofagasta"), (35.2, 26.8, 38.0, "Antofagasta", "Iquique")]
+        for pl, pe, pv, fav, riv in casos:
+            r = respuesta(pl=pl, pe=pe, pv=pv, local="Iquique", visitante="Antofagasta")
+            for m, marca_fav, marca_riv in (("hcp_europeo", f"{fav} -1", f"{riv} -1"), ("hcp_asiatico", f"{fav} -0.5", f"{riv} -0.5")):
+                with self.subTest(favorito=fav, mercado=m):
+                    t = self.texto(A.armar_analisis_ia(r, hechos(), "k")[m])
+                    self.assertIn(marca_fav, t)
+                    self.assertNotIn(marca_riv, t)
+
+    def test_europeo_visitante_favorito_usa_la_linea_p1(self):
+        r = respuesta(pl=20.0, pe=25.0, pv=55.0, local="Iquique", visitante="Antofagasta")
+        a = A.analisis_hcp_europeo(r, hechos(), "k")
+        # Visitante -1 = Local +1: "Iquique +1" es prob_hcp_local_p1
+        self.assertIn(f"{r['prob_hcp_local_p1']:.1f}%", a["resumen"])
+        self.assertIn(f"Ganar por 3 o más (Antofagasta -2): {r['prob_hcp_visit_p2']:.1f}%", self.texto(a))
+
+    def test_asiatico_menos_05_es_la_prob_de_ganar_del_1x2(self):
+        for pl, pe, pv, fav, riv in ((60.0, 20.0, 20.0, "Iquique", "Antofagasta"), (20.0, 20.0, 60.0, "Antofagasta", "Iquique")):
+            r = respuesta(pl=pl, pe=pe, pv=pv, local="Iquique", visitante="Antofagasta")
+            a = A.analisis_hcp_asiatico(r, hechos(), "k")
+            res = a["resumen"]
+            # el favorito -0.5 (gana, 60%) lidera y va primero; el rival +0.5 (no pierde, 40%) segundo
+            self.assertLess(res.find(f"{fav} -0.5 (gana el partido)"), res.find(f"{riv} +0.5 (no pierde)"))
+            self.assertIn("60.0%", res)
+            self.assertIn(f"Con la línea 0 (si empatan se devuelve): {fav} 60.0% contra {riv} 20.0%", " ".join(a["bullets"]))
+
+    def test_titulos_propios_del_europeo(self):
+        for fid in range(40):
+            a = A.analisis_hcp_europeo(respuesta(pl=60.0, pe=20.0, pv=20.0), hechos(local=equipo(v=4, e=0, d=1)), fid)
+            if a["tono"] in A.TITULOS_HCP_EUROPEO:
+                self.assertIn(a["titulo"], A.TITULOS_HCP_EUROPEO[a["tono"]])
+
+    def test_senales_cruzadas_en_handicap(self):
+        h = hechos(local=equipo(v=0, e=1, d=4), visitante=equipo(v=4, e=0, d=1))
+        for m in ("hcp_europeo", "hcp_asiatico"):
+            self.assertEqual(A.armar_analisis_ia(respuesta(pl=55.0, pe=25.0, pv=20.0), h, "k")[m]["tono"], "senales_cruzadas")
+
+    def test_atajadas_dos_bullets_sin_forzar_un_tercero(self):
+        salida = A.armar_analisis_ia(respuesta(), hechos(), "k")
+        for lado in ("local", "visitante"):
+            self.assertEqual(len(salida[f"atajadas_{lado}"]["bullets"]), 2, lado)
+        self.assertIn("U. Catolica proyecta 5.07 tiros al arco", salida["atajadas_local"]["bullets"][0])
+
+    def test_atajadas_sin_dato_propio(self):
+        h = hechos(local=equipo(n_atajadas=1))
+        b = A.armar_analisis_ia(respuesta(), h, "k")["atajadas_local"]["bullets"]
+        self.assertIn("tiene el dato de atajadas en solo 1 de sus últimos 10 partidos", b[1])
+        self.assertNotIn("promedia", " ".join(b))
+
+    def test_atajadas_disperso_no_contradice(self):
+        r = respuesta(ataj_l=3.1)
+        # distribucion muy dispersa: promedio 3.1 pero Under 2.5 mas probable
+        r["atajadas_ou_local"]["2.5"] = {"over": 36.2, "under": 63.8}
+        a = A.analisis_atajadas_equipo(r, hechos(), "k", "local")
+        self.assertIn("dispers", a["resumen"])
+        self.assertIn("Under 2.5 atajadas", a["resumen"])
+
+    def test_atajadas_sin_proyeccion(self):
+        r = respuesta()
+        r["atajadas_visitante_proj"], r["atajadas_ou_visitante"] = None, None
+        a = A.armar_analisis_ia(r, hechos(), "k")["atajadas_visitante"]
+        self.assertEqual((a["tono"], a["bullets"]), ("sin_datos", []))
+
+    def test_un_solo_partido_en_singular(self):
+        h = hechos(local=equipo(ventana=1, gan=1, gan2=1, n_atajadas=0, n_total=1, pocos=True))
+        salida = A.armar_analisis_ia(respuesta(pl=60.0, pe=20.0, pv=20.0), h, "k")
+        texto = " ".join(self.texto(salida[m]) for m in ("hcp_europeo", "atajadas_local"))
+        self.assertNotIn("de sus últimos 1 ", texto)
+        self.assertIn("tiene un solo partido registrado", texto)
 
 
 class LineaDeReferencia(unittest.TestCase):
