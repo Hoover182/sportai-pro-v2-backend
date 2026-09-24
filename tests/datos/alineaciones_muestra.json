@@ -1,0 +1,1356 @@
+{
+ "parcial_mls": {
+  "fixture": {
+   "id": 1490481,
+   "status": {
+    "long": "Match Finished",
+    "short": "FT",
+    "elapsed": 90,
+    "extra": 4
+   }
+  },
+  "league": {
+   "name": "Major League Soccer",
+   "country": "USA"
+  },
+  "teams": {
+   "home": {
+    "id": 1604,
+    "name": "New York City FC",
+    "logo": "https://media.api-sports.io/football/teams/1604.png",
+    "winner": false
+   },
+   "away": {
+    "id": 1602,
+    "name": "New York Red Bulls",
+    "logo": "https://media.api-sports.io/football/teams/1602.png",
+    "winner": true
+   }
+  },
+  "lineups": [
+   {
+    "team": {
+     "id": 1604,
+     "name": "New York City FC",
+     "logo": "https://media.api-sports.io/football/teams/1604.png",
+     "colors": {
+      "player": {
+       "primary": "6fc1fb",
+       "number": "0e3567",
+       "border": "6fc1fb"
+      },
+      "goalkeeper": {
+       "primary": "86ff7d",
+       "number": "ffffff",
+       "border": "86ff7d"
+      }
+     }
+    },
+    "coach": {
+     "id": 27688,
+     "name": "Pascal Jansen",
+     "photo": "https://media.api-sports.io/football/coachs/27688.png"
+    },
+    "formation": "4-2-3-1",
+    "startXI": [
+     {
+      "player": {
+       "id": 50728,
+       "name": "M. Freese",
+       "number": 49,
+       "pos": "G",
+       "grid": "1:1"
+      }
+     },
+     {
+      "player": {
+       "id": 201717,
+       "name": "T. Gray",
+       "number": 24,
+       "pos": "D",
+       "grid": "2:4"
+      }
+     },
+     {
+      "player": {
+       "id": 33011,
+       "name": "Thiago Martins",
+       "number": 13,
+       "pos": "D",
+       "grid": "2:3"
+      }
+     },
+     {
+      "player": {
+       "id": 50863,
+       "name": "J. Sands",
+       "number": 6,
+       "pos": "D",
+       "grid": "2:2"
+      }
+     },
+     {
+      "player": {
+       "id": 510971,
+       "name": "N. Cavallo",
+       "number": 2,
+       "pos": "D",
+       "grid": "2:1"
+      }
+     },
+     {
+      "player": {
+       "id": 7050,
+       "name": "A. O'Neill",
+       "number": 21,
+       "pos": "M",
+       "grid": "3:2"
+      }
+     },
+     {
+      "player": {
+       "id": 13300,
+       "name": "A. Perea",
+       "number": 8,
+       "pos": "M",
+       "grid": "3:1"
+      }
+     },
+     {
+      "player": {
+       "id": 359532,
+       "name": "A. Ojeda",
+       "number": 26,
+       "pos": "M",
+       "grid": "4:3"
+      }
+     },
+     {
+      "player": {
+       "id": 75414,
+       "name": "N. Mercau",
+       "number": 7,
+       "pos": "M",
+       "grid": "4:2"
+      }
+     },
+     {
+      "player": {
+       "id": 1103,
+       "name": "H. Wolf",
+       "number": 17,
+       "pos": "M",
+       "grid": "4:1"
+      }
+     },
+     {
+      "player": {
+       "id": 449244,
+       "name": "Luighi",
+       "number": 20,
+       "pos": "F",
+       "grid": "5:1"
+      }
+     }
+    ],
+    "substitutes": [
+     {
+      "player": {
+       "id": 102645,
+       "name": "T. Romero",
+       "number": 30,
+       "pos": "G",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 103167,
+       "name": "K. O'Toole",
+       "number": 22,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 14390,
+       "name": "Raul Gustavo",
+       "number": 34,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 511148,
+       "name": "M. Murray",
+       "number": 23,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 315187,
+       "name": "M. Ilenic",
+       "number": 35,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 379134,
+       "name": "J. Shore",
+       "number": 32,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 304161,
+       "name": "B. Traore",
+       "number": 9,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 455906,
+       "name": "M. Jones",
+       "number": 88,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 79678,
+       "name": "A. Martinez",
+       "number": 16,
+       "pos": "F",
+       "grid": null
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 1602,
+     "name": "New York Red Bulls",
+     "logo": "https://media.api-sports.io/football/teams/1602.png",
+     "colors": {
+      "player": {
+       "primary": "e12738",
+       "number": "fcf8f8",
+       "border": "e12738"
+      },
+      "goalkeeper": {
+       "primary": "ec33ff",
+       "number": "fffcfd",
+       "border": "ec33ff"
+      }
+     }
+    },
+    "startXI": [
+     {
+      "player": {
+       "id": 62,
+       "name": "E. Horvath",
+       "number": 34,
+       "pos": "G",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 201716,
+       "name": "D. Nealis",
+       "number": 12,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 50954,
+       "name": "T. Parker",
+       "number": 26,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 407909,
+       "name": "J. Bazan",
+       "number": 14,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 472849,
+       "name": "M. Dos Santos",
+       "number": 56,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 418310,
+       "name": "R. Donkor",
+       "number": 48,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 461645,
+       "name": "A. Mehmeti",
+       "number": 15,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 422252,
+       "name": "M. Sofo",
+       "number": 37,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 138409,
+       "name": "C. Harper",
+       "number": 17,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 418618,
+       "name": "J. Hall",
+       "number": 16,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 51186,
+       "name": "C. Cowell",
+       "number": 7,
+       "pos": "F",
+       "grid": null
+      }
+     }
+    ],
+    "substitutes": [
+     {
+      "player": {
+       "id": 71006,
+       "name": "J. McCarthy",
+       "number": 77,
+       "pos": "G",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 178793,
+       "name": "R. Voloder",
+       "number": 6,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 359418,
+       "name": "D. Padelford",
+       "number": 59,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 325063,
+       "name": "D. Ruiz",
+       "number": 8,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 644827,
+       "name": "S. Kone",
+       "number": 60,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 275,
+       "name": "E. M. Choupo-Moting",
+       "number": 13,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 341970,
+       "name": "J. Ruvalcaba",
+       "number": 11,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 1152,
+       "name": "E. Forsberg",
+       "number": 10,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 542038,
+       "name": "D. Nelich",
+       "number": 92,
+       "pos": "F",
+       "grid": null
+      }
+     }
+    ],
+    "coach": {
+     "id": null,
+     "name": null
+    },
+    "formation": null
+   }
+  ]
+ },
+ "parcial_primera_nacional": {
+  "fixture": {
+   "id": 1498665,
+   "status": {
+    "long": "Match Finished",
+    "short": "FT",
+    "elapsed": 90,
+    "extra": 5
+   }
+  },
+  "league": {
+   "name": "Primera Nacional",
+   "country": "Argentina"
+  },
+  "teams": {
+   "home": {
+    "id": 461,
+    "name": "San Martin S.J.",
+    "logo": "https://media.api-sports.io/football/teams/461.png",
+    "winner": null
+   },
+   "away": {
+    "id": 1965,
+    "name": "Tristan Suarez",
+    "logo": "https://media.api-sports.io/football/teams/1965.png",
+    "winner": null
+   }
+  },
+  "lineups": [
+   {
+    "team": {
+     "id": 461,
+     "name": "San Martin S.J.",
+     "logo": "https://media.api-sports.io/football/teams/461.png",
+     "colors": null
+    },
+    "coach": {
+     "id": 27545,
+     "name": "Ariel Martos",
+     "photo": "https://media.api-sports.io/football/coachs/27545.png"
+    },
+    "formation": null,
+    "startXI": [
+     {
+      "player": {
+       "id": 323790,
+       "name": "S. Diaz Robles",
+       "number": 1,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 6341,
+       "name": "F. Nadalin",
+       "number": 4,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 6024,
+       "name": "M. Osores",
+       "number": 2,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 295482,
+       "name": "J. Marchio",
+       "number": 6,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 75136,
+       "name": "D. Alvarez",
+       "number": 3,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 5444,
+       "name": "F. Murillo",
+       "number": 8,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 6553,
+       "name": "N. Pelaitay",
+       "number": 5,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 58915,
+       "name": "S. Gonzalez",
+       "number": 10,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 667317,
+       "name": "F. Coronel",
+       "number": 11,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 180588,
+       "name": "S. Jaurena",
+       "number": 7,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 311381,
+       "name": "G. Rossi",
+       "number": 9,
+       "pos": null,
+       "grid": null
+      }
+     }
+    ],
+    "substitutes": [
+     {
+      "player": {
+       "id": 362746,
+       "name": "L. Garzon",
+       "number": 12,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 35584,
+       "name": "E. Aguilera",
+       "number": 13,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 36475,
+       "name": "G. Hachen",
+       "number": 14,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 358381,
+       "name": "N. Paz",
+       "number": 15,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 6208,
+       "name": "G. Acosta",
+       "number": 16,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 591389,
+       "name": "N. Iachetti",
+       "number": 17,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 293309,
+       "name": "L. Monje",
+       "number": 18,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 289446,
+       "name": "L. Ferreyra",
+       "number": 19,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 311380,
+       "name": "N. Funez",
+       "number": 20,
+       "pos": null,
+       "grid": null
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 1965,
+     "name": "Tristan Suarez",
+     "logo": "https://media.api-sports.io/football/teams/1965.png",
+     "colors": null
+    },
+    "coach": {
+     "id": 27541,
+     "name": "Jose Martinez",
+     "photo": "https://media.api-sports.io/football/coachs/27541.png"
+    },
+    "formation": null,
+    "startXI": [
+     {
+      "player": {
+       "id": 75584,
+       "name": "J. Bigo",
+       "number": 1,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 288719,
+       "name": "B. Aguilar",
+       "number": 4,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 210132,
+       "name": "M. Guzman",
+       "number": 2,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 130010,
+       "name": "A. Baldi",
+       "number": 6,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 75836,
+       "name": "N. Fernandez",
+       "number": 3,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 5602,
+       "name": "N. Del Priore",
+       "number": 8,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 196741,
+       "name": "M. Enrique",
+       "number": 5,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 6510,
+       "name": "D. Becker",
+       "number": 10,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 378855,
+       "name": "J. Beron",
+       "number": 11,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 413149,
+       "name": "M. Guillen",
+       "number": 7,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 566135,
+       "name": "M. Alvarez",
+       "number": 9,
+       "pos": null,
+       "grid": null
+      }
+     }
+    ],
+    "substitutes": [
+     {
+      "player": {
+       "id": 6166,
+       "name": "J. Mendive",
+       "number": 12,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 566495,
+       "name": "S. Aquino",
+       "number": 13,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 323786,
+       "name": "M. Olguin",
+       "number": 14,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 6603,
+       "name": "A. Molina",
+       "number": 15,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 5471,
+       "name": "N. Sanchez",
+       "number": 16,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 667431,
+       "name": "L. Noriega",
+       "number": 17,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 361669,
+       "name": "A. Berrondo",
+       "number": 18,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 119480,
+       "name": "S. Ramirez",
+       "number": 19,
+       "pos": null,
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 169885,
+       "name": "A. Gallo",
+       "number": 20,
+       "pos": null,
+       "grid": null
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "sin_alineacion_us_open_cup": {
+  "fixture": {
+   "id": 1545813,
+   "status": {
+    "long": "Match Finished",
+    "short": "FT",
+    "elapsed": 90,
+    "extra": 10
+   }
+  },
+  "league": {
+   "name": "US Open Cup",
+   "country": "USA"
+  },
+  "teams": {
+   "home": {
+    "id": 1610,
+    "name": "Colorado Rapids",
+    "logo": "https://media.api-sports.io/football/teams/1610.png",
+    "winner": false
+   },
+   "away": {
+    "id": 20787,
+    "name": "St. Louis City",
+    "logo": "https://media.api-sports.io/football/teams/20787.png",
+    "winner": true
+   }
+  },
+  "lineups": []
+ },
+ "completa_premier": {
+  "fixture": {
+   "id": 1557408,
+   "status": {
+    "long": "Match Finished",
+    "short": "FT",
+    "elapsed": 90,
+    "extra": null
+   }
+  },
+  "league": {
+   "name": "Premier League",
+   "country": "England"
+  },
+  "teams": {
+   "home": {
+    "id": 55,
+    "name": "Brentford",
+    "logo": "https://media.api-sports.io/football/teams/55.png",
+    "winner": true
+   },
+   "away": {
+    "id": 49,
+    "name": "Chelsea",
+    "logo": "https://media.api-sports.io/football/teams/49.png",
+    "winner": false
+   }
+  },
+  "lineups": [
+   {
+    "team": {
+     "id": 55,
+     "name": "Brentford",
+     "logo": "https://media.api-sports.io/football/teams/55.png",
+     "colors": {
+      "player": {
+       "primary": "ff0000",
+       "number": "000000",
+       "border": "ff0000"
+      },
+      "goalkeeper": {
+       "primary": "c597c6",
+       "number": "080808",
+       "border": "c597c6"
+      }
+     }
+    },
+    "coach": {
+     "id": 25364,
+     "name": "Keith Andrews",
+     "photo": "https://media.api-sports.io/football/coachs/25364.png"
+    },
+    "formation": "4-2-3-1",
+    "startXI": [
+     {
+      "player": {
+       "id": 281,
+       "name": "C. Kelleher",
+       "number": 1,
+       "pos": "G",
+       "grid": "1:1"
+      }
+     },
+     {
+      "player": {
+       "id": 342022,
+       "name": "M. Kayode",
+       "number": 33,
+       "pos": "D",
+       "grid": "2:4"
+      }
+     },
+     {
+      "player": {
+       "id": 441271,
+       "name": "J. Schuster",
+       "number": 44,
+       "pos": "D",
+       "grid": "2:3"
+      }
+     },
+     {
+      "player": {
+       "id": 1119,
+       "name": "K. Ajer",
+       "number": 20,
+       "pos": "D",
+       "grid": "2:2"
+      }
+     },
+     {
+      "player": {
+       "id": 106725,
+       "name": "K. Lewis-Potter",
+       "number": 23,
+       "pos": "D",
+       "grid": "2:1"
+      }
+     },
+     {
+      "player": {
+       "id": 263538,
+       "name": "Y. Yarmolyuk",
+       "number": 6,
+       "pos": "M",
+       "grid": "3:2"
+      }
+     },
+     {
+      "player": {
+       "id": 25073,
+       "name": "V. Janelt",
+       "number": 27,
+       "pos": "M",
+       "grid": "3:1"
+      }
+     },
+     {
+      "player": {
+       "id": 196855,
+       "name": "J. Anthony",
+       "number": 19,
+       "pos": "M",
+       "grid": "4:3"
+      }
+     },
+     {
+      "player": {
+       "id": 15908,
+       "name": "M. Damsgaard",
+       "number": 24,
+       "pos": "M",
+       "grid": "4:2"
+      }
+     },
+     {
+      "player": {
+       "id": 178077,
+       "name": "K. Schade",
+       "number": 7,
+       "pos": "M",
+       "grid": "4:1"
+      }
+     },
+     {
+      "player": {
+       "id": 196156,
+       "name": "I. Thiago",
+       "number": 9,
+       "pos": "F",
+       "grid": "5:1"
+      }
+     }
+    ],
+    "substitutes": [
+     {
+      "player": {
+       "id": 19340,
+       "name": "E. Balcombe",
+       "number": 31,
+       "pos": "G",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 19346,
+       "name": "R. Henry",
+       "number": 3,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 408221,
+       "name": "B. Fredrick",
+       "number": 48,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 44871,
+       "name": "A. Hickey",
+       "number": 2,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 409303,
+       "name": "M. Diouf",
+       "number": 25,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 153066,
+       "name": "F. Carvalho",
+       "number": 14,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 277306,
+       "name": "M. Sangare",
+       "number": 18,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 2939,
+       "name": "C. Wilson",
+       "number": 13,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 284797,
+       "name": "D. Ouattara",
+       "number": 11,
+       "pos": "F",
+       "grid": null
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 49,
+     "name": "Chelsea",
+     "logo": "https://media.api-sports.io/football/teams/49.png",
+     "colors": {
+      "player": {
+       "primary": "0a0a0a",
+       "number": "ebd43e",
+       "border": "0a0a0a"
+      },
+      "goalkeeper": {
+       "primary": "1d5160",
+       "number": "fcfcfc",
+       "border": "1d5160"
+      }
+     }
+    },
+    "coach": {
+     "id": 6801,
+     "name": "Xabi Alonso",
+     "photo": "https://media.api-sports.io/football/coachs/6801.png"
+    },
+    "formation": "3-4-2-1",
+    "startXI": [
+     {
+      "player": {
+       "id": 19599,
+       "name": "E. Martinez",
+       "number": 1,
+       "pos": "G",
+       "grid": "1:1"
+      }
+     },
+     {
+      "player": {
+       "id": 22094,
+       "name": "W. Fofana",
+       "number": 3,
+       "pos": "D",
+       "grid": "2:3"
+      }
+     },
+     {
+      "player": {
+       "id": 20995,
+       "name": "M. Lacroix",
+       "number": 5,
+       "pos": "D",
+       "grid": "2:2"
+      }
+     },
+     {
+      "player": {
+       "id": 152953,
+       "name": "L. Colwill",
+       "number": 6,
+       "pos": "D",
+       "grid": "2:1"
+      }
+     },
+     {
+      "player": {
+       "id": 1864,
+       "name": "P. Neto",
+       "number": 7,
+       "pos": "M",
+       "grid": "3:4"
+      }
+     },
+     {
+      "player": {
+       "id": 292,
+       "name": "J. Henderson",
+       "number": 14,
+       "pos": "M",
+       "grid": "3:3"
+      }
+     },
+     {
+      "player": {
+       "id": 319572,
+       "name": "V. Barco",
+       "number": 4,
+       "pos": "M",
+       "grid": "3:2"
+      }
+     },
+     {
+      "player": {
+       "id": 181734,
+       "name": "P. Chavarria",
+       "number": 29,
+       "pos": "M",
+       "grid": "3:1"
+      }
+     },
+     {
+      "player": {
+       "id": 152982,
+       "name": "C. Palmer",
+       "number": 10,
+       "pos": "F",
+       "grid": "4:2"
+      }
+     },
+     {
+      "player": {
+       "id": 19170,
+       "name": "M. Rogers",
+       "number": 17,
+       "pos": "F",
+       "grid": "4:1"
+      }
+     },
+     {
+      "player": {
+       "id": 1469,
+       "name": "D. Welbeck",
+       "number": 18,
+       "pos": "F",
+       "grid": "5:1"
+      }
+     }
+    ],
+    "substitutes": [
+     {
+      "player": {
+       "id": 340151,
+       "name": "M. Penders",
+       "number": 39,
+       "pos": "G",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 161907,
+       "name": "M. Gusto",
+       "number": 27,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 341642,
+       "name": "J. Hato",
+       "number": 21,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 366735,
+       "name": "J. Acheampong",
+       "number": 34,
+       "pos": "D",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 506618,
+       "name": "M. Nicoll-Jazuli",
+       "number": 32,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 282125,
+       "name": "R. Lavia",
+       "number": 45,
+       "pos": "M",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 286894,
+       "name": "J. Gittens",
+       "number": 11,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 425733,
+       "name": "Estêvão",
+       "number": 41,
+       "pos": "F",
+       "grid": null
+      }
+     },
+     {
+      "player": {
+       "id": 419582,
+       "name": "G. Quenda",
+       "number": 23,
+       "pos": "M",
+       "grid": null
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
