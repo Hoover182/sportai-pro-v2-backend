@@ -2394,6 +2394,18 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
         "prob_hcp_local_p1": round(sim["prob_hcp_local_p1"] * 100, 1),
         "prob_hcp_empate_p1": round(sim["prob_hcp_empate_p1"] * 100, 1),
         "prob_hcp_visit_p1": round(sim["prob_hcp_visit_p1"] * 100, 1),
+        "prob_hcp_local_m2": round(sim["prob_hcp_local_m2"] * 100, 1),
+        "prob_hcp_empate_m2": round(sim["prob_hcp_empate_m2"] * 100, 1),
+        "prob_hcp_visit_m2": round(sim["prob_hcp_visit_m2"] * 100, 1),
+        "prob_hcp_local_p2": round(sim["prob_hcp_local_p2"] * 100, 1),
+        "prob_hcp_empate_p2": round(sim["prob_hcp_empate_p2"] * 100, 1),
+        "prob_hcp_visit_p2": round(sim["prob_hcp_visit_p2"] * 100, 1),
+        "prob_hcp_local_m3": round(sim["prob_hcp_local_m3"] * 100, 1),
+        "prob_hcp_empate_m3": round(sim["prob_hcp_empate_m3"] * 100, 1),
+        "prob_hcp_visit_m3": round(sim["prob_hcp_visit_m3"] * 100, 1),
+        "prob_hcp_local_p3": round(sim["prob_hcp_local_p3"] * 100, 1),
+        "prob_hcp_empate_p3": round(sim["prob_hcp_empate_p3"] * 100, 1),
+        "prob_hcp_visit_p3": round(sim["prob_hcp_visit_p3"] * 100, 1),
         "handicap_asiatico": {
             str(linea): {
                 "tipo": v["tipo"],

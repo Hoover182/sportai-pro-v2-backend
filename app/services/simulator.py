@@ -498,6 +498,25 @@ def simular_partido_futbol(
     prob_hcp_local_p1    = float(grid_handicap[dif_grid > -1].sum())
     prob_hcp_empate_p1   = float(grid_handicap[dif_grid == -1].sum())
     prob_hcp_visit_p1    = float(grid_handicap[dif_grid < -1].sum())
+    # +/-2 y +/-3: misma grid_handicap y misma convencion (m = "Local -k",
+    # gana si dif > k; p = "Local +k", gana si dif > -k). Son exactamente
+    # los mismos eventos que cubre/push/no_cubre de las lineas enteras
+    # del asiatico (+/-2, +/-3), ya cubiertas por su backtest de 1461
+    # partidos -- sin backtest nuevo. Medido sobre 200 partidos: +/-3 da
+    # un lado >= 95% en ~28-50% de los partidos (informacion real, se
+    # muestra igual, decision de producto).
+    prob_hcp_local_m2    = float(grid_handicap[dif_grid > 2].sum())
+    prob_hcp_empate_m2   = float(grid_handicap[dif_grid == 2].sum())
+    prob_hcp_visit_m2    = float(grid_handicap[dif_grid < 2].sum())
+    prob_hcp_local_p2    = float(grid_handicap[dif_grid > -2].sum())
+    prob_hcp_empate_p2   = float(grid_handicap[dif_grid == -2].sum())
+    prob_hcp_visit_p2    = float(grid_handicap[dif_grid < -2].sum())
+    prob_hcp_local_m3    = float(grid_handicap[dif_grid > 3].sum())
+    prob_hcp_empate_m3   = float(grid_handicap[dif_grid == 3].sum())
+    prob_hcp_visit_m3    = float(grid_handicap[dif_grid < 3].sum())
+    prob_hcp_local_p3    = float(grid_handicap[dif_grid > -3].sum())
+    prob_hcp_empate_p3   = float(grid_handicap[dif_grid == -3].sum())
+    prob_hcp_visit_p3    = float(grid_handicap[dif_grid < -3].sum())
 
     # HANDICAP ASIATICO -- 13 lineas, misma grid_handicap que el europeo
     # (backtest de 1461 partidos confirmo mejora real y consistente con
@@ -666,6 +685,18 @@ def simular_partido_futbol(
         "prob_hcp_local_p1": prob_hcp_local_p1,
         "prob_hcp_empate_p1": prob_hcp_empate_p1,
         "prob_hcp_visit_p1": prob_hcp_visit_p1,
+        "prob_hcp_local_m2": prob_hcp_local_m2,
+        "prob_hcp_empate_m2": prob_hcp_empate_m2,
+        "prob_hcp_visit_m2": prob_hcp_visit_m2,
+        "prob_hcp_local_p2": prob_hcp_local_p2,
+        "prob_hcp_empate_p2": prob_hcp_empate_p2,
+        "prob_hcp_visit_p2": prob_hcp_visit_p2,
+        "prob_hcp_local_m3": prob_hcp_local_m3,
+        "prob_hcp_empate_m3": prob_hcp_empate_m3,
+        "prob_hcp_visit_m3": prob_hcp_visit_m3,
+        "prob_hcp_local_p3": prob_hcp_local_p3,
+        "prob_hcp_empate_p3": prob_hcp_empate_p3,
+        "prob_hcp_visit_p3": prob_hcp_visit_p3,
         # HANDICAP ASIATICO
         "handicap_asiatico": handicap_asiatico,
         # AMBOS MARCAN
