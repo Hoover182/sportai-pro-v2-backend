@@ -39,6 +39,9 @@ GAP_FORMA_CRUZADA = 1.0            # puntos por partido (V=3, E=1) en los ultimo
 # entre 60% y 92%": con datos reales elegia lineas extremas -- Under 5.5
 # goles 90.4%, Under 16.5 corners 91.5% -- y todo daba favorito_claro.)
 LINEAS_REFERENCIA = {"goles": 2.5, "corners": 9.5, "tarjetas": 4.5, "tiros_arco": 8.5, "tiros_total": 24.5}
+# Atajadas por equipo: mediana real 3 por equipo y partido (6367 partidos
+# FT con el dato al 2026-09-24, solo ~25% del CSV lo tiene).
+LINEA_ATAJADAS_EQUIPO = 2.5
 
 DISCLAIMER = ("Las probabilidades y datos de esta pantalla surgen de un modelo matemático-estadístico "
               "integrado con IA basado en datos meramente históricos. En el fútbol cualquier resultado puede pasar.")
@@ -56,6 +59,17 @@ TITULOS = {
                     "Historial demasiado corto", "Lectura con poca base"],
     "senales_cruzadas": ["El modelo y la forma no coinciden", "Señales cruzadas", "Datos que tiran para lados distintos"],
     "sin_datos": ["Sin datos suficientes"],
+}
+
+# Handicap europeo: el desenlace que lidera suele ser "el rival evita perder
+# por 2 o mas", asi que los titulos genericos ("Favorito con respaldo...")
+# confundian (salian en partidos 38/35 en el 1X2). Titulos sobre el MARGEN.
+TITULOS_HCP_EUROPEO = {
+    "favorito_claro": ["Margen bastante definido", "Los números marcan el margen", "Diferencia clara en los datos",
+                       "El margen se ve con claridad"],
+    "moderado": ["Margen con matices", "Inclinación en el margen", "El margen se inclina, sin certeza",
+                 "Diferencia moderada"],
+    "parejo": ["Margen abierto", "Diferencia incierta", "El margen no se define", "Hándicap parejo"],
 }
 
 # Resumen por FAMILIA de mercado (gramatica propia) y nivel de inclinacion.
@@ -106,6 +120,28 @@ RESUMENES = {
     },
 }
 
+RESUMENES["hcp"] = {
+    # {O1}/{o1} y {o2}: desenlaces del handicap ya con el nombre del equipo
+    "favorito_claro": ["{O1} lidera con {p1}% y le saca {dif} puntos a {o2}.",
+                       "Con {p1}% para {o1} contra {p2}% de {o2}, el hándicap está bastante definido.",
+                       "{O1} concentra {p1}% de probabilidad, {dif} puntos por encima de {o2}."],
+    "moderado": ["{O1} aparece adelante con {p1}%, {dif} puntos sobre {o2}: ventaja real, pero no definitiva.",
+                 "El modelo se inclina por {o1} ({p1}%), aunque {o2} conserva un {p2}%.",
+                 "{O1} le saca {dif} puntos a {o2} ({p1}% contra {p2}%)."],
+    "parejo": ["{O1} y {o2} quedan a {dif} puntos de distancia: prácticamente parejo.",
+               "{p1}% contra {p2}%: los datos no separan a {o1} de {o2}.",
+               "Apenas {dif} puntos entre {o1} y {o2}."],
+}
+
+# O/U con distribucion muy dispersa (ej. atajadas de un equipo sin datos:
+# 37% de chance de 0 y cola larga): el promedio proyectado queda del otro
+# lado de la linea respecto del desenlace mas probable. Mismo texto para
+# los 3 niveles (el nivel ya lo da el titulo).
+_OU_DISPERSO = ["Aunque el promedio proyectado es {proj}, los resultados están muy dispersos y {linea} queda en {p1}% contra {p2}%.",
+                "{Linea} es lo más probable ({p1}%), aunque el promedio proyectado sea {proj}: la distribución es muy dispersa.",
+                "El promedio proyectado ({proj}) no cuenta toda la historia: con resultados muy dispersos, {linea} tiene {p1}%."]
+RESUMENES["ou_disperso"] = {k: _OU_DISPERSO for k in ("favorito_claro", "moderado", "parejo")}
+
 UNIDADES = {"goles": "goles", "corners": "corners", "tarjetas": "tarjetas",
             "tiros_arco": "tiros al arco", "tiros_total": "tiros totales"}
 PROYECTADOS = {"tarjetas": "proyectadas"}   # el resto, masculino
@@ -147,8 +183,11 @@ def nivel(p1, p2):
     return "parejo"
 
 
-def _armar(clave_partido, mercado, familia, tono, base, slots, bullets):
-    titulo = TITULOS[tono][_indice(clave_partido, mercado, "titulo", len(TITULOS[tono]))]
+def _armar(clave_partido, mercado, familia, tono, base, slots, bullets, titulos=None):
+    """titulos: banco propio del mercado para los 3 niveles de inclinacion
+    (pocos_datos / senales_cruzadas / sin_datos usan siempre TITULOS)."""
+    banco = titulos if titulos and tono in titulos else TITULOS
+    titulo = banco[tono][_indice(clave_partido, mercado, "titulo", len(banco[tono]))]
     plantillas = RESUMENES[familia][base]
     resumen = plantillas[_indice(clave_partido, mercado, "resumen", len(plantillas))].format(**slots)
     return {"tono": tono, "emoji": EMOJI[tono], "titulo": titulo, "resumen": _cap(_contracciones(resumen)),
@@ -409,6 +448,129 @@ def analisis_tiros(r, hechos, clave, mercado):
     ])
 
 
+def _favorito(r):
+    """Favorito = el de mayor probabilidad de ganar en el 1X2 de ESTA
+    respuesta (post-Elo). El handicap sale de grid_handicap, reescalada
+    por el mismo Elo, asi que el texto nombra siempre al mismo favorito
+    que muestra la tarjeta 1X2 (empate de probabilidades -> local)."""
+    if r["prob_local"] >= r["prob_visitante"]:
+        return "local", r["local"], r["visitante"]
+    return "visitante", r["visitante"], r["local"]
+
+
+def _tono_resultado(hechos, base, fav_lado):
+    if hechos["pocos_datos"]:
+        return "pocos_datos"
+    if _forma_cruzada(hechos, fav_lado):
+        return "senales_cruzadas"
+    return base
+
+
+def analisis_hcp_europeo(r, hechos, clave):
+    """Un solo analisis por tarjeta sobre la linea representativa "favorito
+    -1" (3 desenlaces, misma regla de proporcion que el 1X2)."""
+    lado, fav, riv = _favorito(r)
+    if lado == "local":   # Local -1 = m1; ganar por 3+/4+ = m2/m3
+        pf, pe, pr = r["prob_hcp_local_m1"], r["prob_hcp_empate_m1"], r["prob_hcp_visit_m1"]
+        p3, p4 = r.get("prob_hcp_local_m2"), r.get("prob_hcp_local_m3")
+    else:                 # Visitante -1 = Local +1 = p1; ganar por 3+/4+ = p2/p3
+        pf, pe, pr = r["prob_hcp_visit_p1"], r["prob_hcp_empate_p1"], r["prob_hcp_local_p1"]
+        p3, p4 = r.get("prob_hcp_visit_p2"), r.get("prob_hcp_visit_p3")
+    ops = [(f"{fav} -1 (gana por 2 o más)", pf), (f"el empate técnico ({fav} gana por 1)", pe),
+           (f"{riv} +1 (evita perder por 2 o más)", pr)]
+    (o1, p1), (o2, p2) = sorted(ops, key=lambda o: -o[1])[:2]
+    base = nivel(p1, p2)
+    tono = _tono_resultado(hechos, base, lado)
+    slots = {"o1": o1, "O1": _cap(o1), "o2": o2, "p1": _f(p1), "p2": _f(p2), "dif": _f(p1 - p2)}
+    m = hechos[lado]["margen"]
+    if not m["n"]:
+        b_margen = None
+    elif m["n"] == 1:
+        b_margen = (f"{fav} tiene un solo partido registrado"
+                    + (": lo ganó por 2 goles o más." if m["gan2"] else ": lo ganó por 1 gol." if m["gan"] else ", sin victoria."))
+    elif m["gan"] == 0:
+        b_margen = f"{fav} no ganó ninguno de sus últimos {m['n']} partidos."
+    else:
+        b_margen = f"{fav} ganó {m['gan']} de sus últimos {m['n']} partidos, {m['gan2']} de ellos por 2 goles o más."
+    bullets = [
+        _b_pocos_datos(r, hechos) if tono == "pocos_datos" else None,
+        _b_forma(hechos["local"], hechos["visitante"], r["local"], r["visitante"]) if tono == "senales_cruzadas" else None,
+        (f"Ganar por 3 o más ({fav} -2): {_f(p3)}%; por 4 o más ({fav} -3): {_f(p4)}%."
+         if p3 is not None and p4 is not None else None),
+        b_margen,
+    ]
+    return _armar(clave, "hcp_europeo", "hcp", tono, base, slots, bullets, titulos=TITULOS_HCP_EUROPEO)
+
+
+def analisis_hcp_asiatico(r, hechos, clave):
+    """Un solo analisis por tarjeta sobre la linea representativa -0.5/+0.5
+    (favorito -0.5 = gana el partido; rival +0.5 = no pierde). Sin push."""
+    lado, fav, riv = _favorito(r)
+    h = r["handicap_asiatico"]
+    if lado == "local":
+        pf, pr = h["-0.5"]["cubre"], h["-0.5"]["no_cubre"]
+        dos_mas = h["-1.5"]["cubre"]
+    else:   # Visitante -0.5 = Local +0.5 visto del otro lado
+        pf, pr = h["0.5"]["no_cubre"], h["0.5"]["cubre"]
+        dos_mas = h["1.5"]["no_cubre"]
+    cero = h["0.0"]
+    gana_fav, gana_riv = (cero["cubre"], cero["no_cubre"]) if lado == "local" else (cero["no_cubre"], cero["cubre"])
+    ops = [(f"{fav} -0.5 (gana el partido)", pf), (f"{riv} +0.5 (no pierde)", pr)]
+    (o1, p1), (o2, p2) = sorted(ops, key=lambda o: -o[1])
+    base = nivel(p1, p2)
+    tono = _tono_resultado(hechos, base, lado)
+    slots = {"o1": o1, "O1": _cap(o1), "o2": o2, "p1": _f(p1), "p2": _f(p2), "dif": _f(p1 - p2)}
+    bullets = [
+        _b_pocos_datos(r, hechos) if tono == "pocos_datos" else None,
+        _b_forma(hechos["local"], hechos["visitante"], r["local"], r["visitante"]) if tono == "senales_cruzadas" else None,
+        f"Con la línea 0 (si empatan se devuelve): {fav} {_f(gana_fav)}% contra {riv} {_f(gana_riv)}%, "
+        f"con {_f(cero['push'])}% de devolución.",
+        f"Que {fav} gane por 2 o más ({fav} -1.5): {_f(dos_mas)}%.",
+    ]
+    return _armar(clave, "hcp_asiatico", "hcp", tono, base, slots, bullets)
+
+
+def analisis_atajadas_equipo(r, hechos, clave, lado):
+    """Atajadas del arquero de un equipo: O/U sobre LINEA_ATAJADAS_EQUIPO,
+    2 bullets (tiros al arco del rival + dato propio). Las atajadas son
+    casi exactamente tiros al arco del rival - sus goles (84% exacto en el
+    CSV), pero la proyeccion de atajadas del modelo NO cierra con la de
+    tiros/goles, asi que la cuenta no se muestra."""
+    eq, riv = (r["local"], r["visitante"]) if lado == "local" else (r["visitante"], r["local"])
+    mercado = f"atajadas_{lado}"
+    ou, proj = r.get(f"atajadas_ou_{lado}"), r.get(f"atajadas_{lado}_proj")
+    validas = {k: v for k, v in (ou or {}).items() if v.get("over") is not None and v.get("under") is not None}
+    if proj is None or not validas:
+        return _sin_datos(mercado, f"No hay suficientes datos de atajadas de {eq} para proyectar este mercado.")
+    linea = min(validas, key=lambda k: (abs(float(k) - LINEA_ATAJADAS_EQUIPO), float(k)))
+    over, under = validas[linea]["over"], validas[linea]["under"]
+    sentido, p1, p2 = ("Over", over, under) if over >= under else ("Under", under, over)
+    base = nivel(p1, p2)
+    tono = "pocos_datos" if hechos["pocos_datos"] else base
+    linea_txt = f"{sentido} {linea} atajadas"
+    slots = {"linea": linea_txt, "Linea": linea_txt, "proj": f"{_f2(proj)} atajadas de {eq}",
+             "proyectados": "proyectadas", "p1": _f(p1), "p2": _f(p2), "dif": _f(p1 - p2)}
+    disperso = (sentido == "Under" and proj > float(linea)) or (sentido == "Over" and proj < float(linea))
+    familia = "ou_disperso" if disperso else "ou"
+    tiros_riv = r.get(f"tiros_arco_{'visitante' if lado == 'local' else 'local'}_proj")
+    he = hechos[lado]
+    if he["n_atajadas"] >= MIN_CON_DATO:
+        b_propio = f"{eq} promedia {_f(he['atajadas_prom'])} atajadas en {he['n_atajadas']} partidos recientes con el dato."
+    elif he["n_ventana"] == 1:
+        b_propio = (f"{eq} tiene un solo partido registrado" + ("" if he["n_atajadas"] else ", sin dato de atajadas")
+                    + ", así que esta proyección es poco firme.")
+    else:
+        b_propio = (f"{eq} tiene el dato de atajadas en solo {he['n_atajadas']} de sus últimos {he['n_ventana']} "
+                    "partidos, así que esta proyección es poco firme.")
+    bullets = [
+        _b_pocos_datos(r, hechos) if tono == "pocos_datos" else None,
+        (f"Las atajadas dependen de cuánto remate el rival: {riv} proyecta {_f2(tiros_riv)} tiros al arco."
+         if tiros_riv is not None else None),
+        b_propio,
+    ]
+    return _armar(clave, mercado, familia, tono, base, slots, bullets)
+
+
 def armar_analisis_ia(r, hechos, clave_partido):
     """r: respuesta de get_analisis_partido() (sin analisis_ia).
     hechos: _hechos_para_analisis(). clave_partido: fixture_id (o
@@ -422,6 +584,11 @@ def armar_analisis_ia(r, hechos, clave_partido):
         "tarjetas": analisis_tarjetas,
         "tiros_arco": lambda r_, h_, c_: analisis_tiros(r_, h_, c_, "tiros_arco"),
         "tiros_total": lambda r_, h_, c_: analisis_tiros(r_, h_, c_, "tiros_total"),
+        # Segunda pasada: un analisis por tarjeta de handicap, uno por arquero
+        "hcp_europeo": analisis_hcp_europeo,
+        "hcp_asiatico": analisis_hcp_asiatico,
+        "atajadas_local": lambda r_, h_, c_: analisis_atajadas_equipo(r_, h_, c_, "local"),
+        "atajadas_visitante": lambda r_, h_, c_: analisis_atajadas_equipo(r_, h_, c_, "visitante"),
     }
     salida = {}
     for mercado, fabrica in fabricas.items():

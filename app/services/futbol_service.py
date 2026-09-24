@@ -2190,6 +2190,17 @@ def _hechos_para_analisis(df, local, visitante, stats_a, stats_b):
         else:
             cv = int((cond["goles_visitante"] > cond["goles_local"]).sum())
         btts = int(((ultimos10["goles_local"] > 0) & (ultimos10["goles_visitante"] > 0)).sum())
+        # Margen de victoria (handicap) y atajadas propias con dato real
+        # (analisis_mercados: hcp_europeo / atajadas por equipo).
+        gan = gan2 = 0
+        atajadas = []
+        con_atajadas = _con_dato(ultimos10, "atajadas_local", "atajadas_visitante", True)
+        for (_, r), ok_at in zip(ultimos10.iterrows(), con_atajadas):
+            es_local = r["equipo_local"] == equipo
+            dif = (r["goles_local"] - r["goles_visitante"]) * (1 if es_local else -1)
+            gan += dif > 0; gan2 += dif >= 2
+            if ok_at:
+                atajadas.append(float(r["atajadas_local"] if es_local else r["atajadas_visitante"]))
         return {
             "n_total": len(historial),
             "pocos_datos": bool(stats.get("pocos_datos")) or len(historial) < MIN_PARTIDOS,
@@ -2202,6 +2213,9 @@ def _hechos_para_analisis(df, local, visitante, stats_a, stats_b):
             "n_tarjetas": int(_con_dato(ultimos10, "tarjetas_local", "tarjetas_visitante", False).sum()),
             "n_tiros_arco": int(_con_dato(ultimos10, "tiros_arco_local", "tiros_arco_visitante", True).sum()),
             "n_tiros_total": int(_con_dato(ultimos10, "tiros_total_local", "tiros_total_visitante", True).sum()),
+            "margen": {"gan": int(gan), "gan2": int(gan2), "n": len(ultimos10)},
+            "n_atajadas": len(atajadas),
+            "atajadas_prom": round(sum(atajadas) / len(atajadas), 1) if atajadas else None,
         }
 
     h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=10)
