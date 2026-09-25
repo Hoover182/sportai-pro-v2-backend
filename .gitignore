@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 *.db
 app/services/cache_jugadores/
+
+# Variables de entorno locales (keys): nunca al repo
+.env

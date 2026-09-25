@@ -3113,7 +3113,10 @@ def _stats_temporada_actual(df, equipo):
 
 def get_cuotas_partido(local, visitante, liga_nombre):
     import requests
-    ODDS_API_KEY = "016ac8cef97435449ec8f235ada4cbad"
+    # Key de the-odds-api por variable de entorno (mismo patron que
+    # APIFOOTBALL_KEY). Hasta el 2026-09-24 estaba escrita aca, en un repo
+    # publico: la key vieja se considera comprometida y se roto.
+    ODDS_API_KEY = os.environ.get("ODDS_API_KEY", "")
     LIGAS_ODDS = {
         "Premier League": "soccer_epl",
         "La Liga": "soccer_spain_la_liga",
@@ -3132,6 +3135,10 @@ def get_cuotas_partido(local, visitante, liga_nombre):
     sport_key = LIGAS_ODDS.get(liga_nombre)
     if not sport_key:
         return []
+    if not ODDS_API_KEY:
+        # Solo avisa cuando de verdad iba a consultar (liga cubierta).
+        print("AVISO get_cuotas_partido: falta la variable de entorno ODDS_API_KEY", flush=True)
+        return []
     try:
         url = f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds/"
         params = {
@@ -3142,6 +3149,9 @@ def get_cuotas_partido(local, visitante, liga_nombre):
         }
         resp = requests.get(url, params=params, timeout=10)
         if resp.status_code != 200:
+            # Nunca loguear la URL: la key viaja como parametro.
+            print(f"AVISO get_cuotas_partido: the-odds-api respondio HTTP {resp.status_code} "
+                  f"(requests restantes: {resp.headers.get('x-requests-remaining')})", flush=True)
             return []
         data = resp.json()
         local_lower = local.lower()
