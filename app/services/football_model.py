@@ -63,6 +63,45 @@ def _historial_equipo(df, equipo):
     return partidos.sort_values("fecha", ascending=False)
 
 
+# Arqueros sin historial de atajadas (menos de MIN_ATAJADAS_HISTORIAL
+# partidos con el dato real entre sus ultimos 10): su proyeccion propia
+# salia de 1-2 partidos sueltos o del respaldo de liga (ej. Deportes
+# Iquique: atajadas_favor=1.0 de UN partido -> 1.98). Para ellos se usa
+# eficiencia general de arqueros x tiros al arco proyectados del rival.
+# Validado ocultando el historial de 487 arqueros que si lo tienen
+# (walk-forward): error medio 1.54 contra 1.69 de "tiros recibidos -
+# goles recibidos" propio (IC 95% de la diferencia: -0.215 a -0.079).
+MIN_ATAJADAS_HISTORIAL = 3
+EFICIENCIA_ARQUEROS_RESPALDO = 0.689   # atajadas / tiros al arco recibidos, CSV al 2026-09-25
+_cache_eficiencia_arqueros = {}
+
+
+def eficiencia_general_arqueros(df):
+    """Atajadas / tiros al arco recibidos sobre TODOS los partidos
+    terminados del CSV que tienen los dos datos (0-0 de relleno excluidos).
+    Se recalcula con cada CSV cargado (se actualiza con el sync); cache por
+    DataFrame. Si no se puede calcular, EFICIENCIA_ARQUEROS_RESPALDO."""
+    clave = (id(df), len(df))
+    if clave in _cache_eficiencia_arqueros:
+        return _cache_eficiencia_arqueros[clave]
+    try:
+        ft = df[df["estado"].isin(["FT", "AET", "PEN"])]
+        ok = (ft["atajadas_local"].notna() & ft["atajadas_visitante"].notna()
+              & ((ft["atajadas_local"] + ft["atajadas_visitante"]) > 0)
+              & ft["tiros_arco_local"].notna() & ft["tiros_arco_visitante"].notna())
+        c = ft[ok]
+        tiros = float(c["tiros_arco_local"].sum() + c["tiros_arco_visitante"].sum())
+        valor = float((c["atajadas_local"].sum() + c["atajadas_visitante"].sum()) / tiros) if tiros > 0 else EFICIENCIA_ARQUEROS_RESPALDO
+        if not (0.3 <= valor <= 1.0):
+            valor = EFICIENCIA_ARQUEROS_RESPALDO
+    except Exception:
+        valor = EFICIENCIA_ARQUEROS_RESPALDO
+    if len(_cache_eficiencia_arqueros) > 8:
+        _cache_eficiencia_arqueros.clear()
+    _cache_eficiencia_arqueros[clave] = valor
+    return valor
+
+
 def _con_stats(partidos, n=10):
     """Subconjunto con stats reales (corners o tarjetas > 0) de un
     historial YA filtrado por equipo -- mismo criterio que
@@ -655,10 +694,17 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         media_tf  = float(np.clip(media_tf,  TARJETAS_MIN, TARJETAS_MAX))
         media_tc  = float(np.clip(media_tc,  TARJETAS_MIN, TARJETAS_MAX))
 
+    # Partidos de la ventana (ultimos 10) con atajadas reales del equipo
+    # -- mismo criterio que el Analisis IA (MIN_CON_DATO). Lo usa
+    # ajustar_medias_con_rival para detectar arqueros sin historial.
+    _ok_at = (partidos["atajadas_local"].notna() & partidos["atajadas_visitante"].notna()
+              & ((partidos["atajadas_local"].fillna(0) + partidos["atajadas_visitante"].fillna(0)) > 0))
     return {
         "log": partidos,
         "pocos_datos": pocos_datos,
         "n_partidos": n_partidos,
+        "n_atajadas": int(_ok_at.sum()),
+        "eficiencia_general_arqueros": eficiencia_general_arqueros(df),
         "n_partidos_stats": n_partidos_stats,
         "n_partidos_xg": n_partidos_xg,
         "condicion": condicion,
@@ -947,6 +993,19 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     tiros_arco_b   = float(np.clip(tiros_arco_b,   TIROS_ARCO_MIN,  TIROS_ARCO_MAX))
     tiros_total_a  = float(np.clip(tiros_total_a,  TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
     tiros_total_b  = float(np.clip(tiros_total_b,  TIROS_TOTAL_MIN, TIROS_TOTAL_MAX))
+    # Arquero sin historial de atajadas: eficiencia general x tiros al arco
+    # (ya ajustados y acotados) del rival de hoy. Solo si el stats trae el
+    # conteo (otros callers sin n_atajadas: sin cambios) y hay proyeccion
+    # de tiros del rival (si es NaN se mantiene el calculo anterior).
+    # Arqueros con historial: exactamente igual que antes.
+    for _st, _riv_tiros, _lado in ((stats_a, tiros_arco_b, "a"), (stats_b, tiros_arco_a, "b")):
+        _n = _st.get("n_atajadas")
+        if _n is not None and _n < MIN_ATAJADAS_HISTORIAL and not np.isnan(_riv_tiros):
+            _valor = _st.get("eficiencia_general_arqueros", EFICIENCIA_ARQUEROS_RESPALDO) * _riv_tiros
+            if _lado == "a":
+                atajadas_a = _valor
+            else:
+                atajadas_b = _valor
     atajadas_a     = float(np.clip(atajadas_a,     ATAJADAS_MIN,    ATAJADAS_MAX))
     atajadas_b     = float(np.clip(atajadas_b,     ATAJADAS_MIN,    ATAJADAS_MAX))
 
