@@ -32,7 +32,16 @@ jobs:
             --write-teamids app/services/cache_team_ids.json.new \
             --write-cuotas app/services/cuotas_cache.json.new \
             --summary-out /tmp/summary.md
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          # 0 = sin cambios, 2 = hay cambios (se arma el PR). Cualquier otro
+          # codigo es un error del script y el job TIENE que fallar: del
+          # 2026-09-20 al 2026-09-25 un KeyError salia con 1, se tomaba como
+          # "sin cambios" y la corrida quedaba en verde sin sincronizar nada.
+          if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+            echo "::error::check_sync.py fallo con codigo $code (ver el traceback arriba). No se sincronizo nada."
+            exit "$code"
+          fi
 
       - name: Reemplazar archivos y armar rama
         if: steps.check.outputs.exit_code == '2'
