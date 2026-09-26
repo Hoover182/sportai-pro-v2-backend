@@ -11,6 +11,11 @@ permissions:
   contents: write
   pull-requests: write
 
+# Una sola sync a la vez (schedule + disparo manual no se pisan).
+concurrency:
+  group: sync-check
+  cancel-in-progress: false
+
 jobs:
   check-sync:
     runs-on: ubuntu-latest
@@ -21,7 +26,9 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install pandas requests
+      # requirements.txt completo: la prueba de humo del veredicto importa
+      # el codigo real del backend.
+      - run: pip install -r requirements.txt
 
       - name: Chequear cambios y armar reporte
         id: check
@@ -50,6 +57,8 @@ jobs:
           git config user.email "sync-bot@users.noreply.github.com"
           BRANCH="sync/analista-futbol-$(date -u +%Y%m%d-%H%M)"
           echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          # Commit de main contra el que compara el veredicto.
+          echo "BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
           git checkout -b "$BRANCH"
           # Cada .new solo existe si ese archivo puntual tuvo cambios --
           # el otro puede no haber cambiado ese dia (ver check_sync.py).
@@ -85,3 +94,39 @@ jobs:
             --body-file /tmp/summary.md \
             --base main \
             --head "$BRANCH"
+
+      # MODO OBSERVACION: calcula si el PR se habria auto-mergeado y lo
+      # comenta en el PR. NUNCA mergea (no hay ningun "gh pr merge" en este
+      # workflow). Si el veredicto es "revision manual", o el script del
+      # veredicto falla, la corrida termina en ROJO para que GitHub avise
+      # por mail -- nunca un verde que esconda un problema.
+      - name: Veredicto de auto-merge (modo observacion, no mergea)
+        if: steps.check.outputs.exit_code == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          mkdir -p /tmp/antes /tmp/despues
+          for f in futbol_partidos.csv cache_team_ids.json cuotas_cache.json datos_meta.json; do
+            git show "$BASE_SHA:app/services/$f" > "/tmp/antes/$f" 2>/dev/null || rm -f "/tmp/antes/$f"
+            cp "app/services/$f" "/tmp/despues/$f" 2>/dev/null
+          done
+          git diff --name-only "$BASE_SHA" HEAD > /tmp/archivos.txt
+          python scripts/veredicto_sync.py \
+            --antes-dir /tmp/antes --despues-dir /tmp/despues \
+            --archivos-cambiados /tmp/archivos.txt \
+            --out /tmp/veredicto.json --comentario /tmp/veredicto.md
+          v=$?
+          if [ "$v" -ne 0 ] && [ "$v" -ne 3 ]; then
+            {
+              echo "## Veredicto de auto-merge (MODO OBSERVACION)"
+              echo
+              echo "⛔ **El script del veredicto fallo (codigo $v): sin veredicto = revision manual.** Ver el log de la corrida."
+            } > /tmp/veredicto.md
+          fi
+          gh pr comment "$BRANCH" --body-file /tmp/veredicto.md || { echo "::error::No se pudo comentar el veredicto en el PR"; exit 1; }
+          if [ "$v" -ne 0 ]; then
+            echo "::error::Veredicto: NO se habria auto-mergeado (codigo $v). Motivos en el comentario del PR."
+            exit 1
+          fi
+          echo "Veredicto: se habria auto-mergeado (modo observacion: no se mergeo)."
