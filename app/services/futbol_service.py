@@ -3219,12 +3219,16 @@ def get_value_bets_hoy():
         return []
 
     # Filtrar partidos entre hoy y +7 dias (sin resultado todavia)
-    hoy = datetime.now()
-    limite = hoy + timedelta(days=7)
+    # Con zona horaria: cargar_df() convierte "fecha" a America/Bogota, y
+    # pandas no compara fechas con y sin zona horaria (TypeError -> 500 en
+    # cada llamada desde d9bf8f2, 2026-05-07). Mismo criterio que
+    # get_partidos_rango().
+    hoy = pd.Timestamp.now(tz="America/Bogota")
+    limite = hoy + pd.Timedelta(days=7)
     df_fechas = df.copy()
     df_fechas["fecha_dt"] = pd.to_datetime(df_fechas["fecha"], errors="coerce")
     partidos = df_fechas[
-        (df_fechas["fecha_dt"] >= hoy.replace(hour=0, minute=0, second=0, microsecond=0))
+        (df_fechas["fecha_dt"] >= hoy.normalize())
         & (df_fechas["fecha_dt"] <= limite)
     ]
     if partidos.empty:
