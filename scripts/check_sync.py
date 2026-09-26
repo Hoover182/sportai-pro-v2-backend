@@ -118,9 +118,22 @@ def cargar_cuotas_cache_backend():
         return json.load(f)
 
 
+def columnas_nuevas(df_nuevo, df_actual):
+    """Columnas que trae analista-futbol y el backend todavia no tiene
+    (ej. goles_90_local/visitante desde 2026-09-19)."""
+    return [c for c in df_nuevo.columns if c not in df_actual.columns]
+
+
 def detectar_filas_nuevas_y_actualizadas(df_nuevo, df_actual):
+    """Compara solo las columnas que existen en los DOS CSV; una columna
+    nueva cuenta como cambio en las filas donde trae dato. Antes se
+    recorrian todas las columnas del CSV nuevo y una columna que el
+    backend no tenia (goles_90_local, 2026-09-19) tiraba KeyError: el sync
+    fallo del 2026-09-20 al 2026-09-25 sin que nadie se enterara."""
     actual_por_id = df_actual.set_index("fixture_id")
     ids_actuales = set(actual_por_id.index)
+    nuevas_cols = columnas_nuevas(df_nuevo, df_actual)
+    comunes = [c for c in df_nuevo.columns if c in df_actual.columns and c != "fixture_id"]
 
     nuevas = df_nuevo[~df_nuevo["fixture_id"].isin(ids_actuales)]
 
@@ -129,7 +142,8 @@ def detectar_filas_nuevas_y_actualizadas(df_nuevo, df_actual):
     for _, fila in candidatas.iterrows():
         fid = fila["fixture_id"]
         fila_actual = actual_por_id.loc[fid]
-        distintos = [c for c in fila.index if c != "fixture_id" and str(fila[c]) != str(fila_actual[c])]
+        distintos = [c for c in comunes if str(fila[c]) != str(fila_actual[c])]
+        distintos += [c for c in nuevas_cols if pd.notna(fila[c])]
         if distintos:
             actualizadas.append((fid, distintos))
 
@@ -175,7 +189,7 @@ def chequear_encoding_roto(df_nuevo):
 
 def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
                    dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
-                   id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo):
+                   id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo, columnas_agregadas=None):
     lineas = []
     alertas = []
 
@@ -210,6 +224,8 @@ def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
         )
 
     lineas.append("## Resumen")
+    if columnas_agregadas:
+        lineas.append(f"- **Columnas nuevas que se agregan al backend:** {', '.join(columnas_agregadas)}")
     lineas.append(f"- Filas nuevas: **{len(nuevas)}**")
     lineas.append(f"- Filas actualizadas (mismo partido, datos distintos): **{len(actualizadas)}**")
     lineas.append("")
@@ -268,6 +284,12 @@ def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
 def combinar(df_actual, df_nuevo):
     actual_idx = df_actual.set_index("fixture_id")
     nuevo_idx = df_nuevo.set_index("fixture_id")
+    # Columnas nuevas de analista-futbol: se agregan ANTES del update(),
+    # que solo toca columnas existentes -- si no, los partidos viejos del
+    # backend nunca recibirian esos datos (ej. goles_90 de los AET/PEN
+    # backfilleados). update() no escribe NaN encima de un dato existente.
+    for c in columnas_nuevas(df_nuevo, df_actual):
+        actual_idx[c] = pd.NA
     actual_idx.update(nuevo_idx)
     faltantes = nuevo_idx.loc[~nuevo_idx.index.isin(actual_idx.index)]
     combinado = pd.concat([actual_idx, faltantes]).reset_index()
@@ -320,6 +342,7 @@ def main():
         nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
         dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
         id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo,
+        columnas_agregadas=columnas_nuevas(df_nuevo, df_actual),
     )
     print(reporte)
 
