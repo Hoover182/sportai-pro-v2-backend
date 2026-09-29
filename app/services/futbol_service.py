@@ -1142,7 +1142,12 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
     resuelta por partido via _resolver_cuota_mercado() con fallback
     automatico a la otra casa si casa_preferida no cubre ese mercado
     puntual) -- nunca se oculta de donde salio, aunque dos partidos
-    distintos del mismo Top Picks terminen mostrando casas distintas."""
+    distintos del mismo Top Picks terminen mostrando casas distintas.
+
+    Y "siguiente" (nota de Top Picks): el mejor candidato que quedo afuera
+    del Top3 y cuanto le saco el pick ({mercado, prob, margen, franja}, o
+    None si no quedo ninguno elegible). Informativo: no cambia que picks
+    salen. Ver el comentario junto a _siguiente() mas abajo."""
     stats_ok = (
         stats_a and stats_b and
         stats_a.get("n_partidos_stats", 0) >= 3 and
@@ -1275,9 +1280,46 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
             pick3 = c
             break
 
+    pick3_en_rango = pick3 is not None and RANGO_PICK3_BAJO <= pick3.prob <= RANGO_PICK3_ALTO
     if pick3 is not None:
         cuota, fuente_real = _resolver_cuota_mercado(cuotas_partido, pick3.nombre)
         resultado.append({"mercado": pick3.nombre, "prob": round(pick3.prob * 100, 1), "cuota": cuota, "fuente_real": fuente_real})
+        usados.add(pick3.nombre)
+        familias_usadas |= {(m, pick3.equipo) for m in _mercados_bloqueados_por(pick3.mercado)}
+        sabores_usados.add(pick3.mercado)
+
+    # Siguiente candidato (nota de Top Picks): el mejor que quedo AFUERA
+    # del Top3, con las mismas reglas del puesto y sin repetir la apuesta
+    # de fondo de ningun pick ya mostrado (familia/sabor de los 3). Picks
+    # #1/#2 compiten en [60%, techo); el #3 en su franja 65-78% -- contra
+    # todos los de afuera su margen saldria negativo, porque se elige con
+    # otra regla. Si el #3 cayo al fallback, compite como #1/#2. None si
+    # no queda ningun candidato elegible (partidos con pocos mercados).
+    def _siguiente(bajo, alto):
+        for c in candidatos:
+            if c.nombre in usados or not (bajo <= c.prob <= alto):
+                continue
+            if c.prob >= PROB_TECHO_INFORMATIVO:
+                continue
+            bloqueados = {(m, c.equipo) for m in _mercados_bloqueados_por(c.mercado)}
+            if bloqueados & familias_usadas or c.mercado in sabores_usados:
+                continue
+            return c
+        return None
+
+    siguiente_general = _siguiente(0.60, 1.0)
+    siguiente_pick3 = _siguiente(RANGO_PICK3_BAJO, RANGO_PICK3_ALTO) if pick3_en_rango else siguiente_general
+    for i, pick in enumerate(resultado):
+        s = siguiente_pick3 if i == 2 else siguiente_general
+        pick["siguiente"] = None if s is None else {
+            "mercado": s.nombre,
+            "prob": round(s.prob * 100, 1),
+            # margen sobre los valores YA redondeados que ve el usuario
+            "margen": round(pick["prob"] - round(s.prob * 100, 1), 1),
+            # [bajo, alto] si compitio dentro de la franja del pick #3
+            "franja": [round(RANGO_PICK3_BAJO * 100, 1), round(RANGO_PICK3_ALTO * 100, 1)]
+                      if i == 2 and pick3_en_rango else None,
+        }
 
     return resultado
 
@@ -2570,6 +2612,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     # coincida con el que muestra la tarjeta. Clave de variante =
     # fixture_id (semilla fija por partido y mercado). Si falla, la
     # respuesta sale igual, sin analisis_ia.
+    hechos = None
     try:
         from analisis_mercados import armar_analisis_ia
         hechos = _hechos_para_analisis(df, local, visitante, stats_a, stats_b)
@@ -2578,6 +2621,15 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     except Exception as e:
         print(f"AVISO analisis_ia: {type(e).__name__}: {e}")
         resultado["analisis_ia"] = None
+    # Nota por pick de Top3: proyeccion + bullet del analisis de su mercado
+    # + margen sobre el siguiente candidato (ver armar_notas_top3). Sin
+    # hechos (fallo el bloque de arriba) todas quedan en None.
+    if hechos is not None:
+        from analisis_mercados import armar_notas_top3
+        armar_notas_top3(resultado, hechos)
+    else:
+        for pick in top3:
+            pick["nota"] = None
     return resultado, None
 
 
