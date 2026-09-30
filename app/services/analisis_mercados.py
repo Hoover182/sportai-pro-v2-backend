@@ -148,9 +148,6 @@ PROYECTADOS = {"tarjetas": "proyectadas"}   # el resto, masculino
 # clave de hechos con cuantos de los ultimos partidos tienen el stat real
 CLAVE_COBERTURA = {"corners": "n_corners", "tarjetas": "n_tarjetas",
                    "tiros_arco": "n_tiros_arco", "tiros_total": "n_tiros_total"}
-# Primer bullet del analisis de goles; la nota de Top Picks lo salta porque
-# repite su frase de proyeccion.
-B_PROYECCION_POR_EQUIPO = "Proyección por equipo:"
 
 
 def _f(x):
@@ -415,7 +412,7 @@ def analisis_goles(r, hechos, clave):
     gl, gv = (float(x) for x in r["goles_proj"].split(" - "))
     sl, sv = r["stats_local"], r["stats_visitante"]
     return _analisis_ou(r, hechos, clave, "goles", gl + gv, r["goles_ou"], [
-        f"{B_PROYECCION_POR_EQUIPO} {L} {_f2(gl)}, {V} {_f2(gv)}.",
+        f"Proyección por equipo: {L} {_f2(gl)}, {V} {_f2(gv)}.",
         None if hechos["pocos_datos"] else  # mismo motivo que en analisis_ambos_marcan
         _b_promedios(L, V, sl["goles_favor"], sl["goles_contra"], sv["goles_favor"], sv["goles_contra"], "goles"),
         _b_h2h_prom(hechos["h2h"], "goles_prom", "n", "goles"),
@@ -608,20 +605,23 @@ def armar_analisis_ia(r, hechos, clave_partido):
 
 
 # ----------------------------------------------------------------------------- nota de Top Picks
-MARGEN_MINIMO_NOTA = 2.0
-"""Puntos de probabilidad (sobre los valores redondeados que ve el
-usuario) que un pick le tiene que sacar al siguiente candidato para
-mencionarlo en la nota. Elegido con datos reales (66 partidos pendientes
-27/09-03/10): con 10.000 simulaciones cada probabilidad tiene ~0.4 pp de
-ruido y la diferencia entre dos, hasta ~0.6 pp -- por debajo de 1 pp es
-ruido puro, y 2 pp es ~3 veces eso. Con 2 pp la frase aparece en 25/27
-picks #1, 17/27 picks #2 y 9/27 picks #3 (el #3 compite en una franja
-llena de candidatos pegados: mediana 0.9 pp)."""
+# Dos lineas cortas por pick, separadas por "\n" (el frontend las muestra
+# tal cual): 1) que espera el modelo, frente a la linea DEL pick; 2) que
+# paso entre ellos en ESE mercado (o, en atajadas, cuanto remata el rival).
+# Si un equipo tiene poca historia, una tercera linea lo avisa. Los cruces
+# vienen de hechos["h2h_cruces"] (solo partidos oficiales terminados).
+VENTANA_CRUCES_NOTA = 5
+"""Cruces con dato del mercado que se resumen (los mas recientes), igual
+que la pestaña "Ultimos 5" de la app."""
+DIAS_CRUCE_VIEJO = 730
+"""Si el ultimo cruce con dato tiene mas de 2 anios, se dice cuantos
+(decision del usuario)."""
 
 _PICK_OU = re.compile(r"^(Over|Under) (\d+(?:\.\d+)?) (.+?)(?: \((.+)\))?$")
 _UNIDAD_A_MERCADO = {"goles": "goles", "corners": "corners", "tarjetas": "tarjetas",
                      "tiros al arco": "tiros_arco", "tiros totales": "tiros_total", "atajadas": "atajadas"}
-_LADO_1X2 = {"Gana local": "local", "Empate": "empate", "Gana visitante": "visitante"}
+_VERBO_EQUIPO = {"goles": "marcó", "corners": "tuvo", "tarjetas": "recibió", "tiros_arco": "hizo", "tiros_total": "hizo"}
+_SIN_CRUCES = "No hay cruces oficiales entre ellos en nuestra base."
 
 
 def _proyeccion_pick(r, mercado, lado):
@@ -635,98 +635,137 @@ def _proyeccion_pick(r, mercado, lado):
     return v if v else None
 
 
-def _frase_proyeccion(proj, linea, unidad, equipo):
-    """Proyeccion frente a la linea DEL PICK (el resumen del analisis habla
-    de la linea de referencia del mercado, que casi nunca es la del pick).
-    Solo dice de que lado de la linea cae el promedio, sin opinar."""
-    p, l = round(proj, 2), float(linea)
-    rel = ("por encima de" if p > l else "por debajo de" if p < l else "justo en") + f" la línea de {linea}"
-    de = f" de {equipo}" if equipo else ""
-    return f"El modelo proyecta {_f2(p)} {unidad}{de}, {rel}."
+def _num_proj(proj, linea):
+    """1 decimal; 2 si con 1 quedaria igual a la linea (2.46 -> "2.5" frente
+    a una linea de 2.5 no dice de que lado cae)."""
+    return _f(proj) if float(_f(proj)) != float(linea) else _f2(proj)
 
 
-def _primer_bullet(a, saltar=None):
-    if not a:
-        return None
-    bullets = [b for b in a["bullets"] if not (saltar and b.startswith(saltar))]
-    return bullets[0] if bullets else None
+def _hace(dias):
+    anios = dias // 365
+    return f"hace {anios} año{'s' if anios != 1 else ''}"
 
 
-def _texto_del_pick(nombre, prob, r, hechos, ia):
-    """(frase principal, bullet) del mercado del pick; cualquiera puede ser
-    None. El resumen del analisis se usa SOLO en mercados sin linea (1X2,
-    doble oportunidad, ambos marcan) y solo si habla del mismo desenlace
-    que el pick, con el mismo numero; si no, queda un bullet neutral."""
+def _veces(n):
+    return "una vez" if n == 1 else f"{n} veces"
+
+
+def _linea_cruces_ou(cruces, mercado, sentido, linea, unidad, equipo):
+    """Segunda linea de un pick Over/Under: los ultimos cruces con el dato
+    de su mercado exacto (total, o solo del equipo si el pick es de un
+    equipo). Nunca inventa: sin cruces lo dice; con cruces pero sin el dato,
+    tambien."""
+    if not cruces:
+        return _SIN_CRUCES
+    con_dato = [(i, c) for i, c in enumerate(cruces) if c[mercado] is not None][:VENTANA_CRUCES_NOTA]
+    if not con_dato:
+        uno = len(cruces) == 1
+        return (f"Se enfrentaron {_veces(len(cruces))}, pero no hay registro de {unidad} "
+                f"de {'ese partido' if uno else 'esos partidos'}.")
+    valores = []
+    for _, c in con_dato:
+        vl, vv = c[mercado]
+        valores.append(vl + vv if equipo is None else (vl if c["local"] == equipo else vv))
+    k, l = len(valores), float(linea)
+    cumple = sum((v > l) if sentido == "Over" else (v < l) for v in valores)
+    viejo = con_dato[0][1]["dias"] > DIAS_CRUCE_VIEJO
+    sujeto = "" if equipo is None else f"{equipo} {_VERBO_EQUIPO[mercado]} "
+    if k == 1:
+        v = valores[0]
+        quien = f", {sujeto}" if sujeto else " hubo "
+        if len(cruces) == 1:
+            txt = f"Entre ellos: en su único cruce{quien}{v} {unidad}."
+        else:
+            txt = f"Entre ellos: en el único cruce con registro de {unidad}{quien}{v}."
+        return txt + (f" Fue {_hace(con_dato[0][1]['dias'])}." if viejo else "")
+    # si algun cruce mas reciente no tiene el dato, se aclara "con registro de"
+    salteo = con_dato[-1][0] >= k
+    cuales = f"los últimos {k} cruces" + (f" con registro de {unidad}" if salteo else "")
+    prom = _f(sum(valores) / k)
+    que = f"{'más' if sentido == 'Over' else 'menos'} de {linea}" + ("" if salteo else f" {unidad}")
+    txt = f"Entre ellos: {sujeto}{que} en {cumple} de {cuales} ({prom} de promedio)."
+    return txt + (f" El último fue {_hace(con_dato[0][1]['dias'])}." if viejo else "")
+
+
+def _linea_cruces_resultado(cruces, cuenta, frase):
+    """Segunda linea de 1X2 / doble oportunidad / ambos marcan: en cuantos de
+    los ultimos cruces se dio el desenlace del pick (goles siempre estan)."""
+    if not cruces:
+        return _SIN_CRUCES
+    ult = cruces[:VENTANA_CRUCES_NOTA]
+    viejo = ult[0]["dias"] > DIAS_CRUCE_VIEJO
+    if len(ult) == 1:
+        c = ult[0]
+        txt = f"Entre ellos: un solo cruce, {c['local']} {c['goles'][0]}-{c['goles'][1]} {c['visitante']}."
+        return txt + (f" Fue {_hace(c['dias'])}." if viejo else "")
+    n = sum(cuenta(c) for c in ult)
+    txt = f"Entre ellos: {frase} {n} de los últimos {len(ult)} cruces."
+    return txt + (f" El último fue {_hace(ult[0]['dias'])}." if viejo else "")
+
+
+def _goles_de(c, equipo):
+    """(a favor, en contra) de `equipo` en el cruce c."""
+    gl, gv = c["goles"]
+    return (gl, gv) if c["local"] == equipo else (gv, gl)
+
+
+def _lineas_del_pick(nombre, prob, r, hechos):
+    """[linea 1, linea 2] del pick; cualquiera puede ser None."""
+    L, V = r["local"], r["visitante"]
+    cruces = hechos.get("h2h_cruces") or []
     m = _PICK_OU.match(nombre)
     if m:
-        _, linea, unidad, equipo = m.groups()
+        sentido, linea, unidad, equipo = m.groups()
         mercado = _UNIDAD_A_MERCADO.get(unidad)
-        lado = None if equipo is None else {r["local"]: "local", r["visitante"]: "visitante"}.get(equipo)
+        lado = None if equipo is None else {L: "local", V: "visitante"}.get(equipo)
         if mercado is None or (equipo is not None and lado is None):
-            return None, None
+            return [None, None]
         proj = _proyeccion_pick(r, mercado, lado)
-        frase = _frase_proyeccion(proj, linea, unidad, equipo) if proj is not None else None
-        # Bullet del analisis del MISMO mercado: el total para picks totales
-        # (salvo atajadas, que solo tiene analisis por arquero) y el del
-        # arquero para atajadas de un equipo. Los demas mercados por equipo
-        # no tienen analisis propio: solo la proyeccion.
-        if lado is None:
-            clave = None if mercado == "atajadas" else mercado
-        else:
-            clave = f"atajadas_{lado}" if mercado == "atajadas" else None
-        return frase, _primer_bullet(ia.get(clave) if clave else None, saltar=B_PROYECCION_POR_EQUIPO)
+        num = _num_proj(proj, linea) if proj is not None else None
+        if mercado == "atajadas":
+            # Sin cruces a proposito: depende del arquero de hoy y de cuanto
+            # remata el rival, no del historial contra ese rival.
+            if lado is None:
+                l1 = num and f"Se esperan {num} atajadas entre los dos arqueros; la línea es {linea}."
+                t = r.get("tiros_arco_proj")
+                l2 = f"Entre los dos equipos se proyectan {_f(t)} tiros al arco." if t else None
+            else:
+                rival = V if lado == "local" else L
+                l1 = num and f"Se esperan {num} atajadas del arquero de {equipo}; la línea es {linea}."
+                t = r.get(f"tiros_arco_{'visitante' if lado == 'local' else 'local'}_proj")
+                l2 = f"{rival} proyecta {_f(t)} tiros al arco: ese es el trabajo que le espera." if t else None
+            return [l1, l2]
+        de = f" de {equipo}" if equipo else ""
+        l1 = num and f"Se esperan {num} {unidad}{de}; la línea es {linea}."
+        return [l1, _linea_cruces_ou(cruces, mercado, sentido, linea, unidad, equipo)]
 
-    if nombre in _LADO_1X2:
-        a = ia.get("1x2")
-        probs = {k: r[f"prob_{k}"] for k in ("local", "empate", "visitante")}
-        fav = max(probs, key=probs.get)  # empate de probabilidades -> el primero, como analisis_1x2
-        lado = _LADO_1X2[nombre]
-        # r trae el 1X2 con el ajuste IA aplicado; el pick, el del modelo puro
-        coherente = fav == lado and probs[lado] == prob
-        return (a["resumen"] if a and coherente else None), _primer_bullet(a)
-
+    p = _f(prob)
+    if nombre in ("Gana local", "Gana visitante"):
+        eq = L if nombre == "Gana local" else V
+        return [f"El modelo le da {p}% a que gane {eq}.",
+                _linea_cruces_resultado(cruces, lambda c: _goles_de(c, eq)[0] > _goles_de(c, eq)[1], f"{eq} ganó")]
+    if nombre == "Empate":
+        return [f"El modelo le da {p}% al empate.",
+                _linea_cruces_resultado(cruces, lambda c: c["goles"][0] == c["goles"][1], "empataron en")]
     if nombre.startswith(("1X ", "X2 ")):
-        a = ia.get("doble_oportunidad")
-        propio = "1x" if nombre.startswith("1X") else "x2"
-        ops = {"1x": r["prob_1x"], "x2": r["prob_x2"], "12": r["prob_12"]}
-        coherente = max(ops, key=ops.get) == propio and ops[propio] == prob
-        if a and coherente:
-            return a["resumen"], _primer_bullet(a)
-        # El analisis habla de otra doble oportunidad: sus bullets son sobre
-        # el desenlace que rompe ESA opcion, no la del pick.
-        if hechos["pocos_datos"]:
-            return None, _b_pocos_datos(r, hechos)
-        b = _b_complemento_doble(r, hechos, "visitante" if propio == "1x" else "local")
-        return None, _contracciones(b) if b else None
-
+        eq = L if nombre.startswith("1X") else V
+        return [f"El modelo le da {p}% a que {eq} no pierda.",
+                _linea_cruces_resultado(cruces, lambda c: _goles_de(c, eq)[0] >= _goles_de(c, eq)[1], f"{eq} no perdió en")]
     if nombre == "Ambos marcan":
-        a = ia.get("ambos_marcan")
-        si = r["prob_ambos_marcan"]
-        coherente = si >= round(100 - si, 1) and si == prob
-        return (a["resumen"] if a and coherente else None), _primer_bullet(a)
-
-    return None, None
-
-
-def _frase_margen(pick):
-    s = pick.get("siguiente")
-    if not s or s["margen"] < MARGEN_MINIMO_NOTA:
-        return None
-    if s.get("franja"):
-        bajo, alto = s["franja"]
-        return (f"Es el pick de riesgo moderado: dentro de la franja {bajo:g}–{alto:g}% le sacó "
-                f"{_f(s['margen'])} puntos al siguiente ({s['mercado']}, {_f(s['prob'])}%).")
-    return f"Le sacó {_f(s['margen'])} puntos al mejor candidato que quedó afuera ({s['mercado']}, {_f(s['prob'])}%)."
+        return [f"El modelo le da {p}% a que marquen los dos.",
+                _linea_cruces_resultado(cruces, lambda c: min(c["goles"]) > 0, "marcaron los dos en")]
+    return [None, None]
 
 
 def armar_nota_pick(pick, r, hechos):
-    """Nota de un pick de Top3: proyeccion (o resumen coherente) + 1 bullet
-    del analisis + margen sobre el siguiente candidato. None si no queda
-    nada que decir."""
-    ia = r.get("analisis_ia") or {}
-    frase, bullet = _texto_del_pick(pick["mercado"], pick["prob"], r, hechos, ia)
-    partes = [p for p in (frase, bullet, _frase_margen(pick)) if p]
-    return " ".join(partes) if partes else None
+    """Nota de un pick de Top3: que se espera + que paso entre ellos en ese
+    mercado (+ aviso si hay poca historia). None si no queda nada que decir."""
+    lineas = _lineas_del_pick(pick["mercado"], pick["prob"], r, hechos)
+    if hechos.get("pocos_datos"):
+        chicos = [r[k] for k in ("local", "visitante") if hechos[k]["pocos_datos"]]
+        lineas.append(f"Ojo: poca historia de {' y '.join(chicos)} en nuestra base.")
+    lineas = [x for x in lineas if x]
+    return "\n".join(lineas) if lineas else None
 
 
 def armar_notas_top3(r, hechos):
