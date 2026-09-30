@@ -2272,10 +2272,40 @@ def _hechos_para_analisis(df, local, visitante, stats_a, stats_b):
     ultima = h2h["fecha"].max() if not h2h.empty else None
     hl = _equipo(local, stats_a, "local")
     hv = _equipo(visitante, stats_b, "visitante")
+
+    # Cruces uno por uno para la nota de Top Picks (analisis_mercados.
+    # armar_notas_top3): el dato del MERCADO del pick en cada cruce, total
+    # o de un equipo. Ventana mas larga que el h2h de arriba (que no se
+    # toca, alimenta analisis_ia) para encontrar hasta 5 cruces con dato
+    # aunque los mas recientes no lo tengan. Mismo criterio de "tiene el
+    # dato" que _con_dato(): corners/tiros 0-0 = sin registro.
+    def _par(r, col, exigir_positivo):
+        vl, vv = r[f"{col}_local"], r[f"{col}_visitante"]
+        if pd.isna(vl) or pd.isna(vv) or (exigir_positivo and vl + vv <= 0):
+            return None
+        return [int(vl), int(vv)]
+
+    cruces = ultimos_enfrentamientos_directos(df, local, visitante, n=20)
+    h2h_cruces = []
+    for _, r in cruces.iterrows():
+        fecha = pd.Timestamp(r["fecha"])
+        ahora = pd.Timestamp.now(tz=fecha.tzinfo)
+        h2h_cruces.append({
+            "fecha": str(fecha)[:10],
+            "dias": int((ahora - fecha).days),
+            "local": r["equipo_local"],
+            "visitante": r["equipo_visitante"],
+            "goles": [int(r["goles_local"]), int(r["goles_visitante"])],
+            "corners": _par(r, "corners", True),
+            "tarjetas": _par(r, "tarjetas", False),
+            "tiros_arco": _par(r, "tiros_arco", True),
+            "tiros_total": _par(r, "tiros_total", True),
+        })
     return {
         "local": hl,
         "visitante": hv,
         "pocos_datos": hl["pocos_datos"] or hv["pocos_datos"],
+        "h2h_cruces": h2h_cruces,
         "h2h": {
             "n": len(h2h), "g": int(g), "e": int(e), "p": int(p),
             "btts": int(((h2h["goles_local"] > 0) & (h2h["goles_visitante"] > 0)).sum()) if not h2h.empty else 0,

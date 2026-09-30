@@ -1,10 +1,10 @@
 """Nota de Top Picks: campo "siguiente" de calcular_top3() (mejor candidato
-que quedo afuera y margen) y nota por pick (proyeccion + bullet del
-analisis + margen, omitido bajo MARGEN_MINIMO_NOTA).
+que quedo afuera y margen) y nota por pick (que se espera + que paso entre
+ellos en ese mercado; atajadas sin cruces, con el peligro del rival).
 Correr desde backend/: python -m unittest discover -s tests -v"""
-import copy
 import os
 import random
+import re
 import sys
 import unittest
 
@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app", "services"))
 import analisis_mercados as A
 import futbol_service as F
-from test_analisis_mercados import equipo, hechos, numeros_permitidos, respuesta
+from test_analisis_mercados import equipo, hechos, respuesta
 
 
 def ou2(over):
@@ -78,155 +78,179 @@ class Siguiente(unittest.TestCase):
         self.assertEqual([set(p) for p in top], [{"mercado", "prob", "cuota", "fuente_real", "siguiente"}] * 3)
 
 
-def partido(top3, pocos=False, **cambios_r):
+L, V = "Union La Calera", "U. Catolica"   # los de respuesta()
+
+
+def cruce(dias, local=L, visitante=V, goles=(1, 1), **mercados):
+    """Un cruce como los arma _hechos_para_analisis()["h2h_cruces"]."""
+    c = {"fecha": "2026-01-01", "dias": dias, "local": local, "visitante": visitante, "goles": list(goles),
+         "corners": None, "tarjetas": None, "tiros_arco": None, "tiros_total": None}
+    c.update({k: list(v) for k, v in mercados.items()})
+    return c
+
+
+def partido(top3, cruces=(), pocos=False, **cambios_r):
     r = respuesta(**cambios_r)
     r.update({"corners_local_proj": 5.31, "corners_visitante_proj": 4.31, "tarjetas_local_proj": 2.46,
               "tarjetas_visitante_proj": 0.0, "atajadas_proj": 5.7})
     h = hechos(local=equipo(n_total=1, pocos=True)) if pocos else hechos()
-    r["analisis_ia"] = A.armar_analisis_ia(r, h, "k")
-    r["top3"] = copy.deepcopy(top3)
+    h["h2h_cruces"] = list(cruces)
+    r["top3"] = [{"mercado": m, "prob": p, "siguiente": None} for m, p in top3]
     A.armar_notas_top3(r, h)
-    return r, h
+    return [p["nota"] for p in r["top3"]]
 
 
-def sig(mercado, prob, margen, franja=None):
-    return {"mercado": mercado, "prob": prob, "margen": margen, "franja": franja}
+class CasosDeCruces(unittest.TestCase):
+    def test_reciente(self):
+        cr = [cruce(100 + i, tarjetas=(t - 3, 3)) for i, t in enumerate([7, 4, 8, 7, 10, 2])]
+        self.assertEqual(partido([("Over 2.5 tarjetas", 91.3)], cr), [
+            "Se esperan 5.3 tarjetas; la línea es 2.5.\n"
+            "Entre ellos: más de 2.5 tarjetas en 5 de los últimos 5 cruces (7.2 de promedio)."])
+
+    def test_viejo_dice_la_antiguedad(self):
+        cr = [cruce(1200, goles=(2, 2)), cruce(1500, goles=(0, 1))]
+        self.assertEqual(partido([("Under 3.5 goles", 78.8)], cr)[0].split("\n")[1],
+                         "Entre ellos: menos de 3.5 goles en 1 de los últimos 2 cruces (2.5 de promedio). "
+                         "El último fue hace 3 años.")
+
+    def test_borde_de_2_anios(self):
+        nota = lambda d: partido([("Under 3.5 goles", 78.8)], [cruce(d), cruce(d + 10)])[0]
+        self.assertNotIn("hace", nota(730))
+        self.assertIn("El último fue hace 2 años.", nota(731))
+
+    def test_sin_cruces(self):
+        self.assertEqual(partido([("Over 2.5 tarjetas", 84.2)], [])[0].split("\n")[1],
+                         "No hay cruces oficiales entre ellos en nuestra base.")
+
+    def test_cruces_sin_dato_del_mercado(self):
+        cinco = [cruce(100 + i, tarjetas=(2, 2)) for i in range(5)]   # hay tarjetas, no tiros
+        self.assertEqual(partido([("Under 7.5 tiros al arco", 91.4)], cinco)[0].split("\n")[1],
+                         "Se enfrentaron 5 veces, pero no hay registro de tiros al arco de esos partidos.")
+        self.assertEqual(partido([("Under 7.5 tiros al arco", 91.4)], cinco[:1])[0].split("\n")[1],
+                         "Se enfrentaron una vez, pero no hay registro de tiros al arco de ese partido.")
+
+    def test_cruce_reciente_sin_dato_aclara_con_registro(self):
+        cr = [cruce(50)] + [cruce(100 + i, tarjetas=(3, 3)) for i in range(5)]
+        self.assertIn("en 5 de los últimos 5 cruces con registro de tarjetas (6.0 de promedio)",
+                      partido([("Over 2.5 tarjetas", 91.3)], cr)[0])
+
+    def test_un_solo_cruce(self):
+        self.assertEqual(partido([("Under 3.5 goles", 83.8)], [cruce(40, goles=(2, 1))])[0].split("\n")[1],
+                         "Entre ellos: en su único cruce hubo 3 goles.")
+        cr = [cruce(40), cruce(80, tarjetas=(4, 3))]
+        self.assertEqual(partido([("Over 2.5 tarjetas", 90.0)], cr)[0].split("\n")[1],
+                         "Entre ellos: en el único cruce con registro de tarjetas hubo 7.")
+        self.assertIn("Fue hace 4 años.", partido([("Under 3.5 goles", 83.8)], [cruce(1500)])[0])
+
+    def test_mercado_de_un_equipo_cuenta_solo_ese_equipo(self):
+        # U. Catolica de visitante (3) y de local (0) en los cruces
+        cr = [cruce(10, goles=(1, 3)), cruce(20, local=V, visitante=L, goles=(0, 2))]
+        self.assertEqual(partido([(f"Over 0.5 goles ({V})", 80.0)], cr)[0], (
+            f"Se esperan 1.5 goles de {V}; la línea es 0.5.\n"
+            f"Entre ellos: {V} marcó más de 0.5 goles en 1 de los últimos 2 cruces (1.5 de promedio)."))
 
 
-class Nota(unittest.TestCase):
-    def test_margen_grande(self):
-        r, _ = partido([{"mercado": "Over 2.5 tarjetas", "prob": 91.3, "siguiente": sig("Under 5.5 corners (Union La Calera)", 76.7, 14.6)}])
-        nota = r["top3"][0]["nota"]
-        self.assertTrue(nota.startswith("El modelo proyecta 5.29 tarjetas, por encima de la línea de 2.5. "), nota)
-        self.assertIn(r["analisis_ia"]["tarjetas"]["bullets"][0], nota)
-        self.assertTrue(nota.endswith("Le sacó 14.6 puntos al mejor candidato que quedó afuera "
-                                      "(Under 5.5 corners (Union La Calera), 76.7%)."), nota)
+class Atajadas(unittest.TestCase):
+    def test_arquero_sin_cruces_con_peligro_del_rival(self):
+        cr = [cruce(10, tiros_arco=(5, 5))]
+        self.assertEqual(partido([(f"Over 1.5 atajadas ({L})", 77.8)], cr), [
+            f"Se esperan 3.3 atajadas del arquero de {L}; la línea es 1.5.\n"
+            f"{V} proyecta 5.1 tiros al arco: ese es el trabajo que le espera."])
 
-    def test_margen_chico_se_omite_y_el_borde_se_muestra(self):
-        r, _ = partido([{"mercado": "Over 1.5 goles", "prob": 82.9, "siguiente": sig("Ambos marcan", 81.0, 1.9)},
-                        {"mercado": "Over 7.5 corners", "prob": 80.0, "siguiente": sig("Ambos marcan", 78.0, 2.0)}])
+    def test_total_de_los_dos_arqueros(self):
+        self.assertEqual(partido([("Over 4.5 atajadas", 88.9)], [cruce(10)]), [
+            "Se esperan 5.7 atajadas entre los dos arqueros; la línea es 4.5.\n"
+            "Entre los dos equipos se proyectan 8.7 tiros al arco."])
+
+
+class MercadosDeResultado(unittest.TestCase):
+    cr = [cruce(10, goles=(2, 0)), cruce(20, local=V, visitante=L, goles=(1, 1)),
+          cruce(30, goles=(0, 1)), cruce(40, local=V, visitante=L, goles=(0, 3))]
+
+    def test_doble_oportunidad_desde_el_equipo(self):
+        # L gano 2-0, empato 1-1, perdio 0-1, gano 3-0 de visitante -> no perdio en 3 de 4
+        self.assertEqual(partido([("1X (Local o Empate)", 80.0)], self.cr), [
+            f"El modelo le da 80.0% a que {L} no pierda.\nEntre ellos: {L} no perdió en 3 de los últimos 4 cruces."])
+
+    def test_gana_visitante_y_ambos_marcan(self):
+        gana, ambos = partido([("Gana visitante", 61.0), ("Ambos marcan", 62.0)], self.cr)
+        self.assertEqual(gana.split("\n")[1], f"Entre ellos: {V} ganó 1 de los últimos 4 cruces.")
+        self.assertEqual(ambos, "El modelo le da 62.0% a que marquen los dos.\n"
+                                "Entre ellos: marcaron los dos en 1 de los últimos 4 cruces.")
+
+    def test_un_solo_cruce_muestra_el_resultado(self):
+        self.assertEqual(partido([("X2 (Empate o Visitante)", 72.3)], [cruce(90, local=V, visitante=L, goles=(2, 1))])[0],
+                         f"El modelo le da 72.3% a que {V} no pierda.\nEntre ellos: un solo cruce, {V} 2-1 {L}.")
+
+
+class Formato(unittest.TestCase):
+    def test_proyeccion_igual_a_la_linea_usa_2_decimales(self):
+        # 2.46 con 1 decimal seria "2.5", igual a la linea: no diria de que lado cae
+        self.assertTrue(partido([(f"Under 2.5 tarjetas ({L})", 60.0)], [])[0].startswith(
+            f"Se esperan 2.46 tarjetas de {L}; la línea es 2.5."))
+        self.assertTrue(partido([(f"Over 1.5 tarjetas ({L})", 70.0)], [])[0].startswith(
+            f"Se esperan 2.5 tarjetas de {L}; la línea es 1.5."))
+
+    def test_sin_proyeccion_queda_solo_lo_que_hay(self):
+        # tarjetas del visitante sin dato (0.0 de _safe) y sin cruces
+        self.assertEqual(partido([(f"Over 1.5 tarjetas ({V})", 70.0)], []),
+                         ["No hay cruces oficiales entre ellos en nuestra base."])
+
+    def test_pocos_datos_agrega_un_aviso(self):
+        nota = partido([("Over 1.5 goles", 82.9)], [], pocos=True)[0]
+        self.assertEqual(nota.split("\n")[2], f"Ojo: poca historia de {L} en nuestra base.")
+
+    def test_sin_frase_de_margen(self):
+        r = respuesta(); h = hechos(); h["h2h_cruces"] = []
+        r["top3"] = [{"mercado": "Over 1.5 goles", "prob": 88.0,
+                      "siguiente": {"mercado": "1X (Local o Empate)", "prob": 70.0, "margen": 18.0, "franja": None}}]
+        A.armar_notas_top3(r, h)
         self.assertNotIn("sacó", r["top3"][0]["nota"])
-        self.assertIn("Le sacó 2.0 puntos", r["top3"][1]["nota"])
 
-    def test_pick3_en_franja(self):
-        top = [{"mercado": "Over 1.5 goles", "prob": 88.0, "siguiente": sig("1X (Local o Empate)", 79.0, 9.0)},
-               {"mercado": "Over 7.5 corners", "prob": 84.0, "siguiente": sig("1X (Local o Empate)", 79.0, 5.0)},
-               {"mercado": "Over 6.5 tiros al arco", "prob": 77.4, "siguiente": sig("Over 0.5 goles (U. Catolica)", 75.1, 2.3, [65.0, 78.0])}]
-        nota = partido(top)[0]["top3"][2]["nota"]
-        self.assertTrue(nota.endswith("Es el pick de riesgo moderado: dentro de la franja 65–78% le sacó 2.3 puntos "
-                                      "al siguiente (Over 0.5 goles (U. Catolica), 75.1%)."), nota)
-        # con margen chico, el #3 se queda sin la frase
-        top[2]["siguiente"]["margen"] = 1.2
-        self.assertNotIn("riesgo moderado", partido(top)[0]["top3"][2]["nota"])
-
-    def test_sin_candidato_afuera(self):
-        r, _ = partido([{"mercado": "Under 3.5 goles", "prob": 83.8, "siguiente": None}], gl=0.91, gv=1.14)
-        nota = r["top3"][0]["nota"]
-        self.assertTrue(nota.startswith("El modelo proyecta 2.05 goles, por debajo de la línea de 3.5."), nota)
-        self.assertNotIn("sacó", nota)
-
-    def test_sin_analisis_usa_la_proyeccion_del_equipo(self):
-        top = [{"mercado": "Over 4.5 corners (Union La Calera)", "prob": 80.0, "siguiente": None},
-               {"mercado": "Under 1.5 goles (U. Catolica)", "prob": 75.8, "siguiente": sig("Ambos marcan", 75.0, 0.8)},
-               {"mercado": "Over 4.5 atajadas", "prob": 88.9, "siguiente": None}]
-        r, _ = partido(top)
-        self.assertEqual([p["nota"] for p in r["top3"]], [
-            "El modelo proyecta 5.31 corners de Union La Calera, por encima de la línea de 4.5.",
-            "El modelo proyecta 1.50 goles de U. Catolica, justo en la línea de 1.5.",
-            "El modelo proyecta 5.70 atajadas, por encima de la línea de 4.5.",
-        ])
-
-    def test_sin_nada_que_decir_es_none(self):
-        # tarjetas del visitante sin dato (0.0 de _safe) y margen chico
-        r, _ = partido([{"mercado": "Over 1.5 tarjetas (U. Catolica)", "prob": 70.0, "siguiente": sig("Ambos marcan", 69.0, 1.0)}])
+    def test_un_pick_roto_no_rompe_los_demas(self):
+        r = respuesta(); h = hechos(); h["h2h_cruces"] = [{"roto": True}]
+        r["top3"] = [{"mercado": "Over 1.5 goles", "prob": 82.9}, {"mercado": f"Over 1.5 atajadas ({L})", "prob": 80.0}]
+        A.armar_notas_top3(r, h)
         self.assertIsNone(r["top3"][0]["nota"])
-
-    def test_atajadas_de_un_equipo_usa_el_analisis_del_arquero(self):
-        r, _ = partido([{"mercado": "Over 1.5 atajadas (Union La Calera)", "prob": 77.9, "siguiente": None}])
-        self.assertEqual(r["top3"][0]["nota"], "El modelo proyecta 3.30 atajadas de Union La Calera, por encima de la "
-                         "línea de 1.5. " + r["analisis_ia"]["atajadas_local"]["bullets"][0])
-
-    def test_goles_no_repite_la_proyeccion_por_equipo(self):
-        r, _ = partido([{"mercado": "Over 1.5 goles", "prob": 82.9, "siguiente": None}])
-        self.assertNotIn(A.B_PROYECCION_POR_EQUIPO, r["top3"][0]["nota"])
-        self.assertIn("Union La Calera promedia 1.5 goles a favor", r["top3"][0]["nota"])
-
-    def test_pocos_datos_avisa(self):
-        r, _ = partido([{"mercado": "Over 1.5 goles", "prob": 82.9, "siguiente": None}], pocos=True)
-        self.assertIn("Ojo: Union La Calera tiene 1 partido", r["top3"][0]["nota"])
-
-
-class Coherencia(unittest.TestCase):
-    def test_ou_nunca_usa_el_resumen_de_otra_linea(self):
-        # el analisis de tarjetas habla de la linea 4.5; el pick es 2.5
-        r, _ = partido([{"mercado": "Over 2.5 tarjetas", "prob": 91.3, "siguiente": None}])
-        self.assertNotIn(r["analisis_ia"]["tarjetas"]["resumen"], r["top3"][0]["nota"])
-        self.assertNotIn("4.5", r["top3"][0]["nota"])
-
-    def test_doble_oportunidad_coherente_usa_el_resumen(self):
-        r, _ = partido([{"mercado": "1X (Local o Empate)", "prob": 80.0, "siguiente": None}], pl=55.0, pe=25.0, pv=20.0)
-        a = r["analisis_ia"]["doble_oportunidad"]
-        self.assertEqual(r["top3"][0]["nota"], f"{a['resumen']} {a['bullets'][0]}")
-
-    def test_doble_oportunidad_de_la_otra_opcion_no_la_usa(self):
-        # el analisis habla de 1X (80%); el pick es X2 (45%): el dato es la forma del LOCAL
-        r, _ = partido([{"mercado": "X2 (Empate o Visitante)", "prob": 45.0, "siguiente": None}], pl=55.0, pe=25.0, pv=20.0)
-        self.assertEqual(r["top3"][0]["nota"], "Union La Calera ganó 2 de sus últimos 5 partidos.")
-
-    def test_1x2_con_ajuste_ia_no_usa_el_resumen(self):
-        # r trae 60.0 (con ajuste IA) y el pick 64.2 (modelo puro): el resumen citaria otro numero
-        r, _ = partido([{"mercado": "Gana local", "prob": 64.2, "siguiente": None}], pl=60.0, pe=22.0, pv=18.0)
-        self.assertNotIn(r["analisis_ia"]["1x2"]["resumen"], r["top3"][0]["nota"])
-        r, _ = partido([{"mercado": "Gana local", "prob": 60.0, "siguiente": None}], pl=60.0, pe=22.0, pv=18.0)
-        self.assertTrue(r["top3"][0]["nota"].startswith(r["analisis_ia"]["1x2"]["resumen"]))
-
-    def test_ambos_marcan(self):
-        r, _ = partido([{"mercado": "Ambos marcan", "prob": 62.0, "siguiente": None}], btts=62.0)
-        self.assertTrue(r["top3"][0]["nota"].startswith(r["analisis_ia"]["ambos_marcan"]["resumen"]))
+        self.assertTrue(r["top3"][1]["nota"].startswith("Se esperan 3.3 atajadas"))
 
 
 class SinInventar(unittest.TestCase):
-    def test_cada_numero_de_la_nota_sale_de_los_datos(self):
-        rnd = random.Random(11)
-        nombres = (["Over 1.5 goles", "Under 3.5 goles", "Over 7.5 corners", "Over 2.5 tarjetas", "Under 4.5 tarjetas",
-                    "Over 6.5 tiros al arco", "Under 23.5 tiros totales", "Over 4.5 atajadas", "Ambos marcan",
-                    "1X (Local o Empate)", "X2 (Empate o Visitante)", "Gana local", "Gana visitante"]
-                   + [f"{s} {l} {m} ({eq})" for s in ("Over", "Under") for l in ("0.5", "1.5", "4.5")
-                      for m in ("goles", "corners", "tarjetas", "atajadas") for eq in ("Union La Calera", "U. Catolica")])
-        for i in range(300):
-            pl, pv = rnd.uniform(10, 70), rnd.uniform(10, 70)
-            pe = rnd.uniform(10, 35)
-            tot = pl + pe + pv
-            pl, pe, pv = (round(100 * x / tot, 1) for x in (pl, pe, pv))
-            top = []
-            for n in range(3):
-                prob = round(rnd.uniform(60, 92), 1)
-                s = None if rnd.random() < 0.3 else sig(rnd.choice(nombres), round(prob - rnd.uniform(0, 12), 1), 0.0,
-                                                          [65.0, 78.0] if n == 2 and rnd.random() < 0.5 else None)
-                if s:
-                    s["margen"] = round(prob - s["prob"], 1)
-                top.append({"mercado": rnd.choice(nombres), "prob": prob, "siguiente": s})
-            r, h = partido(top, pl=pl, pe=pe, pv=pv, btts=round(rnd.uniform(20, 80), 1),
-                           gl=round(rnd.uniform(0.3, 2.8), 2), gv=round(rnd.uniform(0.3, 2.8), 2))
-            base = numeros_permitidos(r, h)
-            for p in r["top3"]:
-                if p["nota"] is None:
-                    continue
-                permitidos = base | set(A.NUMERO.findall(p["mercado"]))
-                s = p["siguiente"]
-                if s:
-                    permitidos |= {A._f(s["margen"]), A._f(s["prob"]), "65", "78"} | set(A.NUMERO.findall(s["mercado"]))
-                for num in A.NUMERO.findall(p["nota"]):
-                    self.assertIn(num, permitidos, f"{num!r} no sale de los datos -> {p}")
-                for malo in ("{", "}", "None", "nan", "  ", "..", " de el ", " a el "):
-                    self.assertNotIn(malo, p["nota"])
-
-    def test_un_pick_roto_no_rompe_los_demas(self):
-        top = [{"mercado": "Over 1.5 goles", "prob": 82.9, "siguiente": {"margen": 5.0}},  # siguiente mal formado
-               {"mercado": "Over 7.5 corners", "prob": 80.0, "siguiente": None}]
-        r, _ = partido(top)
-        self.assertIsNone(r["top3"][0]["nota"])
-        self.assertTrue(r["top3"][1]["nota"].startswith("El modelo proyecta 9.62 corners"))
+    def test_conteos_y_promedios_recalculados_aparte(self):
+        """300 casos al azar: el "X de los ultimos K" y el promedio de la nota
+        coinciden con una cuenta independiente sobre los mismos cruces."""
+        rnd = random.Random(13)
+        mercados = [("goles", "goles"), ("corners", "corners"), ("tarjetas", "tarjetas"),
+                    ("tiros_arco", "tiros al arco"), ("tiros_total", "tiros totales")]
+        patron = re.compile(r"en (\d+) de los últimos (\d+) cruces[^(]*\((\d+\.\d) de promedio\)")
+        for _ in range(300):
+            clave, unidad = rnd.choice(mercados)
+            sentido, linea = rnd.choice(["Over", "Under"]), rnd.choice([0.5, 1.5, 2.5, 3.5, 7.5, 9.5, 24.5])
+            equipo = rnd.choice([None, L, V])
+            cr = []
+            for i in range(rnd.randint(0, 9)):
+                loc, vis = (L, V) if rnd.random() < 0.5 else (V, L)
+                dato = None if rnd.random() < 0.3 else (rnd.randint(0, 15), rnd.randint(0, 15))
+                c = cruce(rnd.randint(10, 1500), loc, vis, goles=(rnd.randint(0, 4), rnd.randint(0, 4)))
+                if clave == "goles":
+                    dato = tuple(c["goles"])
+                c[clave] = list(dato) if dato else None
+                cr.append(c)
+            cr.sort(key=lambda c: c["dias"])
+            nombre = f"{sentido} {linea} {unidad}" + (f" ({equipo})" if equipo else "")
+            nota = partido([(nombre, 75.0)], cr)[0]
+            con = [c for c in cr if c[clave] is not None][:A.VENTANA_CRUCES_NOTA]
+            vals = [sum(c[clave]) if equipo is None else c[clave][0 if c["local"] == equipo else 1] for c in con]
+            if len(vals) >= 2:
+                m = patron.search(nota)
+                self.assertIsNotNone(m, nota)
+                cumple = sum((v > linea) if sentido == "Over" else (v < linea) for v in vals)
+                self.assertEqual((int(m.group(1)), int(m.group(2)), m.group(3)),
+                                 (cumple, len(vals), f"{sum(vals) / len(vals):.1f}"), nota)
+            for malo in ("{", "}", "None", "nan", "  ", "..", " ,"):
+                self.assertNotIn(malo, nota)
+            for linea_txt in nota.split("\n"):
+                self.assertTrue(linea_txt.endswith("."), nota)
 
 
 if __name__ == "__main__":
