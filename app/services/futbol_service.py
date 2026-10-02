@@ -3499,7 +3499,9 @@ def chat_ia(mensajes, contexto=""):
     proveedor por ahora (decision del usuario, 2026-10-01). Cada pregunta deja
     una linea CHAT en el log con proveedor, tokens y costo."""
     import requests
-    api_key = os.environ.get("XAI_API_KEY", "")
+    # Espacios, saltos de linea o comillas pegados al cargar la variable en
+    # Render rompen el header Authorization (InvalidHeader o HTTP 400).
+    api_key = os.environ.get("XAI_API_KEY", "").strip().strip("\"'").strip()
     if not api_key:
         print("CHAT ERROR proveedor=xai motivo=falta XAI_API_KEY")
         return None, CHAT_ERROR_AMABLE
