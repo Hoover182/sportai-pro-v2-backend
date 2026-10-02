@@ -52,6 +52,18 @@ class PedidoAXai(unittest.TestCase):
         self.assertEqual(body["messages"][2]["content"], "¿Ambos marcan?")
         self.assertEqual(kw["headers"]["Authorization"], "Bearer xai-prueba")
 
+    def test_clave_con_espacios_saltos_o_comillas(self):
+        for clave in (" xai-prueba", "xai-prueba\n", "xai-prueba\r\n", '"xai-prueba"', "'xai-prueba' ", ' " xai-prueba " '):
+            with self.subTest(clave=repr(clave)):
+                (texto, err), post, _ = chatear(respuesta(), clave=clave)
+                self.assertIsNone(err)
+                self.assertEqual(post.call_args.kwargs["headers"]["Authorization"], "Bearer xai-prueba")
+
+    def test_clave_solo_espacios_es_clave_faltante(self):
+        (texto, err), post, log = chatear(respuesta(), clave="  \n ")
+        post.assert_not_called()
+        self.assertIn("motivo=falta XAI_API_KEY", log)
+
     def test_instrucciones_corregidas_y_fecha_de_hoy(self):
         _, post, _ = chatear(respuesta())
         system = post.call_args.kwargs["json"]["messages"][0]["content"]
