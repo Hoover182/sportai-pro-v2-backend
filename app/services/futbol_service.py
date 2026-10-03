@@ -18,6 +18,7 @@ def _safe_o(v):
 import os
 JUGADORES_DATA_DIR = os.path.join(os.path.dirname(__file__), "jugadores_data")
 import sys
+import re
 import json
 import time
 import pandas as pd
@@ -3510,12 +3511,114 @@ def _chat_id_cache(system):
     return "chat-" + hashlib.sha256(system.encode("utf-8")).hexdigest()[:32]
 
 
+# Vigilancia del falso "No tengo datos" (2026-10-03). La regla D obliga a la
+# frase 'No tengo datos de [X] para este partido.' solo cuando NO hay ningun
+# dato relacionado. Cada vez que el chat la usa se loguea una linea
+# CHAT SIN_DATO con un veredicto: sospechoso (el tema SI esta en el
+# contexto), legitimo (no esta) o sin_clasificar (no se reconoce el tema).
+# Las etiquetas son las que arma el frontend (App.tsx, commit 669fade).
+CHAT_SIN_DATO_FRASE = re.compile(
+    r"no (?:tengo|hay|cuento con|dispongo de)\s+(?:datos?|informacion|estadisticas?)"
+    r"(?:\s+(?:de|del|sobre|para)\s+((?:[^\n.]|\.(?=\d))*))?"  # el punto de "1.5" no corta la frase
+    r"|no aparecen? (?:ningun dato|informacion|datos)(?:\s+(?:de|del|sobre)\s+((?:[^\n.]|\.(?=\d))*))?")
+
+# (tema, palabras de la pregunta, evidencia en el contexto). El orden importa:
+# gana el primer tema que aparece ("tiros de esquina" es corners, no tiros).
+CHAT_SIN_DATO_TEMAS = [
+    ("atajadas", r"ataj|arquer|portero|guardameta", r"ataj|\[goalkeeper\]"),
+    ("tarjetas", r"tarjeta|amarilla|\brojas?\b|amonest", r"^over/under tarjetas: |^tarjetas |tarjetasamarillas=\d|tarjetas[ (]"),
+    ("corners", r"corner|esquina", r"^over/under corners: |^promedio corners |corners[ (=]"),
+    ("tiros", r"\btiros?\b|remate", r"tiros=\d|tirosalarco=\d|tirosarcoover|tiros al arco"),
+    ("ambos_marcan", r"ambos (?:equipos )?marca|\bbtts\b", r"^ambos marcan: si \d"),
+    ("primer_tiempo", r"primer tiempo|segundo tiempo|primera mitad|\b[12]t\b|descanso", r"^=== primer tiempo|^datos primer tiempo |^resumen segundo tiempo "),
+    ("cruces", r"enfrentamiento|cruce|\bh2h\b|cara a cara|historial entre", r"^enfrentamientos directos [^\n]*\n  \d{4}-\d{2}-\d{2}"),
+    ("bajas", r"lesion|\bbajas?\b|suspendid|ausencia", r"^analisis cualitativo ia: .*(?:lesion|baja|suspendid)"),
+    ("arbitro", r"arbitro", r"arbitro"),
+    ("jugadores", r"jugador|goleador|delantero|asistencia", r"^jugadores "),
+    ("forma", r"racha|\bforma\b|ultimos \d+ partidos|como viene", r"^ultimos \d+ partidos "),
+    ("ganador", r"quien gana|ganador|\bgan(?:a|ar|e)\b|\b1x2\b|empate|victoria|doble oportunidad|favorito", r"^probabilidades 1x2: "),
+    ("goles", r"\bgol(?:es)?\b|\bover\b|\bunder\b", r"^over/under goles: |^proyecciones: "),
+]
+
+# Secciones que el frontend manda siempre. Si un dia cambian las etiquetas,
+# las evidencias de arriba dejan de encontrarse y todo saldria "legitimo":
+# este conteo en el log lo deja a la vista (normal: 10/10).
+CHAT_SECCIONES_CONTEXTO = [
+    "PROBABILIDADES 1X2: ", "AMBOS MARCAN: ", "PROYECCIONES: ", "OVER/UNDER GOLES: ", "OVER/UNDER CORNERS: ",
+    "OVER/UNDER TARJETAS: ", "=== PRIMER TIEMPO", "TOP PICKS IA: ", "STATS U5 - ", "ULTIMOS ",
+]
+
+
+def _chat_normalizar(texto):
+    import unicodedata
+    texto = unicodedata.normalize("NFKD", texto or "")
+    return "".join(c for c in texto if not unicodedata.combining(c)).lower()
+
+
+def _chat_tema(texto):
+    t = _chat_normalizar(texto)
+    for tema, palabras, _ in CHAT_SIN_DATO_TEMAS:
+        if re.search(palabras, t):
+            return tema
+    return None
+
+
+def _chat_sin_dato(respuesta, mensajes, contexto):
+    """None si la respuesta no dice que falta el dato. Si lo dice, el
+    veredicto y sus datos para el log. El tema sale primero de lo que el
+    modelo dice que le falta ('No tengo datos de [X]'), despues de la
+    pregunta y, para repreguntas como '¿y el visitante?', de la pregunta
+    anterior."""
+    m = CHAT_SIN_DATO_FRASE.search(_chat_normalizar(respuesta))
+    if not m:
+        return None
+    frase = (m.group(1) or m.group(2) or "").strip()
+    preguntas = [x.get("text", "") for x in mensajes if x.get("role") == "user"]
+    pregunta = preguntas[-1] if preguntas else ""
+    tema = None
+    for fuente in (frase, pregunta, preguntas[-2] if len(preguntas) > 1 else ""):
+        tema = _chat_tema(fuente)
+        if tema:
+            break
+    ctx = _chat_normalizar(contexto)
+    evidencia = None
+    if tema:
+        patron = next(e for t, _, e in CHAT_SIN_DATO_TEMAS if t == tema)
+        hallado = re.search(patron, ctx, re.M)
+        if hallado:
+            linea = ctx[ctx.rfind("\n", 0, hallado.start()) + 1:].split("\n", 1)[0].strip()
+            evidencia = linea.split(":")[0][:40] if ":" in linea[:45] else linea[:40]
+    veredicto = "sin_clasificar" if not tema else ("sospechoso" if evidencia else "legitimo")
+    partido = re.search(r"=== PARTIDO: (.+?) ===", contexto or "")
+    return {
+        "veredicto": veredicto, "tema": tema or "-", "evidencia": evidencia or "-",
+        "partido": partido.group(1) if partido else "-",
+        "secciones": f"{sum(s in (contexto or '') for s in CHAT_SECCIONES_CONTEXTO)}/{len(CHAT_SECCIONES_CONTEXTO)}",
+        "frase": frase, "pregunta": pregunta,
+    }
+
+
+def _chat_log_sin_dato(respuesta, mensajes, contexto, conv):
+    """Linea CHAT SIN_DATO en el log. Nunca rompe la respuesta al usuario."""
+    try:
+        d = _chat_sin_dato(respuesta, mensajes, contexto)
+        if d is None:
+            return
+        limpio = lambda s, n: " ".join(str(s).replace('"', "'").split())[:n]
+        print(f'CHAT SIN_DATO veredicto={d["veredicto"]} tema={d["tema"]} evidencia="{limpio(d["evidencia"], 40)}" '
+              f'partido="{limpio(d["partido"], 80)}" secciones={d["secciones"]} conv={conv} '
+              f'frase="{limpio(d["frase"], 100)}" pregunta="{limpio(d["pregunta"], 150)}"')
+    except Exception as e:
+        print(f"CHAT SIN_DATO ERROR detector={type(e).__name__}")
+
+
 def chat_ia(mensajes, contexto=""):
     """Chat IA de un partido con grok-4.3 (razonamiento low). Si xAI falla
     (sin clave, error HTTP, timeout, respuesta vacia) devuelve
     CHAT_ERROR_AMABLE sin exponer el error tecnico: no hay fallback a otro
     proveedor por ahora (decision del usuario, 2026-10-01). Cada pregunta deja
-    una linea CHAT en el log con proveedor, tokens y costo."""
+    una linea CHAT en el log con proveedor, tokens y costo, y una CHAT
+    SIN_DATO si la respuesta dice que falta el dato."""
     import requests
     # Espacios, saltos de linea o comillas pegados al cargar la variable en
     # Render rompen el header Authorization (InvalidHeader o HTTP 400).
@@ -3524,6 +3627,7 @@ def chat_ia(mensajes, contexto=""):
         print("CHAT ERROR proveedor=xai motivo=falta XAI_API_KEY")
         return None, CHAT_ERROR_AMABLE
     system = _chat_system(contexto)
+    conv = _chat_id_cache(system)
     msgs = [{"role": "system", "content": system}] + [
         {"role": m["role"], "content": m["text"]} for m in mensajes if m.get("role") in ("user", "assistant")]
     t0 = time.time()
@@ -3531,7 +3635,7 @@ def chat_ia(mensajes, contexto=""):
         r = requests.post(
             CHAT_URL,
             headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json",
-                     "x-grok-conv-id": _chat_id_cache(system)},
+                     "x-grok-conv-id": conv},
             json={"model": CHAT_MODELO, "reasoning_effort": CHAT_RAZONAMIENTO,
                   "max_tokens": CHAT_MAX_TOKENS, "messages": msgs},
             timeout=CHAT_TIMEOUT,
@@ -3564,4 +3668,5 @@ def chat_ia(mensajes, contexto=""):
     if not texto:
         print("CHAT ERROR proveedor=xai motivo=respuesta vacia")
         return None, CHAT_ERROR_AMABLE
+    _chat_log_sin_dato(texto, mensajes, contexto, conv)
     return texto, None
