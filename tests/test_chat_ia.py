@@ -135,5 +135,121 @@ class FallaAmable(unittest.TestCase):
         self.assertNotIn("402", err)
 
 
+DATOS = os.path.join(os.path.dirname(__file__), "datos")
+# Contextos reales del 02/10 (mismo armado que el frontend publicado; no traen
+# las lineas JUGADORES, que el frontend agrega cuando hay datos de jugadores).
+CTX_INTER = open(os.path.join(DATOS, "chat_contexto_internacional_once_caldas.txt"), encoding="utf-8").read()
+CTX_CALI = open(os.path.join(DATOS, "chat_contexto_cali_valledupar.txt"), encoding="utf-8").read()
+CIERRE = "\nEstos datos son meramente estadisticos basados en modelos matematicos."
+
+
+def sin_dato(respuesta, preguntas, contexto):
+    mensajes = []
+    for p in preguntas:
+        mensajes += [{"role": "user", "text": p}, {"role": "assistant", "text": "..."}]
+    return F._chat_sin_dato(respuesta, mensajes[:-1], contexto)
+
+
+class VigilanciaSinDato(unittest.TestCase):
+    """Respuestas reales de grok-4.3 en las pruebas del 01-02/10."""
+
+    def test_falso_sin_dato_original_es_sospechoso(self):
+        # Internacional, 01/10: el pick de tarjetas tenia datos y dijo que no.
+        d = sin_dato("🔍 No tengo datos de por qué Over 1.5 tarjetas (Internacional de Bogota) está en los Top Picks "
+                     "para este partido." + CIERRE,
+                     ["¿Por qué Over 1.5 tarjetas (Internacional de Bogota) está en los Top Picks?"], CTX_INTER)
+        self.assertEqual((d["veredicto"], d["tema"], d["evidencia"]), ("sospechoso", "tarjetas", "over/under tarjetas"))
+        self.assertEqual(d["partido"], "Internacional de Bogota vs Once Caldas (Liga Colombia)")
+
+    def test_atajadas_con_top_pick_de_atajadas_es_sospechoso(self):
+        # El contexto trae "Over 1.5 atajadas (Internacional de Bogota) 83.2%" en TOP PICKS IA.
+        d = sin_dato("No tengo datos de atajadas del arquero de Internacional de Bogota para este partido." + CIERRE,
+                     ["¿Cuántas atajadas va a hacer el arquero de Internacional de Bogota?"], CTX_INTER)
+        self.assertEqual((d["veredicto"], d["tema"], d["evidencia"]), ("sospechoso", "atajadas", "top picks ia"))
+
+    def test_atajadas_sin_ningun_dato_es_legitimo(self):
+        d = sin_dato("No tengo datos de atajadas del arquero de Deportivo Cali para este partido." + CIERRE,
+                     ["¿Cuántas atajadas va a hacer el arquero de Deportivo Cali?"], CTX_CALI)
+        self.assertEqual((d["veredicto"], d["tema"], d["evidencia"]), ("legitimo", "atajadas", "-"))
+
+    def test_jugadores_con_la_linea_de_produccion(self):
+        ctx = CTX_CALI + "\nJUGADORES Deportivo Cali: A. Perez [Attacker] G/p=0.3 A/p=0.1 T/p=0.2 F/p=0.9"
+        pregunta = ["¿Cuántos goles hace el goleador de Deportivo Cali?"]
+        respuesta = "No tengo datos de ese jugador para este partido."
+        self.assertEqual(sin_dato(respuesta, pregunta, ctx)["veredicto"], "sospechoso")
+        self.assertEqual(sin_dato(respuesta, pregunta, CTX_CALI)["veredicto"], "legitimo")
+
+    def test_respuesta_normal_no_es_sin_dato(self):
+        self.assertIsNone(sin_dato("⚽ Ambos marcan SI 25.2%." + CIERRE, ["¿Ambos marcan?"], CTX_CALI))
+
+    def test_variantes_de_la_frase(self):
+        for respuesta, tema in (("No hay información sobre el árbitro del partido.", "arbitro"),
+                                ("No aparece información sobre atajadas en el contexto.", "atajadas"),
+                                ("No cuento con estadísticas de lesionados para este partido.", "bajas"),
+                                ("No tengo datos para este partido.", "corners")):   # sin [X]: va a la pregunta
+            with self.subTest(respuesta=respuesta):
+                d = sin_dato(respuesta, ["¿Cuántos corners hay?"], CTX_CALI)
+                self.assertEqual(d["tema"], tema)
+
+    def test_repregunta_usa_la_pregunta_anterior(self):
+        d = sin_dato("No tengo datos de eso para este partido.",
+                     ["¿Cuántos corners esperás?", "¿Y el visitante?"], CTX_CALI)
+        self.assertEqual((d["veredicto"], d["tema"]), ("sospechoso", "corners"))
+        self.assertEqual(d["pregunta"], "¿Y el visitante?")
+
+    def test_tema_desconocido_queda_sin_clasificar(self):
+        d = sin_dato("No tengo datos del clima para este partido.", ["¿Va a llover?"], CTX_CALI)
+        self.assertEqual((d["veredicto"], d["tema"]), ("sin_clasificar", "-"))
+
+    def test_secciones_del_contexto(self):
+        self.assertEqual(sin_dato("No tengo datos de nada.", ["?"], CTX_INTER)["secciones"], "10/10")
+        self.assertEqual(sin_dato("No tengo datos de nada.", ["?"], CTX_CALI)["secciones"], "10/10")
+        self.assertEqual(sin_dato("No tengo datos de nada.", ["?"], "=== PARTIDO: A vs B ===")["secciones"], "0/10")
+
+    def test_cada_tema_encuentra_su_etiqueta_en_contextos_reales(self):
+        # Si el frontend cambia una etiqueta, el contexto nuevo se vuelve a guardar en tests/datos y esto avisa.
+        preguntas = {"tarjetas": "¿Cuántas tarjetas amarillas habrá?", "corners": "¿Cuántos córners esperás?",
+                     "tiros": "¿Cuántos tiros al arco?", "ambos_marcan": "¿Ambos equipos marcan?",
+                     "primer_tiempo": "¿Hay gol en el primer tiempo?", "cruces": "¿Cómo fueron los enfrentamientos?",
+                     "forma": "¿Cómo viene la racha?", "ganador": "¿Quién gana?", "goles": "¿Over 2.5 goles?"}
+        for tema, pregunta in preguntas.items():
+            for ctx in (CTX_INTER, CTX_CALI):
+                with self.subTest(tema=tema):
+                    d = sin_dato("No tengo datos para este partido.", [pregunta], ctx)
+                    self.assertEqual((d["tema"], d["veredicto"]), (tema, "sospechoso"))
+
+
+class LogSinDato(unittest.TestCase):
+    def test_linea_en_el_log_con_el_mismo_conv_que_la_cache(self):
+        texto = "🔍 No tengo datos de atajadas del arquero de Deportivo Cali para este partido." + CIERRE
+        (res, err), post, log = chatear(respuesta(texto=texto), contexto=CTX_CALI)
+        self.assertEqual(res, texto)
+        conv = post.call_args.kwargs["headers"]["x-grok-conv-id"]
+        self.assertIn(f'CHAT SIN_DATO veredicto=legitimo tema=atajadas evidencia="-" '
+                      f'partido="Deportivo Cali vs Alianza Valledupar (Liga Colombia)" secciones=10/10 conv={conv} '
+                      f'frase="atajadas del arquero de deportivo cali para este partido" pregunta="¿Ambos marcan?"', log)
+        self.assertLess(log.index("CHAT proveedor="), log.index("CHAT SIN_DATO"))
+
+    def test_respuesta_normal_sin_linea(self):
+        _, _, log = chatear(respuesta(), contexto=CTX_CALI)
+        self.assertNotIn("SIN_DATO", log)
+
+    def test_pregunta_en_una_linea_sin_comillas_y_recortada(self):
+        out = io.StringIO()
+        pregunta = 'Hola\n"che"  ' + "x" * 300
+        with redirect_stdout(out):
+            F._chat_log_sin_dato("No tengo datos.", [{"role": "user", "text": pregunta}], CTX_CALI, "chat-x")
+        linea = out.getvalue()
+        self.assertEqual(linea.count("\n"), 1)
+        self.assertIn("pregunta=\"Hola 'che' xxx", linea)
+        self.assertEqual(len(linea.split('pregunta="')[1].rstrip('"\n')), 150)
+
+    def test_detector_roto_no_rompe_la_respuesta(self):
+        with mock.patch.object(F, "_chat_sin_dato", side_effect=RuntimeError("bug")):
+            (res, err), _, log = chatear(respuesta(texto="No tengo datos."))
+        self.assertEqual((res, err), ("No tengo datos.", None))
+        self.assertIn("CHAT SIN_DATO ERROR detector=RuntimeError", log)
+
+
 if __name__ == "__main__":
     unittest.main()

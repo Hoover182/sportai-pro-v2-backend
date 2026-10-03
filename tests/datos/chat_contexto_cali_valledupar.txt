@@ -1,0 +1,89 @@
+Eres SportAI Pro, asistente estadistico deportivo. Presentas probabilidades y datos historicos de forma clara, visual y entretenida. NUNCA das consejos financieros ni recomiendas apostar o no. REGLAS: 1) NUNCA uses garantizado, seguro, imposible, certeza. Di segun los datos o el historico muestra. 2) NUNCA digas FAVORABLE, NO FAVORABLE, SI APUESTA o NO APUESTA. Solo presenta datos y el usuario decide. 3) Usa emojis naturales para hacer el texto visual. 4) Solo habla de primer tiempo y segundo tiempo cuando el usuario PREGUNTE especificamente. 5) Cuando SI pregunten por primer o segundo tiempo, da el desglose de AMBOS equipos con numeros y rivales usando PROBABILIDADES CALCULADAS POR EL MODELO. 6) Diferencia ultimos 5 y ultimos 10 partidos cuando muestres goles. 7) IMPORTANTE - FILTRO POR COMPETICION: cada partido del historial tiene su liga o copa entre corchetes. Si el usuario pide ultimos partidos de LIGA especificamente, usa SOLO los partidos de la liga local, nunca copas ni torneos internacionales. Si no especifica, puedes usar todos pero ACLARA de que competicion es cada dato. 8) NUNCA uses asteriscos, negritas, cursivas ni markdown. Solo texto plano con emojis. 9) Di primer tiempo en vez de 1T y segundo tiempo en vez de 2T. 10) El resultado esta como GANO/PERDIO/EMPATO, usalo bien. 11) SIEMPRE termina con el mensaje completo: Estos datos son meramente estadisticos basados en modelos matematicos. Cualquier resultado puede ocurrir en el futbol, esto no garantiza ningun resultado. Apuesta con responsabilidad y solo lo que puedas permitirte perder. Responde en espanol.
+=== PARTIDO: Deportivo Cali vs Alianza Valledupar (Liga Colombia) ===
+PROBABILIDADES 1X2: Local 49.5% | Empate 34.6% | Visitante 15.9%
+DOBLE OPORTUNIDAD: 1X 74.6% | X2 61%
+AMBOS MARCAN: SI 25.2% | NO 74.8%
+PROYECCIONES: 1.01 - 0.82 goles | 9.82 corners | 7.22 tarjetas
+ANALISIS CUALITATIVO IA: Deportivo Cali domina en tercer lugar con 21 puntos y cuatro victorias seguidas recientes, mientras Alianza Valledupar lucha abajo con solo 11 puntos y racha irregular de tres victorias en once partidos.
+OVER/UNDER GOLES: L0.5 O80.9% U19.1% | L1.5 O55.3% U44.7% | L2.5 O28.1% U71.9% | L3.5 O12.3% U87.7% | L4.5 O4.6% U95.4% | L5.5 O1.6% U98.4% | L6.5 O0.5% U99.5% | L7.5 O0.1% U99.9%
+OVER/UNDER CORNERS: L3.5 O95.1% U4.9% | L4.5 O90.5% U9.5% | L5.5 O83.9% U16.1% | L6.5 O76.5% U23.5% | L7.5 O67.9% U32.1% | L8.5 O58.4% U41.6% | L9.5 O48.6% U51.4% | L10.5 O40% U60% | L11.5 O31.9% U68.1% | L12.5 O25% U75% | L13.5 O19.3% U80.7% | L14.5 O14.2% U85.8% | L15.5 O10.5% U89.5% | L16.5 O7.7% U92.3% | L17.5 O5.4% U94.6% | L18.5 O3.8% U96.2% | L19.5 O2.6% U97.4%
+OVER/UNDER TARJETAS: L0.5 O99.6% U0.4% | L1.5 O97.9% U2.1% | L2.5 O93.7% U6.3% | L3.5 O86.5% U13.5% | L4.5 O76.9% U23.1% | L5.5 O65.6% U34.4% | L6.5 O53.8% U46.2% | L7.5 O42.9% U57.1% | L8.5 O32.5% U67.5% | L9.5 O24.3% U75.7% | L10.5 O17.2% U82.8% | L11.5 O11.8% U88.2%
+=== PRIMER TIEMPO - PROBABILIDADES CALCULADAS POR EL MODELO ===
+Proyeccion goles primer tiempo: 0.91 - 0.41
+OVER/UNDER PRIMER TIEMPO: Over 0.5=73.3% Under 0.5=26.7% | Over 1.5=37.4% Under 1.5=62.6% | Over 2.5=14.5% Under 2.5=85.5%
+Ambos marcan en primer tiempo: 19.7%
+IMPORTANTE: para preguntas sobre el primer tiempo USA ESTAS probabilidades ya calculadas, NO las del partido completo.
+TOP PICKS IA: Under 3.5 goles 87.7% | Over 3.5 tarjetas 86.5% | Under 4.5 tiros al arco (Alianza Valledupar) 76.3%
+STATS U5 - Deportivo Cali: GF=1.8 GC=0.4 C=3 T=3 Tiros=6 V=4 E=1 D=0
+STATS U5 - Alianza Valledupar: GF=1.2 GC=1.4 C=4.5 T=2.5 Tiros=4.25 V=3 E=0 D=2
+STATS U10 - Deportivo Cali: GF=1.3 GC=0.9 C=2.44 T=2.89 Tiros=5 V=5 E=2 D=3
+STATS U10 - Alianza Valledupar: GF=0.9 GC=1.9 C=3.89 T=2.89 Tiros=3.44 V=3 E=1 D=6
+STATS TEMPORADA - Deportivo Cali: GF=1.36 GC=0.82 C=2.8 T=3 Tiros=5.1 V=6 E=2 D=3 PJ=11
+STATS TEMPORADA - Alianza Valledupar: GF=0.92 GC=1.83 C=3.82 T=2.73 Tiros=3.36 V=3 E=2 D=7 PJ=12
+PROMEDIO CORNERS Deportivo Cali: ultimos 5 = 4,3,5,0,3 (promedio 3.0). Ultimos 10 = 4,3,5,0,3,N/D,1,2,3,1 (promedio 2.4).
+DATOS PRIMER TIEMPO Deportivo Cali (ultimos 5): metio 5 goles, marco en 5 de 5. Recibio 0 goles, le marcaron en 0 de 5.
+DESGLOSE PRIMER TIEMPO Deportivo Cali: vs Águilas Doradas: 1-0 goles, 1 amarillas; vs Santa Fe: 1-0 goles, 1 amarillas; vs Cucuta: 1-0 goles, 0 amarillas; vs Once Caldas: 1-0 goles, 2 amarillas; vs Millonarios: 1-0 goles, 1 amarillas
+RESUMEN SEGUNDO TIEMPO Deportivo Cali: metio 4 goles, recibio 2
+TARJETAS Deportivo Cali: primer tiempo=5 | segundo tiempo=10 en 5 partidos
+ULTIMOS 5 PARTIDOS Deportivo Cali (V=4 E=1 D=0 | AmbosMarcan=2/5):
+ULTIMOS 10 PARTIDOS Deportivo Cali (V=5 E=2 D=3 | AmbosMarcan=4/10):
+ULTIMOS 15 PARTIDOS Deportivo Cali (V=9 E=3 D=3 | AmbosMarcan=6/15):
+ULTIMOS 20 PARTIDOS Deportivo Cali (V=12 E=4 D=4 | AmbosMarcan=8/20):
+  [Liga Colombia] 2026-09-27 Deportivo Cali GANO vs Águilas Doradas (2-0) AM-NO | 1T:1-0 2T:1-0 | Corners=4 TarjetasAmarillas=3 TirosAlArco=9
+  [Liga Colombia] 2026-09-22 Deportivo Cali GANO vs Santa Fe (0-1) AM-NO | 1T:1-0 2T:0-0 | Corners=3 TarjetasAmarillas=2 TirosAlArco=4
+  [Liga Colombia] 2026-09-19 Deportivo Cali GANO vs Cucuta (3-0) AM-NO | 1T:1-0 2T:2-0 | Corners=5 TarjetasAmarillas=2 TirosAlArco=6
+  [Liga Colombia] 2026-09-13 Deportivo Cali GANO vs Once Caldas (1-2) AM-SI | 1T:1-0 2T:1-1 | Corners=0 TarjetasAmarillas=3 TirosAlArco=6
+  [Liga Colombia] 2026-09-10 Deportivo Cali EMPATO vs Millonarios (1-1) AM-SI | 1T:1-0 2T:0-1 | Corners=3 TarjetasAmarillas=5 TirosAlArco=5
+  [Copa Colombia] 2026-09-07 Deportivo Cali PERDIO vs Atletico Nacional (3-0) AM-NO | 1T:0-1 2T:0-2 | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Liga Colombia] 2026-08-30 Deportivo Cali EMPATO vs Bucaramanga (1-1) AM-SI | 1T:0-0 2T:1-1 | Corners=1 TarjetasAmarillas=3 TirosAlArco=4
+  [Liga Colombia] 2026-08-26 Deportivo Cali PERDIO vs Atletico Nacional (2-1) AM-SI | 1T:0-1 2T:1-1 | Corners=2 TarjetasAmarillas=3 TirosAlArco=3
+  [Liga Colombia] 2026-08-08 Deportivo Cali GANO vs Deportivo Pasto (0-2) AM-NO | 1T:1-0 2T:1-0 | Corners=3 TarjetasAmarillas=4 TirosAlArco=6
+  [Liga Colombia] 2026-08-01 Deportivo Cali PERDIO vs Independiente Medellin (1-0) AM-NO | 1T:0-0 2T:0-1 | Corners=1 TarjetasAmarillas=1 TirosAlArco=2
+  [Liga Colombia] 2026-07-24 Deportivo Cali GANO vs Jaguares (2-0) AM-NO | 1T:0-0 2T:2-0 | Corners=6 TarjetasAmarillas=4 TirosAlArco=6
+  [Copa Colombia] [RIVAL DE CATEGORIA MENOR] 2026-05-24 Deportivo Cali GANO vs Real Santander (1-2) AM-SI | 1T:1-0 2T:1-1 | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Copa Colombia] 2026-05-20 Deportivo Cali GANO vs Alianza Valledupar (1-0) AM-NO | 1T:1-0 2T:0-0 | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Copa Colombia] 2026-05-11 Deportivo Cali GANO vs Bucaramanga (2-0) AM-NO | 1T:null-null 2T:null-null | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Liga Colombia] 2026-05-03 Deportivo Cali EMPATO vs Deportes Tolima (1-1) AM-SI | 1T:0-1 2T:1-0 | Corners=3 TarjetasAmarillas=3 TirosAlArco=3
+  [Liga Colombia] 2026-04-25 Deportivo Cali GANO vs America de Cali (1-0) AM-NO | 1T:0-0 2T:1-0 | Corners=6 TarjetasAmarillas=1 TirosAlArco=4
+  [Liga Colombia] 2026-04-17 Deportivo Cali PERDIO vs Chico (1-0) AM-NO | 1T:0-0 2T:0-1 | Corners=5 TarjetasAmarillas=4 TirosAlArco=2
+  [Liga Colombia] 2026-04-12 Deportivo Cali EMPATO vs Llaneros (1-1) AM-SI | 1T:0-0 2T:1-1 | Corners=6 TarjetasAmarillas=2 TirosAlArco=3
+  [Liga Colombia] 2026-04-03 Deportivo Cali GANO vs Junior (1-2) AM-SI | 1T:null-null 2T:null-null | Corners=4 TarjetasAmarillas=6 TirosAlArco=4
+  [Liga Colombia] 2026-03-28 Deportivo Cali GANO vs Deportivo Pereira (1-0) AM-NO | 1T:null-null 2T:null-null | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+PROMEDIO CORNERS Alianza Valledupar: ultimos 5 = 6,6,2,4,N/D (promedio 4.5). Ultimos 10 = 6,6,2,4,N/D,4,2,4,4,3 (promedio 3.9).
+DATOS PRIMER TIEMPO Alianza Valledupar (ultimos 5): metio 4 goles, marco en 3 de 5. Recibio 5 goles, le marcaron en 4 de 5.
+DESGLOSE PRIMER TIEMPO Alianza Valledupar: vs Jaguares: 1-1 goles, 0 amarillas; vs Santa Fe: 0-2 goles, 0 amarillas; vs Chico: 2-1 goles, 0 amarillas; vs Junior: 1-0 goles, 2 amarillas; vs Once Caldas: 0-1 goles, 1 amarillas
+RESUMEN SEGUNDO TIEMPO Alianza Valledupar: metio 2 goles, recibio 2
+TARJETAS Alianza Valledupar: primer tiempo=3 | segundo tiempo=8 en 5 partidos
+ULTIMOS 5 PARTIDOS Alianza Valledupar (V=3 E=0 D=2 | AmbosMarcan=3/5):
+ULTIMOS 10 PARTIDOS Alianza Valledupar (V=3 E=1 D=6 | AmbosMarcan=5/10):
+ULTIMOS 15 PARTIDOS Alianza Valledupar (V=5 E=2 D=8 | AmbosMarcan=8/15):
+ULTIMOS 20 PARTIDOS Alianza Valledupar (V=5 E=5 D=10 | AmbosMarcan=11/20):
+  [Liga Colombia] 2026-09-27 Alianza Valledupar GANO vs Jaguares (2-1) AM-SI | 1T:1-1 2T:1-0 | Corners=6 TarjetasAmarillas=2 TirosAlArco=8
+  [Liga Colombia] 2026-09-19 Alianza Valledupar PERDIO vs Santa Fe (1-4) AM-SI | 1T:0-2 2T:1-2 | Corners=6 TarjetasAmarillas=3 TirosAlArco=1
+  [Liga Colombia] 2026-09-15 Alianza Valledupar GANO vs Chico (2-1) AM-SI | 1T:2-1 2T:0-0 | Corners=2 TarjetasAmarillas=1 TirosAlArco=4
+  [Liga Colombia] 2026-09-12 Alianza Valledupar GANO vs Junior (1-0) AM-NO | 1T:1-0 2T:0-0 | Corners=4 TarjetasAmarillas=4 TirosAlArco=4
+  [Copa Colombia] 2026-09-09 Alianza Valledupar PERDIO vs Once Caldas (0-1) AM-NO | 1T:0-1 2T:0-0 | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Liga Colombia] 2026-09-03 Alianza Valledupar PERDIO vs America de Cali (0-3) AM-NO | 1T:0-2 2T:0-1 | Corners=4 TarjetasAmarillas=1 TirosAlArco=2
+  [Liga Colombia] 2026-08-29 Alianza Valledupar PERDIO vs Atletico Nacional (1-5) AM-SI | 1T:1-3 2T:0-2 | Corners=2 TarjetasAmarillas=4 TirosAlArco=2
+  [Liga Colombia] 2026-08-25 Alianza Valledupar PERDIO vs Cucuta (0-1) AM-NO | 1T:0-0 2T:0-1 | Corners=4 TarjetasAmarillas=6 TirosAlArco=3
+  [Liga Colombia] 2026-08-21 Alianza Valledupar EMPATO vs Deportivo Pereira (0-0) AM-NO | 1T:0-0 2T:0-0 | Corners=4 TarjetasAmarillas=4 TirosAlArco=5
+  [Liga Colombia] 2026-08-09 Alianza Valledupar PERDIO vs Bucaramanga (2-3) AM-SI | 1T:1-2 2T:1-1 | Corners=3 TarjetasAmarillas=1 TirosAlArco=2
+  [Liga Colombia] 2026-08-01 Alianza Valledupar PERDIO vs Deportes Tolima (1-2) AM-SI | 1T:1-1 2T:0-1 | Corners=2 TarjetasAmarillas=2 TirosAlArco=3
+  [Liga Colombia] 2026-07-26 Alianza Valledupar EMPATO vs Fortaleza FC (1-1) AM-SI | 1T:0-1 2T:1-0 | Corners=5 TarjetasAmarillas=2 TirosAlArco=3
+  [Copa Colombia] 2026-05-24 Alianza Valledupar GANO vs Bucaramanga (2-1) AM-SI | 1T:null-null 2T:null-null | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Copa Colombia] 2026-05-20 Alianza Valledupar PERDIO vs Deportivo Cali (0-1) AM-NO | 1T:0-1 2T:0-0 | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Copa Colombia] [RIVAL DE CATEGORIA MENOR] 2026-05-16 Alianza Valledupar GANO vs Real Santander (3-0) AM-NO | 1T:2-0 2T:1-0 | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Copa Colombia] [RIVAL DE CATEGORIA MENOR] 2026-05-08 Alianza Valledupar EMPATO vs Popayan (1-1) AM-SI | 1T:null-null 2T:null-null | Corners=N/D TarjetasAmarillas=N/D TirosAlArco=N/D
+  [Liga Colombia] 2026-05-03 Alianza Valledupar EMPATO vs Millonarios (2-2) AM-SI | 1T:1-0 2T:1-2 | Corners=3 TarjetasAmarillas=6 TirosAlArco=4
+  [Liga Colombia] 2026-04-26 Alianza Valledupar EMPATO vs Llaneros (0-0) AM-NO | 1T:0-0 2T:0-0 | Corners=2 TarjetasAmarillas=3 TirosAlArco=1
+  [Liga Colombia] 2026-04-19 Alianza Valledupar PERDIO vs Independiente Medellin (0-1) AM-NO | 1T:0-1 2T:0-0 | Corners=6 TarjetasAmarillas=4 TirosAlArco=1
+  [Liga Colombia] 2026-04-12 Alianza Valledupar PERDIO vs Internacional de Bogota (1-2) AM-SI | 1T:1-0 2T:0-2 | Corners=6 TarjetasAmarillas=0 TirosAlArco=3
+ENFRENTAMIENTOS DIRECTOS Deportivo Cali vs Alianza Valledupar (8 encontrados, ordenados del mas reciente al mas antiguo):
+  2026-05-20 Deportivo Cali 1-0 Alianza Valledupar
+  2026-03-22 Alianza Valledupar 1-0 Deportivo Cali
+  2025-10-28 Deportivo Cali 0-1 Alianza Valledupar
+  2025-05-11 Alianza Valledupar 2-0 Deportivo Cali
+  2024-07-22 Deportivo Cali 1-0 Alianza Valledupar
+  2024-01-26 Alianza Valledupar 3-3 Deportivo Cali
+  2023-10-01 Deportivo Cali 1-0 Alianza Valledupar
+  2023-04-22 Alianza Valledupar 0-3 Deportivo Cali
