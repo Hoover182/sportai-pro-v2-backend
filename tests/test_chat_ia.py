@@ -72,6 +72,15 @@ class PedidoAXai(unittest.TestCase):
         self.assertNotIn("hace casi 2 anos, en noviembre de 2024", system)
         self.assertRegex(system, r"\n\nFECHA DE HOY: \d{4}-\d{2}-\d{2}\n=== PARTIDO: A vs B ===")
 
+    def test_reglas_de_calidad_del_02_10(self):
+        system = F._chat_system("CTX", hoy="2026-10-02")
+        for fragmento in ("ni V=4 E=1 D=0, ni GF=1.8 GC=0.4",                       # sin notacion cruda
+                          "elegi la linea mas cercana a la proyeccion del modelo",     # conclusion O/U coherente
+                          "nunca una doble oportunidad como X2 o 1X",                  # 1X2 responde quien gana
+                          "Usa esta excepcion SOLO si no hay NINGUN dato relacionado",  # no-dato acotado
+                          "E) RESPALDO"):                                              # al menos 2 datos
+            self.assertIn(fragmento, system)
+
     def test_sin_contexto_no_agrega_fecha(self):
         self.assertNotIn("FECHA DE HOY", F._chat_system("", hoy="2026-10-01"))
 
