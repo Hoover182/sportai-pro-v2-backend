@@ -4,10 +4,9 @@ Veredicto de auto-merge del PR de sincronizacion: compara los datos de
 main (antes) contra los de la rama del sync (despues) y decide si el PR
 se podria mergear solo o si tiene que quedar para revision manual.
 
-MODO OBSERVACION: este script NUNCA mergea. Solo escribe el veredicto
-(JSON + comentario markdown); el workflow lo publica en el PR. Activar el
-merge real es un cambio aparte, que se decide despues del periodo de
-observacion.
+Este script NUNCA mergea: solo escribe el veredicto (JSON + comentario
+markdown). El workflow lo publica en el PR y, si es AUTO, mergea (modo
+real desde 2026-10-07, despues de la observacion del 26/09 al 07/10).
 
 Criterios (todos tienen que pasar para "auto_merge": true):
   A. Integridad: 0 celdas vaciadas, 0 filas perdidas, mismas columnas,
@@ -30,7 +29,7 @@ Uso:
         --antes-dir DIR_CON_ARCHIVOS_DE_MAIN --despues-dir DIR_CON_ARCHIVOS_DEL_SYNC \\
         --out veredicto.json --comentario veredicto.md
 
-Exit code 0: veredicto "auto_merge" (se habria mergeado).
+Exit code 0: veredicto "auto_merge" (el workflow mergea).
 Exit code 3: veredicto "revision manual".
 Cualquier otro: el script fallo (sin veredicto).
 """
@@ -270,11 +269,11 @@ def correr_humo(dir_datos, repo_raiz):
 
 def armar_comentario(v):
     m = v["metricas"]
-    lineas = ["## Veredicto de auto-merge (MODO OBSERVACION: no se mergea nada solo)", ""]
+    lineas = ["## Veredicto de auto-merge", ""]
     if v["auto_merge"]:
-        lineas.append("✅ **Se habria mergeado solo.** Todos los criterios pasaron.")
+        lineas.append("✅ **Se mergea solo.** Todos los criterios pasaron.")
     else:
-        lineas.append(f"⛔ **NO se habria mergeado solo** -- queda para revision manual. {len(v['fallos'])} criterio(s) fallaron:")
+        lineas.append(f"⛔ **NO se mergea solo** -- queda para revision manual. {len(v['fallos'])} criterio(s) fallaron:")
         lineas += [f"- {f}" for f in v["fallos"]]
     lineas += [
         "",
