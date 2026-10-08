@@ -125,7 +125,7 @@ jobs:
               echo "⛔ **El script del veredicto fallo (codigo $v): sin veredicto = revision manual.** Ver el log de la corrida."
             } > /tmp/veredicto.md
           fi
-          gh pr comment "$BRANCH" --body-file /tmp/veredicto.md || { echo "::error::No se pudo comentar el veredicto en el PR"; exit 1; }
+          gh pr comment "$BRANCH" --repo "$GITHUB_REPOSITORY" --body-file /tmp/veredicto.md || { echo "::error::No se pudo comentar el veredicto en el PR"; exit 1; }
           if [ "$v" -ne 0 ]; then
             echo "::error::Veredicto: revision manual (codigo $v). El PR queda abierto; motivos en el comentario del PR."
             exit 1
