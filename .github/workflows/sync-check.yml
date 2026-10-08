@@ -143,23 +143,23 @@ jobs:
         run: |
           SHA=$(git rev-parse HEAD)
           for intento in 1 2 3 4 5; do
-            if gh pr merge "$BRANCH" --merge --match-head-commit "$SHA"; then break; fi
+            if gh pr merge --repo "$GITHUB_REPOSITORY" "$BRANCH" --merge --match-head-commit "$SHA"; then break; fi
             sleep 15
           done
-          estado=$(gh pr view "$BRANCH" --json state --jq .state)
+          estado=$(gh pr view --repo "$GITHUB_REPOSITORY" "$BRANCH" --json state --jq .state)
           if [ "$estado" != "MERGED" ]; then
             echo "::error::Veredicto AUTO pero el merge fallo (estado $estado). El PR queda abierto para revision manual."
             exit 1
           fi
-          NUM=$(gh pr view "$BRANCH" --json number --jq .number)
+          NUM=$(gh pr view --repo "$GITHUB_REPOSITORY" "$BRANCH" --json number --jq .number)
           echo "NUM=$NUM" >> "$GITHUB_ENV"
-          gh pr comment "$BRANCH" --body "🤖 Mergeado automaticamente: veredicto AUTO (todos los criterios en verde). El paso siguiente verifica que produccion sirva los datos nuevos." || true
+          gh pr comment --repo "$GITHUB_REPOSITORY" "$BRANCH" --body "🤖 Mergeado automaticamente: veredicto AUTO (todos los criterios en verde). El paso siguiente verifica que produccion sirva los datos nuevos." || true
           # Los PRs de sync viejos que quedaron abiertos (por un veredicto
           # MANUAL anterior) quedan reemplazados: cada sync sale de main y
           # reescribe los mismos archivos de datos desde analista-futbol.
-          for viejo in $(gh pr list --state open --limit 100 --json number,headRefName \
+          for viejo in $(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,headRefName \
               --jq ".[] | select(.headRefName | startswith(\"sync/analista-futbol-\")) | select(.number != $NUM) | .number"); do
-            gh pr close "$viejo" --comment "Cerrado sin mergear: reemplazado por #$NUM (sync del $(date -u +%Y-%m-%d)), que sale de main, reescribe los mismos archivos de datos desde analista-futbol y se mergeo automaticamente con todos los criterios del veredicto en verde." \
+            gh pr close --repo "$GITHUB_REPOSITORY" "$viejo" --comment "Cerrado sin mergear: reemplazado por #$NUM (sync del $(date -u +%Y-%m-%d)), que sale de main, reescribe los mismos archivos de datos desde analista-futbol y se mergeo automaticamente con todos los criterios del veredicto en verde." \
               || echo "::warning::No se pudo cerrar el PR viejo #$viejo"
           done
 
@@ -173,7 +173,7 @@ jobs:
         run: |
           set -o pipefail   # el resultado es el de verificar_produccion.py, no el de tee
           if ! python scripts/verificar_produccion.py --timeout-min 20 | tee /tmp/verificacion.txt; then
-            gh pr comment "$NUM" --body "⛔ **Criterio E fallo despues del merge automatico:** $(tail -1 /tmp/verificacion.txt). Revisar el deploy de Render." || true
+            gh pr comment --repo "$GITHUB_REPOSITORY" "$NUM" --body "⛔ **Criterio E fallo despues del merge automatico:** $(tail -1 /tmp/verificacion.txt). Revisar el deploy de Render." || true
             echo "::error::Produccion no quedo al dia despues del merge automatico."
             exit 1
           fi
