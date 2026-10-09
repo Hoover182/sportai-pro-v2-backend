@@ -96,12 +96,13 @@ jobs:
             --base main \
             --head "$BRANCH"
 
-      # MODO OBSERVACION: calcula si el PR se habria auto-mergeado y lo
-      # comenta en el PR. NUNCA mergea (no hay ningun "gh pr merge" en este
-      # workflow). Si el veredicto es "revision manual", o el script del
-      # veredicto falla, la corrida termina en ROJO para que GitHub avise
-      # por mail -- nunca un verde que esconda un problema.
-      - name: Veredicto de auto-merge (modo observacion, no mergea)
+      # Veredicto de auto-merge (MODO REAL desde 2026-10-07, despues de la
+      # observacion del 26/09 al 07/10: 14 PRs, 13 AUTO correctos, 1 MANUAL
+      # con motivo real). Lo comenta en el PR. Si es "revision manual", o el
+      # script del veredicto falla, la corrida termina en ROJO para que
+      # GitHub avise por mail y el PR queda abierto -- nunca un verde que
+      # esconda un problema. Si es AUTO, los pasos siguientes mergean.
+      - name: Veredicto de auto-merge
         if: steps.check.outputs.exit_code == '2'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -120,14 +121,60 @@ jobs:
           v=$?
           if [ "$v" -ne 0 ] && [ "$v" -ne 3 ]; then
             {
-              echo "## Veredicto de auto-merge (MODO OBSERVACION)"
+              echo "## Veredicto de auto-merge"
               echo
               echo "⛔ **El script del veredicto fallo (codigo $v): sin veredicto = revision manual.** Ver el log de la corrida."
             } > /tmp/veredicto.md
           fi
           gh pr comment "$BRANCH" --repo "$GITHUB_REPOSITORY" --body-file /tmp/veredicto.md || { echo "::error::No se pudo comentar el veredicto en el PR"; exit 1; }
           if [ "$v" -ne 0 ]; then
-            echo "::error::Veredicto: NO se habria auto-mergeado (codigo $v). Motivos en el comentario del PR."
+            echo "::error::Veredicto: revision manual (codigo $v). El PR queda abierto; motivos en el comentario del PR."
             exit 1
           fi
-          echo "Veredicto: se habria auto-mergeado (modo observacion: no se mergeo)."
+          echo "Veredicto: AUTO. El paso siguiente mergea el PR."
+
+      # Solo llega aca con veredicto AUTO (si el paso anterior falla, este
+      # se saltea). --match-head-commit: mergea exactamente el commit que
+      # se evaluo. Reintenta porque GitHub tarda unos segundos en calcular
+      # si un PR recien creado es mergeable.
+      - name: Auto-merge del PR de sync
+        if: steps.check.outputs.exit_code == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHA=$(git rev-parse HEAD)
+          for intento in 1 2 3 4 5; do
+            if gh pr merge --repo "$GITHUB_REPOSITORY" "$BRANCH" --merge --match-head-commit "$SHA"; then break; fi
+            sleep 15
+          done
+          estado=$(gh pr view --repo "$GITHUB_REPOSITORY" "$BRANCH" --json state --jq .state)
+          if [ "$estado" != "MERGED" ]; then
+            echo "::error::Veredicto AUTO pero el merge fallo (estado $estado). El PR queda abierto para revision manual."
+            exit 1
+          fi
+          NUM=$(gh pr view --repo "$GITHUB_REPOSITORY" "$BRANCH" --json number --jq .number)
+          echo "NUM=$NUM" >> "$GITHUB_ENV"
+          gh pr comment --repo "$GITHUB_REPOSITORY" "$BRANCH" --body "🤖 Mergeado automaticamente: veredicto AUTO (todos los criterios en verde). El paso siguiente verifica que produccion sirva los datos nuevos." || true
+          # Los PRs de sync viejos que quedaron abiertos (por un veredicto
+          # MANUAL anterior) quedan reemplazados: cada sync sale de main y
+          # reescribe los mismos archivos de datos desde analista-futbol.
+          for viejo in $(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,headRefName \
+              --jq ".[] | select(.headRefName | startswith(\"sync/analista-futbol-\")) | select(.number != $NUM) | .number"); do
+            gh pr close --repo "$GITHUB_REPOSITORY" "$viejo" --comment "Cerrado sin mergear: reemplazado por #$NUM (sync del $(date -u +%Y-%m-%d)), que sale de main, reescribe los mismos archivos de datos desde analista-futbol y se mergeo automaticamente con todos los criterios del veredicto en verde." \
+              || echo "::warning::No se pudo cerrar el PR viejo #$viejo"
+          done
+
+      # Criterio E: produccion (Render) tiene que servir los datos nuevos.
+      # Si no se actualiza en 20 minutos o /partidos-hoy responde mal, la
+      # corrida termina en ROJO (mail de GitHub) y se avisa en el PR.
+      - name: Criterio E - verificar produccion despues del merge
+        if: steps.check.outputs.exit_code == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail   # el resultado es el de verificar_produccion.py, no el de tee
+          if ! python scripts/verificar_produccion.py --timeout-min 20 | tee /tmp/verificacion.txt; then
+            gh pr comment --repo "$GITHUB_REPOSITORY" "$NUM" --body "⛔ **Criterio E fallo despues del merge automatico:** $(tail -1 /tmp/verificacion.txt). Revisar el deploy de Render." || true
+            echo "::error::Produccion no quedo al dia despues del merge automatico."
+            exit 1
+          fi

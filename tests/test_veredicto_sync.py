@@ -1,5 +1,5 @@
-"""Veredicto de auto-merge del sync (scripts/veredicto_sync.py, modo
-observacion): cada criterio por separado, con datos sinteticos. No toca
+"""Veredicto de auto-merge del sync (scripts/veredicto_sync.py, modo real
+desde 2026-10-07): cada criterio por separado, con datos sinteticos. No toca
 la red ni el CSV real.
 Correr desde backend/: python -m unittest discover -s tests -v"""
 import os
@@ -192,12 +192,18 @@ class Veredicto(unittest.TestCase):
         self.assertManual(self.evaluar(base(), cuotas=({"1": {}}, {})), "cuotas_cache.json queda vacio")
 
     # --- comentario ---
-    def test_comentario_dice_modo_observacion_y_motivos(self):
+    def test_comentario_con_veredicto_y_motivos(self):
         v = self.evaluar(base(), archivos=["scripts/x.py"])
         c = V.armar_comentario(v)
-        self.assertIn("MODO OBSERVACION", c)
-        self.assertIn("NO se habria mergeado", c)
+        self.assertNotIn("OBSERVACION", c)
+        self.assertIn("NO se mergea solo", c)
+        self.assertIn("revision manual", c)
         self.assertIn("scripts/x.py", c)
+
+    def test_comentario_auto_dice_que_se_mergea(self):
+        c = V.armar_comentario(self.evaluar(base()))
+        self.assertIn("Se mergea solo", c)
+        self.assertNotIn("OBSERVACION", c)
 
 
 if __name__ == "__main__":
