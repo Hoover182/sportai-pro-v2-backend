@@ -413,6 +413,48 @@ def categoria_equipo(nombre, equipos_nivel1):
     return "Primera" if nombre in equipos_nivel1 else "Categoria menor"
 
 
+# H2H con cualquier competicion oficial (2026-10-09). El filtro de
+# LIGAS_VALIDAS sigue para todo lo demas (forma, promedios, liga del
+# partido), pero un cruce entre los dos equipos cuenta aunque haya sido en
+# una liga que no seguimos: caso Malaga-Espanyol, cuyos cruces de 2020 y
+# 2021 en Segunda Division (guardados con el nombre crudo "Segunda
+# División") se descartaban y la nota decia "hace 8 anos" por el de 2018.
+# Solo se excluyen amistosos y torneos de exhibicion/pretemporada.
+LIGAS_EXHIBICION = {
+    "International Champions Cup", "Premier League - Summer Series",
+    "The Atlantic Cup", "Torneo Amistoso de Verano",
+}
+
+
+def es_amistoso(liga):
+    texto = str(liga).lower()
+    return "friendl" in texto or "amistos" in texto or str(liga) in LIGAS_EXHIBICION
+
+
+# id(df devuelto por cargar_df) -> (weakref a ese df, filas para el H2H de
+# la misma lectura del CSV). _h2h() la usa solo si recibe ESE df; con
+# cualquier otro (tests con datos sinteticos, subconjuntos) el H2H sale
+# del df que recibe, como antes.
+_FUENTE_H2H = {}
+
+
+def _registrar_fuente_h2h(df, df_crudo):
+    import weakref
+    for clave in [k for k, (ref, _) in _FUENTE_H2H.items() if ref() is None]:
+        del _FUENTE_H2H[clave]
+    amistosas = {liga for liga in df_crudo["liga"].dropna().unique() if es_amistoso(liga)}
+    terminado_sin_goles = (df_crudo["estado"].isin(["FT", "AET", "PEN"])
+                           & (df_crudo["goles_local"].isna() | df_crudo["goles_visitante"].isna()))
+    fuente = df_crudo[~df_crudo["liga"].isin(amistosas) & ~terminado_sin_goles]
+    _FUENTE_H2H[id(df)] = (weakref.ref(df), fuente)
+
+
+def _h2h(df, local, visitante, n):
+    registro = _FUENTE_H2H.get(id(df))
+    fuente = registro[1] if registro and registro[0]() is df else df
+    return ultimos_enfrentamientos_directos(fuente, local, visitante, n=n)
+
+
 def cargar_df():
     import os
     original = os.getcwd()
@@ -420,7 +462,9 @@ def cargar_df():
     df = _cargar_csv()
     os.chdir(original)
     if not df.empty:
-        df = filtrar_ligas_validas(df)
+        df_crudo = df
+        df = filtrar_ligas_validas(df_crudo)
+        _registrar_fuente_h2h(df, df_crudo)
     return df
 
 
@@ -481,7 +525,7 @@ def simular(df, local, visitante):
     stats_b = estadisticas_equipo_ultimos10(df, visitante, liga=liga_partido, condicion="visitante")
     if stats_a is None or stats_b is None:
         return None, None, None
-    h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=5)
+    h2h = _h2h(df, local, visitante, n=5)
 
     # ---- Filtros adicionales de tarjetas (arbitro, presion, agresividad, clasico) ----
     try:
@@ -2260,7 +2304,7 @@ def _hechos_para_analisis(df, local, visitante, stats_a, stats_b):
             "atajadas_prom": round(sum(atajadas) / len(atajadas), 1) if atajadas else None,
         }
 
-    h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=10)
+    h2h = _h2h(df, local, visitante, n=10)
     g = e = p = 0
     for _, r in h2h.iterrows():
         es_local = r["equipo_local"] == local
@@ -2285,7 +2329,7 @@ def _hechos_para_analisis(df, local, visitante, stats_a, stats_b):
             return None
         return [int(vl), int(vv)]
 
-    cruces = ultimos_enfrentamientos_directos(df, local, visitante, n=20)
+    cruces = _h2h(df, local, visitante, n=20)
     h2h_cruces = []
     for _, r in cruces.iterrows():
         fecha = pd.Timestamp(r["fecha"])
@@ -2601,7 +2645,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
                 "goles_local": int(r["goles_local"]),
                 "goles_visitante": int(r["goles_visitante"]),
             }
-            for _, r in ultimos_enfrentamientos_directos(df, local, visitante, n=10).sort_values("fecha", ascending=False).iterrows()
+            for _, r in _h2h(df, local, visitante, n=10).sort_values("fecha", ascending=False).iterrows()
         ],
         "stats_local_5": _stats_n_equipo(df, local, 5),
         "stats_local_10": _stats_n_equipo(df, local, 10),
@@ -2797,7 +2841,7 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
     sim, stats_a, stats_b = simular(df, local, visitante)
     if sim is None:
         return None, "No hay datos suficientes para simular"
-    h2h = ultimos_enfrentamientos_directos(df, local, visitante, n=5)
+    h2h = _h2h(df, local, visitante, n=5)
 
     # Misma confianza (k) que ya usa simular() para goles_ou/corners_ou/
     # tarjetas_ou -- sin esto, una linea personalizada mostraria una
