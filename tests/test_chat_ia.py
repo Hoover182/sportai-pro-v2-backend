@@ -94,6 +94,49 @@ class PedidoAXai(unittest.TestCase):
         self.assertRegex(ids[0], r"^chat-[0-9a-f]{32}$")
 
 
+CTX_A = "=== PARTIDO: Malaga vs Espanyol (La Liga) ===\nPROBABILIDADES 1X2: Local 30% | Empate 30% | Visitante 40%"
+CTX_A_ACTUALIZADO = CTX_A.replace("Local 30%", "Local 35%")   # el cron actualizo los datos a mitad del dia
+CTX_B = "=== PARTIDO: Getafe vs Levante (La Liga) ===\nPROBABILIDADES 1X2: Local 30% | Empate 30% | Visitante 40%"
+
+
+class SalaDeCache(unittest.TestCase):
+    """x-grok-conv-id = partido + fecha del dia; el contenido viaja completo."""
+
+    def pedido(self, contexto, hoy="2026-10-11"):
+        with mock.patch.object(F, "_chat_hoy", return_value=hoy):
+            _, post, log = chatear(respuesta(), contexto=contexto)
+        return post.call_args.kwargs["headers"]["x-grok-conv-id"], post.call_args.kwargs["json"]["messages"][0]["content"], log
+
+    def test_misma_sala_aunque_cambien_los_datos_del_partido(self):
+        sala1, system1, _ = self.pedido(CTX_A)
+        sala2, system2, _ = self.pedido(CTX_A_ACTUALIZADO)
+        self.assertEqual(sala1, sala2)
+        self.assertRegex(sala1, r"^chat-[0-9a-f]{32}$")
+        # el contenido nuevo viaja completo: la cache de xAI solo reutiliza el prefijo identico
+        self.assertIn("Local 30%", system1)
+        self.assertIn("Local 35%", system2)
+        self.assertNotIn("Local 30%", system2)
+
+    def test_otro_partido_u_otro_dia_es_otra_sala(self):
+        sala = self.pedido(CTX_A)[0]
+        self.assertNotEqual(sala, self.pedido(CTX_B)[0])
+        self.assertNotEqual(sala, self.pedido(CTX_A, hoy="2026-10-12")[0])
+
+    def test_la_fecha_de_la_sala_es_la_misma_del_system(self):
+        sala, system, _ = self.pedido(CTX_A, hoy="2026-10-12")
+        self.assertIn("FECHA DE HOY: 2026-10-12\n", system)
+        self.assertEqual(sala, F._chat_id_cache(system, CTX_A, "2026-10-12"))
+
+    def test_sin_linea_de_partido_usa_el_hash_del_system_como_antes(self):
+        s1, s2 = F._chat_system("DATOS 1", "2026-10-11"), F._chat_system("DATOS 2", "2026-10-11")
+        self.assertNotEqual(F._chat_id_cache(s1, "DATOS 1", "2026-10-11"), F._chat_id_cache(s2, "DATOS 2", "2026-10-11"))
+        self.assertEqual(F._chat_id_cache(s1, "DATOS 1", "2026-10-11"), F._chat_id_cache(s1, "DATOS 1", "2026-10-12"))
+
+    def test_la_sala_queda_en_el_log(self):
+        sala, _, log = self.pedido(CTX_A)
+        self.assertIn(f"sala={sala}", log)
+
+
 class Log(unittest.TestCase):
     def test_linea_con_tokens_y_costo_real(self):
         _, _, log = chatear(respuesta())
