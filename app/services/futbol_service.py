@@ -525,6 +525,10 @@ def simular(df, local, visitante):
     stats_b = estadisticas_equipo_ultimos10(df, visitante, liga=liga_partido, condicion="visitante")
     if stats_a is None or stats_b is None:
         return None, None, None
+    from liga_ranking import niveles_referencia
+    stats_a["nivel_referencia"], stats_b["nivel_referencia"] = niveles_referencia(
+        stats_a.get("liga_referencia"), stats_b.get("liga_referencia"), local, visitante, liga_partido
+    )
     h2h = _h2h(df, local, visitante, n=5)
 
     # ---- Filtros adicionales de tarjetas (arbitro, presion, agresividad, clasico) ----
