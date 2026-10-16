@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 from app.services import futbol_service, tracking_picks, alineaciones
+from app.barra_codificada import RutaConBarra
 
-router = APIRouter()
+# RutaConBarra: nombres de equipo con "/" (Bodo/Glimt) en /{local}/{visitante}.
+router = APIRouter(route_class=RutaConBarra)
 
 @router.get("/partidos-hoy")
 async def partidos_hoy(casa: str = "1xbet"):
