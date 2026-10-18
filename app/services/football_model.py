@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from fifa_ranking import ajuste_fifa
-from liga_ranking import ajuste_liga_clubes
+from liga_ranking import ajuste_liga_clubes, ajuste_por_nivel, ligas_con_nivel_extra
 from value_bet import normalizar_std
 
 # Minimos y maximos realistas por equipo
@@ -179,7 +179,10 @@ LIGAS_SEGUNDA_DIVISION = [
     "Primera B Metropolitana", "Serie B Italia", "Serie B Brasil",
 ]
 
-LIGAS_DOMESTICAS_TODAS = LIGAS_DOMESTICAS_NIVEL1 + LIGAS_SEGUNDA_DIVISION
+# Mas las ligas con nivel fuera de la tabla editorial (europeas por
+# coeficiente UEFA y las sin validar, ver liga_ranking.py). Solo se usa en
+# _liga_referencia_equipo; LIGAS_DOMESTICAS_NIVEL1 queda igual.
+LIGAS_DOMESTICAS_TODAS = LIGAS_DOMESTICAS_NIVEL1 + LIGAS_SEGUNDA_DIVISION + ligas_con_nivel_extra()
 
 
 def _liga_referencia_equipo(df, equipo):
@@ -1044,9 +1047,14 @@ def ajustar_medias_con_rival(stats_a, stats_b, h2h, equipo_local=None, equipo_vi
     # esto, un equipo de segunda division en racha ofensiva se comparaba
     # a nivel de goles crudos contra un equipo de primera de otro pais,
     # sin ningun contexto de que juega en una liga mas debil.
+    # nivel_referencia (si viene) ya trae la red de seguridad para el
+    # equipo sin liga de referencia -- ver liga_ranking.niveles_referencia.
     liga_ref_a = stats_a.get("liga_referencia")
     liga_ref_b = stats_b.get("liga_referencia")
-    factor_liga_a, factor_liga_b = ajuste_liga_clubes(liga_ref_a, liga_ref_b)
+    if "nivel_referencia" in stats_a and "nivel_referencia" in stats_b:
+        factor_liga_a, factor_liga_b = ajuste_por_nivel(stats_a["nivel_referencia"], stats_b["nivel_referencia"])
+    else:
+        factor_liga_a, factor_liga_b = ajuste_liga_clubes(liga_ref_a, liga_ref_b)
     if factor_liga_a != 1.0 or factor_liga_b != 1.0:
         goles_a   = goles_a   * factor_liga_a
         goles_b   = goles_b   * factor_liga_b
