@@ -66,6 +66,7 @@ from football_model import (
     obtener_partidos_equipo,
     obtener_liga_partido,
     n_efectivo_estimacion,
+    tiene_datos_suficientes,
 )
 from simulator import simular_partido_futbol, probabilidad_linea_personalizada, tarjetas_esperadas_por_parejez, _muestrear_conteo
 from value_bet import edge_ratio
@@ -1192,11 +1193,7 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
     del Top3 y cuanto le saco el pick ({mercado, prob, margen, franja}, o
     None si no quedo ninguno elegible). Informativo: no cambia que picks
     salen. Ver el comentario junto a _siguiente() mas abajo."""
-    stats_ok = (
-        stats_a and stats_b and
-        stats_a.get("n_partidos_stats", 0) >= 3 and
-        stats_b.get("n_partidos_stats", 0) >= 3
-    )
+    stats_ok = tiene_datos_suficientes(stats_a) and tiene_datos_suficientes(stats_b)
     candidatos = [
         Candidato("Gana local", sim["prob_local"], "resultado_local", None),
         Candidato("Empate", sim["prob_empate"], "resultado_empate", None),
@@ -1398,11 +1395,7 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None, equip
     Bloque 6 -- es simplemente que el scraper de cuotas todavia no
     cubre estos mercados. Se resuelve solo apenas haya cobertura real,
     sin tocar este codigo."""
-    stats_ok = (
-        stats_a and stats_b and
-        stats_a.get("n_partidos_stats", 0) >= 3 and
-        stats_b.get("n_partidos_stats", 0) >= 3
-    )
+    stats_ok = tiene_datos_suficientes(stats_a) and tiene_datos_suficientes(stats_b)
     candidatos = [
         Candidato("Gana local", sim["prob_local"], "resultado_local", None),
         Candidato("Empate", sim["prob_empate"], "resultado_empate", None),
@@ -2681,6 +2674,18 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
             "n_partidos": stats_b["n_partidos"],
         },
     }
+    # Sin datos suficientes en alguno de los dos equipos (ver
+    # tiene_datos_suficientes): los mercados de stats se devuelven en null
+    # en vez de mostrar proyecciones armadas con constantes de respaldo o
+    # con partidos de hace mas de un ano. Va antes del analisis IA para que
+    # ese texto tambien diga "sin datos" en esos mercados. El frontend ya
+    # muestra "Sin datos suficientes" con null.
+    resultado["mercados_stats_disponibles"] = (
+        tiene_datos_suficientes(stats_a) and tiene_datos_suficientes(stats_b)
+    )
+    if not resultado["mercados_stats_disponibles"]:
+        for clave_stats in CLAVES_MERCADOS_STATS:
+            resultado[clave_stats] = None
     # Analisis IA por mercado (texto por reglas, analisis_mercados.py):
     # se arma sobre ESTA misma respuesta para que cada numero del texto
     # coincida con el que muestra la tarjeta. Clave de variante =
@@ -2706,6 +2711,14 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
             pick["nota"] = None
     return resultado, None
 
+
+# Claves de get_analisis_partido() que se anulan cuando algun equipo no
+# tiene datos suficientes (ver tiene_datos_suficientes).
+CLAVES_MERCADOS_STATS = tuple(
+    f"{mercado}_{sufijo}"
+    for mercado in ("corners", "tarjetas", "tiros_arco", "tiros_total", "atajadas")
+    for sufijo in ("proj", "local_proj", "visitante_proj", "ou", "ou_local", "ou_visitante")
+)
 
 MERCADOS_VALIDOS = ("goles", "corners", "tarjetas")
 LADOS_VALIDOS = ("over", "under")
@@ -2841,6 +2854,8 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
     sim, stats_a, stats_b = simular(df, local, visitante)
     if sim is None:
         return None, "No hay datos suficientes para simular"
+    if mercado != "goles" and not (tiene_datos_suficientes(stats_a) and tiene_datos_suficientes(stats_b)):
+        return None, f"No hay datos suficientes de {mercado} de estos equipos para calcular este mercado"
     h2h = _h2h(df, local, visitante, n=5)
 
     # Misma confianza (k) que ya usa simular() para goles_ou/corners_ou/
