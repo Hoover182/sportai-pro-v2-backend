@@ -33,7 +33,7 @@ def sim_base(**cambios):
     return sim
 
 
-STATS = {"n_partidos_stats": 5}
+STATS = {"n_partidos_stats": 5, "n_partidos_stats_12m": 5}
 
 
 class Siguiente(unittest.TestCase):

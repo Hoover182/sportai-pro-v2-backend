@@ -72,6 +72,24 @@ def _historial_equipo(df, equipo):
 # (walk-forward): error medio 1.54 contra 1.69 de "tiros recibidos -
 # goles recibidos" propio (IC 95% de la diferencia: -0.215 a -0.079).
 MIN_ATAJADAS_HISTORIAL = 3
+
+
+# Datos suficientes para ofrecer los mercados de stats (corners, tarjetas,
+# tiros, tiros al arco, atajadas): al menos 3 partidos con stats reales en
+# los ultimos 12 meses. Sin eso la proyeccion sale de constantes de
+# respaldo (5 corners, 12 tiros, 1.5 tarjetas por equipo) o de partidos de
+# hace mas de un ano (ej. equipos uruguayos con stats solo de alguna
+# Libertadores vieja). Mismo criterio para el detalle del partido, Top3,
+# combinadas y la calculadora de cuota: ver tiene_datos_suficientes().
+MIN_PARTIDOS_STATS = 3
+VENTANA_DATOS_SUFICIENTES_DIAS = 365
+
+
+def tiene_datos_suficientes(stats):
+    """True si el equipo tiene al menos MIN_PARTIDOS_STATS partidos con
+    stats reales en los ultimos VENTANA_DATOS_SUFICIENTES_DIAS dias (ver
+    n_partidos_stats_12m en estadisticas_equipo_ultimos10)."""
+    return bool(stats) and stats.get("n_partidos_stats_12m", 0) >= MIN_PARTIDOS_STATS
 EFICIENCIA_ARQUEROS_RESPALDO = 0.689   # atajadas / tiros al arco recibidos, CSV al 2026-09-25
 _cache_eficiencia_arqueros = {}
 
@@ -100,6 +118,16 @@ def eficiencia_general_arqueros(df):
         _cache_eficiencia_arqueros.clear()
     _cache_eficiencia_arqueros[clave] = valor
     return valor
+
+
+def _n_recientes(partidos, dias):
+    """Cuantos de estos partidos son de los ultimos `dias` dias, contados
+    desde ahora (no desde el ultimo partido: un equipo sin datos hace un
+    ano tiene que quedar afuera aunque tenga 10 partidos viejos)."""
+    if partidos.empty:
+        return 0
+    fechas = pd.to_datetime(partidos["fecha"], errors="coerce", utc=True)
+    return int((fechas >= pd.Timestamp.now(tz="UTC") - pd.Timedelta(days=dias)).sum())
 
 
 def _con_stats(partidos, n=10):
@@ -706,6 +734,7 @@ def estadisticas_equipo_ultimos10(df, equipo, liga=None, min_partidos=3, condici
         "n_atajadas": int(_ok_at.sum()),
         "eficiencia_general_arqueros": eficiencia_general_arqueros(df),
         "n_partidos_stats": n_partidos_stats,
+        "n_partidos_stats_12m": _n_recientes(partidos_stats, VENTANA_DATOS_SUFICIENTES_DIAS),
         "n_partidos_xg": n_partidos_xg,
         "condicion": condicion,
         "n_partidos_condicion": n_partidos_condicion,
