@@ -56,10 +56,12 @@ class Reemplazo(unittest.TestCase):
         return FM.ajustar_medias_con_rival(copy.deepcopy(sa), copy.deepcopy(sb), h2h, l, v)
 
     def test_n_atajadas_en_stats(self):
+        # Umbral y no conteo exacto: el CSV real se completa con el tiempo
+        # (el relleno de stats del 17/10 le sumo 1 partido a Antofagasta).
         sa, sb = self.stats("ADT", "Cienciano")
-        self.assertEqual((sa["n_atajadas"], sb["n_atajadas"]), (9, 9))
+        self.assertGreaterEqual(min(sa["n_atajadas"], sb["n_atajadas"]), FM.MIN_ATAJADAS_HISTORIAL)
         sa, sb = self.stats("Deportes Iquique", "Antofagasta")
-        self.assertEqual((sa["n_atajadas"], sb["n_atajadas"]), (1, 0))
+        self.assertLess(max(sa["n_atajadas"], sb["n_atajadas"]), FM.MIN_ATAJADAS_HISTORIAL)
 
     def test_sin_historial_usa_eficiencia_por_tiros_del_rival(self):
         l, v = "Deportes Iquique", "Antofagasta"

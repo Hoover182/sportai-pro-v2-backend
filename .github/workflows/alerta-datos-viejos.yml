@@ -1,0 +1,33 @@
+name: Alerta - datos viejos en produccion
+
+on:
+  schedule:
+    # Cada 6 horas: el issue se abre en la primera medicion que pase el
+    # umbral de 36 h (ver scripts/alerta_datos_viejos.py).
+    - cron: "30 */6 * * *"
+  workflow_dispatch: {}   # permite dispararlo a mano desde la pestaña Actions
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: alerta-datos-viejos
+  cancel-in-progress: false
+
+jobs:
+  alerta:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      - name: Medir /futbol/meta y abrir/cerrar el issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/alerta_datos_viejos.py
