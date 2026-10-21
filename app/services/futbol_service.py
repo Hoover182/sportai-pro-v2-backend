@@ -55,7 +55,6 @@ from data_loader import (
     obtener_equipo_por_nombre,
     filtrar_ligas_validas,
     obtener_partidos_hoy_futbol,
-    obtener_partidos_mas_recientes,
     obtener_partidos_rango_futbol,
     _cargar_ligas_auto_detectadas,
 )
@@ -1775,9 +1774,9 @@ def _calcular_top_picks():
     df = cargar_df()
     if df.empty:
         return []
+    # Sin partidos hoy: vacio. Antes caia a los 20 partidos terminados mas
+    # recientes y los mostraba como picks (ver obtener_partidos_hoy_futbol).
     partidos = obtener_partidos_hoy_futbol(df)
-    if partidos.empty:
-        partidos = obtener_partidos_mas_recientes(df, n=20)
     if partidos.empty:
         return []
     resultados = []
