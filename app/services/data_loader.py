@@ -148,7 +148,16 @@ def obtener_equipo_por_nombre(df, nombre):
     return None
 
 
+_avisos_sin_partidos_hoy = set()
+
+
 def obtener_partidos_hoy_futbol(df):
+    """Partidos de HOY (fecha en hora Colombia) que todavia no terminaron.
+    Si hoy no hay ninguno devuelve vacio: antes caia a "la proxima fecha
+    con partidos" y /top10-mis-competiciones, /partidos-hoy y /top-picks
+    mostraban como de hoy partidos de otro dia, sin avisar (21/10/2026:
+    Nacional vs Pasto del 22/10 en "Top picks del dia", con los datos de
+    produccion trabados desde el 16/10). Ver _avisar_sin_partidos_hoy."""
     if df.empty:
         return df
 
@@ -161,23 +170,25 @@ def obtener_partidos_hoy_futbol(df):
         (df["fecha"].dt.normalize() == hoy) &
         (df["estado"].isin(ESTADOS_EN_JUEGO))
     ].copy()
+    if partidos_hoy.empty:
+        _avisar_sin_partidos_hoy(df, hoy)
+    return partidos_hoy
 
-    if not partidos_hoy.empty:
-        return partidos_hoy
 
-    proximos = df[
-        (df["fecha"].dt.normalize() >= hoy) &
-        (df["estado"].isin(ESTADOS_EN_JUEGO))
-    ].copy()
-
-    if not proximos.empty:
-        proxima_fecha = proximos["fecha"].dt.normalize().min()
-        if proxima_fecha > hoy:
-            print(f"\nNo hay partidos pendientes hoy. Proxima fecha: {proxima_fecha.date()}\n")
-        return proximos[proximos["fecha"].dt.normalize() == proxima_fecha].copy()
-
-    print("\nNo hay partidos proximos disponibles.\n")
-    return pd.DataFrame()
+def _avisar_sin_partidos_hoy(df, hoy):
+    """Una linea en el log (una vez por dia y proceso) cuando hoy no hay
+    partidos. Con datos al dia pasa muy pocas veces (5 dias de 441 entre
+    08/2025 y 10/2026); si la fecha mas reciente con partidos terminados es
+    de hace mas de un dia, lo mas probable es que el sync este trabado."""
+    if hoy in _avisos_sin_partidos_hoy:
+        return
+    _avisos_sin_partidos_hoy.add(hoy)
+    terminados = df[df["estado"].isin(ESTADOS_TERMINADOS)]["fecha"]
+    ultimo = terminados.max().normalize() if not terminados.empty else None
+    atraso = (hoy - ultimo).days if ultimo is not None else None
+    sospecha = " -- POSIBLE SYNC TRABADO" if atraso is None or atraso > 1 else ""
+    print(f"AVISO sin partidos hoy ({hoy.date()}): ultimo partido terminado en los datos = "
+          f"{ultimo.date() if ultimo is not None else 'ninguno'}{sospecha}")
 
 
 def obtener_partidos_rango_futbol(df, dias=4):
