@@ -27,7 +27,23 @@ jobs:
 
       - run: pip install nba_api requests
 
-      - run: python scripts/nba_probe.py
-        continue-on-error: true   # ya sabemos que stats.nba.com no responde
-
       - run: python scripts/nba_probe_cdn.py
+
+      # Muestras crudas para escribir el parser del sync (desde la PC el
+      # CDN da 403).
+      - name: Bajar muestras crudas
+        run: |
+          mkdir -p muestras
+          H='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+          for g in 0022500001 0042500405 0052500101 0062500001 0012600001 0022501231; do
+            curl -s -H "$H" -o muestras/boxscore_$g.json -w "$g %{http_code}
+" https://cdn.nba.com/static/json/liveData/boxscore/boxscore_$g.json
+            sleep 1
+          done
+          curl -s -H "$H" -o muestras/schedule.json -w "schedule %{http_code}
+" https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: muestras-cdn
+          path: muestras/
