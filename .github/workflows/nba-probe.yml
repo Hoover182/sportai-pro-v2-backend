@@ -30,16 +30,24 @@ jobs:
       - run: python scripts/nba_probe_cdn.py
 
       # Muestras crudas para escribir el parser del sync (desde la PC el
-      # CDN da 403).
+      # CDN da 403). Con Python y no curl: Akamai le da 403 a curl aun
+      # desde Actions (huella TLS), a requests no.
       - name: Bajar muestras crudas
+        shell: python
         run: |
-          mkdir -p muestras
-          H='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
-          for g in 0022500001 0042500405 0052500101 0062500001 0012600001 0022501231; do
-            curl -s -H "$H" -o muestras/boxscore_$g.json -w "$g %{http_code}\n" https://cdn.nba.com/static/json/liveData/boxscore/boxscore_$g.json
-            sleep 1
-          done
-          curl -s -H "$H" -o muestras/schedule.json -w "schedule %{http_code}\n" https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json
+          import os, time, requests
+          from nba_api.live.nba.library.http import STATS_HEADERS
+          os.makedirs("muestras", exist_ok=True)
+          base = "https://cdn.nba.com/static/json"
+          rutas = [f"liveData/boxscore/boxscore_{g}.json" for g in (
+              "0022500001", "0042500405", "0052500101", "0062500001",
+              "0012600001", "0022501231")]
+          rutas.append("staticData/scheduleLeagueV2.json")
+          for r in rutas:
+              resp = requests.get(f"{base}/{r}", headers=STATS_HEADERS, timeout=30)
+              print(r, resp.status_code, len(resp.content))
+              open(f"muestras/{r.rsplit('/', 1)[1]}", "wb").write(resp.content)
+              time.sleep(0.6)
 
       - uses: actions/upload-artifact@v4
         with:
