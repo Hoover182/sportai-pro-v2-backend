@@ -5,7 +5,11 @@ este mismo repo (sin repo intermedio, a diferencia de futbol).
 
   app/services/nba_partidos.csv            una fila por partido (local/visitante)
   app/services/nba_jugadores/<temporada>.csv  una fila por jugador que jugo
+  app/services/nba_cartelera.json          partidos de hoy y los 2 dias siguientes (ET)
   app/services/nba_datos_meta.json         hora real del ultimo sync con cambios
+
+La cartelera tambien sale de aca y no de una llamada en vivo desde Render:
+Render esta en la nube como Actions, y no sabemos si el CDN le responde.
 
 Por que el CDN y no stats.nba.com: desde Actions stats.nba.com cuelga la
 conexion (bloqueo de IPs de nube, prueba del 23/10/2026, run 39988119348).
@@ -31,7 +35,8 @@ import json
 import os
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -39,6 +44,9 @@ BASE = os.path.join(os.path.dirname(__file__), "..", "app", "services")
 CSV_PARTIDOS = os.path.join(BASE, "nba_partidos.csv")
 DIR_JUGADORES = os.path.join(BASE, "nba_jugadores")
 META = os.path.join(BASE, "nba_datos_meta.json")
+CARTELERA = os.path.join(BASE, "nba_cartelera.json")
+DIAS_CARTELERA = 3
+ET = ZoneInfo("America/New_York")
 
 CDN = "https://cdn.nba.com/static/json"
 # Headers de nba_api.live, importados y NO copiados: el CDN bloquea
@@ -226,11 +234,13 @@ def recorrer_temporada(yy, ya_tengo, pedir=pedir, log=print):
             log(f"  regular {n}: {len(nuevos)} nuevos")
     verificar_testigo(testigo, pedir)   # las ausencias son reales, no un bloqueo
 
-    # Play-in (desde 2019-20): 005YY00 + ronda + juego. La numeracion
-    # exacta no esta documentada: se prueban todos (son ~40 pedidos).
+    # Play-in (desde 2019-20): 005YY00 + ronda (1-2) + serie + juego, como
+    # playoffs (2025-26: 101 111 121 131 / 201 211). Un solo juego por
+    # serie, pero se prueban hasta 3 por las dudas (~48 pedidos).
     for ronda in (1, 2):
-        for juego in range(1, 21):
-            bajar(f"005{yy:02d}00{ronda}{juego:02d}")
+        for serie in range(8):
+            for juego in range(1, 4):
+                bajar(f"005{yy:02d}00{ronda}{serie}{juego}")
 
     # Playoffs: 004YY00 + ronda (1-4) + serie (0-7) + juego (1-7)
     for ronda, series in ((1, 8), (2, 4), (3, 2), (4, 1)):
@@ -243,6 +253,42 @@ def recorrer_temporada(yy, ya_tengo, pedir=pedir, log=print):
     bajar(f"006{yy:02d}00001")
     verificar_testigo(testigo, pedir)
     return nuevos
+
+
+def armar_cartelera(calendario, hoy_et, dias=DIAS_CARTELERA):
+    """Partidos de hoy_et y los dias siguientes (fecha ET, la que usa la
+    NBA), de los tipos que guardamos, ordenados por hora."""
+    hasta = (hoy_et + timedelta(days=dias - 1)).isoformat()
+    desde = hoy_et.isoformat()
+    partidos = []
+    for d in calendario["leagueSchedule"]["gameDates"]:
+        for g in d["games"]:
+            fecha = g["gameDateEst"][:10]
+            if not (desde <= fecha <= hasta) or g["gameId"][:3] not in TIPOS:
+                continue
+            equipo = lambda t: {"id": t["teamId"], "nombre": f"{t['teamCity']} {t['teamName']}",
+                                "sigla": t["teamTricode"]}
+            partidos.append({
+                "game_id": g["gameId"], "fecha": fecha, "hora_utc": g["gameDateTimeUTC"],
+                "tipo": TIPOS[g["gameId"][:3]], "estado": g["gameStatus"],
+                "neutral": bool(g.get("isNeutral")), "postergado": g.get("postponedStatus") == "Y",
+                "local": equipo(g["homeTeam"]), "visitante": equipo(g["awayTeam"]),
+            })
+    partidos.sort(key=lambda p: (p["hora_utc"], p["game_id"]))
+    return {"temporada": calendario["leagueSchedule"]["seasonYear"], "desde": desde,
+            "hasta": hasta, "partidos": partidos}
+
+
+def escribir_cartelera(cartelera):
+    """Escribe la cartelera si cambio. Devuelve True si cambio."""
+    nuevo = json.dumps(cartelera, indent=2, ensure_ascii=False) + "\n"
+    if os.path.exists(CARTELERA):
+        with open(CARTELERA, encoding="utf-8") as f:
+            if f.read() == nuevo:
+                return False
+    with open(CARTELERA, "w", encoding="utf-8") as f:
+        f.write(nuevo)
+    return True
 
 
 # -----------------------------
@@ -305,10 +351,13 @@ def guardar(boxscores, ahora=None, log=print):
 # MAIN
 # -----------------------------
 
-def diario(pedir=pedir, log=print):
+def diario(pedir=pedir, log=print, ahora=None):
+    """Devuelve cuantos cambios hubo (partidos nuevos + 1 si cambio la cartelera)."""
     cal = pedir("staticData/scheduleLeagueV2.json")
     if cal is None:
         raise Bloqueado("el calendario del CDN da 403")
+    ahora = ahora or datetime.now(timezone.utc)
+    cambio_cartelera = escribir_cartelera(armar_cartelera(cal, ahora.astimezone(ET).date()))
     ya = {p["game_id"] for p in leer_csv(CSV_PARTIDOS)}
     faltan = [gid for gid in ids_terminados_calendario(cal) if gid not in ya]
     log(f"Temporada {cal['leagueSchedule']['seasonYear']}: {len(faltan)} partidos terminados sin bajar")
@@ -326,7 +375,7 @@ def diario(pedir=pedir, log=print):
             log(f"  {gid}: sin boxscore todavia")
             continue
         boxscores.append(g)
-    return guardar(boxscores, log=log)
+    return guardar(boxscores, ahora=ahora, log=log) + int(cambio_cartelera)
 
 
 def backfill(temporada, log=print):

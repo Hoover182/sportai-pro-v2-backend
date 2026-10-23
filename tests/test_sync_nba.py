@@ -23,6 +23,17 @@ def _box(game_id):
         return json.load(f)["game"]
 
 
+AHORA = datetime(2026, 10, 23, 11, 0, tzinfo=timezone.utc)   # 07:00 ET
+
+
+def _juego_cal(gid, estado, fecha, hora_utc="23:00:00Z", local="BOS", visita="NYK"):
+    eq = lambda sigla: {"teamId": hash(sigla) % 1000, "teamCity": "Ciudad", "teamName": sigla,
+                        "teamTricode": sigla}
+    return {"gameId": gid, "gameStatus": estado, "gameDateEst": f"{fecha}T00:00:00Z",
+            "gameDateTimeUTC": f"{fecha}T{hora_utc}", "isNeutral": False,
+            "postponedStatus": "N", "homeTeam": eq(local), "awayTeam": eq(visita)}
+
+
 def _box_con_id(base, game_id, fecha="2025-10-21"):
     g = copy.deepcopy(base)
     g["gameId"] = game_id
@@ -90,6 +101,29 @@ class Calendario(unittest.TestCase):
                          ["0022600001", "0022600002", "0062600001"])
 
 
+class Cartelera(unittest.TestCase):
+    def test_hoy_y_dos_dias_en_fecha_et(self):
+        cal = {"leagueSchedule": {"seasonYear": "2026-27", "gameDates": [{"games": [
+            _juego_cal("0022600001", 3, "2026-10-22"),                       # ayer
+            _juego_cal("0022600010", 1, "2026-10-23", "23:30:00Z"),
+            _juego_cal("0022600009", 1, "2026-10-23", "23:00:00Z"),
+            _juego_cal("0012600090", 1, "2026-10-24"),                       # pretemporada
+            _juego_cal("0022600020", 1, "2026-10-25"),
+            _juego_cal("0022600030", 1, "2026-10-26"),                       # fuera de rango
+        ]}]}}
+        hoy = AHORA.astimezone(S.ET).date()
+        c = S.armar_cartelera(cal, hoy)
+        self.assertEqual((c["desde"], c["hasta"]), ("2026-10-23", "2026-10-25"))
+        self.assertEqual([p["game_id"] for p in c["partidos"]],
+                         ["0022600009", "0022600010", "0022600020"])
+        self.assertEqual(c["partidos"][0]["local"]["sigla"], "BOS")
+
+    def test_fecha_et_no_utc(self):
+        # 03:00 UTC del 24/10 sigue siendo 23/10 en Nueva York
+        ahora = datetime(2026, 10, 24, 3, 0, tzinfo=timezone.utc)
+        self.assertEqual(str(ahora.astimezone(S.ET).date()), "2026-10-23")
+
+
 class Recorrido(unittest.TestCase):
     def _cdn(self, existentes):
         pedidos = []
@@ -102,7 +136,9 @@ class Recorrido(unittest.TestCase):
 
     def test_temporada_completa(self):
         existentes = {f"00225{n:05d}" for n in range(1, 1231)}
-        existentes |= {"0052500101", "0052500102", "0052500201"}
+        # play-in real de 2025-26 (el primer recorrido se perdia 121 y 131)
+        existentes |= {"0052500101", "0052500111", "0052500121", "0052500131",
+                       "0052500201", "0052500211"}
         existentes |= {f"00425001{s}{j}" for s in range(8) for j in range(1, 5)}  # 8 barridas
         existentes |= {"0042500201", "0062500001"}
         pedir, pedidos = self._cdn(existentes)
@@ -141,7 +177,10 @@ class Diario(unittest.TestCase):
             "0022600002": _box_con_id(base, "0022600002", "2026-10-21"),
         }
         self.cal = {"leagueSchedule": {"seasonYear": "2026-27", "gameDates": [{"games": [
-            {"gameId": gid, "gameStatus": 3} for gid in self.boxes]}]}}
+            _juego_cal(gid, 3, "2026-10-21") for gid in self.boxes]}]}}
+        p = mock.patch.object(S, "CARTELERA", os.path.join(self.dir, "nba_cartelera.json"))
+        p.start()
+        self.addCleanup(p.stop)
 
     def _pedir(self, bloqueado=False):
         def pedir(ruta):
@@ -153,7 +192,8 @@ class Diario(unittest.TestCase):
 
     def test_baja_y_es_idempotente(self):
         log = lambda *_: None
-        self.assertEqual(S.diario(pedir=self._pedir(), log=log), 2)
+        # 2 partidos + la cartelera nueva
+        self.assertEqual(S.diario(pedir=self._pedir(), log=log, ahora=AHORA), 3)
         partidos = S.leer_csv(S.CSV_PARTIDOS)
         self.assertEqual([p["game_id"] for p in partidos], ["0022600001", "0022600002"])
         jug = S.leer_csv(S.ruta_jugadores("2026-27"))
@@ -161,16 +201,16 @@ class Diario(unittest.TestCase):
         with open(S.META, encoding="utf-8") as f:
             self.assertIn("datos_actualizados_en", json.load(f))
         # Segunda corrida: nada nuevo, nada reescrito.
-        self.assertEqual(S.diario(pedir=self._pedir(), log=log), 0)
+        self.assertEqual(S.diario(pedir=self._pedir(), log=log, ahora=AHORA), 0)
         self.assertEqual(len(S.leer_csv(S.CSV_PARTIDOS)), 2)
 
     def test_partido_nuevo_no_borra_los_viejos(self):
         log = lambda *_: None
-        S.diario(pedir=self._pedir(), log=log)
+        S.diario(pedir=self._pedir(), log=log, ahora=AHORA)
         self.boxes["0022600003"] = _box_con_id(self.boxes["0022600001"], "0022600003", "2026-10-22")
         self.cal["leagueSchedule"]["gameDates"][0]["games"].append(
-            {"gameId": "0022600003", "gameStatus": 3})
-        self.assertEqual(S.diario(pedir=self._pedir(), log=log), 1)
+            _juego_cal("0022600003", 3, "2026-10-22"))
+        self.assertEqual(S.diario(pedir=self._pedir(), log=log, ahora=AHORA), 1)
         self.assertEqual(len(S.leer_csv(S.CSV_PARTIDOS)), 3)
 
     def test_bloqueo_en_boxscores_es_error(self):

@@ -36,14 +36,18 @@ concurrency:
 env:
   # Que corre un push a la rama (ver arriba).
   PUSH_MODO: backfill
-  PUSH_TEMPORADAS: "2025-26"
+  PUSH_TEMPORADAS: "2023-24 2024-25 2025-26"
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
+      # Punta de la rama y no el commit que disparo la corrida: si otro sync
+      # commiteo datos mientras esta esperaba en la cola, se parte de esos.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - uses: actions/setup-python@v5
         with:
@@ -90,7 +94,7 @@ jobs:
         run: |
           git config user.name "sync-bot"
           git config user.email "sync-bot@users.noreply.github.com"
-          git add app/services/nba_partidos.csv app/services/nba_jugadores app/services/nba_datos_meta.json
+          git add -A -- 'app/services/nba_*'   # glob: en backfill no hay cartelera
           git commit -m "Sync NBA: partidos nuevos desde cdn.nba.com"
           # Otro push (p. ej. un merge de futbol) puede haber entrado mientras
           # tanto: rebase y reintento. Los archivos de NBA no los toca nadie mas.
