@@ -216,9 +216,17 @@ def recorrer_temporada(yy, ya_tengo, pedir=pedir, log=print):
         if gid in ya_tengo:
             return True
         g = pedir_boxscore(gid, pedir)
-        if g is not None:
+        if g is None:
+            return False
+        if g.get("gameStatus") == 3:
             nuevos.append(g)
-        return g is not None
+        else:
+            # Existe pero el CDN lo tiene "sin terminar" en una temporada
+            # pasada: boxscore roto del CDN (0022301104 ATL-DET 03/04/2024 se
+            # jugo segun stats.nba.com). Se saltea con aviso, no frena todo.
+            log(f"  AVISO {gid}: boxscore del CDN sin terminar "
+                f"(gameStatus={g.get('gameStatus')}), queda afuera")
+        return True
 
     # Fase regular: 1230 partidos; despues del 1230 se sigue hasta 20
     # ausencias seguidas (2019-20 tuvo ids hasta 1316 por la burbuja, con

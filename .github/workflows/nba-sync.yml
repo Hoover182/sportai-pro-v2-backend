@@ -36,7 +36,7 @@ concurrency:
 env:
   # Que corre un push a la rama (ver arriba).
   PUSH_MODO: backfill
-  PUSH_TEMPORADAS: "2023-24 2024-25 2025-26"
+  PUSH_TEMPORADAS: "2023-24 2024-25 2025-26"   # 2025-26: los 2 play-in que faltaban
 
 jobs:
   sync:

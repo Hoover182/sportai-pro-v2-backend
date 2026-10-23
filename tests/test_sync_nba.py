@@ -125,14 +125,28 @@ class Cartelera(unittest.TestCase):
 
 
 class Recorrido(unittest.TestCase):
-    def _cdn(self, existentes):
+    def _cdn(self, existentes, sin_terminar=()):
         pedidos = []
 
         def pedir(ruta):
             gid = ruta.rsplit("_", 1)[1].split(".")[0]
             pedidos.append(gid)
-            return {"game": {"gameId": gid}} if gid in existentes else None
+            if gid not in existentes:
+                return None
+            return {"game": {"gameId": gid, "gameStatus": 1 if gid in sin_terminar else 3}}
         return pedir, pedidos
+
+    def test_boxscore_roto_se_saltea_sin_cortar_la_temporada(self):
+        # caso real: 0022301104 figura "sin terminar" en el CDN
+        existentes = {f"00223{n:05d}" for n in range(1, 1231)}
+        pedir, pedidos = self._cdn(existentes, sin_terminar={"0022301104"})
+        avisos = []
+        nuevos = S.recorrer_temporada(23, set(), pedir=pedir, log=avisos.append)
+        ids = {g["gameId"] for g in nuevos}
+        self.assertNotIn("0022301104", ids)
+        self.assertEqual(len(ids), 1229)
+        self.assertIn("0022301105", pedidos)
+        self.assertTrue(any("0022301104" in a for a in avisos))
 
     def test_temporada_completa(self):
         existentes = {f"00225{n:05d}" for n in range(1, 1231)}
