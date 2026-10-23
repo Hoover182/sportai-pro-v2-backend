@@ -2,13 +2,14 @@ name: NBA probe - acceso a nba_api desde Actions
 
 # Fase 0 de NBA: una sola corrida para saber si stats.nba.com responde
 # desde un runner de GitHub (IP de nube). No escribe nada en el repo.
+# Segunda prueba (nba_probe_cdn.py): si el CDN alcanza para el historial.
 # workflow_dispatch solo aparece cuando el archivo esta en main; mientras
 # vive en la rama, se dispara con un push que toque este archivo.
 on:
   workflow_dispatch: {}
   push:
     branches: [feat/nba-base]
-    paths: [.github/workflows/nba-probe.yml]
+    paths: [.github/workflows/nba-probe.yml, scripts/nba_probe_cdn.py]
 
 permissions:
   contents: read
@@ -27,3 +28,6 @@ jobs:
       - run: pip install nba_api requests
 
       - run: python scripts/nba_probe.py
+        continue-on-error: true   # ya sabemos que stats.nba.com no responde
+
+      - run: python scripts/nba_probe_cdn.py
