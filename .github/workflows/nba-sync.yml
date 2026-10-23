@@ -35,7 +35,7 @@ concurrency:
 
 env:
   # Que corre un push a la rama (ver arriba).
-  PUSH_MODO: backfill
+  PUSH_MODO: diario
   PUSH_TEMPORADAS: "2025-26"
 
 jobs:
