@@ -1,0 +1,29 @@
+name: NBA probe - acceso a nba_api desde Actions
+
+# Fase 0 de NBA: una sola corrida para saber si stats.nba.com responde
+# desde un runner de GitHub (IP de nube). No escribe nada en el repo.
+# workflow_dispatch solo aparece cuando el archivo esta en main; mientras
+# vive en la rama, se dispara con un push que toque este archivo.
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [feat/nba-base]
+    paths: [.github/workflows/nba-probe.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install nba_api requests
+
+      - run: python scripts/nba_probe.py
