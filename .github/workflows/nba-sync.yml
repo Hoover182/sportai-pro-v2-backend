@@ -35,7 +35,7 @@ concurrency:
 
 env:
   # Que corre un push a la rama (ver arriba).
-  PUSH_MODO: diario
+  PUSH_MODO: backfill
   PUSH_TEMPORADAS: "2025-26"
 
 jobs:
@@ -49,25 +49,9 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install requests
-
-      # DIAGNOSTICO temporal: mismo pedido antes y despues de instalar nba_api.
-      - name: Diagnostico CDN
-        run: |
-          cat > /tmp/d.py <<'EOF'
-          import sys, requests, urllib3
-          sys.path.insert(0, "scripts")
-          import sync_nba as S
-          r = requests.get(f"{S.CDN}/staticData/scheduleLeagueV2.json", headers=S.HEADERS, timeout=30)
-          print("requests", requests.__version__, "urllib3", urllib3.__version__, "->", r.status_code)
-          EOF
-          python /tmp/d.py
-          pip freeze | sort > /tmp/antes.txt
-          pip install -q nba_api
-          pip freeze | sort > /tmp/despues.txt
-          python /tmp/d.py
-          diff /tmp/antes.txt /tmp/despues.txt || true
-          pip uninstall -y -q nba_api
+      # nba_api sin version fija: de ahi salen los headers del CDN (ver
+      # sync_nba.py), y hay que tomar sus actualizaciones.
+      - run: pip install requests nba_api
 
       - name: Bajar partidos nuevos
         id: sync
