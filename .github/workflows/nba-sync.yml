@@ -1,0 +1,100 @@
+name: NBA sync - cdn.nba.com -> nba_partidos.csv
+
+# Baja boxscores de cdn.nba.com y commitea directo los CSV de NBA en la
+# rama donde corre (sin PR intermedio: no hay otro repo de por medio como
+# en futbol). stats.nba.com no responde desde Actions; el CDN si (prueba
+# del 23/10/2026). Ver scripts/sync_nba.py.
+
+on:
+  schedule:
+    # 11:00 UTC: los ultimos partidos de la costa oeste terminan ~07:00 UTC,
+    # y queda una hora antes del sync de futbol (12:00 UTC).
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "diario (temporada en curso) o backfill (temporadas pasadas)"
+        type: choice
+        options: [diario, backfill]
+        default: diario
+      temporadas:
+        description: "solo backfill: temporadas separadas por espacio, ej. 2024-25 2025-26"
+        default: ""
+  # Temporal, mientras el workflow vive en feat/nba-base (workflow_dispatch
+  # solo aparece cuando el archivo esta en main). Se saca antes del merge.
+  push:
+    branches: [feat/nba-base]
+    paths: [.github/workflows/nba-sync.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-sync
+  cancel-in-progress: false
+
+env:
+  # Que corre un push a la rama (ver arriba).
+  PUSH_MODO: backfill
+  PUSH_TEMPORADAS: "2025-26"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      - name: Bajar partidos nuevos
+        id: sync
+        env:
+          MODO: ${{ github.event_name == 'push' && env.PUSH_MODO || inputs.modo || 'diario' }}
+          TEMPORADAS: ${{ github.event_name == 'push' && env.PUSH_TEMPORADAS || inputs.temporadas }}
+        run: |
+          set +e
+          hubo=0
+          if [ "$MODO" = "backfill" ]; then
+            [ -n "$TEMPORADAS" ] || { echo "::error::backfill sin temporadas"; exit 1; }
+            for t in $TEMPORADAS; do
+              python scripts/sync_nba.py backfill --temporada "$t"
+              code=$?
+              [ "$code" -eq 2 ] && hubo=1
+              if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+                echo "::error::sync_nba.py backfill $t fallo con codigo $code"
+                exit "$code"
+              fi
+            done
+          else
+            python scripts/sync_nba.py diario
+            code=$?
+            [ "$code" -eq 2 ] && hubo=1
+            # 0 = sin cambios, 2 = hubo cambios. Otro codigo = error y la
+            # corrida TIENE que quedar en rojo (ver sync-check.yml, 20/09).
+            if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+              echo "::error::sync_nba.py diario fallo con codigo $code"
+              exit "$code"
+            fi
+          fi
+          echo "hubo_cambios=$hubo" >> "$GITHUB_OUTPUT"
+
+      - name: Commitear y pushear
+        if: steps.sync.outputs.hubo_cambios == '1'
+        run: |
+          git config user.name "sync-bot"
+          git config user.email "sync-bot@users.noreply.github.com"
+          git add app/services/nba_partidos.csv app/services/nba_jugadores app/services/nba_datos_meta.json
+          git commit -m "Sync NBA: partidos nuevos desde cdn.nba.com"
+          # Otro push (p. ej. un merge de futbol) puede haber entrado mientras
+          # tanto: rebase y reintento. Los archivos de NBA no los toca nadie mas.
+          for i in 1 2 3; do
+            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
+            sleep 10
+          done
+          echo "::error::No se pudo pushear el sync de NBA"
+          exit 1
