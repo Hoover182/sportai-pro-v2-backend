@@ -25,6 +25,12 @@ Variantes para el backtest (apagadas por defecto, el backtest decide):
   orden de las filas, no local/visitante).
 - factor_fatiga: multiplica la media de un equipo que jugo el dia anterior
   (back-to-back). El script original de jugador usaba 0.85 sin validar.
+- ventana (24/10, PREREGISTRO_ventana.md): de que partidos salen los
+  promedios de puntos anotados/permitidos. "ultimos10" (original),
+  "temporada" (temporada en curso, completada hasta ventana_m con el final
+  de la anterior) o "decaimiento" (todos los previos, el peso se reduce a
+  la mitad cada ventana_h partidos). El desvio siempre sale de los
+  ultimos 10.
 """
 from dataclasses import dataclass
 from datetime import date, timedelta
@@ -45,6 +51,9 @@ SEMILLA = 2026
 class Params:
     ventaja_local: float = 0.0   # puntos de diferencia a favor del local (mitad y mitad)
     factor_fatiga: float = 1.0   # 1.0 = sin ajuste
+    ventana: str = "ultimos10"   # "ultimos10" | "temporada" | "decaimiento"
+    ventana_m: int = 10          # "temporada": minimo de partidos (relleno con la anterior)
+    ventana_h: float = 20.0      # "decaimiento": vida media en partidos
     sims: int = SIMS
     semilla: int = SEMILLA
 
@@ -79,18 +88,45 @@ def ultimos_partidos(largo, team_id, antes_de, n=N_ULTIMOS):
     return u.iloc[::-1].head(n)
 
 
-def estadisticas_equipo(largo, team_id, antes_de):
+def medias_ventana(largo, team_id, antes_de, temporada, params):
+    """(puntos, puntos_permitidos) segun params.ventana. None si no hay
+    partidos previos."""
+    previos = largo[(largo["team_id"] == team_id) & (largo["fecha"] < antes_de)]
+    if previos.empty:
+        return None
+    if params.ventana == "temporada":
+        actual = previos[previos["temporada"] == temporada]
+        faltan = max(params.ventana_m - len(actual), 0)
+        anteriores = previos[previos["temporada"] < temporada]
+        u = pd.concat([anteriores.tail(faltan) if faltan else anteriores.iloc[:0], actual])
+        if u.empty:
+            return None
+        return u["pts"].mean(), u["pts_rival"].mean()
+    if params.ventana == "decaimiento":
+        # i = 0 para el partido mas reciente
+        i = np.arange(len(previos))[::-1]
+        w = 0.5 ** (i / params.ventana_h)
+        return (float(np.average(previos["pts"], weights=w)),
+                float(np.average(previos["pts_rival"], weights=w)))
+    raise ValueError(f"ventana desconocida: {params.ventana}")
+
+
+def estadisticas_equipo(largo, team_id, antes_de, temporada=None, params=Params()):
     """Equivalente a estadisticas_equipo_ultimos10. puntos_permitidos sale
     del marcador del rival (el original lo aproximaba con PTS - PLUS_MINUS,
-    que da lo mismo)."""
+    que da lo mismo). Con params.ventana distinta de "ultimos10" cambian
+    solo los promedios; el desvio y "partidos" siguen siendo los ultimos 10."""
     u = ultimos_partidos(largo, team_id, antes_de)
     if u.empty:
         return None
+    puntos, permitidos = u["pts"].mean(), u["pts_rival"].mean()
+    if params.ventana != "ultimos10":
+        puntos, permitidos = medias_ventana(largo, team_id, antes_de, temporada, params)
     return {
         "partidos": u,
-        "puntos": u["pts"].mean(),
+        "puntos": puntos,
         "std_puntos": normalizar_std(u["pts"].std(), STD_MIN),
-        "puntos_permitidos": u["pts_rival"].mean(),
+        "puntos_permitidos": permitidos,
     }
 
 
@@ -136,8 +172,8 @@ def proyectar_cuartos(puntos_a, puntos_b):
 def analizar_partido(largo, local_id, visitante_id, fecha, temporada, params=Params()):
     """Proyeccion de un partido. None si algun equipo no tiene partidos
     previos en el historial."""
-    stats_l = estadisticas_equipo(largo, local_id, fecha)
-    stats_v = estadisticas_equipo(largo, visitante_id, fecha)
+    stats_l = estadisticas_equipo(largo, local_id, fecha, temporada, params)
+    stats_v = estadisticas_equipo(largo, visitante_id, fecha, temporada, params)
     if stats_l is None or stats_v is None:
         return None
 
