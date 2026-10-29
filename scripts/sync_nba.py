@@ -138,7 +138,11 @@ def minutos(iso):
 
 
 def _periodos(equipo):
-    reg = [p["score"] for p in equipo["periods"] if p["periodType"] == "REGULAR"]
+    # El CDN a veces agrega un "quinto cuarto" REGULAR fantasma con 0 puntos
+    # (0022200429 SAC-DET 16/12/2022, sin prorroga). Se descarta; si tuviera
+    # puntos no se toca y el chequeo de 4 cuartos frena el sync.
+    reg = [p["score"] for p in equipo["periods"] if p["periodType"] == "REGULAR"
+           and not (p["period"] > 4 and p["score"] == 0)]
     ot = [p["score"] for p in equipo["periods"] if p["periodType"] == "OVERTIME"]
     return reg, ot
 
@@ -164,7 +168,8 @@ def parsear_boxscore(g):
     for lado, eq in (("local", loc), ("visitante", vis)):
         reg, ot = _periodos(eq)
         if len(reg) != 4:
-            raise ValueError(f"{gid}: {lado} tiene {len(reg)} cuartos regulares")
+            crudo = [(p["period"], p["periodType"], p["score"]) for p in eq["periods"]]
+            raise ValueError(f"{gid}: {lado} tiene {len(reg)} cuartos regulares; periodos del CDN: {crudo}")
         if sum(reg) + sum(ot) != eq["score"]:
             raise ValueError(f"{gid}: cuartos de {lado} suman {sum(reg) + sum(ot)}, marcador {eq['score']}")
         for i, pts in enumerate(reg, start=1):

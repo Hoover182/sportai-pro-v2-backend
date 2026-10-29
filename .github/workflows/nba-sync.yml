@@ -67,11 +67,15 @@ jobs:
           hubo=0
           if [ "$MODO" = "backfill" ]; then
             [ -n "$TEMPORADAS" ] || { echo "::error::backfill sin temporadas"; exit 1; }
+            # Cada temporada se commitea y pushea apenas termina: si la
+            # siguiente falla, la anterior no se pierde (26/10: se perdio
+            # 2021-22 entera porque 2022-23 freno y el commit era al final).
             for t in $TEMPORADAS; do
               python scripts/sync_nba.py backfill --temporada "$t"
               code=$?
-              [ "$code" -eq 2 ] && hubo=1
-              if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+              if [ "$code" -eq 2 ]; then
+                bash scripts/commit_sync_nba.sh "Sync NBA: backfill $t desde cdn.nba.com" || exit 1
+              elif [ "$code" -ne 0 ]; then
                 echo "::error::sync_nba.py backfill $t fallo con codigo $code"
                 exit "$code"
               fi
@@ -92,15 +96,4 @@ jobs:
       - name: Commitear y pushear
         if: steps.sync.outputs.hubo_cambios == '1'
         run: |
-          git config user.name "sync-bot"
-          git config user.email "sync-bot@users.noreply.github.com"
-          git add -A -- 'app/services/nba_*'   # glob: en backfill no hay cartelera
-          git commit -m "Sync NBA: partidos nuevos desde cdn.nba.com"
-          # Otro push (p. ej. un merge de futbol) puede haber entrado mientras
-          # tanto: rebase y reintento. Los archivos de NBA no los toca nadie mas.
-          for i in 1 2 3; do
-            git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0
-            sleep 10
-          done
-          echo "::error::No se pudo pushear el sync de NBA"
-          exit 1
+          bash scripts/commit_sync_nba.sh "Sync NBA: partidos nuevos desde cdn.nba.com"

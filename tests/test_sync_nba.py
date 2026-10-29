@@ -71,6 +71,22 @@ class Parseo(unittest.TestCase):
         with self.assertRaises(ValueError):
             S.parsear_boxscore(g)
 
+    def test_quinto_cuarto_fantasma_en_cero_se_descarta(self):
+        # 0022200429 SAC-DET 16/12/2022: el CDN trae period 5 REGULAR con 0.
+        g = _box("0042500405")
+        for eq in (g["homeTeam"], g["awayTeam"]):
+            eq["periods"].append({"period": 5, "periodType": "REGULAR", "score": 0})
+        fila, _ = S.parsear_boxscore(g)
+        self.assertEqual(fila["n_prorrogas"], 0)
+        self.assertEqual((fila["puntos_local"], fila["puntos_visitante"]), (90, 94))
+
+    def test_quinto_cuarto_con_puntos_frena(self):
+        g = _box("0042500405")
+        g["homeTeam"]["periods"].append({"period": 5, "periodType": "REGULAR", "score": 3})
+        g["homeTeam"]["score"] += 3
+        with self.assertRaises(ValueError):
+            S.parsear_boxscore(g)
+
     def test_partido_sin_terminar_frena(self):
         g = _box("0042500405")
         g["gameStatus"] = 2
