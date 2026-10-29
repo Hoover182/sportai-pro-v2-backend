@@ -124,3 +124,23 @@ semana no son independientes), percentiles 5 y 95, semilla 2026.
 La recalibración continua según los resultados reales queda para después de
 este backtest, por decisión del usuario: si se mezcla ahora, no se distingue
 si el modelo es bueno o si los ajustes tapan el problema.
+
+## Enmienda 1 (29/10/2026, antes de ver cualquier resultado)
+
+Al armar el harness apareció que el Elo de producción era una foto fija del
+24/08 que nunca se actualizaba, y que `ligas_auto_detectadas.json` no se
+sincronizaba. El usuario decidió arreglar los dos bugs en producción
+(PR #98, merge 1dafd64) **antes** de evaluar, para que el backtest mida el
+modelo que se va a lanzar.
+
+- **Modelo evaluado:** `main` en a821c8f (incluye #98) en lugar de 86baf3f.
+- **Elo:** el de cada fecha sale de `elo_ranking.calcular_elo`, la misma
+  función que usa producción desde el arreglo, redondeado a 2 decimales como
+  en producción. Reemplaza al `elo_historico.csv` de analista-futbol.
+- **Ligas válidas:** las de la lista sincronizada (56 ligas auto-detectadas).
+- Se mantiene **sin cambios** la fórmula del rating inicial (1500 para ligas
+  sin tabla). Usar las tablas de nivel del 16/10 queda como cambio de modelo
+  aparte, con su propio pre-registro.
+- Ya había una corrida completa del tramo retrospectivo con el Elo viejo. Se
+  descartó **sin analizarla**: no se calculó ninguna métrica sobre ella.
+- Todo lo demás (tramos, criterios, referencias, bootstrap) no cambia.

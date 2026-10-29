@@ -3,12 +3,14 @@ Criterios y reglas en PREREGISTRO.md (congelado antes de escribir esto).
 
 Uso desde backend/:
   python scripts/backtest_futbol/harness.py --desde 2026-01-01 --hasta 2026-10-28 \
-      --elo ruta/elo_historico.csv --salida predicciones_retro.csv [--procesos 6] [--limite N]
+      --salida predicciones_retro.csv [--procesos 6] [--limite N]
 
 Para cada partido, "ahora" = inicio - 1 hora:
 - datos: solo filas con fecha < ahora, mas el partido como NS sin goles/stats;
 - hora congelada en ahora (pd.Timestamp.now, datetime.now, date.today);
-- Elo: ultimo rating de cada equipo con fecha < ahora (elo_historico.csv);
+- Elo: ultimo rating de cada equipo con fecha < ahora, calculado con la misma
+  funcion que produccion (elo_ranking.calcular_elo, desde el arreglo del 29/10)
+  y redondeado a 2 decimales como el snapshot de produccion;
 - caches del modelo vaciados antes de cada partido.
 No modifica el codigo del modelo: reemplaza nombres dentro de sus modulos.
 """
@@ -101,17 +103,22 @@ class EloPuntual:
         i = bisect.bisect_left(fechas, _AHORA.value) - 1  # ultimo con fecha < ahora
         if i < 0:
             return defecto
-        return {"rating": ratings[i], "n_partidos": ns[i]}
+        return {"rating": round(ratings[i], 2), "n_partidos": ns[i]}
 
 
-def indexar_elo(ruta):
-    e = pd.read_csv(ruta, encoding="utf-8-sig")
-    e["t"] = pd.to_datetime(e["fecha"], utc=True, errors="coerce")
-    e = e.dropna(subset=["t"]).sort_values(["equipo", "t"], kind="stable")
+def indexar_elo(validas):
+    """Historico de Elo con la funcion de produccion. El Elo es secuencial:
+    el rating antes de una fecha depende solo de los partidos anteriores, asi
+    que calcularlo una vez sobre todo el CSV y cortar por fecha da lo mismo
+    que recalcularlo con los datos recortados."""
+    import elo_ranking as E
+    _, historico = E.calcular_elo(validas, con_historico=True)
     idx = {}
-    for eq, g in e.groupby("equipo", sort=False):
-        idx[eq] = (g["t"].astype("int64").tolist(), g["rating"].astype(float).tolist(),
-                   g["n_partidos"].astype(int).tolist())
+    for eq, fecha, rating, n in historico:
+        f, r, k = idx.setdefault(eq, ([], [], []))
+        f.append(pd.Timestamp(fecha).tz_convert("UTC").value)
+        r.append(rating)
+        k.append(n)
     return idx
 
 
@@ -119,7 +126,7 @@ def indexar_elo(ruta):
 _G = {}
 
 
-def _iniciar(elo_ruta):
+def _iniciar():
     sys.path.insert(0, SERVICES)
     cwd = os.getcwd()
     os.chdir(SERVICES)
@@ -138,7 +145,7 @@ def _iniciar(elo_ruta):
     MP.date = _Date
     FS.cargar_elo_ratings = lambda: EloPuntual(_G["elo"])
     FS.print = lambda *a, **k: None  # avisos de nombres: no hacen falta
-    _G.update(FS=FS, FM=FM, MP=MP, crudo=crudo, validas=validas, elo=indexar_elo(elo_ruta))
+    _G.update(FS=FS, FM=FM, MP=MP, crudo=crudo, validas=validas, elo=indexar_elo(validas))
 
 
 def _limpiar_caches():
@@ -197,13 +204,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--desde", required=True)
     ap.add_argument("--hasta", required=True)
-    ap.add_argument("--elo", required=True)
     ap.add_argument("--salida", required=True)
     ap.add_argument("--procesos", type=int, default=max(os.cpu_count() - 2, 1))
     ap.add_argument("--limite", type=int, default=0)
     a = ap.parse_args()
 
-    _iniciar(a.elo)
+    _iniciar()
     v = _G["validas"]
     t = v["fecha"].dt.tz_convert("UTC")
     desde = pd.Timestamp(a.desde, tz="UTC")
@@ -216,7 +222,7 @@ def main():
 
     t0 = time.time()
     filas = []
-    with Pool(a.procesos, initializer=_iniciar, initargs=(a.elo,)) as pool:
+    with Pool(a.procesos, initializer=_iniciar) as pool:
         for i, r in enumerate(pool.imap_unordered(correr_partido, ids, chunksize=8), 1):
             filas.append(r)
             if i % 250 == 0 or i == len(ids):
