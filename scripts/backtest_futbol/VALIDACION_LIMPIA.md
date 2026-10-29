@@ -12,7 +12,7 @@ corre con ESE código, cambiando solo los datos:
 
 ```bash
 git fetch origin
-git worktree add ../bt-limpia COMMIT_DE_ESTE_ARCHIVO   # codigo congelado
+git worktree add ../bt-limpia 824dfff   # codigo congelado (enmienda 1)
 cd ../bt-limpia
 # datos frescos: solo el CSV del backend en main (el Elo sale de ese CSV)
 git show origin/main:app/services/futbol_partidos.csv > app/services/futbol_partidos.csv
