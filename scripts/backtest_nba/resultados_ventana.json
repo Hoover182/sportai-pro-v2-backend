@@ -1,0 +1,285 @@
+{
+  "referencia": {
+    "ventaja_local": 1.5,
+    "ventana": "ultimos10"
+  },
+  "ajuste_2023_25": {
+    "referencia": {
+      "brier": 0.2227,
+      "acierto": 0.6427,
+      "err_total": 14.8281,
+      "err_margen": 11.5138,
+      "n": 2639
+    },
+    "V1_5": {
+      "brier": 0.2227,
+      "acierto": 0.6449,
+      "err_total": 15.195,
+      "err_margen": 11.4971,
+      "n": 2639
+    },
+    "V1_10": {
+      "brier": 0.2222,
+      "acierto": 0.6442,
+      "err_total": 15.1845,
+      "err_margen": 11.4792,
+      "n": 2639
+    },
+    "V1_15": {
+      "brier": 0.2223,
+      "acierto": 0.648,
+      "err_total": 15.1565,
+      "err_margen": 11.4687,
+      "n": 2639
+    },
+    "V1_20": {
+      "brier": 0.2227,
+      "acierto": 0.6506,
+      "err_total": 15.2054,
+      "err_margen": 11.4843,
+      "n": 2639
+    },
+    "V2_80": {
+      "brier": 0.2282,
+      "acierto": 0.6423,
+      "err_total": 15.3849,
+      "err_margen": 11.7355,
+      "n": 2639
+    },
+    "V2_40": {
+      "brier": 0.2254,
+      "acierto": 0.6495,
+      "err_total": 15.2492,
+      "err_margen": 11.6081,
+      "n": 2639
+    },
+    "V2_20": {
+      "brier": 0.223,
+      "acierto": 0.648,
+      "err_total": 15.0827,
+      "err_margen": 11.5,
+      "n": 2639
+    },
+    "V2_10": {
+      "brier": 0.2218,
+      "acierto": 0.6502,
+      "err_total": 14.9176,
+      "err_margen": 11.4438,
+      "n": 2639
+    }
+  },
+  "elegido": "V2_10",
+  "evaluacion": {
+    "2025-26": {
+      "referencia": {
+        "brier": 0.2169,
+        "acierto": 0.6589,
+        "err_total": 15.3851,
+        "err_margen": 11.7919,
+        "n": 1322
+      },
+      "variante": {
+        "brier": 0.2179,
+        "acierto": 0.6702,
+        "err_total": 15.2609,
+        "err_margen": 11.8289,
+        "n": 1322
+      },
+      "mejora_brier_ic90": [
+        -0.00106,
+        -0.00284,
+        0.00072
+      ],
+      "cumple": false,
+      "salteados": 0
+    },
+    "2022-23": {
+      "referencia": {
+        "brier": 0.2376,
+        "acierto": 0.5939,
+        "err_total": 14.9348,
+        "err_margen": 10.6446,
+        "n": 1320
+      },
+      "variante": {
+        "brier": 0.2348,
+        "acierto": 0.6068,
+        "err_total": 14.8427,
+        "err_margen": 10.5237,
+        "n": 1320
+      },
+      "mejora_brier_ic90": [
+        0.00274,
+        0.00095,
+        0.00443
+      ],
+      "cumple": "True",
+      "salteados": 0
+    }
+  },
+  "entra": false,
+  "criterio_1": {
+    "2025-26": {
+      "modelo": "referencia",
+      "metricas": {
+        "brier": 0.2169,
+        "acierto": 0.6589,
+        "err_total": 15.3851,
+        "err_margen": 11.7919,
+        "n": 1322
+      },
+      "bases": {
+        "tasa_local_previa": 0.546,
+        "brier_prob_fija": 0.247,
+        "acierto_mejor_record": 0.6664
+      },
+      "pasa": false
+    },
+    "2022-23": {
+      "modelo": "referencia",
+      "metricas": {
+        "brier": 0.2376,
+        "acierto": 0.5939,
+        "err_total": 14.9348,
+        "err_margen": 10.6446,
+        "n": 1320
+      },
+      "bases": {
+        "tasa_local_previa": 0.548,
+        "brier_prob_fija": 0.2445,
+        "acierto_mejor_record": 0.5894
+      },
+      "pasa": true
+    }
+  },
+  "informativo_todos_en_evaluacion": {
+    "V1_5": {
+      "2025-26": {
+        "brier": 0.2185,
+        "acierto": 0.6725,
+        "err_total": 15.6748,
+        "err_margen": 11.9167,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.2367,
+        "acierto": 0.5977,
+        "err_total": 15.0989,
+        "err_margen": 10.6152,
+        "n": 1320
+      }
+    },
+    "V1_10": {
+      "2025-26": {
+        "brier": 0.2177,
+        "acierto": 0.6778,
+        "err_total": 15.596,
+        "err_margen": 11.8651,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.2364,
+        "acierto": 0.6053,
+        "err_total": 15.0513,
+        "err_margen": 10.5987,
+        "n": 1320
+      }
+    },
+    "V1_15": {
+      "2025-26": {
+        "brier": 0.2187,
+        "acierto": 0.6755,
+        "err_total": 15.581,
+        "err_margen": 11.9117,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.2364,
+        "acierto": 0.6015,
+        "err_total": 15.0312,
+        "err_margen": 10.5979,
+        "n": 1320
+      }
+    },
+    "V1_20": {
+      "2025-26": {
+        "brier": 0.2192,
+        "acierto": 0.6762,
+        "err_total": 15.5555,
+        "err_margen": 11.9168,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.236,
+        "acierto": 0.6061,
+        "err_total": 15.0424,
+        "err_margen": 10.5664,
+        "n": 1320
+      }
+    },
+    "V2_80": {
+      "2025-26": {
+        "brier": 0.2277,
+        "acierto": 0.6407,
+        "err_total": 15.5183,
+        "err_margen": 12.2792,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.2349,
+        "acierto": 0.6106,
+        "err_total": 15.3287,
+        "err_margen": 10.5196,
+        "n": 1320
+      }
+    },
+    "V2_40": {
+      "2025-26": {
+        "brier": 0.2234,
+        "acierto": 0.6679,
+        "err_total": 15.4177,
+        "err_margen": 12.0791,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.2347,
+        "acierto": 0.6136,
+        "err_total": 15.1661,
+        "err_margen": 10.509,
+        "n": 1320
+      }
+    },
+    "V2_20": {
+      "2025-26": {
+        "brier": 0.22,
+        "acierto": 0.6717,
+        "err_total": 15.3399,
+        "err_margen": 11.9254,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.2345,
+        "acierto": 0.6083,
+        "err_total": 14.9723,
+        "err_margen": 10.5037,
+        "n": 1320
+      }
+    },
+    "V2_10": {
+      "2025-26": {
+        "brier": 0.2179,
+        "acierto": 0.6702,
+        "err_total": 15.2609,
+        "err_margen": 11.8289,
+        "n": 1322
+      },
+      "2022-23": {
+        "brier": 0.2348,
+        "acierto": 0.6068,
+        "err_total": 14.8427,
+        "err_margen": 10.5237,
+        "n": 1320
+      }
+    }
+  }
+}
