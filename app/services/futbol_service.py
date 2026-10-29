@@ -69,7 +69,7 @@ from football_model import (
 )
 from simulator import simular_partido_futbol, probabilidad_linea_personalizada, tarjetas_esperadas_por_parejez, _muestrear_conteo
 from value_bet import edge_ratio
-from elo_ranking import cargar_elo_ratings, peso_elo_confianza
+from elo_ranking import cargar_elo_ratings, peso_elo_confianza, asegurar_elo
 import numpy as np
 
 LIGAS_IDS = {
@@ -465,6 +465,14 @@ def cargar_df():
         df_crudo = df
         df = filtrar_ligas_validas(df_crudo)
         _registrar_fuente_h2h(df, df_crudo)
+        # Elo recalculado desde el CSV cuando cambia el archivo (ver
+        # elo_ranking.asegurar_elo); antes era una foto fija del 24/08.
+        try:
+            st = os.stat(CSV_PATH)
+            clave_csv = (st.st_mtime_ns, st.st_size)
+        except OSError:
+            clave_csv = (len(df_crudo), str(df_crudo["fecha"].max()))
+        asegurar_elo(df, clave_csv)
     return df
 
 
@@ -810,8 +818,7 @@ def _cargar_cuotas_cache():
     """Cuotas reales de Betano/1xBet por fixture_id, armadas por
     actualizar_cuotas_cache() en el cron (api_to_csv.py) -- nunca se
     llama a la API de cuotas en vivo desde un request de usuario. Cache
-    en memoria sin TTL, mismo criterio que _cache_ranking_fifa/
-    _cache_elo_ratings: el archivo solo cambia una vez al dia. Se usa
+    en memoria sin TTL, mismo criterio que _cache_ranking_fifa: el archivo solo cambia una vez al dia. Se usa
     SOLO como filtro de disponibilidad real en calcular_top3() (Regla 3),
     no para ordenar -- el criterio de orden sigue siendo probabilidad."""
     global _cache_cuotas

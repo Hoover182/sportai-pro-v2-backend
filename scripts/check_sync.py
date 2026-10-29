@@ -44,6 +44,12 @@ BACKEND_TEAMIDS_PATH = "app/services/cache_team_ids.json"
 
 ANALISTA_FUTBOL_CUOTAS_URL = "https://raw.githubusercontent.com/Hoover182/analista-futbol/main/cuotas_cache.json"
 BACKEND_CUOTAS_PATH = "app/services/cuotas_cache.json"
+# Ligas que el cron detecta solo (id -> nombre). Decide que ligas ve el
+# modelo (filtrar_ligas_validas). Hasta el 29/10/2026 no se sincronizaba:
+# el backend quedo con la lista del 26/08 (19 ligas) y analista tenia 56.
+# Se reemplaza entero, igual que cuotas: analista es la fuente.
+ANALISTA_FUTBOL_LIGAS_URL = "https://raw.githubusercontent.com/Hoover182/analista-futbol/main/ligas_auto_detectadas.json"
+BACKEND_LIGAS_PATH = "app/services/ligas_auto_detectadas.json"
 
 # Mismo listado de nombres que LIGAS en api_to_csv.py -- cualquier liga
 # en los datos nuevos que no este aca se marca para revisar (o es una
@@ -109,6 +115,19 @@ def descargar_cuotas_cache():
     resp = requests.get(ANALISTA_FUTBOL_CUOTAS_URL, timeout=30)
     resp.raise_for_status()
     return resp.json()
+
+
+def descargar_ligas_auto():
+    resp = requests.get(ANALISTA_FUTBOL_LIGAS_URL, timeout=30)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def cargar_ligas_auto_backend():
+    if not os.path.exists(BACKEND_LIGAS_PATH):
+        return {}
+    with open(BACKEND_LIGAS_PATH, encoding="utf-8") as f:
+        return json.load(f)
 
 
 def cargar_cuotas_cache_backend():
@@ -189,7 +208,8 @@ def chequear_encoding_roto(df_nuevo):
 
 def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
                    dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
-                   id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo, columnas_agregadas=None):
+                   id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo, columnas_agregadas=None,
+                   ligas_auto_actual=None, ligas_auto_nuevo=None):
     lineas = []
     alertas = []
 
@@ -269,6 +289,21 @@ def armar_reporte(nuevas, actualizadas, ligas_desconocidas, ligas_ambiguas,
         lineas.append(f"- Fixtures con cuota ahora: **{len(cuotas_nuevo)}**")
         lineas.append("")
 
+    if ligas_auto_nuevo is not None and ligas_auto_actual != ligas_auto_nuevo:
+        actual, nuevo = ligas_auto_actual or {}, ligas_auto_nuevo
+        agregadas = sorted(nuevo[k] for k in set(nuevo) - set(actual))
+        quitadas = sorted(actual[k] for k in set(actual) - set(nuevo))
+        renombradas = sorted(f"{actual[k]} -> {nuevo[k]}" for k in set(actual) & set(nuevo) if actual[k] != nuevo[k])
+        lineas.append("## Ligas auto-detectadas (ligas_auto_detectadas.json)")
+        lineas.append(f"- Antes: **{len(actual)}**, ahora: **{len(nuevo)}**")
+        if agregadas:
+            lineas.append(f"- Agregadas ({len(agregadas)}): {', '.join(agregadas)}")
+        if quitadas:
+            lineas.append(f"- ⚠️ Quitadas ({len(quitadas)}): {', '.join(quitadas)}")
+        if renombradas:
+            lineas.append(f"- ⚠️ Renombradas: {', '.join(renombradas)}")
+        lineas.append("")
+
     lineas.append("---")
     lineas.append(
         "_Chequeos automaticos: pertenencia a la lista de ~45 ligas conocidas, similitud con "
@@ -307,6 +342,7 @@ def main():
     parser.add_argument("--write-csv", metavar="RUTA", help="Escribir el CSV combinado en esta ruta")
     parser.add_argument("--write-teamids", metavar="RUTA", help="Escribir el cache de ids combinado en esta ruta")
     parser.add_argument("--write-cuotas", metavar="RUTA", help="Escribir el cache de cuotas nuevo en esta ruta")
+    parser.add_argument("--write-ligas", metavar="RUTA", help="Escribir ligas_auto_detectadas.json nuevo en esta ruta")
     parser.add_argument("--summary-out", metavar="RUTA", help="Escribir el resumen en este archivo")
     args = parser.parse_args()
 
@@ -324,12 +360,19 @@ def main():
     cuotas_nuevo = descargar_cuotas_cache()
     cuotas_actual = cargar_cuotas_cache_backend()
 
+    print("Descargando ligas_auto_detectadas.json de analista-futbol...", file=sys.stderr)
+    ligas_nuevo = descargar_ligas_auto()
+    ligas_actual = cargar_ligas_auto_backend()
+
     hay_cambios_csv = not nuevas.empty or bool(actualizadas)
     hay_cambios_teamids = bool(id_nuevos) or bool(id_cambiados)
     hay_cambios_cuotas = cuotas_nuevo != cuotas_actual
 
-    if not hay_cambios_csv and not hay_cambios_teamids and not hay_cambios_cuotas:
-        print("Sin cambios. futbol_partidos.csv, cache_team_ids.json y cuotas_cache.json del backend ya estan al dia.")
+    hay_cambios_ligas = ligas_nuevo != ligas_actual
+
+    if not (hay_cambios_csv or hay_cambios_teamids or hay_cambios_cuotas or hay_cambios_ligas):
+        print("Sin cambios. futbol_partidos.csv, cache_team_ids.json, cuotas_cache.json y "
+              "ligas_auto_detectadas.json del backend ya estan al dia.")
         sys.exit(0)
 
     ligas_desconocidas = chequear_ligas_desconocidas(df_nuevo)
@@ -343,6 +386,7 @@ def main():
         dup_fixture_id, dup_partido, fechas_raras, encoding_roto,
         id_nuevos, id_cambiados, cuotas_actual, cuotas_nuevo,
         columnas_agregadas=columnas_nuevas(df_nuevo, df_actual),
+        ligas_auto_actual=ligas_actual, ligas_auto_nuevo=ligas_nuevo,
     )
     print(reporte)
 
@@ -362,6 +406,10 @@ def main():
     if args.write_cuotas and hay_cambios_cuotas:
         with open(args.write_cuotas, "w", encoding="utf-8") as f:
             json.dump(cuotas_nuevo, f, ensure_ascii=False, indent=2)
+
+    if args.write_ligas and hay_cambios_ligas:
+        with open(args.write_ligas, "w", encoding="utf-8") as f:
+            json.dump(ligas_nuevo, f, ensure_ascii=False, indent=2)
 
     sys.exit(2)
 

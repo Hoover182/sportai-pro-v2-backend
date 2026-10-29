@@ -70,7 +70,24 @@ class Veredicto(unittest.TestCase):
 
     def test_json_que_no_es_del_sync_bloquea(self):
         # la lista es exacta: un .json cualquiera no alcanza
-        self.assertManual(self.evaluar(base(), archivos=["app/services/ligas_auto_detectadas.json"]), "no son datos del sync")
+        self.assertManual(self.evaluar(base(), archivos=["app/services/pais_equipos.json"]), "no son datos del sync")
+
+    # --- ligas auto-detectadas (se sincronizan desde el 29/10/2026) ---
+    def evaluar_ligas(self, antes, despues):
+        return V.evaluar(base(), base(), {"Chico": 1}, {"Chico": 1}, {"1": {}}, {"1": {}}, META_AYER, AHORA,
+                         humo=HUMO_OK, archivos_cambiados=DATOS + ["app/services/ligas_auto_detectadas.json"],
+                         ligas_auto_antes=antes, ligas_auto_despues=despues)
+
+    def test_ligas_auto_agregadas_se_auto_mergea(self):
+        v = self.evaluar_ligas({"1": "Liga A"}, {"1": "Liga A", "2": "Liga B"})
+        self.assertTrue(v["auto_merge"], v["fallos"])
+        self.assertEqual(v["metricas"]["ligas_auto_agregadas"], 1)
+
+    def test_ligas_auto_quitada_bloquea(self):
+        self.assertManual(self.evaluar_ligas({"1": "Liga A", "2": "Liga B"}, {"1": "Liga A"}), "quita o renombra")
+
+    def test_ligas_auto_renombrada_bloquea(self):
+        self.assertManual(self.evaluar_ligas({"1": "Liga A"}, {"1": "Liga A2"}), "quita o renombra")
 
     def test_sin_lista_de_archivos_bloquea(self):
         self.assertManual(self.evaluar(base(), archivos=None), "lista de archivos")
