@@ -1,5 +1,8 @@
 name: Alerta - datos viejos en produccion
 
+# Se mergeo el 21/10 durante una caida de webhooks de GitHub y nunca quedo
+# registrado (0 corridas hasta el 29/10). Este comentario fuerza el registro.
+
 on:
   schedule:
     # Cada 6 horas: el issue se abre en la primera medicion que pase el
