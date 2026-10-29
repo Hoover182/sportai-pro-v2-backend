@@ -36,7 +36,7 @@ concurrency:
 env:
   # Que corre un push a la rama (ver arriba).
   PUSH_MODO: backfill
-  PUSH_TEMPORADAS: "2021-22 2022-23"   # historial + validacion limpia (PREREGISTRO_ventana.md)
+  PUSH_TEMPORADAS: "2022-23"   # validacion limpia (PREREGISTRO_ventana.md); 2021-22 ya esta (a998384)
 
 jobs:
   sync:

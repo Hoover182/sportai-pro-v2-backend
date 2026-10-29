@@ -80,6 +80,17 @@ class Parseo(unittest.TestCase):
         self.assertEqual(fila["n_prorrogas"], 0)
         self.assertEqual((fila["puntos_local"], fila["puntos_visitante"]), (90, 94))
 
+    def test_cuarto_fantasma_en_el_medio_se_descarta(self):
+        # 0022200565 CLE-PHX 04/01/2023: CDN 15,18,0,26,31; oficial 15,18,26,31.
+        g = _box("0042500405")
+        eq = g["homeTeam"]
+        reales = [p["score"] for p in eq["periods"] if p["periodType"] == "REGULAR"]
+        nuevos = [{"period": i, "periodType": "REGULAR", "score": x}
+                  for i, x in enumerate(reales[:2] + [0] + reales[2:], start=1)]
+        eq["periods"] = nuevos + [p for p in eq["periods"] if p["periodType"] != "REGULAR"]
+        fila, _ = S.parsear_boxscore(g)
+        self.assertEqual([fila[f"q{i}_local"] for i in range(1, 5)], reales)
+
     def test_quinto_cuarto_con_puntos_frena(self):
         g = _box("0042500405")
         g["homeTeam"]["periods"].append({"period": 5, "periodType": "REGULAR", "score": 3})

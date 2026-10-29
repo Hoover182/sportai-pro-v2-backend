@@ -138,11 +138,15 @@ def minutos(iso):
 
 
 def _periodos(equipo):
-    # El CDN a veces agrega un "quinto cuarto" REGULAR fantasma con 0 puntos
-    # (0022200429 SAC-DET 16/12/2022, sin prorroga). Se descarta; si tuviera
-    # puntos no se toca y el chequeo de 4 cuartos frena el sync.
-    reg = [p["score"] for p in equipo["periods"] if p["periodType"] == "REGULAR"
-           and not (p["period"] > 4 and p["score"] == 0)]
+    # El CDN a veces mete un periodo REGULAR fantasma con 0 puntos: al final
+    # (0022200429 SAC-DET 16/12/2022) o en el medio, corriendo los cuartos
+    # siguientes (0022200565 CLE-PHX 04/01/2023: CDN 15,18,0,26,31; oficial
+    # 15,18,26,31). Los dos verificados contra stats.nba.com. Solo si hay mas
+    # de 4 se descartan los de 0, manteniendo el orden; si sobra alguno con
+    # puntos, el chequeo de 4 cuartos frena el sync.
+    reg = [p["score"] for p in equipo["periods"] if p["periodType"] == "REGULAR"]
+    if len(reg) > 4:
+        reg = [x for x in reg if x != 0]
     ot = [p["score"] for p in equipo["periods"] if p["periodType"] == "OVERTIME"]
     return reg, ot
 
