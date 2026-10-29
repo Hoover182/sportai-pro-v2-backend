@@ -258,13 +258,14 @@ def analisis_1x2(r, hechos, clave):
     elif _forma_cruzada(hechos, lado if base != "parejo" else None):
         tono = "senales_cruzadas"
     slots = {"fav": fav, "Fav": _cap(fav), "seg": seg, "p1": _f(p1), "p2": _f(p2), "dif": _f(p1 - p2)}
-    gl, gv = r["goles_proj"].split(" - ")
+    proy = r.get("goles_proj")  # None si los goles estan ocultos (MERCADOS_OCULTOS)
+    gl, gv = proy.split(" - ") if proy else (None, None)
     bullets = [
         _b_pocos_datos(r, hechos) if tono == "pocos_datos" else None,
         _b_forma(hechos["local"], hechos["visitante"], L, V) if tono == "senales_cruzadas" else None,
         _b_h2h_resultado(hechos["h2h"], L, V),
         _b_condicion(hechos["local"], hechos["visitante"], L, V),
-        f"Proyección de goles del modelo: {L} {gl}, {V} {gv}.",
+        f"Proyección de goles del modelo: {L} {gl}, {V} {gv}." if proy else None,
     ]
     return _armar(clave, "1x2", "resultado", tono, base, slots, bullets)
 
@@ -575,7 +576,7 @@ def analisis_atajadas_equipo(r, hechos, clave, lado):
     return _armar(clave, mercado, familia, tono, base, slots, bullets)
 
 
-def armar_analisis_ia(r, hechos, clave_partido):
+def armar_analisis_ia(r, hechos, clave_partido, ocultos=()):
     """r: respuesta de get_analisis_partido() (sin analisis_ia).
     hechos: _hechos_para_analisis(). clave_partido: fixture_id (o
     local|visitante si no hay). Un mercado que falla no rompe los demas."""
@@ -596,6 +597,8 @@ def armar_analisis_ia(r, hechos, clave_partido):
     }
     salida = {}
     for mercado, fabrica in fabricas.items():
+        if mercado in ocultos:  # mercados ocultos de la app: sin texto
+            continue
         try:
             salida[mercado] = fabrica(r, hechos, clave_partido)
         except Exception as e:

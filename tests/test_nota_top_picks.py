@@ -37,6 +37,17 @@ STATS = {"n_partidos_stats": 5, "n_partidos_stats_12m": 5}
 
 
 class Siguiente(unittest.TestCase):
+    # Estos casos prueban la logica de "siguiente" con picks de goles y ambos
+    # marcan; se corren con los mercados visibles (MERCADOS_OCULTOS vacio)
+    # para que sigan valiendo cuando se vuelvan a mostrar. Lo oculto se prueba
+    # aparte en MercadosOcultos.
+    def setUp(self):
+        self._ocultos = F.MERCADOS_OCULTOS
+        F.MERCADOS_OCULTOS = frozenset()
+
+    def tearDown(self):
+        F.MERCADOS_OCULTOS = self._ocultos
+
     def test_margen_sobre_el_mejor_que_quedo_afuera(self):
         # #1 Over 1.5 goles 88, #2 Over 7.5 corners 84, #3 Over 2.5 tarjetas 74 (franja).
         # Afuera: 1X 79 (mejor para #1/#2); en la franja 65-78, Ambos marcan 68
@@ -255,3 +266,35 @@ class SinInventar(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MercadosOcultos(unittest.TestCase):
+    """Goles O/U y ambos marcan ocultos desde el 29/10/2026 (backtest)."""
+
+    def test_top3_no_trae_goles_ni_ambos_marcan(self):
+        top = F.calcular_top3(sim_base(), None, STATS, STATS)
+        mercados = [p["mercado"] for p in top]
+        self.assertTrue(mercados)
+        self.assertFalse([m for m in mercados if "goles" in m or m == "Ambos marcan"], mercados)
+        siguientes = [p["siguiente"]["mercado"] for p in top if p["siguiente"]]
+        self.assertFalse([m for m in siguientes if "goles" in m or m == "Ambos marcan"], siguientes)
+
+    def test_combinados_no_traen_goles_ni_ambos_marcan(self):
+        picks = F.calcular_picks_combinados(sim_base(), None, STATS, STATS) or []
+        texto = str(picks)
+        self.assertNotIn("goles", texto)
+        self.assertNotIn("Ambos marcan", texto)
+
+    def test_analisis_sin_goles_ni_ambos_y_1x2_sin_proyeccion(self):
+        r = respuesta()
+        for k in F.CLAVES_OCULTAS_PARTIDO:
+            r[k] = None
+        salida = A.armar_analisis_ia(r, hechos(), 1, ocultos=F.ANALISIS_OCULTOS)
+        self.assertNotIn("goles", salida)
+        self.assertNotIn("ambos_marcan", salida)
+        self.assertNotIn("Proyección de goles", str(salida["1x2"]))
+
+    def test_value_bet_manual_de_goles_bloqueada(self):
+        res, error = F.calcular_value_bet_manual("A", "B", "goles", 2.5, "over", 2.0)
+        self.assertIsNone(res)
+        self.assertIn("oculto", error)
