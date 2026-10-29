@@ -163,6 +163,18 @@ ORDEN_COMPETENCIAS = [
 from collections import namedtuple
 
 Candidato = namedtuple("Candidato", ["nombre", "prob", "mercado", "equipo"])
+
+# Mercados ocultos (29/10/2026). El backtest retrospectivo de 2026
+# (scripts/backtest_futbol en feat/backtest-futbol) mostro que Over/Under de
+# goles y ambos marcan no le ganan a la frecuencia de la liga y prometen de
+# mas cuando dan 70%+. Se esconden de la app hasta que un arreglo con su
+# propio pre-registro pase el retrospectivo. Para volver a mostrarlos, vaciar
+# estas tuplas. El 1X2 y los handicaps siguen (salen de la misma grilla, pero
+# el 1X2 si paso el backtest).
+MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou"})   # ids de Candidato (total y por equipo)
+CLAVES_OCULTAS_PARTIDO = ("prob_ambos_marcan", "goles_proj", "goles_ou",
+                          "goles_ou_local", "goles_ou_visitante", "goles_1t")
+ANALISIS_OCULTOS = ("ambos_marcan", "goles")                 # claves de analisis_ia
 """Un candidato a pick de Top3, con la familia YA explicita en vez de
 derivada del texto de `nombre` (ver conversacion de diseno, Bloque 4):
 - nombre: string de display, SIN CAMBIOS -- sigue siendo la clave que usa
@@ -1264,6 +1276,7 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
         if equipo_local and equipo_visitante:
             candidatos += _candidatos_equipo(sim, equipo_local, equipo_visitante)
 
+    candidatos = [c for c in candidatos if c.mercado not in MERCADOS_OCULTOS]
     candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     # fixture_id puede llegar como numpy.float64 (columnas del CSV con NaN
@@ -1466,6 +1479,7 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None, equip
         if equipo_local and equipo_visitante:
             candidatos += _candidatos_equipo(sim, equipo_local, equipo_visitante)
 
+    candidatos = [c for c in candidatos if c.mercado not in MERCADOS_OCULTOS]
     candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     try:
@@ -2696,6 +2710,10 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     if not resultado["mercados_stats_disponibles"]:
         for clave_stats in CLAVES_MERCADOS_STATS:
             resultado[clave_stats] = None
+    # Mercados ocultos (ver MERCADOS_OCULTOS): null, y el frontend no
+    # muestra la seccion.
+    for clave_oculta in CLAVES_OCULTAS_PARTIDO:
+        resultado[clave_oculta] = None
     # Analisis IA por mercado (texto por reglas, analisis_mercados.py):
     # se arma sobre ESTA misma respuesta para que cada numero del texto
     # coincida con el que muestra la tarjeta. Clave de variante =
@@ -2706,7 +2724,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
         from analisis_mercados import armar_analisis_ia
         hechos = _hechos_para_analisis(df, local, visitante, stats_a, stats_b)
         clave = fixture_id_pendiente if fixture_id_pendiente is not None else f"{local}|{visitante}"
-        resultado["analisis_ia"] = armar_analisis_ia(resultado, hechos, clave)
+        resultado["analisis_ia"] = armar_analisis_ia(resultado, hechos, clave, ocultos=ANALISIS_OCULTOS)
     except Exception as e:
         print(f"AVISO analisis_ia: {type(e).__name__}: {e}")
         resultado["analisis_ia"] = None
@@ -2838,6 +2856,8 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
     usuario ya ve ahi."""
     if mercado not in MERCADOS_VALIDOS:
         return None, f"Mercado no valido: {mercado!r} (usar goles, corners o tarjetas)"
+    if mercado == "goles" and "goles_ou" in MERCADOS_OCULTOS:
+        return None, "El mercado de goles esta oculto temporalmente mientras se recalibra"
     if lado not in LADOS_VALIDOS:
         return None, f"Lado no valido: {lado!r} (usar over o under)"
     try:
@@ -3444,7 +3464,7 @@ def get_value_bets_hoy():
                 {"mercado": "Empate", "cuota": casa.get("empate", 0), "probIA": prob_empate},
                 {"mercado": f"{visitante} gana", "cuota": casa.get("visitante", 0), "probIA": prob_visitante},
             ]
-            totals = casa.get("totals") or {}
+            totals = casa.get("totals") or {} if "goles_ou" not in MERCADOS_OCULTOS else {}
             for punto, vals in totals.items():
                 ou = goles_ou.get(punto)
                 if not ou:
