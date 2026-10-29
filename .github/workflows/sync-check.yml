@@ -38,6 +38,7 @@ jobs:
             --write-csv app/services/futbol_partidos.csv.new \
             --write-teamids app/services/cache_team_ids.json.new \
             --write-cuotas app/services/cuotas_cache.json.new \
+            --write-ligas app/services/ligas_auto_detectadas.json.new \
             --summary-out /tmp/summary.md
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
@@ -74,6 +75,10 @@ jobs:
             mv app/services/cuotas_cache.json.new app/services/cuotas_cache.json
             git add app/services/cuotas_cache.json
           fi
+          if [ -f app/services/ligas_auto_detectadas.json.new ]; then
+            mv app/services/ligas_auto_detectadas.json.new app/services/ligas_auto_detectadas.json
+            git add app/services/ligas_auto_detectadas.json
+          fi
           # Timestamp real de esta sincronizacion, para el subtitulo
           # "actualizado hace X min" del frontend -- NUNCA usar mtime de
           # los archivos de datos en el backend (git checkout en cada
@@ -109,7 +114,7 @@ jobs:
         run: |
           set +e
           mkdir -p /tmp/antes /tmp/despues
-          for f in futbol_partidos.csv cache_team_ids.json cuotas_cache.json datos_meta.json; do
+          for f in futbol_partidos.csv cache_team_ids.json cuotas_cache.json datos_meta.json ligas_auto_detectadas.json; do
             git show "$BASE_SHA:app/services/$f" > "/tmp/antes/$f" 2>/dev/null || rm -f "/tmp/antes/$f"
             cp "app/services/$f" "/tmp/despues/$f" 2>/dev/null
           done

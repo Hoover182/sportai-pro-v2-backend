@@ -48,6 +48,7 @@ from check_sync import PATRONES_MOJIBAKE, chequear_ligas_desconocidas, chequear_
 CSV = "futbol_partidos.csv"
 TEAMIDS = "cache_team_ids.json"
 CUOTAS = "cuotas_cache.json"
+LIGAS_AUTO = "ligas_auto_detectadas.json"
 META = "datos_meta.json"
 
 ESTADOS_FINALES = {"FT", "AET", "PEN", "AWD"}
@@ -70,6 +71,7 @@ ARCHIVOS_PERMITIDOS = {
     "app/services/cache_team_ids.json",
     "app/services/cuotas_cache.json",
     "app/services/datos_meta.json",
+    "app/services/ligas_auto_detectadas.json",
 }
 
 # Historial: el pipeline completa los H2H de los partidos cercanos
@@ -117,7 +119,8 @@ def _es_historial_conocido(nuevas, antes):
 
 
 def evaluar(antes, despues, ids_antes, ids_despues, cuotas_antes, cuotas_despues,
-            meta_antes, ahora, humo=None, archivos_cambiados=None):
+            meta_antes, ahora, humo=None, archivos_cambiados=None,
+            ligas_auto_antes=None, ligas_auto_despues=None):
     """Devuelve {"auto_merge": bool, "fallos": [...], "metricas": {...}}.
     humo: (ok, detalle) de la prueba de humo, o None si no se corrio (cuenta
     como fallo: sin prueba de humo no hay auto-merge).
@@ -250,6 +253,17 @@ def evaluar(antes, despues, ids_antes, ids_despues, cuotas_antes, cuotas_despues
         fallos.append(f"{len(ids_cambiados)} equipo(s) con team_id cambiado: {dict(list(ids_cambiados.items())[:5])}")
     if cuotas_antes and not cuotas_despues:
         fallos.append(f"cuotas_cache.json queda vacio (main tenia {len(cuotas_antes)} fixtures con cuota)")
+    # Ligas auto-detectadas: agregar es lo normal; quitar o renombrar una liga
+    # la saca del modelo (filtrar_ligas_validas) -> revision manual.
+    if ligas_auto_antes is not None and ligas_auto_despues is not None:
+        quitadas = sorted(ligas_auto_antes[k] for k in set(ligas_auto_antes) - set(ligas_auto_despues))
+        renombradas = sorted(f"{ligas_auto_antes[k]} -> {ligas_auto_despues[k]}"
+                             for k in set(ligas_auto_antes) & set(ligas_auto_despues)
+                             if ligas_auto_antes[k] != ligas_auto_despues[k])
+        m["ligas_auto_agregadas"] = len(set(ligas_auto_despues) - set(ligas_auto_antes))
+        if quitadas or renombradas:
+            fallos.append(f"ligas_auto_detectadas.json quita o renombra ligas (salen del modelo): "
+                          f"quitadas {quitadas}, renombradas {renombradas}")
 
     return {"auto_merge": not fallos, "fallos": fallos, "metricas": m}
 
@@ -334,6 +348,8 @@ def main():
         _leer_json(os.path.join(args.antes_dir, META), {}), ahora,
         humo=correr_humo(os.path.abspath(args.despues_dir), repo_raiz),
         archivos_cambiados=_leer_archivos_cambiados(args.archivos_cambiados),
+        ligas_auto_antes=_leer_json(os.path.join(args.antes_dir, LIGAS_AUTO), None),
+        ligas_auto_despues=_leer_json(os.path.join(args.despues_dir, LIGAS_AUTO), None),
     )
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(v, f, ensure_ascii=False, indent=2, default=str)
