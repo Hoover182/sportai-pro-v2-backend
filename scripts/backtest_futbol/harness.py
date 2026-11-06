@@ -153,6 +153,13 @@ def _limpiar_caches():
     MP._cache_tablas.clear()
     FM._cache_eficiencia_arqueros.clear()
     FS._cache_resultados.clear()
+    # Nombres de equipos (resolver_nombre_equipo): se arma con el primer df
+    # que ve el proceso y nunca se rearma. Sin esto, un equipo que aparece
+    # despues del primer partido del proceso se resolvia por parecido a OTRO
+    # equipo (CF Pachuca -> Pachuca, Genk W -> Gent W). Encontrado el
+    # 06/11/2026 (enmienda de PREREGISTRO_multiplicador_goles.md).
+    FS._cache_equipos_todos = None
+    FS._cache_equipos_exactos = None
 
 
 def _fila_ns(fila):

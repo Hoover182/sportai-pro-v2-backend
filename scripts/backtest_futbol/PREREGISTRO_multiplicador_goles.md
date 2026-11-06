@@ -100,3 +100,20 @@ Sacarlo también exige que C1 siga pasando con *f* = 0.
 
 `multiplicador_corners` (misma intensidad, ×0,8 a ×1,3): su propio
 pre-registro, después de este.
+
+## Enmienda 1 (06/11/2026, antes de correr nada de este pre-registro)
+
+En la prueba chica del harness de variantes apareció un bug de
+`harness.py` que afecta a todos los backtests anteriores: el caché de nombres
+de equipos de `futbol_service.resolver_nombre_equipo` (`_cache_equipos_todos`
+/ `_cache_equipos_exactos`) se arma con el primer partido de cada proceso y no
+se limpia entre partidos. Los equipos que aparecen después se resolvían por
+parecido a otro equipo (11 de 137 al 04/10/2025: CF Pachuca → Pachuca,
+Genk W → Gent W, Adana Demirspor → Ankara Demirspor...). Ejemplo: Necaxa-Pachuca
+del 04/10/2025 daba local 34,8% con el caché viejo y 37,0% bien resuelto.
+
+Arreglo: `harness._limpiar_caches()` también vacía ese caché. Este
+pre-registro corre con el harness arreglado; todo lo demás queda igual. C1 se
+vuelve a medir con el harness arreglado (la columna *f* = 1 de esta corrida).
+Informativo: cuántos partidos de las corridas anteriores cambian y si eso
+mueve alguna conclusión ya tomada (retrospectivo, H-A/H-B, tarjetas).
