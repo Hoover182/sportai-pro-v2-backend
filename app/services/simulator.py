@@ -343,9 +343,11 @@ def simular_partido_futbol(
     # k_goles_a/b, k_corners_a/b, k_tarjetas: confianza en el promedio
     # respectivo para la mezcla Gamma-Poisson (ver _neg_binom_pmf_vector/
     # _muestrear_conteo) -- None (default) reproduce el Poisson puro de
-    # siempre. Se aplican SOLO a goles_ou/corners_ou/tarjetas_ou (lo que
-    # alimenta el Top3), no al desglose por mitades ni al 1X2/handicap/
-    # ambos marcan, que no fueron parte del backtest de calibracion.
+    # siempre. k_goles_a/b entran a grid_goles, y de esa grilla salen
+    # goles_ou, 1X2, handicaps, ambos marcan y marcador exacto: todos
+    # quedan afectados, aunque el backtest de calibracion de k (1459
+    # partidos) solo midio los mercados del Top3. El desglose por mitades
+    # NO usa k (sigue con Poisson puro, ver goles_a/goles_b abajo).
     grid_goles = _grid_dixon_coles(media_goles_a, media_goles_b, k_goles_a, k_goles_b)
     n_grid = grid_goles.shape[0]
     xs_grid, ys_grid = np.meshgrid(np.arange(n_grid), np.arange(n_grid), indexing="ij")
