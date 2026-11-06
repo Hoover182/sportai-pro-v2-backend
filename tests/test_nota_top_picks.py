@@ -298,3 +298,41 @@ class MercadosOcultos(unittest.TestCase):
         res, error = F.calcular_value_bet_manual("A", "B", "goles", 2.5, "over", 2.0)
         self.assertIsNone(res)
         self.assertIn("oculto", error)
+
+
+class TarjetasOcultas(unittest.TestCase):
+    """O/U de tarjetas oculto desde el 06/11/2026 (PREREGISTRO_multiplicador_tarjetas.md)."""
+
+    def test_top3_y_siguiente_sin_tarjetas(self):
+        top = F.calcular_top3(sim_base(), None, STATS, STATS)
+        mercados = [p["mercado"] for p in top]
+        self.assertTrue(mercados)
+        self.assertFalse([m for m in mercados if "tarjetas" in m], mercados)
+        siguientes = [p["siguiente"]["mercado"] for p in top if p["siguiente"]]
+        self.assertFalse([m for m in siguientes if "tarjetas" in m], siguientes)
+
+    def test_combinados_sin_tarjetas(self):
+        picks = F.calcular_picks_combinados(sim_base(), None, STATS, STATS) or []
+        self.assertNotIn("tarjetas", str(picks))
+
+    def test_analisis_sin_tarjetas(self):
+        r = respuesta()
+        for k in F.CLAVES_OCULTAS_PARTIDO:
+            r[k] = None
+        salida = A.armar_analisis_ia(r, hechos(), 1, ocultos=F.ANALISIS_OCULTOS)
+        self.assertNotIn("tarjetas", salida)
+        self.assertIn("corners", salida)
+
+    def test_value_bet_manual_de_tarjetas_bloqueada(self):
+        res, error = F.calcular_value_bet_manual("A", "B", "tarjetas", 4.5, "over", 2.0)
+        self.assertIsNone(res)
+        self.assertIn("tarjetas", error)
+        self.assertIn("oculto", error)
+
+    def test_secciones_ocultas_para_el_frontend(self):
+        self.assertEqual(F.SECCIONES_OCULTAS, ("ambos_marcan", "goles", "tarjetas"))
+        for clave in ("tarjetas_proj", "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante"):
+            self.assertIn(clave, F.CLAVES_OCULTAS_PARTIDO)
+
+    def test_factor_del_multiplicador_es_el_del_preregistro(self):
+        self.assertEqual(F.FACTOR_MULTIPLICADOR_TARJETAS, 0.5)

@@ -171,10 +171,29 @@ Candidato = namedtuple("Candidato", ["nombre", "prob", "mercado", "equipo"])
 # propio pre-registro pase el retrospectivo. Para volver a mostrarlos, vaciar
 # estas tuplas. El 1X2 y los handicaps siguen (salen de la misma grilla, pero
 # el 1X2 si paso el backtest).
-MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou"})   # ids de Candidato (total y por equipo)
+#
+# Tarjetas (06/11/2026, PREREGISTRO_multiplicador_tarjetas.md): aun con el
+# multiplicador a la mitad, el Over 4.5 de tarjetas queda peor que la tasa de
+# la liga de forma demostrada (Brier 0,2380 contra 0,2320, IC90 de la mejora
+# [-0,0100; -0,0017]). Se esconde el O/U total y por equipo, con la
+# proyeccion. Las tarjetas de jugadores salen de otro modelo y siguen.
+MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou", "tarjetas_ou"})   # ids de Candidato (total y por equipo)
 CLAVES_OCULTAS_PARTIDO = ("prob_ambos_marcan", "goles_proj", "goles_ou",
-                          "goles_ou_local", "goles_ou_visitante", "goles_1t")
-ANALISIS_OCULTOS = ("ambos_marcan", "goles")                 # claves de analisis_ia
+                          "goles_ou_local", "goles_ou_visitante", "goles_1t",
+                          "tarjetas_proj", "tarjetas_local_proj", "tarjetas_visitante_proj",
+                          "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante")
+ANALISIS_OCULTOS = ("ambos_marcan", "goles", "tarjetas")     # claves de analisis_ia
+# Lo que el frontend no muestra (secciones de /partido). Se manda en la
+# respuesta para que la seccion se esconda aunque el campo pueda venir null
+# por otro motivo (equipo sin datos suficientes -> "Sin datos").
+SECCIONES_OCULTAS = tuple(sorted(m.replace("_ou", "") for m in MERCADOS_OCULTOS))
+
+# Factor del multiplicador de tarjetas (presion/agresividad/clasico):
+# m' = 1 + FACTOR * (m - 1). Elegido 0,5 en jul-dic 2025 y evaluado en 2026
+# (PREREGISTRO_multiplicador_tarjetas.md, resultados_tarjetas.json): el Over
+# 4.5 mejora de 0,2497 a 0,2380 de Brier y el sesgo baja de +1,04 a +0,66
+# tarjetas por partido. 1.0 = multiplicador original sin backtest.
+FACTOR_MULTIPLICADOR_TARJETAS = 0.5
 """Un candidato a pick de Top3, con la familia YA explicita en vez de
 derivada del texto de `nombre` (ver conversacion de diseno, Bloque 4):
 - nombre: string de display, SIN CAMBIOS -- sigue siendo la clave que usa
@@ -576,6 +595,7 @@ def simular(df, local, visitante):
         if clasico:
             multiplicador_tarjetas += 0.35
         multiplicador_tarjetas = min(multiplicador_tarjetas, 1.5)
+        multiplicador_tarjetas = 1 + FACTOR_MULTIPLICADOR_TARJETAS * (multiplicador_tarjetas - 1)
 
         # ---- Multiplicador de corners basado en intensidad ofensiva reciente ----
         from modelo_presion import calcular_indice_intensidad_ofensiva
@@ -2714,6 +2734,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     # muestra la seccion.
     for clave_oculta in CLAVES_OCULTAS_PARTIDO:
         resultado[clave_oculta] = None
+    resultado["mercados_ocultos"] = list(SECCIONES_OCULTAS)
     # Analisis IA por mercado (texto por reglas, analisis_mercados.py):
     # se arma sobre ESTA misma respuesta para que cada numero del texto
     # coincida con el que muestra la tarjeta. Clave de variante =
@@ -2856,8 +2877,8 @@ def calcular_value_bet_manual(local_input, visitante_input, mercado, linea, lado
     usuario ya ve ahi."""
     if mercado not in MERCADOS_VALIDOS:
         return None, f"Mercado no valido: {mercado!r} (usar goles, corners o tarjetas)"
-    if mercado == "goles" and "goles_ou" in MERCADOS_OCULTOS:
-        return None, "El mercado de goles esta oculto temporalmente mientras se recalibra"
+    if f"{mercado}_ou" in MERCADOS_OCULTOS:
+        return None, f"El mercado de {mercado} esta oculto temporalmente mientras se recalibra"
     if lado not in LADOS_VALIDOS:
         return None, f"Lado no valido: {lado!r} (usar over o under)"
     try:
