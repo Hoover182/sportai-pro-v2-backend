@@ -8,7 +8,12 @@ on:
     # Cada 6 horas: el issue se abre en la primera medicion que pase el
     # umbral de 36 h (ver scripts/alerta_datos_viejos.py).
     - cron: "30 */6 * * *"
-  workflow_dispatch: {}   # permite dispararlo a mano desde la pestaña Actions
+  workflow_dispatch:      # permite dispararlo a mano desde la pestaña Actions
+    inputs:
+      prueba_telegram:
+        description: "Solo mandar un Telegram de prueba (no toca issues)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -30,7 +35,15 @@ jobs:
 
       - run: pip install requests
 
-      - name: Medir /futbol/meta y abrir/cerrar el issue
+      - name: Medir /futbol/meta, abrir/cerrar el issue y avisar por Telegram
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python scripts/alerta_datos_viejos.py
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PRUEBA: ${{ inputs.prueba_telegram }}
+        run: |
+          if [ "$PRUEBA" = "true" ]; then
+            python scripts/alerta_datos_viejos.py --prueba-telegram
+          else
+            python scripts/alerta_datos_viejos.py
+          fi
