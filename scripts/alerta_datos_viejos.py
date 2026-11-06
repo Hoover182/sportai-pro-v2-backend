@@ -2,9 +2,13 @@
 """
 Alerta de datos viejos en produccion: lee /futbol/meta y, si
 datos_actualizados_en tiene mas de UMBRAL_HORAS (o produccion no responde),
-abre un issue en el repo, con un mail de GitHub al dueno. Si ya hay uno
-abierto, le agrega un comentario con la medicion del dia. Cuando los datos
-vuelven a estar al dia, cierra el issue.
+abre un issue en el repo, con un mail de GitHub al dueno, y manda un aviso
+por Telegram (avisar_telegram.py). Si ya hay uno abierto, le agrega un
+comentario con la medicion del dia (sin repetir el Telegram). Cuando los
+datos vuelven a estar al dia, cierra el issue y avisa por Telegram.
+
+Por que Telegram: el 04/11/2026 la alerta abrio el issue #106 a las 47 h y
+nadie lo vio hasta el 06/11 (el issue y el mail de GitHub no se miran).
 
 Motivo: entre el 16 y el 21/10/2026 los syncs quedaron trabados en
 revision manual (#81, #83, #84, #85) y produccion sirvio datos del 16/10
@@ -12,8 +16,11 @@ durante 5 dias, sin que nadie se enterara hasta una captura de pantalla
 ("Top picks del dia" con un partido de otro dia).
 
 Uso (lo corre .github/workflows/alerta-datos-viejos.yml):
-  python scripts/alerta_datos_viejos.py [--dry-run]
-Necesita GITHUB_TOKEN y GITHUB_REPOSITORY (los pone Actions) salvo en --dry-run.
+  python scripts/alerta_datos_viejos.py [--dry-run] [--prueba-telegram]
+Necesita GITHUB_TOKEN y GITHUB_REPOSITORY (los pone Actions) salvo en --dry-run,
+y TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID para el aviso (sin ellos solo avisa
+por GitHub). --prueba-telegram manda un mensaje de prueba con la medicion
+actual y no toca issues.
 """
 import argparse
 import json
@@ -22,6 +29,8 @@ import sys
 import time
 
 import requests
+
+from avisar_telegram import enviar as enviar_telegram
 
 BACKEND_URL = "https://sportai-pro-v2-backend.onrender.com"
 UMBRAL_HORAS = 36
@@ -74,6 +83,13 @@ def cuerpo_issue(mensaje):
             "(workflow alerta-datos-viejos).")
 
 
+def avisar(texto):
+    """Telegram sin tapar el resultado de la alerta: si falla, queda en el log."""
+    ok, detalle = enviar_telegram(texto)
+    print(("" if ok else "AVISO: ") + f"Telegram: {detalle}")
+    return ok
+
+
 class GitHub:
     def __init__(self, token, repo):
         self.base = f"https://api.github.com/repos/{repo}"
@@ -108,11 +124,15 @@ def main():
     from datetime import datetime, timezone
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", help="solo medir e imprimir, sin tocar issues")
+    ap.add_argument("--prueba-telegram", action="store_true", help="mandar un Telegram de prueba y salir")
     args = ap.parse_args()
 
     meta = leer_meta()
     alerta, horas, mensaje = evaluar(meta, datetime.now(timezone.utc))
     print(("ALERTA: " if alerta else "OK: ") + mensaje)
+    if args.prueba_telegram:
+        ok = avisar(f"🧪 Prueba del aviso de SportAI (alerta de datos viejos).\nMedicion actual: {mensaje}")
+        return 0 if ok else 1
     if args.dry_run:
         return 1 if alerta else 0
 
@@ -121,12 +141,16 @@ def main():
     if alerta and abierto is None:
         nuevo = gh.abrir(cuerpo_issue(mensaje))
         print(f"Issue abierto: #{nuevo['number']}")
+        avisar(f"⚠️ SportAI: produccion con datos viejos.\n{mensaje}\n\n"
+               "Probable: sync de analista-futbol trabado en revision manual o cron sin correr.\n"
+               f"{nuevo.get('html_url', '')}")
     elif alerta:
         gh.comentar(abierto["number"], f"Sigue igual: {mensaje}")
         print(f"Comentario en #{abierto['number']}")
     elif abierto is not None:
         gh.cerrar(abierto["number"], f"Resuelto: {mensaje}")
         print(f"Issue #{abierto['number']} cerrado")
+        avisar(f"✅ SportAI: datos de produccion al dia otra vez.\n{mensaje}")
     # Exit 1 en alerta: el run queda en rojo en Actions, ademas del issue.
     return 1 if alerta else 0
 

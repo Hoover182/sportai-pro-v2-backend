@@ -5,7 +5,12 @@ on:
     # 12:00 UTC = 2h despues del cron de analista-futbol (10:00 UTC),
     # para darle margen a que termine su corrida completa.
     - cron: "0 12 * * *"
-  workflow_dispatch: {}   # permite dispararlo a mano desde la pestaña Actions
+  workflow_dispatch:      # permite dispararlo a mano desde la pestaña Actions
+    inputs:
+      prueba_telegram:
+        description: "Solo probar el aviso de Telegram (no sincroniza nada)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -18,6 +23,8 @@ concurrency:
 
 jobs:
   check-sync:
+    # En schedule inputs viene vacio: corre siempre salvo en la prueba manual.
+    if: ${{ !inputs.prueba_telegram }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -183,3 +190,43 @@ jobs:
             echo "::error::Produccion no quedo al dia despues del merge automatico."
             exit 1
           fi
+
+      # Cualquier rojo de esta corrida (revision manual, falla de un script,
+      # produccion sin actualizar) avisa por Telegram ademas del mail de
+      # GitHub, que no se mira: del 03 al 06/11/2026 los syncs #104, #105 y
+      # #107 quedaron en revision manual y nadie se entero por 4 dias.
+      - name: Avisar por Telegram si la corrida termino en rojo
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          PR_URL=""
+          if [ -n "${BRANCH:-}" ]; then
+            PR_URL=$(gh pr view --repo "$GITHUB_REPOSITORY" "$BRANCH" --json url --jq .url 2>/dev/null || true)
+          fi
+          python scripts/aviso_sync_telegram.py --run-url "$RUN_URL"             ${PR_URL:+--pr-url "$PR_URL"} --veredicto /tmp/veredicto.md             || echo "::warning::No se pudo mandar el aviso de Telegram"
+
+  # Prueba manual del aviso (Actions -> Run workflow -> prueba_telegram):
+  # mismo script que el caso real, con el veredicto de un sync trabado de
+  # verdad (#107, 05/11/2026). No sincroniza nada.
+  prueba-aviso:
+    if: ${{ inputs.prueba_telegram }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Mandar Telegram de prueba
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh pr view --repo "$GITHUB_REPOSITORY" 107 --json comments             --jq '[.comments[] | select(.body | test("Veredicto"))][0].body' > /tmp/veredicto.md
+          python scripts/aviso_sync_telegram.py --prueba --run-url "$RUN_URL"             --pr-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/107" --veredicto /tmp/veredicto.md
