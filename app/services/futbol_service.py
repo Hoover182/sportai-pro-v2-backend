@@ -2401,6 +2401,81 @@ def _hechos_para_analisis(df, local, visitante, stats_a, stats_b):
     }
 
 
+# ---------------------------------------------------------------- promedio de la liga
+# Misma regla que la referencia R1 de los backtests
+# (scripts/backtest_futbol/analizar.py, Frecuencias): partidos terminados de
+# la misma liga en los ultimos 365 dias, goles a 90', minimo 50 partidos.
+# Diferencia a proposito: copas, torneos internacionales y amistosos no
+# muestran nada (en el backtest caian al promedio global), y tampoco las
+# ligas con menos de 50 partidos.
+PROMEDIO_LIGA_DIAS = 365
+PROMEDIO_LIGA_MIN_PARTIDOS = 50
+COMPETICIONES_INTERNACIONALES = {"Champions League", "Europa League", "Conference League", "Copa Libertadores",
+                                 "Copa Sudamericana", "Recopa Sudamericana", "Mundial 2026"}
+PALABRAS_COPA = ("copa", "cup", "pokal", "taça", "taca", "beker", "kupasi", "coppa", "coupe",
+                 "shield", "trophée", "trophee", "supercopa", "super cup", "superliga colombia")
+
+
+def es_liga_regular(liga):
+    """False para amistosos, copas nacionales e internacionales (misma
+    clasificacion que tipo_competicion de analizar.py)."""
+    if liga is None or (isinstance(liga, float) and pd.isna(liga)):
+        return False
+    if es_amistoso(liga) or liga in COMPETICIONES_INTERNACIONALES:
+        return False
+    return not any(p in str(liga).lower() for p in PALABRAS_COPA)
+
+
+def _liga_del_partido(df, fixture_id):
+    """Liga del partido pendiente (NS) que se esta analizando. None si no hay
+    un partido por jugarse: el promedio es de la competicion de ESE partido."""
+    if fixture_id is None:
+        return None
+    try:
+        fila = df[(df["fixture_id"] == fixture_id) & (df["estado"] == "NS")]
+        return fila["liga"].iloc[0] if not fila.empty else None
+    except Exception:
+        return None
+
+
+def promedio_liga_goles(df, liga, ahora=None):
+    """Tasa de Over 2.5 y de ambos marcan en la liga (ultimos 365 dias, goles
+    a 90'). None si es copa/amistoso o hay menos de 50 partidos."""
+    if not es_liga_regular(liga):
+        return None
+    ahora = ahora if ahora is not None else pd.Timestamp.now(tz="UTC")
+    try:
+        sub = df[(df["liga"] == liga) & df["estado"].isin(("FT", "AET", "PEN"))]
+        t = sub["fecha"].dt.tz_convert("UTC")
+        sub = sub[(t >= ahora - pd.Timedelta(days=PROMEDIO_LIGA_DIAS)) & (t < ahora)]
+        # goles a 90': goles_90_* si estan; si no, goles_* solo en FT (en
+        # AET/PEN los goles finales incluyen la prorroga)
+        if "goles_90_local" in sub.columns:
+            tiene90 = sub["goles_90_local"].notna() & sub["goles_90_visitante"].notna()
+            gl90, gv90 = sub["goles_90_local"], sub["goles_90_visitante"]
+        else:
+            tiene90 = pd.Series(False, index=sub.index)
+            gl90 = gv90 = pd.Series(float("nan"), index=sub.index)
+        ft = (sub["estado"] == "FT") & sub["goles_local"].notna() & sub["goles_visitante"].notna()
+        gl = gl90.where(tiene90, sub["goles_local"].where(ft))
+        gv = gv90.where(tiene90, sub["goles_visitante"].where(ft))
+        ok = gl.notna() & gv.notna()
+        gl, gv = gl[ok].astype(float), gv[ok].astype(float)
+        n = int(ok.sum())
+    except Exception:
+        return None
+    if n < PROMEDIO_LIGA_MIN_PARTIDOS:
+        return None
+    over = float(((gl + gv) > 2.5).mean()) * 100
+    ambos = float(((gl > 0) & (gv > 0)).mean()) * 100
+    return {
+        "liga": liga,
+        "over25": round(over, 1), "under25": round(100 - over, 1),
+        "ambos_si": round(ambos, 1), "ambos_no": round(100 - ambos, 1),
+        "n_partidos": n, "dias": PROMEDIO_LIGA_DIAS,
+    }
+
+
 def get_analisis_partido(local_input, visitante_input, casa=None):
     casa_normalizada = _normalizar_casa(casa)
     df = cargar_df()
@@ -2735,6 +2810,11 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     for clave_oculta in CLAVES_OCULTAS_PARTIDO:
         resultado[clave_oculta] = None
     resultado["mercados_ocultos"] = list(SECCIONES_OCULTAS)
+    # Promedio historico de la liga para O/U 2.5 y ambos marcan: se muestra
+    # en lugar del pronostico oculto, como dato de la liga y no del partido.
+    # Campo aparte: no entra en top picks, value bets, tracking, analisis IA
+    # ni en el contexto del chat.
+    resultado["promedio_liga"] = promedio_liga_goles(df, _liga_del_partido(df, fixture_id_pendiente))
     # Analisis IA por mercado (texto por reglas, analisis_mercados.py):
     # se arma sobre ESTA misma respuesta para que cada numero del texto
     # coincida con el que muestra la tarjeta. Clave de variante =
@@ -3579,7 +3659,7 @@ CHAT_FORMATO_OBLIGATORIO = (
     "meramente estadisticos basados en modelos matematicos. Cualquier resultado puede ocurrir en el futbol. Apuesta con responsabilidad.' "
     "EXCEPCION, CON PRIORIDAD SOBRE LA REGLA 9: si te preguntan por algo cuyo dato NO esta en el contexto, NO des porcentaje ni "
     "estimacion. En lugar de la conclusion escribi 'No tengo datos de [lo que te preguntaron] para este partido.' y despues el cierre. "
-    "Usa esta excepcion SOLO si no hay NINGUN dato relacionado con la pregunta en el contexto. Los Top Picks siempre tienen datos, "
+    "Usa esta excepcion SOLO si no hay NINGUN dato relacionado con la pregunta en el contexto, o si te preguntan por un mercado de la linea MERCADOS SIN PRONOSTICO (aunque el contexto traiga datos historicos relacionados). Los Top Picks siempre tienen datos, "
     "tambien los de un equipo como 'Over 1.5 tarjetas (Equipo)': su probabilidad esta en la linea TOP PICKS IA y el contexto trae "
     "las estadisticas de ese equipo en ese mercado. "
     "Nunca uses numeros de otro mercado (por ejemplo tarjetas o tiros) como si fueran del mercado que te preguntaron. "
@@ -3596,7 +3676,7 @@ sin notacion cruda (V=, GF=, O58.4%), conclusion con el mercado de mayor
 probabilidad y nunca bajo 50%, excepcion de "no hay dato" acotada (un pick
 de equipo se habia contestado con "No tengo datos") y regla E de respaldo."""
 
-CHAT_INSTRUCCIONES = "Eres SportAI Pro, asistente estadistico deportivo. El contexto que recibes contiene TODOS los datos reales del partido: promedios, historicos partido por partido, y probabilidades ya calculadas por el modelo. LEE CUIDADOSAMENTE todo el contexto antes de responder, los datos que necesitas casi siempre estan ahi (busca lineas como PROMEDIO CORNERS, DATOS 1T, ULTIMOS PARTIDOS, etc). REGLA CRITICA: usa SIEMPRE los numeros exactos que aparecen en el contexto, nunca los cambies ni los redondees diferente. Solo si un dato especifico verdaderamente no aparece en NINGUNA parte del contexto, di que no esta disponible - pero antes de decir eso, revisa TODO el contexto con cuidado porque casi siempre el dato esta ahi con otro nombre o formato. REGLAS ADICIONALES: 1) NUNCA uses asteriscos, negritas, cursivas ni markdown. Solo texto plano con emojis. 2) USA EMOJIS DE FORMA CONSISTENTE Y VISUAL: cada seccion o subtitulo de tu respuesta DEBE empezar con un emoji relevante (ejemplo: usa un emoji de grafico como cabecera de analisis, un circulo amarillo para tarjetas, una pelota para goles, una bandera para corners, un trofeo para conclusiones, una lupa para desglose de datos). Dentro de cada seccion, resalta los numeros o datos mas importantes con un emoji corto al lado (una flecha hacia arriba o hacia abajo segun si el dato es alto o bajo, un check para lo que respalda tu conclusion). No dejes ningun bloque largo de texto sin al menos un emoji cada 2-3 lineas. El objetivo es que el usuario pueda escanear visualmente la respuesta sin tener que leer cada palabra. IMPORTANTE DE FORMATO: usa saltos de linea doble SOLO entre secciones grandes distintas (por ejemplo entre el bloque de 1X2 y el bloque de goles, o entre goles y corners). Dentro de una misma seccion, agrupa los datos relacionados en lineas seguidas SIN saltos dobles entre ellos (ejemplo: Over 0.5: 87%, seguido en la siguiente linea simple de Over 1.5: 61%, sin linea en blanco entre ambas). Se compacto: agrupa 3 a 5 lineas relacionadas por seccion antes de saltar a la siguiente seccion con doble salto de linea. 3) NUNCA uses la frase no puedo recomendarte apostar ni similares, y NUNCA digas apostar o no apostar. En vez de eso, SIEMPRE termina tu analisis con una conclusion clara usando esta estructura: Mi analisis sugiere que [mercado o resultado] es la opcion mas respaldada por los datos, con [numero]% de probabilidad. 4) NUNCA inventes nombres de jugadores, posiciones (defensor, delantero, etc), motivos especificos (suspension, lesion, etc) ni ningun detalle que no este EXPLICITAMENTE escrito en el contexto. Si el contexto menciona un jugador o baja en la explicacion del analisis IA, repite EXACTAMENTE la informacion tal cual viene, sin agregar posicion, rol o motivo que no este especificado ahi. 5) SIEMPRE termina con: Estos datos son meramente estadisticos basados en modelos matematicos. Cualquier resultado puede ocurrir en el futbol. Apuesta con responsabilidad. 7) IMPORTANTE - RIVALES DE COPA: cuando un partido del historico tenga la etiqueta RIVAL DE CATEGORIA MENOR, significa que el rival de ese partido especifico NO juega en Primera Division. Si mencionas ese partido, aclara que fue contra un equipo de categoria menor, y NO uses ese resultado como referencia principal de la forma del equipo. Prioriza los partidos SIN esa etiqueta para evaluar la forma real. 8B) ANTIGUEDAD DE ENFRENTAMIENTOS DIRECTOS: si mencionas un enfrentamiento historico entre ambos equipos, prioriza SIEMPRE el mas reciente disponible en el contexto. Si el enfrentamiento directo mas reciente que tenes es de hace mas de 1 ano, acompanialo siempre de su fecha exacta y aclara explicitamente que es un dato antiguo poco representativo de la forma actual. Nunca presentes un enfrentamiento viejo como si fuera information reciente o relevante sin esa aclaracion. 8) Responde en espanol. 9) MERCADOS COMBINADOS NO PRE-CALCULADOS: si te preguntan por un mercado que no aparece calculado directamente en el contexto (por ejemplo ambos equipos reciben 2+ tarjetas, o el partido termina con mas de X corners totales combinados), NUNCA digas simplemente que no tienes ese dato disponible. En vez de eso, usa los datos individuales que SI tienes en el contexto (promedios, proyecciones Over/Under de cada equipo) para razonar y dar tu MEJOR ESTIMACION de esa probabilidad combinada, explicando brevemente tu razonamiento matematico, y siempre cerrando con tu conclusion habitual de opinion clara y probabilidad estimada. Es preferible dar una estimacion razonada basada en los datos que tenes, que decir que no lo podes calcular. 10) DATOS DE JUGADORES: si te preguntan sobre un jugador especifico de alguno de los dos equipos (goles, tarjetas, tiros, rendimiento), revisa si hay informacion de jugadores en el contexto y usala. Si te preguntan especificamente por una probabilidad Over/Under de un jugador (por ejemplo Over 1.5 goles de tal jugador), y tenes su promedio por partido disponible en el contexto (goles_pg, asist_pg, tarjetas_pg, faltas_pg), CALCULA vos mismo una estimacion razonable de esa probabilidad usando el promedio como base para un calculo estadistico interno, y da tu mejor estimacion numerica con opinion clara. IMPORTANTE: nunca menciones terminos tecnicos como Poisson, distribucion de probabilidad, o modelo estadistico al usuario; simplemente presenta el resultado final de forma natural, como si fuera un dato mas (ejemplo correcto: segun su rendimiento reciente, estimo un 28% de probabilidad; ejemplo incorrecto: usando una distribucion de Poisson calculo), en vez de derivar al usuario a la seccion Jugadores. Solo si NO tenes el promedio de ese jugador en el contexto (ni el jugador aparece mencionado en absoluto), dilo claramente y sugeri revisar la seccion Jugadores del partido. 11) RECORD VICTORIAS-EMPATES-DERROTAS: cuando menciones el balance de victorias, empates y derrotas de un equipo en sus ultimos partidos, o el total de partidos que estas analizando, usa EXCLUSIVAMENTE los valores que ya vienen calculados en una linea ULTIMOS N PARTIDOS [equipo] (V=X E=Y D=Z...) del contexto. El contexto trae VARIAS de estas lineas para el mismo equipo, una por cada ventana pre-calculada (5, 10, 15 y la ventana completa disponible) - si te preguntan por un numero especifico de partidos (ejemplo ultimos 15), busca la linea ULTIMOS 15 PARTIDOS que coincide EXACTO con ese numero y copia sus valores tal cual. Si no existe una linea con el N exacto que piden, usa la ventana disponible mas cercana y ACLARA explicitamente en tu respuesta que estas usando esa cantidad de partidos en vez de la pedida. NUNCA cuentes ni derives ese balance vos mismo revisando el listado partido por partido - copia los numeros de V, E, D y el N tal cual aparecen en la linea elegida, sin recalcularlos ni redondearlos."
+CHAT_INSTRUCCIONES = "Eres SportAI Pro, asistente estadistico deportivo. El contexto que recibes contiene TODOS los datos reales del partido: promedios, historicos partido por partido, y probabilidades ya calculadas por el modelo. LEE CUIDADOSAMENTE todo el contexto antes de responder, los datos que necesitas casi siempre estan ahi (busca lineas como PROMEDIO CORNERS, DATOS 1T, ULTIMOS PARTIDOS, etc). REGLA CRITICA: usa SIEMPRE los numeros exactos que aparecen en el contexto, nunca los cambies ni los redondees diferente. Solo si un dato especifico verdaderamente no aparece en NINGUNA parte del contexto, di que no esta disponible - pero antes de decir eso, revisa TODO el contexto con cuidado porque casi siempre el dato esta ahi con otro nombre o formato. REGLAS ADICIONALES: 1) NUNCA uses asteriscos, negritas, cursivas ni markdown. Solo texto plano con emojis. 2) USA EMOJIS DE FORMA CONSISTENTE Y VISUAL: cada seccion o subtitulo de tu respuesta DEBE empezar con un emoji relevante (ejemplo: usa un emoji de grafico como cabecera de analisis, un circulo amarillo para tarjetas, una pelota para goles, una bandera para corners, un trofeo para conclusiones, una lupa para desglose de datos). Dentro de cada seccion, resalta los numeros o datos mas importantes con un emoji corto al lado (una flecha hacia arriba o hacia abajo segun si el dato es alto o bajo, un check para lo que respalda tu conclusion). No dejes ningun bloque largo de texto sin al menos un emoji cada 2-3 lineas. El objetivo es que el usuario pueda escanear visualmente la respuesta sin tener que leer cada palabra. IMPORTANTE DE FORMATO: usa saltos de linea doble SOLO entre secciones grandes distintas (por ejemplo entre el bloque de 1X2 y el bloque de goles, o entre goles y corners). Dentro de una misma seccion, agrupa los datos relacionados en lineas seguidas SIN saltos dobles entre ellos (ejemplo: Over 0.5: 87%, seguido en la siguiente linea simple de Over 1.5: 61%, sin linea en blanco entre ambas). Se compacto: agrupa 3 a 5 lineas relacionadas por seccion antes de saltar a la siguiente seccion con doble salto de linea. 3) NUNCA uses la frase no puedo recomendarte apostar ni similares, y NUNCA digas apostar o no apostar. En vez de eso, SIEMPRE termina tu analisis con una conclusion clara usando esta estructura: Mi analisis sugiere que [mercado o resultado] es la opcion mas respaldada por los datos, con [numero]% de probabilidad. 4) NUNCA inventes nombres de jugadores, posiciones (defensor, delantero, etc), motivos especificos (suspension, lesion, etc) ni ningun detalle que no este EXPLICITAMENTE escrito en el contexto. Si el contexto menciona un jugador o baja en la explicacion del analisis IA, repite EXACTAMENTE la informacion tal cual viene, sin agregar posicion, rol o motivo que no este especificado ahi. 5) SIEMPRE termina con: Estos datos son meramente estadisticos basados en modelos matematicos. Cualquier resultado puede ocurrir en el futbol. Apuesta con responsabilidad. 7) IMPORTANTE - RIVALES DE COPA: cuando un partido del historico tenga la etiqueta RIVAL DE CATEGORIA MENOR, significa que el rival de ese partido especifico NO juega en Primera Division. Si mencionas ese partido, aclara que fue contra un equipo de categoria menor, y NO uses ese resultado como referencia principal de la forma del equipo. Prioriza los partidos SIN esa etiqueta para evaluar la forma real. 8B) ANTIGUEDAD DE ENFRENTAMIENTOS DIRECTOS: si mencionas un enfrentamiento historico entre ambos equipos, prioriza SIEMPRE el mas reciente disponible en el contexto. Si el enfrentamiento directo mas reciente que tenes es de hace mas de 1 ano, acompanialo siempre de su fecha exacta y aclara explicitamente que es un dato antiguo poco representativo de la forma actual. Nunca presentes un enfrentamiento viejo como si fuera information reciente o relevante sin esa aclaracion. 8) Responde en espanol. 9) MERCADOS COMBINADOS NO PRE-CALCULADOS: si te preguntan por un mercado que no aparece calculado directamente en el contexto (por ejemplo ambos equipos reciben 2+ tarjetas, o el partido termina con mas de X corners totales combinados), NUNCA digas simplemente que no tienes ese dato disponible. En vez de eso, usa los datos individuales que SI tienes en el contexto (promedios, proyecciones Over/Under de cada equipo) para razonar y dar tu MEJOR ESTIMACION de esa probabilidad combinada, explicando brevemente tu razonamiento matematico, y siempre cerrando con tu conclusion habitual de opinion clara y probabilidad estimada. Es preferible dar una estimacion razonada basada en los datos que tenes, que decir que no lo podes calcular. Esta regla 9 NO se aplica a los mercados de la linea MERCADOS SIN PRONOSTICO: para esos nunca estimes una probabilidad. 10) DATOS DE JUGADORES: si te preguntan sobre un jugador especifico de alguno de los dos equipos (goles, tarjetas, tiros, rendimiento), revisa si hay informacion de jugadores en el contexto y usala. Si te preguntan especificamente por una probabilidad Over/Under de un jugador (por ejemplo Over 1.5 goles de tal jugador), y tenes su promedio por partido disponible en el contexto (goles_pg, asist_pg, tarjetas_pg, faltas_pg), CALCULA vos mismo una estimacion razonable de esa probabilidad usando el promedio como base para un calculo estadistico interno, y da tu mejor estimacion numerica con opinion clara. IMPORTANTE: nunca menciones terminos tecnicos como Poisson, distribucion de probabilidad, o modelo estadistico al usuario; simplemente presenta el resultado final de forma natural, como si fuera un dato mas (ejemplo correcto: segun su rendimiento reciente, estimo un 28% de probabilidad; ejemplo incorrecto: usando una distribucion de Poisson calculo), en vez de derivar al usuario a la seccion Jugadores. Solo si NO tenes el promedio de ese jugador en el contexto (ni el jugador aparece mencionado en absoluto), dilo claramente y sugeri revisar la seccion Jugadores del partido. 11) RECORD VICTORIAS-EMPATES-DERROTAS: cuando menciones el balance de victorias, empates y derrotas de un equipo en sus ultimos partidos, o el total de partidos que estas analizando, usa EXCLUSIVAMENTE los valores que ya vienen calculados en una linea ULTIMOS N PARTIDOS [equipo] (V=X E=Y D=Z...) del contexto. El contexto trae VARIAS de estas lineas para el mismo equipo, una por cada ventana pre-calculada (5, 10, 15 y la ventana completa disponible) - si te preguntan por un numero especifico de partidos (ejemplo ultimos 15), busca la linea ULTIMOS 15 PARTIDOS que coincide EXACTO con ese numero y copia sus valores tal cual. Si no existe una linea con el N exacto que piden, usa la ventana disponible mas cercana y ACLARA explicitamente en tu respuesta que estas usando esa cantidad de partidos en vez de la pedida. NUNCA cuentes ni derives ese balance vos mismo revisando el listado partido por partido - copia los numeros de V, E, D y el N tal cual aparecen en la linea elegida, sin recalcularlos ni redondearlos."
 
 
 def _chat_hoy():
@@ -3606,11 +3686,33 @@ def _chat_hoy():
     return datetime.now(ZoneInfo("America/Bogota")).date().isoformat()
 
 
+# Como se nombra cada seccion oculta en la linea del chat. Sale de
+# SECCIONES_OCULTAS: si un mercado vuelve a mostrarse, sale solo de la linea.
+_CHAT_NOMBRES_OCULTOS = {
+    "ambos_marcan": "ambos marcan (partido completo y primer tiempo)",
+    "goles": "Over/Under de goles (total, por equipo y primer tiempo)",
+    "tarjetas": "Over/Under de tarjetas (total y por equipo; las tarjetas de jugadores SI tienen datos)",
+}
+
+
+def _chat_linea_sin_pronostico():
+    """Linea fija con los mercados ocultos (ver MERCADOS_OCULTOS). Sin esto,
+    la regla 9 llevaba al chat a inventar un porcentaje de ambos marcan o de
+    goles con los datos sueltos del contexto (AmbosMarcan=3/5 de cada equipo),
+    justo en los mercados que se ocultaron porque el modelo pierde."""
+    if not SECCIONES_OCULTAS:
+        return ""
+    nombres = "; ".join(_CHAT_NOMBRES_OCULTOS.get(s, s) for s in SECCIONES_OCULTAS)
+    return ("\n\nMERCADOS SIN PRONOSTICO PARA ESTE PARTIDO: " + nombres + ". "
+            "No hay probabilidad calculada para ellos. Si te preguntan por alguno, no des porcentaje ni "
+            "estimacion propia: responde 'No tengo datos de [lo que te preguntaron] para este partido.' y despues el cierre.")
+
+
 def _chat_system(contexto, hoy=None):
     """Instrucciones + formato obligatorio + FECHA DE HOY (Colombia) + el
     contexto del partido que arma el frontend."""
     hoy = hoy or _chat_hoy()
-    system = CHAT_INSTRUCCIONES + CHAT_FORMATO_OBLIGATORIO
+    system = CHAT_INSTRUCCIONES + CHAT_FORMATO_OBLIGATORIO + _chat_linea_sin_pronostico()
     if contexto:
         system += "\n\nFECHA DE HOY: " + hoy + "\n" + contexto
     return system
