@@ -1,0 +1,534 @@
+{
+ "n_eleccion": {
+  "filas": 3830,
+  "evaluados": 3480,
+  "sin_variantes_(multiplicador_1)": 43
+ },
+ "eleccion": {
+  "brier_1x2_por_f": {
+   "1.0": 0.6084,
+   "0.5": 0.6087,
+   "0.0": 0.6091
+  },
+  "f_elegido": 1.0
+ },
+ "n_evaluacion": {
+  "filas": 11552,
+  "evaluados": 9319,
+  "sin_variantes_(multiplicador_1)": 100
+ },
+ "actual_f1": {
+  "C1": {
+   "ref": 0.6494,
+   "variante": 0.6188,
+   "mejora": 0.0306,
+   "ic90": [
+    0.02604,
+    0.03534
+   ],
+   "acierto": 0.4792,
+   "acierto_R2": 0.4388,
+   "cumple_brier": true,
+   "cumple_acierto": true,
+   "pasa": true
+  },
+  "C4_1x2": {
+   "n": 101,
+   "prob_media": 0.7413,
+   "tasa_real": 0.8515,
+   "diferencia": 0.1102,
+   "ic90": [
+    0.05556,
+    0.1644
+   ],
+   "pasa": true
+  }
+ },
+ "H_G": {
+  "f": 1.0,
+  "entra": false,
+  "nota": "la eleccion dejo el multiplicador actual"
+ },
+ "sacar_multiplicador": {
+  "aplica": true,
+  "f0_contra_actual": {
+   "ref": 0.6188,
+   "variante": 0.6193,
+   "mejora": -0.0006,
+   "ic90": [
+    -0.00077,
+    -0.0004
+   ]
+  },
+  "C1_con_f0": {
+   "ref": 0.6494,
+   "variante": 0.6193,
+   "mejora": 0.03,
+   "ic90": [
+    0.02555,
+    0.03466
+   ],
+   "acierto": 0.4785,
+   "acierto_R2": 0.4388,
+   "cumple_brier": true,
+   "cumple_acierto": true,
+   "pasa": true
+  },
+  "dentro_de_banda": true,
+  "se_saca": true
+ },
+ "decision": "sacar el multiplicador de goles",
+ "informativo": {
+  "evaluacion": {
+   "f1": {
+    "brier_1x2": 0.6188,
+    "logloss_1x2": 1.0304,
+    "acierto_1x2": 0.4792,
+    "brier_doble_1x": 0.1917,
+    "brier_doble_x2": 0.2313,
+    "brier_hcp_m1": 0.5646,
+    "brier_over25_oculto": 0.2424,
+    "brier_ambos_oculto": 0.2537,
+    "calibracion_local": [
+     {
+      "banda": "0-10",
+      "n": 7,
+      "prob_media": 0.0787,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 307,
+      "prob_media": 0.1667,
+      "tasa_real": 0.1564
+     },
+     {
+      "banda": "20-30",
+      "n": 1528,
+      "prob_media": 0.2595,
+      "tasa_real": 0.2893
+     },
+     {
+      "banda": "30-40",
+      "n": 2992,
+      "prob_media": 0.3532,
+      "tasa_real": 0.3894
+     },
+     {
+      "banda": "40-50",
+      "n": 2563,
+      "prob_media": 0.4463,
+      "tasa_real": 0.4912
+     },
+     {
+      "banda": "50-60",
+      "n": 1360,
+      "prob_media": 0.5425,
+      "tasa_real": 0.5868
+     },
+     {
+      "banda": "60-70",
+      "n": 474,
+      "prob_media": 0.6383,
+      "tasa_real": 0.7025
+     },
+     {
+      "banda": "70-80",
+      "n": 84,
+      "prob_media": 0.7368,
+      "tasa_real": 0.8571
+     },
+     {
+      "banda": "80-90",
+      "n": 4,
+      "prob_media": 0.8137,
+      "tasa_real": 1.0
+     }
+    ]
+   },
+   "f0.5": {
+    "brier_1x2": 0.619,
+    "logloss_1x2": 1.0308,
+    "acierto_1x2": 0.4786,
+    "brier_doble_1x": 0.1919,
+    "brier_doble_x2": 0.2315,
+    "brier_hcp_m1": 0.5649,
+    "brier_over25_oculto": 0.2424,
+    "brier_ambos_oculto": 0.2536,
+    "calibracion_local": [
+     {
+      "banda": "0-10",
+      "n": 7,
+      "prob_media": 0.0801,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 299,
+      "prob_media": 0.1676,
+      "tasa_real": 0.1572
+     },
+     {
+      "banda": "20-30",
+      "n": 1496,
+      "prob_media": 0.2597,
+      "tasa_real": 0.2888
+     },
+     {
+      "banda": "30-40",
+      "n": 3018,
+      "prob_media": 0.3532,
+      "tasa_real": 0.387
+     },
+     {
+      "banda": "40-50",
+      "n": 2588,
+      "prob_media": 0.4465,
+      "tasa_real": 0.493
+     },
+     {
+      "banda": "50-60",
+      "n": 1362,
+      "prob_media": 0.5425,
+      "tasa_real": 0.5859
+     },
+     {
+      "banda": "60-70",
+      "n": 469,
+      "prob_media": 0.638,
+      "tasa_real": 0.7058
+     },
+     {
+      "banda": "70-80",
+      "n": 77,
+      "prob_media": 0.737,
+      "tasa_real": 0.8571
+     },
+     {
+      "banda": "80-90",
+      "n": 3,
+      "prob_media": 0.8175,
+      "tasa_real": 1.0
+     }
+    ]
+   },
+   "f0.0": {
+    "brier_1x2": 0.6193,
+    "logloss_1x2": 1.0313,
+    "acierto_1x2": 0.4785,
+    "brier_doble_1x": 0.192,
+    "brier_doble_x2": 0.2317,
+    "brier_hcp_m1": 0.5652,
+    "brier_over25_oculto": 0.2424,
+    "brier_ambos_oculto": 0.2535,
+    "calibracion_local": [
+     {
+      "banda": "0-10",
+      "n": 7,
+      "prob_media": 0.0815,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 285,
+      "prob_media": 0.1678,
+      "tasa_real": 0.1579
+     },
+     {
+      "banda": "20-30",
+      "n": 1474,
+      "prob_media": 0.2596,
+      "tasa_real": 0.289
+     },
+     {
+      "banda": "30-40",
+      "n": 3034,
+      "prob_media": 0.3532,
+      "tasa_real": 0.3856
+     },
+     {
+      "banda": "40-50",
+      "n": 2613,
+      "prob_media": 0.4466,
+      "tasa_real": 0.4922
+     },
+     {
+      "banda": "50-60",
+      "n": 1382,
+      "prob_media": 0.5429,
+      "tasa_real": 0.5883
+     },
+     {
+      "banda": "60-70",
+      "n": 451,
+      "prob_media": 0.6387,
+      "tasa_real": 0.7051
+     },
+     {
+      "banda": "70-80",
+      "n": 70,
+      "prob_media": 0.7367,
+      "tasa_real": 0.8571
+     },
+     {
+      "banda": "80-90",
+      "n": 3,
+      "prob_media": 0.8175,
+      "tasa_real": 1.0
+     }
+    ]
+   },
+   "por_datos_de_tiros": {
+    "con_tiros_ambos": {
+     "n": 6250,
+     "f1": 0.6141,
+     "f0.5": 0.6145,
+     "f0.0": 0.615
+    },
+    "sin_tiros_alguno": {
+     "n": 3069,
+     "f1": 0.6283,
+     "f0.5": 0.6282,
+     "f0.0": 0.6282
+    }
+   },
+   "multiplicador": {
+    "medio_local": 0.9922,
+    "medio_visitante": 0.9931,
+    "rango_local": [
+     0.95,
+     1.05
+    ],
+    "neutro_ambos": 2856
+   }
+  },
+  "eleccion": {
+   "f1": {
+    "brier_1x2": 0.6084,
+    "logloss_1x2": 1.0162,
+    "acierto_1x2": 0.5009,
+    "brier_doble_1x": 0.1923,
+    "brier_doble_x2": 0.2274,
+    "brier_hcp_m1": 0.5618,
+    "brier_over25_oculto": 0.2482,
+    "brier_ambos_oculto": 0.2532,
+    "calibracion_local": [
+     {
+      "banda": "0-10",
+      "n": 4,
+      "prob_media": 0.0841,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 129,
+      "prob_media": 0.1671,
+      "tasa_real": 0.1473
+     },
+     {
+      "banda": "20-30",
+      "n": 574,
+      "prob_media": 0.2586,
+      "tasa_real": 0.277
+     },
+     {
+      "banda": "30-40",
+      "n": 1039,
+      "prob_media": 0.3531,
+      "tasa_real": 0.3705
+     },
+     {
+      "banda": "40-50",
+      "n": 952,
+      "prob_media": 0.4481,
+      "tasa_real": 0.521
+     },
+     {
+      "banda": "50-60",
+      "n": 545,
+      "prob_media": 0.5467,
+      "tasa_real": 0.6183
+     },
+     {
+      "banda": "60-70",
+      "n": 193,
+      "prob_media": 0.6406,
+      "tasa_real": 0.6839
+     },
+     {
+      "banda": "70-80",
+      "n": 42,
+      "prob_media": 0.7262,
+      "tasa_real": 0.8571
+     },
+     {
+      "banda": "80-90",
+      "n": 2,
+      "prob_media": 0.8293,
+      "tasa_real": 1.0
+     }
+    ]
+   },
+   "f0.5": {
+    "brier_1x2": 0.6087,
+    "logloss_1x2": 1.0168,
+    "acierto_1x2": 0.5003,
+    "brier_doble_1x": 0.1925,
+    "brier_doble_x2": 0.2276,
+    "brier_hcp_m1": 0.5622,
+    "brier_over25_oculto": 0.2483,
+    "brier_ambos_oculto": 0.2532,
+    "calibracion_local": [
+     {
+      "banda": "0-10",
+      "n": 3,
+      "prob_media": 0.0806,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 120,
+      "prob_media": 0.1657,
+      "tasa_real": 0.15
+     },
+     {
+      "banda": "20-30",
+      "n": 569,
+      "prob_media": 0.2581,
+      "tasa_real": 0.2689
+     },
+     {
+      "banda": "30-40",
+      "n": 1047,
+      "prob_media": 0.3532,
+      "tasa_real": 0.3725
+     },
+     {
+      "banda": "40-50",
+      "n": 958,
+      "prob_media": 0.4481,
+      "tasa_real": 0.5188
+     },
+     {
+      "banda": "50-60",
+      "n": 544,
+      "prob_media": 0.5457,
+      "tasa_real": 0.6176
+     },
+     {
+      "banda": "60-70",
+      "n": 201,
+      "prob_media": 0.6393,
+      "tasa_real": 0.6866
+     },
+     {
+      "banda": "70-80",
+      "n": 36,
+      "prob_media": 0.7258,
+      "tasa_real": 0.8889
+     },
+     {
+      "banda": "80-90",
+      "n": 2,
+      "prob_media": 0.8257,
+      "tasa_real": 1.0
+     }
+    ]
+   },
+   "f0.0": {
+    "brier_1x2": 0.6091,
+    "logloss_1x2": 1.0173,
+    "acierto_1x2": 0.5011,
+    "brier_doble_1x": 0.1926,
+    "brier_doble_x2": 0.2278,
+    "brier_hcp_m1": 0.5625,
+    "brier_over25_oculto": 0.2483,
+    "brier_ambos_oculto": 0.2533,
+    "calibracion_local": [
+     {
+      "banda": "0-10",
+      "n": 2,
+      "prob_media": 0.0711,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 119,
+      "prob_media": 0.1663,
+      "tasa_real": 0.1429
+     },
+     {
+      "banda": "20-30",
+      "n": 559,
+      "prob_media": 0.2586,
+      "tasa_real": 0.2683
+     },
+     {
+      "banda": "30-40",
+      "n": 1047,
+      "prob_media": 0.3531,
+      "tasa_real": 0.3715
+     },
+     {
+      "banda": "40-50",
+      "n": 965,
+      "prob_media": 0.4477,
+      "tasa_real": 0.5171
+     },
+     {
+      "banda": "50-60",
+      "n": 555,
+      "prob_media": 0.5453,
+      "tasa_real": 0.6162
+     },
+     {
+      "banda": "60-70",
+      "n": 199,
+      "prob_media": 0.6391,
+      "tasa_real": 0.6935
+     },
+     {
+      "banda": "70-80",
+      "n": 32,
+      "prob_media": 0.7246,
+      "tasa_real": 0.9062
+     },
+     {
+      "banda": "80-90",
+      "n": 2,
+      "prob_media": 0.822,
+      "tasa_real": 1.0
+     }
+    ]
+   },
+   "por_datos_de_tiros": {
+    "con_tiros_ambos": {
+     "n": 2815,
+     "f1": 0.6084,
+     "f0.5": 0.6089,
+     "f0.0": 0.6094
+    },
+    "sin_tiros_alguno": {
+     "n": 665,
+     "f1": 0.6082,
+     "f0.5": 0.6081,
+     "f0.0": 0.6081
+    }
+   },
+   "multiplicador": {
+    "medio_local": 0.9901,
+    "medio_visitante": 0.9906,
+    "rango_local": [
+     0.95,
+     1.05
+    ],
+    "neutro_ambos": 606
+   }
+  },
+  "enmienda1_cache_nombres": {
+   "partidos_comparados": 9319,
+   "cambian": 109,
+   "cambio_max_pt": 32.8612
+  }
+ }
+}
