@@ -42,6 +42,14 @@ class TieneDatosSuficientes(unittest.TestCase):
 
 
 class Top3YCombinadas(unittest.TestCase):
+    # Lo que se prueba es el filtro de datos suficientes, no el de mercados
+    # ocultos: corners se oculta desde el 08/11/2026, asi que aca se lo deja
+    # visible para seguir usandolo de ejemplo de mercado de stats.
+    def setUp(self):
+        p = mock.patch.object(F, "MERCADOS_OCULTOS", F.MERCADOS_OCULTOS - {"corners_ou"})
+        p.start()
+        self.addCleanup(p.stop)
+
     def _mercados(self, fn, stats_a, stats_b):
         return [p["mercado"] for p in fn(sim_base(), None, stats_a, stats_b)]
 
