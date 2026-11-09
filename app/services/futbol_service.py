@@ -177,12 +177,21 @@ Candidato = namedtuple("Candidato", ["nombre", "prob", "mercado", "equipo"])
 # la liga de forma demostrada (Brier 0,2380 contra 0,2320, IC90 de la mejora
 # [-0,0100; -0,0017]). Se esconde el O/U total y por equipo, con la
 # proyeccion. Las tarjetas de jugadores salen de otro modelo y siguen.
-MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou", "tarjetas_ou"})   # ids de Candidato (total y por equipo)
+#
+# Corners (08/11/2026, PREREGISTRO_multiplicador_corners.md,
+# resultados_corners.json): el multiplicador queda como esta, pero el Over 9.5
+# no le gana a la tasa de la liga (C5: Brier 0,2482 contra 0,2478, IC90 de la
+# mejora [-0,0022; +0,0013]) y promete de mas con 70%+ (C4: 73,5% prometido,
+# 60,1% real). Se esconde el O/U total y por equipo, con las proyecciones; en
+# su lugar /partido manda el promedio de la liga (promedio_liga["corners"]).
+MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou", "tarjetas_ou", "corners_ou"})   # ids de Candidato (total y por equipo)
 CLAVES_OCULTAS_PARTIDO = ("prob_ambos_marcan", "goles_proj", "goles_ou",
                           "goles_ou_local", "goles_ou_visitante", "goles_1t",
                           "tarjetas_proj", "tarjetas_local_proj", "tarjetas_visitante_proj",
-                          "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante")
-ANALISIS_OCULTOS = ("ambos_marcan", "goles", "tarjetas")     # claves de analisis_ia
+                          "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante",
+                          "corners_proj", "corners_local_proj", "corners_visitante_proj",
+                          "corners_ou", "corners_ou_local", "corners_ou_visitante")
+ANALISIS_OCULTOS = ("ambos_marcan", "goles", "tarjetas", "corners")     # claves de analisis_ia
 # Lo que el frontend no muestra (secciones de /partido). Se manda en la
 # respuesta para que la seccion se esconda aunque el campo pueda venir null
 # por otro motivo (equipo sin datos suficientes -> "Sin datos").
@@ -2463,7 +2472,24 @@ def promedio_liga_goles(df, liga, ahora=None):
         "over25": round(over, 1), "under25": round(100 - over, 1),
         "ambos_si": round(ambos, 1), "ambos_no": round(100 - ambos, 1),
         "n_partidos": n, "dias": PROMEDIO_LIGA_DIAS,
+        "corners": _promedio_liga_corners(sub),
     }
+
+
+def _promedio_liga_corners(sub):
+    """Over/Under 9.5 corners de la liga sobre los mismos partidos (liga,
+    365 dias, terminados), pero solo los que tienen stats (corners total > 0):
+    la misma regla que R1 de corners en PREREGISTRO_multiplicador_corners.md.
+    None con menos de 50 partidos con stats."""
+    try:
+        co = sub["corners_local"].fillna(0) + sub["corners_visitante"].fillna(0)
+        co = co[co > 0]
+    except Exception:
+        return None
+    if len(co) < PROMEDIO_LIGA_MIN_PARTIDOS:
+        return None
+    over = float((co > 9.5).mean()) * 100
+    return {"over95": round(over, 1), "under95": round(100 - over, 1), "n_partidos": int(len(co))}
 
 
 def get_analisis_partido(local_input, visitante_input, casa=None):
@@ -3682,6 +3708,7 @@ _CHAT_NOMBRES_OCULTOS = {
     "ambos_marcan": "ambos marcan (partido completo y primer tiempo)",
     "goles": "Over/Under de goles (total, por equipo y primer tiempo)",
     "tarjetas": "Over/Under de tarjetas (total y por equipo; las tarjetas de jugadores SI tienen datos)",
+    "corners": "Over/Under de corners (total y por equipo)",
 }
 
 

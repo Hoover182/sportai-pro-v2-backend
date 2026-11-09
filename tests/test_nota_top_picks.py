@@ -321,7 +321,8 @@ class TarjetasOcultas(unittest.TestCase):
             r[k] = None
         salida = A.armar_analisis_ia(r, hechos(), 1, ocultos=F.ANALISIS_OCULTOS)
         self.assertNotIn("tarjetas", salida)
-        self.assertIn("corners", salida)
+        self.assertNotIn("corners", salida)   # oculto desde el 08/11/2026
+        self.assertIn("tiros_arco", salida)
 
     def test_value_bet_manual_de_tarjetas_bloqueada(self):
         res, error = F.calcular_value_bet_manual("A", "B", "tarjetas", 4.5, "over", 2.0)
@@ -330,7 +331,7 @@ class TarjetasOcultas(unittest.TestCase):
         self.assertIn("oculto", error)
 
     def test_secciones_ocultas_para_el_frontend(self):
-        self.assertEqual(F.SECCIONES_OCULTAS, ("ambos_marcan", "goles", "tarjetas"))
+        self.assertEqual(F.SECCIONES_OCULTAS, ("ambos_marcan", "corners", "goles", "tarjetas"))
         for clave in ("tarjetas_proj", "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante"):
             self.assertIn(clave, F.CLAVES_OCULTAS_PARTIDO)
 
