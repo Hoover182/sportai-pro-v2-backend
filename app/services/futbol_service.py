@@ -606,27 +606,17 @@ def simular(df, local, visitante):
         multiplicador_corners = 0.9 + (intensidad_promedio * 0.3)
         multiplicador_corners = max(0.8, min(multiplicador_corners, 1.3))
 
-        # ---- Multiplicador de goles basado en intensidad ofensiva individual ----
-        # A diferencia de corners/tarjetas (ajuste combinado), goles se ajusta
-        # por equipo por separado, porque afecta goles_a y goles_b antes de
-        # simular_partido_futbol(), propagandose de forma coherente a 1X2,
-        # handicap y ambos marcan. Rango mas angosto que corners (+/-10-15%
-        # vs +/-20%) porque un mismo % mueve mas la linea con una media base
-        # mas baja (~2.5 goles totales vs ~9-10 corners totales).
-        multiplicador_goles_local = 0.95 + (intensidad_local * 0.10)
-        multiplicador_goles_local = max(0.9, min(multiplicador_goles_local, 1.15))
-        multiplicador_goles_visitante = 0.95 + (intensidad_visitante * 0.10)
-        multiplicador_goles_visitante = max(0.9, min(multiplicador_goles_visitante, 1.15))
     except Exception:
         multiplicador_tarjetas = 1.0
         multiplicador_corners = 1.0
-        multiplicador_goles_local = 1.0
-        multiplicador_goles_visitante = 1.0
     goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b, atajadas_a, atajadas_b = ajustar_medias_con_rival(
         stats_a, stats_b, h2h, equipo_local=local, equipo_visitante=visitante
     )
-    goles_a = goles_a * multiplicador_goles_local
-    goles_b = goles_b * multiplicador_goles_visitante
+    # Sin multiplicador de goles por intensidad ofensiva (x0,95..x1,05, entro el
+    # 04/08/2026 sin backtest): PREREGISTRO_multiplicador_goles.md, 07/11/2026.
+    # Sacarlo cambia el Brier del 1X2 en -0,0006 (IC90 [-0,0008; -0,0004],
+    # dentro de +-0,0010) y el 1X2 sigue pasando C1. La intensidad se sigue
+    # usando para corners.
     # tarjetas_a + tarjetas_b ya es el mismo total que devolvia
     # ajustar_medias_con_rival() antes del split (Bloque 2 de Fase 2) --
     # el clip de 1.5-8.0 se aplico sobre la suma antes de repartir, ver
