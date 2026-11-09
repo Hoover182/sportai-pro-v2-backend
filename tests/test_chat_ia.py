@@ -33,7 +33,7 @@ def respuesta(status=200, texto="⚽ Ambos marcan SI 52.7% ✅", usage=None, cue
 
 def chatear(resp=None, excepcion=None, clave="xai-prueba", contexto="=== PARTIDO: A vs B ===\nDATOS"):
     out = io.StringIO()
-    with mock.patch.dict(os.environ, {"XAI_API_KEY": clave}), \
+    with mock.patch.dict(os.environ, {"XAI_API_KEY": clave, "CHAT_HABILITADO": "1"}), \
             mock.patch("requests.post", side_effect=excepcion, return_value=resp) as post, redirect_stdout(out):
         res = F.chat_ia(MENSAJES, contexto)
     return res, post, out.getvalue()
@@ -176,6 +176,36 @@ class FallaAmable(unittest.TestCase):
         (texto, err), _, _ = chatear(resp=respuesta(status=402))
         self.assertNotIn("xAI", err)
         self.assertNotIn("402", err)
+
+
+class ChatApagado(unittest.TestCase):
+    """Bandera CHAT_HABILITADO (09/11/2026): apagado por defecto, no llama a xAI."""
+
+    def _chatear(self, entorno):
+        out = io.StringIO()
+        sin_bandera = {k: v for k, v in os.environ.items() if k != "CHAT_HABILITADO"}
+        with mock.patch.dict(os.environ, {**sin_bandera, **entorno}, clear=True), \
+                mock.patch("requests.post") as post, redirect_stdout(out):
+            res = F.chat_ia(MENSAJES, "CTX")
+        return res, post, out.getvalue()
+
+    def test_sin_variable_esta_apagado_aunque_haya_clave(self):
+        (texto, err), post, log = self._chatear({"XAI_API_KEY": "xai-prueba"})
+        self.assertEqual((texto, err), (None, F.CHAT_NO_DISPONIBLE))
+        post.assert_not_called()
+        self.assertIn("CHAT APAGADO", log)
+
+    def test_valores_que_no_lo_prenden(self):
+        for v in ("", "0", "false", "no", "apagado"):
+            with self.subTest(v=v):
+                (_, err), post, _ = self._chatear({"XAI_API_KEY": "xai-prueba", "CHAT_HABILITADO": v})
+                self.assertEqual(err, F.CHAT_NO_DISPONIBLE)
+                post.assert_not_called()
+
+    def test_valores_que_lo_prenden(self):
+        for v in ("1", "true", "TRUE", " si ", "yes"):
+            with self.subTest(v=v), mock.patch.dict(os.environ, {"CHAT_HABILITADO": v}):
+                self.assertTrue(F.chat_habilitado())
 
 
 if __name__ == "__main__":

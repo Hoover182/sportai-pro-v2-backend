@@ -3756,12 +3756,28 @@ def _chat_id_cache(system, contexto="", hoy=None):
     return "chat-" + hashlib.sha256(base.encode("utf-8")).hexdigest()[:32]
 
 
+CHAT_NO_DISPONIBLE = "El chat no está disponible por ahora."
+
+
+def chat_habilitado():
+    """El chat esta apagado salvo que CHAT_HABILITADO valga 1/true/si/yes en
+    el entorno (decision del usuario, 09/11/2026: sin credito de xAI mientras
+    la app no genere ingresos). Apagado, /chat responde CHAT_NO_DISPONIBLE sin
+    llamar a xAI aunque haya clave: el endpoint es publico y sin limite.
+    Para reactivarlo: CHAT_HABILITADO=1 y XAI_API_KEY en Render, y
+    CHAT_IA_HABILITADO = true en el frontend (App.tsx)."""
+    return os.environ.get("CHAT_HABILITADO", "").strip().lower() in ("1", "true", "si", "sí", "yes")
+
+
 def chat_ia(mensajes, contexto=""):
     """Chat IA de un partido con grok-4.3 (razonamiento low). Si xAI falla
     (sin clave, error HTTP, timeout, respuesta vacia) devuelve
     CHAT_ERROR_AMABLE sin exponer el error tecnico: no hay fallback a otro
     proveedor por ahora (decision del usuario, 2026-10-01). Cada pregunta deja
     una linea CHAT en el log con proveedor, tokens y costo."""
+    if not chat_habilitado():
+        print("CHAT APAGADO (CHAT_HABILITADO no esta activo): no se llama a xAI")
+        return None, CHAT_NO_DISPONIBLE
     import requests
     # Espacios, saltos de linea o comillas pegados al cargar la variable en
     # Render rompen el header Authorization (InvalidHeader o HTTP 400).
