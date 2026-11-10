@@ -179,3 +179,20 @@ No cambia nada. Tarjetas sigue oculto.
   pre-registro y la evaluación 2026 ya se vio.
 - Estilo de juego para tiros y backtest de tiros/atajadas: siguen en la
   cola, cada uno con su pre-registro.
+
+## Enmienda 1 (10/11/2026, antes de correr la elección y la evaluación)
+
+La verificación contra `main` actual (6e660fe) **no dio igual** con la base
+como estaba escrita (a821c8f + f = 0,5): en 34 partidos (1-5/10/2026) la
+proyección de tarjetas difirió hasta 0,044 y Over 4.5 hasta 1,2 pt. La causa:
+"lo que cambió en `main` no toca tarjetas" era falso por el azar. Sacar el
+multiplicador de goles (#117) cambia las medias de goles. El muestreo de
+goles consume una cantidad de números al azar que depende de la media, así
+que corre la secuencia que después usa tarjetas.
+
+Arreglo: la base también lleva el multiplicador de goles sacado (el harness
+devuelve 1 en el `min(..., 1.15)` de goles, que es lo que hace `main`). Con
+eso, los 34 partidos dan **exactamente** igual a `main` en
+`tarjetas_totales_proj` y Over 4.5. Nada más cambia: candidatos, datos,
+elección y criterios quedan como arriba. La evaluación de octubre corre hasta
+el 28/10 inclusive.
