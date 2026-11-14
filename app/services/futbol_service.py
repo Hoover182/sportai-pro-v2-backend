@@ -184,18 +184,44 @@ Candidato = namedtuple("Candidato", ["nombre", "prob", "mercado", "equipo"])
 # mejora [-0,0022; +0,0013]) y promete de mas con 70%+ (C4: 73,5% prometido,
 # 60,1% real). Se esconde el O/U total y por equipo, con las proyecciones; en
 # su lugar /partido manda el promedio de la liga (promedio_liga["corners"]).
-MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou", "tarjetas_ou", "corners_ou"})   # ids de Candidato (total y por equipo)
+#
+# Tiros y atajadas (14/11/2026, PREREGISTRO_tiros_atajadas.md,
+# resultados_tiros.json): nueve series, cada una decide sola.
+# - Los tres TOTALES del partido empatan con la tasa de la liga (C5): tiros al
+#   arco O8.5 mejora -0,0013 IC90 [-0,0036; +0,0009]; tiros totales O24.5
+#   -0,0003 [-0,0036; +0,0030]; atajadas O5.5 -0,0019 [-0,0042; +0,0004]. Se
+#   esconde el O/U y la proyeccion del total; /partido manda el promedio de la
+#   liga (promedio_liga["tiros_arco"/"tiros_total"/"atajadas"]).
+# - Atajadas POR EQUIPO prometen de mas con 70%+ (C4: local 74,5% -> 54,9%,
+#   visitante 76,4% -> 66,8%): se esconden sin reemplazo. Con eso atajadas
+#   queda oculto entero (por eso va en MERCADOS_OCULTOS).
+# - Tiros al arco y tiros totales POR EQUIPO pasan C5 y C4: siguen, tambien
+#   en Top Picks. Por eso esos dos van en TOTALES_OCULTOS (solo el total).
+MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou", "tarjetas_ou", "corners_ou", "atajadas_ou"})   # ids de Candidato (total y por equipo)
+TOTALES_OCULTOS = frozenset({"tiros_arco_ou", "tiros_total_ou"})   # ids de Candidato: solo el total (equipo None)
 CLAVES_OCULTAS_PARTIDO = ("prob_ambos_marcan", "goles_proj", "goles_ou",
                           "goles_ou_local", "goles_ou_visitante", "goles_1t",
                           "tarjetas_proj", "tarjetas_local_proj", "tarjetas_visitante_proj",
                           "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante",
                           "corners_proj", "corners_local_proj", "corners_visitante_proj",
-                          "corners_ou", "corners_ou_local", "corners_ou_visitante")
-ANALISIS_OCULTOS = ("ambos_marcan", "goles", "tarjetas", "corners")     # claves de analisis_ia
+                          "corners_ou", "corners_ou_local", "corners_ou_visitante",
+                          "tiros_arco_proj", "tiros_arco_ou", "tiros_total_proj", "tiros_total_ou",
+                          "atajadas_proj", "atajadas_local_proj", "atajadas_visitante_proj",
+                          "atajadas_ou", "atajadas_ou_local", "atajadas_ou_visitante")
+ANALISIS_OCULTOS = ("ambos_marcan", "goles", "tarjetas", "corners",
+                    "tiros_arco", "tiros_total", "atajadas_local", "atajadas_visitante")     # claves de analisis_ia
 # Lo que el frontend no muestra (secciones de /partido). Se manda en la
 # respuesta para que la seccion se esconda aunque el campo pueda venir null
 # por otro motivo (equipo sin datos suficientes -> "Sin datos").
 SECCIONES_OCULTAS = tuple(sorted(m.replace("_ou", "") for m in MERCADOS_OCULTOS))
+# Secciones donde solo se oculta el total: el frontend muestra el promedio de
+# la liga en la vista "total" y deja las vistas por equipo.
+SECCIONES_TOTAL_OCULTO = tuple(sorted(m.replace("_ou", "") for m in TOTALES_OCULTOS))
+
+
+def _candidato_oculto(c):
+    """True si el candidato no puede salir en Top Picks ni combinadas."""
+    return c.mercado in MERCADOS_OCULTOS or (c.mercado in TOTALES_OCULTOS and c.equipo is None)
 
 # Factor del multiplicador de tarjetas (presion/agresividad/clasico):
 # m' = 1 + FACTOR * (m - 1). Elegido 0,5 en jul-dic 2025 y evaluado en 2026
@@ -1295,7 +1321,7 @@ def calcular_top3(sim, fixture_id, stats_a=None, stats_b=None, equipo_local=None
         if equipo_local and equipo_visitante:
             candidatos += _candidatos_equipo(sim, equipo_local, equipo_visitante)
 
-    candidatos = [c for c in candidatos if c.mercado not in MERCADOS_OCULTOS]
+    candidatos = [c for c in candidatos if not _candidato_oculto(c)]
     candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     # fixture_id puede llegar como numpy.float64 (columnas del CSV con NaN
@@ -1498,7 +1524,7 @@ def calcular_picks_combinados(sim, fixture_id, stats_a=None, stats_b=None, equip
         if equipo_local and equipo_visitante:
             candidatos += _candidatos_equipo(sim, equipo_local, equipo_visitante)
 
-    candidatos = [c for c in candidatos if c.mercado not in MERCADOS_OCULTOS]
+    candidatos = [c for c in candidatos if not _candidato_oculto(c)]
     candidatos = sorted(candidatos, key=lambda c: c.prob, reverse=True)
 
     try:
@@ -2473,6 +2499,9 @@ def promedio_liga_goles(df, liga, ahora=None):
         "ambos_si": round(ambos, 1), "ambos_no": round(100 - ambos, 1),
         "n_partidos": n, "dias": PROMEDIO_LIGA_DIAS,
         "corners": _promedio_liga_corners(sub),
+        "tiros_arco": _promedio_liga_stat(sub, "tiros_arco", 8.5),
+        "tiros_total": _promedio_liga_stat(sub, "tiros_total", 24.5),
+        "atajadas": _promedio_liga_stat(sub, "atajadas", 5.5),
     }
 
 
@@ -2490,6 +2519,24 @@ def _promedio_liga_corners(sub):
         return None
     over = float((co > 9.5).mean()) * 100
     return {"over95": round(over, 1), "under95": round(100 - over, 1), "n_partidos": int(len(co))}
+
+
+def _promedio_liga_stat(sub, columna, linea):
+    """Over/Under `linea` del total del partido de `columna` (tiros_arco,
+    tiros_total, atajadas) en la liga, sobre los mismos partidos que el resto
+    (liga, 365 dias, terminados), solo con stats verificadas (corners total
+    > 0) y con los dos datos: la misma regla que R1 en
+    PREREGISTRO_tiros_atajadas.md. None con menos de 50 partidos."""
+    try:
+        con_stats = (sub["corners_local"].fillna(0) + sub["corners_visitante"].fillna(0)) > 0
+        x = sub[f"{columna}_local"] + sub[f"{columna}_visitante"]
+        x = x[con_stats & sub[f"{columna}_local"].notna() & sub[f"{columna}_visitante"].notna()]
+    except Exception:
+        return None
+    if len(x) < PROMEDIO_LIGA_MIN_PARTIDOS:
+        return None
+    over = float((x > linea).mean()) * 100
+    return {"linea": linea, "over": round(over, 1), "under": round(100 - over, 1), "n_partidos": int(len(x))}
 
 
 def get_analisis_partido(local_input, visitante_input, casa=None):
@@ -2826,6 +2873,7 @@ def get_analisis_partido(local_input, visitante_input, casa=None):
     for clave_oculta in CLAVES_OCULTAS_PARTIDO:
         resultado[clave_oculta] = None
     resultado["mercados_ocultos"] = list(SECCIONES_OCULTAS)
+    resultado["totales_ocultos"] = list(SECCIONES_TOTAL_OCULTO)
     # Promedio historico de la liga para O/U 2.5 y ambos marcan: se muestra
     # en lugar del pronostico oculto, como dato de la liga y no del partido.
     # Campo aparte: no entra en top picks, value bets, tracking, analisis IA
@@ -3709,6 +3757,12 @@ _CHAT_NOMBRES_OCULTOS = {
     "goles": "Over/Under de goles (total, por equipo y primer tiempo)",
     "tarjetas": "Over/Under de tarjetas (total y por equipo; las tarjetas de jugadores SI tienen datos)",
     "corners": "Over/Under de corners (total y por equipo)",
+    "atajadas": "Over/Under de atajadas (total y por arquero)",
+}
+# Mercados con el total oculto y las lineas por equipo visibles.
+_CHAT_NOMBRES_TOTAL_OCULTO = {
+    "tiros_arco": "Over/Under de tiros al arco del TOTAL del partido (por equipo SI hay pronostico)",
+    "tiros_total": "Over/Under de tiros totales del TOTAL del partido (por equipo SI hay pronostico)",
 }
 
 
@@ -3717,9 +3771,10 @@ def _chat_linea_sin_pronostico():
     la regla 9 llevaba al chat a inventar un porcentaje de ambos marcan o de
     goles con los datos sueltos del contexto (AmbosMarcan=3/5 de cada equipo),
     justo en los mercados que se ocultaron porque el modelo pierde."""
-    if not SECCIONES_OCULTAS:
+    if not SECCIONES_OCULTAS and not SECCIONES_TOTAL_OCULTO:
         return ""
-    nombres = "; ".join(_CHAT_NOMBRES_OCULTOS.get(s, s) for s in SECCIONES_OCULTAS)
+    nombres = "; ".join([_CHAT_NOMBRES_OCULTOS.get(s, s) for s in SECCIONES_OCULTAS]
+                        + [_CHAT_NOMBRES_TOTAL_OCULTO.get(s, s) for s in SECCIONES_TOTAL_OCULTO])
     return ("\n\nMERCADOS SIN PRONOSTICO PARA ESTE PARTIDO: " + nombres + ". "
             "No hay probabilidad calculada para ellos. Si te preguntan por alguno, no des porcentaje ni "
             "estimacion propia: responde 'No tengo datos de [lo que te preguntaron] para este partido.' y despues el cierre.")

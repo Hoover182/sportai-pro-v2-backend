@@ -89,6 +89,38 @@ class PromedioLigaCorners(unittest.TestCase):
         self.assertIn("Over/Under de corners", F._chat_linea_sin_pronostico())
 
 
+class PromedioLigaTirosAtajadas(unittest.TestCase):
+    def _df(self, n, arco, tiros, ataj, corners=(6, 5)):
+        d = partidos(n, corners=corners)
+        d["tiros_arco_local"], d["tiros_arco_visitante"] = float(arco[0]), float(arco[1])
+        d["tiros_total_local"], d["tiros_total_visitante"] = float(tiros[0]), float(tiros[1])
+        d["atajadas_local"], d["atajadas_visitante"] = float(ataj[0]), float(ataj[1])
+        return d
+
+    def test_lineas_del_pre_registro(self):
+        df = pd.concat([self._df(30, (5, 4), (14, 11), (3, 3)), self._df(30, (4, 4), (12, 12), (2, 3))],
+                       ignore_index=True)
+        p = F.promedio_liga_goles(df, "Liga Prueba", ahora=AHORA)
+        self.assertEqual(p["tiros_arco"], {"linea": 8.5, "over": 50.0, "under": 50.0, "n_partidos": 60})
+        self.assertEqual(p["tiros_total"], {"linea": 24.5, "over": 50.0, "under": 50.0, "n_partidos": 60})
+        self.assertEqual(p["atajadas"], {"linea": 5.5, "over": 50.0, "under": 50.0, "n_partidos": 60})
+
+    def test_sin_stats_o_sin_dato_no_cuentan(self):
+        df = pd.concat([self._df(50, (5, 4), (14, 11), (3, 3)),
+                        self._df(20, (5, 4), (14, 11), (3, 3), corners=(0, 0))], ignore_index=True)
+        df.loc[:9, "atajadas_local"] = float("nan")
+        p = F.promedio_liga_goles(df, "Liga Prueba", ahora=AHORA)
+        self.assertEqual(p["tiros_arco"]["n_partidos"], 50)
+        self.assertIsNone(p["atajadas"])   # 40 con el dato < 50
+
+    def test_ocultos_en_la_app(self):
+        self.assertIn("atajadas", F.SECCIONES_OCULTAS)
+        self.assertEqual(F.SECCIONES_TOTAL_OCULTO, ("tiros_arco", "tiros_total"))
+        linea = F._chat_linea_sin_pronostico()
+        self.assertIn("Over/Under de atajadas", linea)
+        self.assertIn("tiros al arco del TOTAL", linea)
+
+
 class ChatSinPronostico(unittest.TestCase):
     def test_linea_fija_con_los_mercados_ocultos(self):
         system = F._chat_system("CTX", hoy="2026-11-07")
@@ -101,12 +133,13 @@ class ChatSinPronostico(unittest.TestCase):
         self.assertLess(system.index("MERCADOS SIN PRONOSTICO PARA"), system.index("FECHA DE HOY"))
 
     def test_sin_ocultos_no_hay_linea(self):
-        original = F.SECCIONES_OCULTAS
+        original, original_t = F.SECCIONES_OCULTAS, F.SECCIONES_TOTAL_OCULTO
         try:
             F.SECCIONES_OCULTAS = ()
+            F.SECCIONES_TOTAL_OCULTO = ()
             self.assertEqual(F._chat_linea_sin_pronostico(), "")
         finally:
-            F.SECCIONES_OCULTAS = original
+            F.SECCIONES_OCULTAS, F.SECCIONES_TOTAL_OCULTO = original, original_t
 
     def test_promedio_liga_no_entra_al_chat(self):
         self.assertNotIn("promedio", F._chat_linea_sin_pronostico().lower())
