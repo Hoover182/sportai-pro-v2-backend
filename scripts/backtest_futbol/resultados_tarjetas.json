@@ -1,0 +1,888 @@
+{
+ "n_eleccion": {
+  "filas": 3830,
+  "evaluados": 2790
+ },
+ "eleccion": {
+  "brier_o4.5_por_f": {
+   "1.0": 0.2425,
+   "0.5": 0.2384,
+   "0.0": 0.2411
+  },
+  "f_elegido": 0.5
+ },
+ "n_evaluacion": {
+  "filas": 5699,
+  "evaluados": 2994
+ },
+ "H_T": {
+  "f": 0.5,
+  "o4.5": {
+   "ref": 0.2497,
+   "variante": 0.238,
+   "mejora": 0.0117,
+   "ic90": [
+    0.00978,
+    0.01365
+   ]
+  },
+  "o3.5": {
+   "ref": 0.2429,
+   "variante": 0.2366,
+   "mejora": 0.0063,
+   "ic90": [
+    0.00486,
+    0.00779
+   ]
+  },
+  "o5.5": {
+   "ref": 0.2065,
+   "variante": 0.1936,
+   "mejora": 0.013,
+   "ic90": [
+    0.01166,
+    0.01438
+   ]
+  },
+  "entra": true
+ },
+ "modelo_final": {
+  "f": 0.5
+ },
+ "mercado_tarjetas": {
+  "C5": {
+   "ref": 0.232,
+   "variante": 0.238,
+   "mejora": -0.006,
+   "ic90": [
+    -0.01002,
+    -0.00166
+   ],
+   "pasa": false
+  },
+  "C4_tarjetas": {
+   "n": 285,
+   "prob_media": 0.7477,
+   "tasa_real": 0.7228,
+   "diferencia": -0.0249,
+   "ic90": [
+    -0.07313,
+    0.02994
+   ],
+   "pasa": true
+  },
+  "sigue_visible": false
+ },
+ "informativo": {
+  "evaluacion": {
+   "f1": {
+    "proyeccion_media": 5.1941,
+    "sesgo_medio": 1.0435,
+    "brier_o2.5": 0.1858,
+    "brier_o3.5": 0.2429,
+    "brier_o4.5": 0.2497,
+    "brier_o5.5": 0.2065,
+    "brier_o6.5": 0.1435,
+    "brier_o7.5": 0.0851,
+    "brier_l0.5": 0.1146,
+    "brier_l1.5": 0.2392,
+    "brier_l2.5": 0.2232,
+    "brier_l3.5": 0.1297,
+    "brier_v0.5": 0.0988,
+    "brier_v1.5": 0.227,
+    "brier_v2.5": 0.2412,
+    "brier_v3.5": 0.1575,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 25,
+      "prob_media": 0.172,
+      "tasa_real": 0.28
+     },
+     {
+      "banda": "20-30",
+      "n": 135,
+      "prob_media": 0.2618,
+      "tasa_real": 0.237
+     },
+     {
+      "banda": "30-40",
+      "n": 356,
+      "prob_media": 0.3596,
+      "tasa_real": 0.3174
+     },
+     {
+      "banda": "40-50",
+      "n": 634,
+      "prob_media": 0.4533,
+      "tasa_real": 0.3297
+     },
+     {
+      "banda": "50-60",
+      "n": 831,
+      "prob_media": 0.5515,
+      "tasa_real": 0.3875
+     },
+     {
+      "banda": "60-70",
+      "n": 660,
+      "prob_media": 0.6471,
+      "tasa_real": 0.4742
+     },
+     {
+      "banda": "70-80",
+      "n": 344,
+      "prob_media": 0.735,
+      "tasa_real": 0.6047
+     },
+     {
+      "banda": "80-90",
+      "n": 8,
+      "prob_media": 0.8459,
+      "tasa_real": 0.625
+     }
+    ]
+   },
+   "f0.5": {
+    "proyeccion_media": 4.8148,
+    "sesgo_medio": 0.6642,
+    "brier_o2.5": 0.1831,
+    "brier_o3.5": 0.2366,
+    "brier_o4.5": 0.238,
+    "brier_o5.5": 0.1936,
+    "brier_o6.5": 0.1309,
+    "brier_o7.5": 0.0748,
+    "brier_l0.5": 0.1145,
+    "brier_l1.5": 0.2356,
+    "brier_l2.5": 0.2149,
+    "brier_l3.5": 0.1214,
+    "brier_v0.5": 0.0989,
+    "brier_v1.5": 0.2248,
+    "brier_v2.5": 0.2347,
+    "brier_v3.5": 0.149,
+    "calibracion_o4.5": [
+     {
+      "banda": "0-10",
+      "n": 1,
+      "prob_media": 0.0938,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 38,
+      "prob_media": 0.1684,
+      "tasa_real": 0.1842
+     },
+     {
+      "banda": "20-30",
+      "n": 191,
+      "prob_media": 0.2596,
+      "tasa_real": 0.2565
+     },
+     {
+      "banda": "30-40",
+      "n": 539,
+      "prob_media": 0.3534,
+      "tasa_real": 0.3154
+     },
+     {
+      "banda": "40-50",
+      "n": 829,
+      "prob_media": 0.4533,
+      "tasa_real": 0.3498
+     },
+     {
+      "banda": "50-60",
+      "n": 785,
+      "prob_media": 0.5486,
+      "tasa_real": 0.4357
+     },
+     {
+      "banda": "60-70",
+      "n": 557,
+      "prob_media": 0.6494,
+      "tasa_real": 0.5745
+     },
+     {
+      "banda": "70-80",
+      "n": 54,
+      "prob_media": 0.7125,
+      "tasa_real": 0.5741
+     }
+    ]
+   },
+   "f0.0": {
+    "proyeccion_media": 4.4355,
+    "sesgo_medio": 0.2849,
+    "brier_o2.5": 0.1823,
+    "brier_o3.5": 0.2342,
+    "brier_o4.5": 0.2315,
+    "brier_o5.5": 0.1863,
+    "brier_o6.5": 0.1232,
+    "brier_o7.5": 0.0685,
+    "brier_l0.5": 0.1151,
+    "brier_l1.5": 0.2347,
+    "brier_l2.5": 0.21,
+    "brier_l3.5": 0.116,
+    "brier_v0.5": 0.0998,
+    "brier_v1.5": 0.2251,
+    "brier_v2.5": 0.2316,
+    "brier_v3.5": 0.1439,
+    "calibracion_o4.5": [
+     {
+      "banda": "0-10",
+      "n": 3,
+      "prob_media": 0.0921,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 75,
+      "prob_media": 0.1705,
+      "tasa_real": 0.1733
+     },
+     {
+      "banda": "20-30",
+      "n": 349,
+      "prob_media": 0.2638,
+      "tasa_real": 0.3123
+     },
+     {
+      "banda": "30-40",
+      "n": 736,
+      "prob_media": 0.3533,
+      "tasa_real": 0.3179
+     },
+     {
+      "banda": "40-50",
+      "n": 928,
+      "prob_media": 0.4477,
+      "tasa_real": 0.3955
+     },
+     {
+      "banda": "50-60",
+      "n": 638,
+      "prob_media": 0.545,
+      "tasa_real": 0.5016
+     },
+     {
+      "banda": "60-70",
+      "n": 265,
+      "prob_media": 0.6241,
+      "tasa_real": 0.6264
+     }
+    ]
+   },
+   "p0.0": {
+    "proyeccion_media": 4.7591,
+    "sesgo_medio": 0.6069,
+    "brier_o2.5": NaN,
+    "brier_o3.5": NaN,
+    "brier_o4.5": NaN,
+    "brier_o5.5": NaN,
+    "brier_o6.5": NaN,
+    "brier_o7.5": NaN,
+    "brier_l0.5": 0.1147,
+    "brier_l1.5": 0.2355,
+    "brier_l2.5": 0.2144,
+    "brier_l3.5": 0.1213,
+    "brier_v0.5": 0.0987,
+    "brier_v1.5": 0.2243,
+    "brier_v2.5": 0.2335,
+    "brier_v3.5": 0.148,
+    "calibracion_o4.5": [
+     {
+      "banda": "0-10",
+      "n": 3,
+      "prob_media": 0.0952,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "10-20",
+      "n": 44,
+      "prob_media": 0.1705,
+      "tasa_real": 0.1818
+     },
+     {
+      "banda": "20-30",
+      "n": 213,
+      "prob_media": 0.2614,
+      "tasa_real": 0.2864
+     },
+     {
+      "banda": "30-40",
+      "n": 547,
+      "prob_media": 0.3515,
+      "tasa_real": 0.3272
+     },
+     {
+      "banda": "40-50",
+      "n": 867,
+      "prob_media": 0.4518,
+      "tasa_real": 0.3437
+     },
+     {
+      "banda": "50-60",
+      "n": 726,
+      "prob_media": 0.5487,
+      "tasa_real": 0.4573
+     },
+     {
+      "banda": "60-70",
+      "n": 538,
+      "prob_media": 0.6512,
+      "tasa_real": 0.5669
+     },
+     {
+      "banda": "70-80",
+      "n": 11,
+      "prob_media": 0.7229,
+      "tasa_real": 0.7273
+     },
+     {
+      "banda": "80-90",
+      "n": 8,
+      "prob_media": 0.8307,
+      "tasa_real": 0.625
+     }
+    ]
+   },
+   "p0.5": {
+    "proyeccion_media": 4.9824,
+    "sesgo_medio": 0.8303,
+    "brier_o2.5": NaN,
+    "brier_o3.5": NaN,
+    "brier_o4.5": NaN,
+    "brier_o5.5": NaN,
+    "brier_o6.5": NaN,
+    "brier_o7.5": NaN,
+    "brier_l0.5": 0.1145,
+    "brier_l1.5": 0.237,
+    "brier_l2.5": 0.2184,
+    "brier_l3.5": 0.1254,
+    "brier_v0.5": 0.0985,
+    "brier_v1.5": 0.2252,
+    "brier_v2.5": 0.2367,
+    "brier_v3.5": 0.1523,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 32,
+      "prob_media": 0.1687,
+      "tasa_real": 0.2188
+     },
+     {
+      "banda": "20-30",
+      "n": 149,
+      "prob_media": 0.2586,
+      "tasa_real": 0.2483
+     },
+     {
+      "banda": "30-40",
+      "n": 463,
+      "prob_media": 0.3551,
+      "tasa_real": 0.3045
+     },
+     {
+      "banda": "40-50",
+      "n": 722,
+      "prob_media": 0.4536,
+      "tasa_real": 0.3296
+     },
+     {
+      "banda": "50-60",
+      "n": 803,
+      "prob_media": 0.5476,
+      "tasa_real": 0.4309
+     },
+     {
+      "banda": "60-70",
+      "n": 578,
+      "prob_media": 0.6452,
+      "tasa_real": 0.5035
+     },
+     {
+      "banda": "70-80",
+      "n": 201,
+      "prob_media": 0.7181,
+      "tasa_real": 0.6517
+     },
+     {
+      "banda": "80-90",
+      "n": 8,
+      "prob_media": 0.8449,
+      "tasa_real": 0.625
+     }
+    ]
+   },
+   "a0.0": {
+    "proyeccion_media": 4.8936,
+    "sesgo_medio": 0.7415,
+    "brier_o2.5": NaN,
+    "brier_o3.5": NaN,
+    "brier_o4.5": NaN,
+    "brier_o5.5": NaN,
+    "brier_o6.5": NaN,
+    "brier_o7.5": NaN,
+    "brier_l0.5": 0.1147,
+    "brier_l1.5": 0.2366,
+    "brier_l2.5": 0.2166,
+    "brier_l3.5": 0.1231,
+    "brier_v0.5": 0.0987,
+    "brier_v1.5": 0.2252,
+    "brier_v2.5": 0.2358,
+    "brier_v3.5": 0.1504,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 33,
+      "prob_media": 0.1697,
+      "tasa_real": 0.2121
+     },
+     {
+      "banda": "20-30",
+      "n": 165,
+      "prob_media": 0.2591,
+      "tasa_real": 0.2667
+     },
+     {
+      "banda": "30-40",
+      "n": 500,
+      "prob_media": 0.3562,
+      "tasa_real": 0.294
+     },
+     {
+      "banda": "40-50",
+      "n": 755,
+      "prob_media": 0.4523,
+      "tasa_real": 0.3497
+     },
+     {
+      "banda": "50-60",
+      "n": 829,
+      "prob_media": 0.5471,
+      "tasa_real": 0.4355
+     },
+     {
+      "banda": "60-70",
+      "n": 555,
+      "prob_media": 0.6467,
+      "tasa_real": 0.5279
+     },
+     {
+      "banda": "70-80",
+      "n": 113,
+      "prob_media": 0.7152,
+      "tasa_real": 0.6637
+     },
+     {
+      "banda": "80-90",
+      "n": 7,
+      "prob_media": 0.8379,
+      "tasa_real": 0.7143
+     }
+    ]
+   },
+   "a0.5": {
+    "proyeccion_media": 5.0494,
+    "sesgo_medio": 0.8973,
+    "brier_o2.5": NaN,
+    "brier_o3.5": NaN,
+    "brier_o4.5": NaN,
+    "brier_o5.5": NaN,
+    "brier_o6.5": NaN,
+    "brier_o7.5": NaN,
+    "brier_l0.5": 0.1146,
+    "brier_l1.5": 0.2378,
+    "brier_l2.5": 0.2199,
+    "brier_l3.5": 0.1265,
+    "brier_v0.5": 0.0986,
+    "brier_v1.5": 0.2259,
+    "brier_v2.5": 0.2383,
+    "brier_v3.5": 0.1537,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 28,
+      "prob_media": 0.1705,
+      "tasa_real": 0.25
+     },
+     {
+      "banda": "20-30",
+      "n": 141,
+      "prob_media": 0.2599,
+      "tasa_real": 0.234
+     },
+     {
+      "banda": "30-40",
+      "n": 414,
+      "prob_media": 0.3571,
+      "tasa_real": 0.314
+     },
+     {
+      "banda": "40-50",
+      "n": 689,
+      "prob_media": 0.4518,
+      "tasa_real": 0.3324
+     },
+     {
+      "banda": "50-60",
+      "n": 835,
+      "prob_media": 0.5486,
+      "tasa_real": 0.412
+     },
+     {
+      "banda": "60-70",
+      "n": 598,
+      "prob_media": 0.6446,
+      "tasa_real": 0.495
+     },
+     {
+      "banda": "70-80",
+      "n": 244,
+      "prob_media": 0.7236,
+      "tasa_real": 0.623
+     },
+     {
+      "banda": "80-90",
+      "n": 8,
+      "prob_media": 0.8406,
+      "tasa_real": 0.625
+     }
+    ]
+   },
+   "c0.0": {
+    "proyeccion_media": 5.1961,
+    "sesgo_medio": 1.044,
+    "brier_o2.5": NaN,
+    "brier_o3.5": NaN,
+    "brier_o4.5": NaN,
+    "brier_o5.5": NaN,
+    "brier_o6.5": NaN,
+    "brier_o7.5": NaN,
+    "brier_l0.5": 0.1148,
+    "brier_l1.5": 0.2396,
+    "brier_l2.5": 0.2237,
+    "brier_l3.5": 0.13,
+    "brier_v0.5": 0.0985,
+    "brier_v1.5": 0.227,
+    "brier_v2.5": 0.2412,
+    "brier_v3.5": 0.1575,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 24,
+      "prob_media": 0.1737,
+      "tasa_real": 0.2917
+     },
+     {
+      "banda": "20-30",
+      "n": 123,
+      "prob_media": 0.2614,
+      "tasa_real": 0.2439
+     },
+     {
+      "banda": "30-40",
+      "n": 353,
+      "prob_media": 0.3595,
+      "tasa_real": 0.3173
+     },
+     {
+      "banda": "40-50",
+      "n": 624,
+      "prob_media": 0.4532,
+      "tasa_real": 0.3285
+     },
+     {
+      "banda": "50-60",
+      "n": 829,
+      "prob_media": 0.5515,
+      "tasa_real": 0.3896
+     },
+     {
+      "banda": "60-70",
+      "n": 661,
+      "prob_media": 0.6472,
+      "tasa_real": 0.4766
+     },
+     {
+      "banda": "70-80",
+      "n": 343,
+      "prob_media": 0.7346,
+      "tasa_real": 0.5977
+     }
+    ]
+   },
+   "c0.5": {
+    "proyeccion_media": 5.201,
+    "sesgo_medio": 1.0489,
+    "brier_o2.5": NaN,
+    "brier_o3.5": NaN,
+    "brier_o4.5": NaN,
+    "brier_o5.5": NaN,
+    "brier_o6.5": NaN,
+    "brier_o7.5": NaN,
+    "brier_l0.5": 0.1148,
+    "brier_l1.5": 0.2395,
+    "brier_l2.5": 0.2237,
+    "brier_l3.5": 0.1301,
+    "brier_v0.5": 0.0985,
+    "brier_v1.5": 0.227,
+    "brier_v2.5": 0.2411,
+    "brier_v3.5": 0.1575,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 24,
+      "prob_media": 0.1737,
+      "tasa_real": 0.2917
+     },
+     {
+      "banda": "20-30",
+      "n": 123,
+      "prob_media": 0.2614,
+      "tasa_real": 0.2439
+     },
+     {
+      "banda": "30-40",
+      "n": 353,
+      "prob_media": 0.3595,
+      "tasa_real": 0.3173
+     },
+     {
+      "banda": "40-50",
+      "n": 623,
+      "prob_media": 0.4532,
+      "tasa_real": 0.3291
+     },
+     {
+      "banda": "50-60",
+      "n": 827,
+      "prob_media": 0.5514,
+      "tasa_real": 0.3869
+     },
+     {
+      "banda": "60-70",
+      "n": 660,
+      "prob_media": 0.6476,
+      "tasa_real": 0.4773
+     },
+     {
+      "banda": "70-80",
+      "n": 342,
+      "prob_media": 0.7348,
+      "tasa_real": 0.5965
+     },
+     {
+      "banda": "80-90",
+      "n": 5,
+      "prob_media": 0.8186,
+      "tasa_real": 0.8
+     }
+    ]
+   }
+  },
+  "eleccion": {
+   "f1": {
+    "proyeccion_media": 5.3976,
+    "sesgo_medio": 0.7252,
+    "brier_o2.5": 0.1411,
+    "brier_o3.5": 0.2112,
+    "brier_o4.5": 0.2425,
+    "brier_o5.5": 0.2197,
+    "brier_o6.5": 0.17,
+    "brier_o7.5": 0.1108,
+    "brier_l0.5": 0.0933,
+    "brier_l1.5": 0.2154,
+    "brier_l2.5": 0.2295,
+    "brier_l3.5": 0.1528,
+    "brier_v0.5": 0.0714,
+    "brier_v1.5": 0.196,
+    "brier_v2.5": 0.2442,
+    "brier_v3.5": 0.1797,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 5,
+      "prob_media": 0.1657,
+      "tasa_real": 0.0
+     },
+     {
+      "banda": "20-30",
+      "n": 54,
+      "prob_media": 0.2635,
+      "tasa_real": 0.1667
+     },
+     {
+      "banda": "30-40",
+      "n": 263,
+      "prob_media": 0.3603,
+      "tasa_real": 0.3384
+     },
+     {
+      "banda": "40-50",
+      "n": 565,
+      "prob_media": 0.4532,
+      "tasa_real": 0.4159
+     },
+     {
+      "banda": "50-60",
+      "n": 710,
+      "prob_media": 0.5509,
+      "tasa_real": 0.5042
+     },
+     {
+      "banda": "60-70",
+      "n": 723,
+      "prob_media": 0.6466,
+      "tasa_real": 0.5436
+     },
+     {
+      "banda": "70-80",
+      "n": 453,
+      "prob_media": 0.7368,
+      "tasa_real": 0.6733
+     },
+     {
+      "banda": "80-90",
+      "n": 14,
+      "prob_media": 0.8479,
+      "tasa_real": 0.6429
+     }
+    ]
+   },
+   "f0.5": {
+    "proyeccion_media": 4.9688,
+    "sesgo_medio": 0.2964,
+    "brier_o2.5": 0.142,
+    "brier_o3.5": 0.2105,
+    "brier_o4.5": 0.2384,
+    "brier_o5.5": 0.2119,
+    "brier_o6.5": 0.1606,
+    "brier_o7.5": 0.1016,
+    "brier_l0.5": 0.0939,
+    "brier_l1.5": 0.2157,
+    "brier_l2.5": 0.224,
+    "brier_l3.5": 0.1463,
+    "brier_v0.5": 0.0723,
+    "brier_v1.5": 0.1983,
+    "brier_v2.5": 0.2414,
+    "brier_v3.5": 0.1736,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 16,
+      "prob_media": 0.1758,
+      "tasa_real": 0.125
+     },
+     {
+      "banda": "20-30",
+      "n": 109,
+      "prob_media": 0.2662,
+      "tasa_real": 0.2661
+     },
+     {
+      "banda": "30-40",
+      "n": 457,
+      "prob_media": 0.357,
+      "tasa_real": 0.3632
+     },
+     {
+      "banda": "40-50",
+      "n": 686,
+      "prob_media": 0.4513,
+      "tasa_real": 0.4869
+     },
+     {
+      "banda": "50-60",
+      "n": 796,
+      "prob_media": 0.5498,
+      "tasa_real": 0.5113
+     },
+     {
+      "banda": "60-70",
+      "n": 636,
+      "prob_media": 0.6511,
+      "tasa_real": 0.6274
+     },
+     {
+      "banda": "70-80",
+      "n": 89,
+      "prob_media": 0.7135,
+      "tasa_real": 0.7079
+     }
+    ]
+   },
+   "f0.0": {
+    "proyeccion_media": 4.54,
+    "sesgo_medio": -0.1324,
+    "brier_o2.5": 0.146,
+    "brier_o3.5": 0.2154,
+    "brier_o4.5": 0.2411,
+    "brier_o5.5": 0.2111,
+    "brier_o6.5": 0.1574,
+    "brier_o7.5": 0.0972,
+    "brier_l0.5": 0.0953,
+    "brier_l1.5": 0.2193,
+    "brier_l2.5": 0.2228,
+    "brier_l3.5": 0.1432,
+    "brier_v0.5": 0.0742,
+    "brier_v1.5": 0.2042,
+    "brier_v2.5": 0.2431,
+    "brier_v3.5": 0.1714,
+    "calibracion_o4.5": [
+     {
+      "banda": "10-20",
+      "n": 28,
+      "prob_media": 0.1667,
+      "tasa_real": 0.1071
+     },
+     {
+      "banda": "20-30",
+      "n": 265,
+      "prob_media": 0.2621,
+      "tasa_real": 0.3132
+     },
+     {
+      "banda": "30-40",
+      "n": 688,
+      "prob_media": 0.3535,
+      "tasa_real": 0.436
+     },
+     {
+      "banda": "40-50",
+      "n": 789,
+      "prob_media": 0.4504,
+      "tasa_real": 0.5019
+     },
+     {
+      "banda": "50-60",
+      "n": 707,
+      "prob_media": 0.5452,
+      "tasa_real": 0.5728
+     },
+     {
+      "banda": "60-70",
+      "n": 311,
+      "prob_media": 0.6232,
+      "tasa_real": 0.6849
+     }
+    ]
+   }
+  },
+  "multiplicador_medio_evaluacion": 1.1703,
+  "tarjetas_reales_medias_evaluacion": 4.1506,
+  "dispersion_real_var_sobre_media": 1.1441,
+  "c4_con_f0.0": {
+   "n": 427,
+   "prob_media": 0.7538,
+   "tasa_real": 0.7143,
+   "diferencia": -0.0395,
+   "ic90": [
+    -0.07671,
+    0.00173
+   ],
+   "pasa": true
+  }
+ }
+}
