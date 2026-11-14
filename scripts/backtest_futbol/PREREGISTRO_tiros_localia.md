@@ -198,3 +198,35 @@ de b̂.
   posesión de jul-2025 a jul-2026.
 - Atajadas: siguen ocultas; no las toca esta corrección.
 - Corrección por liga (un b̂ por liga): no; un único b̂ global por serie.
+
+## Enmienda 1 (14/11/2026, antes de medir la elección y de correr)
+
+La verificación 3 falló: con +1 tiro al local, el visitante también cambió en
+589 de 600 partidos. No es el modelo del visitante: `np.random.poisson`
+consume una cantidad de números aleatorios que depende de la media, así que
+cambiar la media del local corre la secuencia del azar, y el visitante se
+muestrea después dentro del mismo bloque de tiros.
+
+Arreglo, solo en el harness (no cambia la hipótesis ni ningún criterio): en
+los dos muestreos del local (tiros al arco y tiros totales) se usan los mismos
+números aleatorios de partida que con la media sin corregir, y la secuencia
+queda donde la habría dejado la media sin corregir. Así la única diferencia
+entre la variante y el modelo actual es la del local. Con suma 0 da
+exactamente lo mismo que antes. Se vuelven a correr las tres verificaciones.
+En producción la corrección cambiaría además, por el azar, el muestreo del
+visitante en ese partido (sin cambiar su media); si entra, se implementa con
+el mismo cuidado o se anota.
+
+Detalle del arreglo, visto en la segunda pasada de la verificación 3 (quedaba
+1 partido de 600 con el visitante cambiado): la primera versión reconocía los
+muestreos del local por el valor de la media, y en ese partido la media de
+corners del visitante (5,25) coincidía con la de tiros al arco corregida del
+local. Ahora se reconocen por su lugar dentro del bloque de tiros (primera y
+tercera llamada después del primer `get_state` de `simular_partido_futbol`), y
+si la media no es la esperada el harness corta con error. Resultado final de
+las verificaciones: (1) 60 de 60 partidos iguales a `main` sin parches (CSV
+del sync del 14/11, porque el de `main` tenía solo 25 partidos próximos con
+tiros); (2) 600 partidos (200 de cada archivo), 0 celdas distintas de 109.800;
+(3) con +1 y +1 al local, cambian solo las series del local y los totales (589
+partidos, los 11 restantes no tienen tiros); visitante, atajadas, 1X2, goles,
+corners y tarjetas idénticos en los 600.
