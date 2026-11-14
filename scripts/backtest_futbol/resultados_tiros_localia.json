@@ -1,0 +1,740 @@
+{
+ "n_actual": {
+  "filas": 7165,
+  "con_filtros_comunes": 6157
+ },
+ "n_variante": {
+  "filas": 7165,
+  "con_filtros_comunes": 6157
+ },
+ "sumas": {
+  "arco": {
+   "c": 1.0,
+   "suma": 0.19
+  },
+  "tiros": {
+   "c": 1.0,
+   "suma": 0.58
+  }
+ },
+ "entra": {
+  "L-arco": {
+   "ref": 0.2353,
+   "modelo": 0.2326,
+   "mejora": 0.0028,
+   "ic90": [
+    0.00201,
+    0.00344
+   ],
+   "n": 6155,
+   "entra": true
+  },
+  "L-tiros": {
+   "ref": 0.2322,
+   "modelo": 0.2274,
+   "mejora": 0.0047,
+   "ic90": [
+    0.00349,
+    0.00592
+   ],
+   "n": 6154,
+   "entra": true
+  }
+ },
+ "series_local": {
+  "L-arco": {
+   "con_correccion": true,
+   "linea_central": 4.5,
+   "C5": {
+    "ref": 0.2461,
+    "modelo": 0.2326,
+    "mejora": 0.0135,
+    "ic90": [
+     0.01049,
+     0.01654
+    ],
+    "n": 6155,
+    "pasa": true
+   },
+   "C4": {
+    "lineas": [
+     4.5
+    ],
+    "n": 729,
+    "prob_media": 0.7528,
+    "tasa_real": 0.7586,
+    "diferencia": 0.0057,
+    "ic90": [
+     -0.02614,
+     0.03452
+    ],
+    "pasa": true
+   },
+   "pasa": true
+  },
+  "L-tiros": {
+   "con_correccion": true,
+   "linea_central": 13.5,
+   "C5": {
+    "ref": 0.2474,
+    "modelo": 0.2274,
+    "mejora": 0.02,
+    "ic90": [
+     0.01738,
+     0.02279
+    ],
+    "n": 6154,
+    "pasa": true
+   },
+   "C4": {
+    "lineas": [
+     13.5
+    ],
+    "n": 863,
+    "prob_media": 0.7605,
+    "tasa_real": 0.7798,
+    "diferencia": 0.0193,
+    "ic90": [
+     -0.00461,
+     0.04645
+    ],
+    "pasa": true
+   },
+   "pasa": true
+  }
+ },
+ "totales": {
+  "T-arco": {
+   "evaluado": true,
+   "linea_central": 8.5,
+   "C5": {
+    "ref": 0.2442,
+    "modelo": 0.2439,
+    "mejora": 0.0003,
+    "ic90": [
+     -0.002,
+     0.00263
+    ],
+    "n": 6155,
+    "pasa": false
+   },
+   "C4": {
+    "lineas": [
+     6.5,
+     7.5,
+     8.5
+    ],
+    "n": 5758,
+    "prob_media": 0.7691,
+    "tasa_real": 0.7869,
+    "diferencia": 0.0178,
+    "ic90": [
+     0.00549,
+     0.02876
+    ],
+    "pasa": true
+   },
+   "pasa": false,
+   "informativo_actual_C5": {
+    "ref": 0.2442,
+    "modelo": 0.2455,
+    "mejora": -0.0013,
+    "ic90": [
+     -0.00358,
+     0.0009
+    ],
+    "n": 6155,
+    "pasa": false
+   }
+  },
+  "T-tiros": {
+   "evaluado": true,
+   "linea_central": 24.5,
+   "C5": {
+    "ref": 0.2379,
+    "modelo": 0.2342,
+    "mejora": 0.0037,
+    "ic90": [
+     0.00109,
+     0.00638
+    ],
+    "n": 6154,
+    "pasa": true
+   },
+   "C4": {
+    "lineas": [
+     23.5,
+     24.5
+    ],
+    "n": 1535,
+    "prob_media": 0.7527,
+    "tasa_real": 0.7453,
+    "diferencia": -0.0074,
+    "ic90": [
+     -0.03797,
+     0.02624
+    ],
+    "pasa": true
+   },
+   "pasa": true,
+   "informativo_actual_C5": {
+    "ref": 0.2379,
+    "modelo": 0.2381,
+    "mejora": -0.0003,
+    "ic90": [
+     -0.00356,
+     0.00299
+    ],
+    "n": 6154,
+    "pasa": false
+   }
+  }
+ },
+ "informativo": {
+  "L-arco": {
+   "actual": {
+    "n": 6155,
+    "proyeccion_media": 4.6455,
+    "real_medio": 4.9795,
+    "sesgo_medio_proj_menos_real": -0.334,
+    "real_var_sobre_media": 1.3228,
+    "calibracion_central": [
+     {
+      "banda": "0-10",
+      "n": 13,
+      "prob_media": 0.0776,
+      "tasa_real": 0.0769
+     },
+     {
+      "banda": "10-20",
+      "n": 128,
+      "prob_media": 0.1679,
+      "tasa_real": 0.2578
+     },
+     {
+      "banda": "20-30",
+      "n": 530,
+      "prob_media": 0.2582,
+      "tasa_real": 0.3208
+     },
+     {
+      "banda": "30-40",
+      "n": 1280,
+      "prob_media": 0.3537,
+      "tasa_real": 0.425
+     },
+     {
+      "banda": "40-50",
+      "n": 1817,
+      "prob_media": 0.4508,
+      "tasa_real": 0.5019
+     },
+     {
+      "banda": "50-60",
+      "n": 1471,
+      "prob_media": 0.5455,
+      "tasa_real": 0.6173
+     },
+     {
+      "banda": "60-70",
+      "n": 704,
+      "prob_media": 0.6424,
+      "tasa_real": 0.7244
+     },
+     {
+      "banda": "70-80",
+      "n": 187,
+      "prob_media": 0.7343,
+      "tasa_real": 0.8075
+     },
+     {
+      "banda": "80-90",
+      "n": 22,
+      "prob_media": 0.8359,
+      "tasa_real": 0.9091
+     }
+    ],
+    "lineas": {
+     "4.5": {
+      "tasa_real": 0.5284,
+      "brier_modelo": 0.2353,
+      "brier_r1": 0.2461
+     }
+    },
+    "proj_cerca_del_tope_(>=97%)": 4
+   },
+   "variante": {
+    "n": 6155,
+    "proyeccion_media": 4.8356,
+    "real_medio": 4.9795,
+    "sesgo_medio_proj_menos_real": -0.1439,
+    "real_var_sobre_media": 1.3228,
+    "calibracion_central": [
+     {
+      "banda": "0-10",
+      "n": 6,
+      "prob_media": 0.0818,
+      "tasa_real": 0.1667
+     },
+     {
+      "banda": "10-20",
+      "n": 69,
+      "prob_media": 0.169,
+      "tasa_real": 0.1884
+     },
+     {
+      "banda": "20-30",
+      "n": 369,
+      "prob_media": 0.2599,
+      "tasa_real": 0.3008
+     },
+     {
+      "banda": "30-40",
+      "n": 1051,
+      "prob_media": 0.3565,
+      "tasa_real": 0.3949
+     },
+     {
+      "banda": "40-50",
+      "n": 1714,
+      "prob_media": 0.4514,
+      "tasa_real": 0.4737
+     },
+     {
+      "banda": "50-60",
+      "n": 1758,
+      "prob_media": 0.5464,
+      "tasa_real": 0.5796
+     },
+     {
+      "banda": "60-70",
+      "n": 903,
+      "prob_media": 0.644,
+      "tasa_real": 0.7165
+     },
+     {
+      "banda": "70-80",
+      "n": 252,
+      "prob_media": 0.7362,
+      "tasa_real": 0.8095
+     },
+     {
+      "banda": "80-90",
+      "n": 32,
+      "prob_media": 0.8331,
+      "tasa_real": 0.9062
+     }
+    ],
+    "lineas": {
+     "4.5": {
+      "tasa_real": 0.5284,
+      "brier_modelo": 0.2326,
+      "brier_r1": 0.2461
+     }
+    },
+    "proj_cerca_del_tope_(>=97%)": 6
+   }
+  },
+  "T-arco": {
+   "n": 6155,
+   "proyeccion_media": 8.8978,
+   "real_medio": 8.9604,
+   "sesgo_medio_proj_menos_real": -0.0625,
+   "real_var_sobre_media": 1.1809,
+   "calibracion_central": [
+    {
+     "banda": "0-10",
+     "n": 9,
+     "prob_media": 0.0791,
+     "tasa_real": 0.3333
+    },
+    {
+     "banda": "10-20",
+     "n": 58,
+     "prob_media": 0.1614,
+     "tasa_real": 0.3276
+    },
+    {
+     "banda": "20-30",
+     "n": 244,
+     "prob_media": 0.2578,
+     "tasa_real": 0.3238
+    },
+    {
+     "banda": "30-40",
+     "n": 865,
+     "prob_media": 0.3603,
+     "tasa_real": 0.4266
+    },
+    {
+     "banda": "40-50",
+     "n": 1774,
+     "prob_media": 0.4531,
+     "tasa_real": 0.4949
+    },
+    {
+     "banda": "50-60",
+     "n": 1924,
+     "prob_media": 0.5468,
+     "tasa_real": 0.5624
+    },
+    {
+     "banda": "60-70",
+     "n": 1035,
+     "prob_media": 0.6405,
+     "tasa_real": 0.6396
+    },
+    {
+     "banda": "70-80",
+     "n": 230,
+     "prob_media": 0.733,
+     "tasa_real": 0.6739
+    },
+    {
+     "banda": "80-90",
+     "n": 14,
+     "prob_media": 0.8132,
+     "tasa_real": 0.5714
+    }
+   ],
+   "lineas": {
+    "6.5": {
+     "tasa_real": 0.7654,
+     "brier_modelo": 0.1772,
+     "brier_r1": 0.1771
+    },
+    "7.5": {
+     "tasa_real": 0.6561,
+     "brier_modelo": 0.222,
+     "brier_r1": 0.2219
+    },
+    "8.5": {
+     "tasa_real": 0.529,
+     "brier_modelo": 0.2439,
+     "brier_r1": 0.2442
+    }
+   }
+  },
+  "L-tiros": {
+   "actual": {
+    "n": 6154,
+    "proyeccion_media": 13.5017,
+    "real_medio": 14.5726,
+    "sesgo_medio_proj_menos_real": -1.0709,
+    "real_var_sobre_media": 2.2141,
+    "calibracion_central": [
+     {
+      "banda": "0-10",
+      "n": 47,
+      "prob_media": 0.0567,
+      "tasa_real": 0.2766
+     },
+     {
+      "banda": "10-20",
+      "n": 200,
+      "prob_media": 0.16,
+      "tasa_real": 0.26
+     },
+     {
+      "banda": "20-30",
+      "n": 675,
+      "prob_media": 0.2579,
+      "tasa_real": 0.323
+     },
+     {
+      "banda": "30-40",
+      "n": 1242,
+      "prob_media": 0.3553,
+      "tasa_real": 0.4074
+     },
+     {
+      "banda": "40-50",
+      "n": 1737,
+      "prob_media": 0.4501,
+      "tasa_real": 0.5389
+     },
+     {
+      "banda": "50-60",
+      "n": 1380,
+      "prob_media": 0.5464,
+      "tasa_real": 0.6413
+     },
+     {
+      "banda": "60-70",
+      "n": 691,
+      "prob_media": 0.6414,
+      "tasa_real": 0.754
+     },
+     {
+      "banda": "70-80",
+      "n": 166,
+      "prob_media": 0.7344,
+      "tasa_real": 0.8855
+     },
+     {
+      "banda": "80-90",
+      "n": 14,
+      "prob_media": 0.8222,
+      "tasa_real": 0.9286
+     }
+    ],
+    "lineas": {
+     "13.5": {
+      "tasa_real": 0.5351,
+      "brier_modelo": 0.2322,
+      "brier_r1": 0.2474
+     }
+    },
+    "top20_volumen": {
+     "n": 0,
+     "sesgo_real_menos_proj_top20": NaN,
+     "sesgo_real_menos_proj_resto": 1.0709
+    },
+    "proj_cerca_del_tope_(>=97%)": 4
+   },
+   "variante": {
+    "n": 6154,
+    "proyeccion_media": 14.0815,
+    "real_medio": 14.5726,
+    "sesgo_medio_proj_menos_real": -0.4912,
+    "real_var_sobre_media": 2.2141,
+    "calibracion_central": [
+     {
+      "banda": "0-10",
+      "n": 29,
+      "prob_media": 0.0568,
+      "tasa_real": 0.3103
+     },
+     {
+      "banda": "10-20",
+      "n": 115,
+      "prob_media": 0.1632,
+      "tasa_real": 0.2522
+     },
+     {
+      "banda": "20-30",
+      "n": 416,
+      "prob_media": 0.2601,
+      "tasa_real": 0.2692
+     },
+     {
+      "banda": "30-40",
+      "n": 999,
+      "prob_media": 0.3551,
+      "tasa_real": 0.3634
+     },
+     {
+      "banda": "40-50",
+      "n": 1685,
+      "prob_media": 0.4542,
+      "tasa_real": 0.4872
+     },
+     {
+      "banda": "50-60",
+      "n": 1628,
+      "prob_media": 0.5478,
+      "tasa_real": 0.6106
+     },
+     {
+      "banda": "60-70",
+      "n": 982,
+      "prob_media": 0.6434,
+      "tasa_real": 0.7169
+     },
+     {
+      "banda": "70-80",
+      "n": 278,
+      "prob_media": 0.7366,
+      "tasa_real": 0.8633
+     },
+     {
+      "banda": "80-90",
+      "n": 21,
+      "prob_media": 0.8259,
+      "tasa_real": 0.9524
+     }
+    ],
+    "lineas": {
+     "13.5": {
+      "tasa_real": 0.5351,
+      "brier_modelo": 0.2274,
+      "brier_r1": 0.2474
+     }
+    },
+    "top20_volumen": {
+     "n": 0,
+     "sesgo_real_menos_proj_top20": NaN,
+     "sesgo_real_menos_proj_resto": 0.4912
+    },
+    "proj_cerca_del_tope_(>=97%)": 7
+   }
+  },
+  "T-tiros": {
+   "n": 6154,
+   "proyeccion_media": 25.8787,
+   "real_medio": 26.245,
+   "sesgo_medio_proj_menos_real": -0.3664,
+   "real_var_sobre_media": 1.6035,
+   "calibracion_central": [
+    {
+     "banda": "0-10",
+     "n": 33,
+     "prob_media": 0.0505,
+     "tasa_real": 0.4848
+    },
+    {
+     "banda": "10-20",
+     "n": 45,
+     "prob_media": 0.1583,
+     "tasa_real": 0.4222
+    },
+    {
+     "banda": "20-30",
+     "n": 141,
+     "prob_media": 0.2599,
+     "tasa_real": 0.3972
+    },
+    {
+     "banda": "30-40",
+     "n": 498,
+     "prob_media": 0.3607,
+     "tasa_real": 0.4197
+    },
+    {
+     "banda": "40-50",
+     "n": 1379,
+     "prob_media": 0.4568,
+     "tasa_real": 0.4808
+    },
+    {
+     "banda": "50-60",
+     "n": 2288,
+     "prob_media": 0.5503,
+     "tasa_real": 0.6202
+    },
+    {
+     "banda": "60-70",
+     "n": 1432,
+     "prob_media": 0.643,
+     "tasa_real": 0.6955
+    },
+    {
+     "banda": "70-80",
+     "n": 323,
+     "prob_media": 0.7306,
+     "tasa_real": 0.7895
+    },
+    {
+     "banda": "80-90",
+     "n": 14,
+     "prob_media": 0.8172,
+     "tasa_real": 0.9286
+    }
+   ],
+   "lineas": {
+    "23.5": {
+     "tasa_real": 0.6531,
+     "brier_modelo": 0.222,
+     "brier_r1": 0.2241
+    },
+    "24.5": {
+     "tasa_real": 0.5926,
+     "brier_modelo": 0.2342,
+     "brier_r1": 0.2379
+    }
+   }
+  },
+  "V-arco_identico_a_actual": true,
+  "V-tiros_identico_a_actual": true,
+  "C5_por_tramo_cobertura_variante": {
+   "T-tiros hasta_mar26": {
+    "ref": 0.2466,
+    "modelo": 0.241,
+    "mejora": 0.0056,
+    "ic90": [
+     0.00251,
+     0.00848
+    ],
+    "n": 1719,
+    "pasa": true
+   },
+   "T-tiros desde_abr26": {
+    "ref": 0.2345,
+    "modelo": 0.2315,
+    "mejora": 0.003,
+    "ic90": [
+     -0.00034,
+     0.00642
+    ],
+    "n": 4435,
+    "pasa": false
+   },
+   "T-arco hasta_mar26": {
+    "ref": 0.2462,
+    "modelo": 0.244,
+    "mejora": 0.0022,
+    "ic90": [
+     -0.00164,
+     0.00586
+    ],
+    "n": 1719,
+    "pasa": false
+   },
+   "T-arco desde_abr26": {
+    "ref": 0.2434,
+    "modelo": 0.2439,
+    "mejora": -0.0004,
+    "ic90": [
+     -0.00339,
+     0.00254
+    ],
+    "n": 4436,
+    "pasa": false
+   },
+   "L-tiros hasta_mar26": {
+    "ref": 0.2484,
+    "modelo": 0.2234,
+    "mejora": 0.025,
+    "ic90": [
+     0.02061,
+     0.02926
+    ],
+    "n": 1719,
+    "pasa": true
+   },
+   "L-tiros desde_abr26": {
+    "ref": 0.247,
+    "modelo": 0.2289,
+    "mejora": 0.0181,
+    "ic90": [
+     0.01497,
+     0.02143
+    ],
+    "n": 4435,
+    "pasa": true
+   },
+   "L-arco hasta_mar26": {
+    "ref": 0.248,
+    "modelo": 0.2305,
+    "mejora": 0.0174,
+    "ic90": [
+     0.01064,
+     0.02421
+    ],
+    "n": 1719,
+    "pasa": true
+   },
+   "L-arco desde_abr26": {
+    "ref": 0.2454,
+    "modelo": 0.2334,
+    "mejora": 0.012,
+    "ic90": [
+     0.00872,
+     0.01526
+    ],
+    "n": 4436,
+    "pasa": true
+   }
+  }
+ }
+}

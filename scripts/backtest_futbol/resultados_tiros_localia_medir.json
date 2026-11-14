@@ -1,0 +1,56 @@
+{
+ "n_eleccion": {
+  "filas": 2851,
+  "con_filtros_comunes": 2809
+ },
+ "b": {
+  "arco": {
+   "n": 2805,
+   "real_menos_proj": 0.1885,
+   "ic90": [
+    0.1092,
+    0.2654
+   ],
+   "b": 0.19,
+   "corrige": true,
+   "sumas_candidatas": {
+    "0.0": 0.0,
+    "0.5": 0.095,
+    "1.0": 0.19
+   }
+  },
+  "tiros": {
+   "n": 2805,
+   "real_menos_proj": 0.5793,
+   "ic90": [
+    0.427,
+    0.731
+   ],
+   "b": 0.58,
+   "corrige": true,
+   "sumas_candidatas": {
+    "0.0": 0.0,
+    "0.5": 0.29,
+    "1.0": 0.58
+   }
+  }
+ },
+ "informativo_visitante": {
+  "V-arco": {
+   "n": 2805,
+   "real_menos_proj": -0.1364,
+   "ic90": [
+    -0.2048,
+    -0.0629
+   ]
+  },
+  "V-tiros": {
+   "n": 2805,
+   "real_menos_proj": -0.3798,
+   "ic90": [
+    -0.5181,
+    -0.2461
+   ]
+  }
+ }
+}
