@@ -7,6 +7,7 @@ import random
 import re
 import sys
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "app", "services"))
@@ -322,7 +323,8 @@ class TarjetasOcultas(unittest.TestCase):
         salida = A.armar_analisis_ia(r, hechos(), 1, ocultos=F.ANALISIS_OCULTOS)
         self.assertNotIn("tarjetas", salida)
         self.assertNotIn("corners", salida)   # oculto desde el 08/11/2026
-        self.assertIn("tiros_arco", salida)
+        self.assertNotIn("tiros_arco", salida)   # total oculto desde el 14/11/2026
+        self.assertIn("hcp_europeo", salida)
 
     def test_value_bet_manual_de_tarjetas_bloqueada(self):
         res, error = F.calcular_value_bet_manual("A", "B", "tarjetas", 4.5, "over", 2.0)
@@ -331,9 +333,65 @@ class TarjetasOcultas(unittest.TestCase):
         self.assertIn("oculto", error)
 
     def test_secciones_ocultas_para_el_frontend(self):
-        self.assertEqual(F.SECCIONES_OCULTAS, ("ambos_marcan", "corners", "goles", "tarjetas"))
+        self.assertEqual(F.SECCIONES_OCULTAS, ("ambos_marcan", "atajadas", "corners", "goles", "tarjetas"))
+        self.assertEqual(F.SECCIONES_TOTAL_OCULTO, ("tiros_arco", "tiros_total"))
         for clave in ("tarjetas_proj", "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante"):
             self.assertIn(clave, F.CLAVES_OCULTAS_PARTIDO)
 
     def test_factor_del_multiplicador_es_el_del_preregistro(self):
         self.assertEqual(F.FACTOR_MULTIPLICADOR_TARJETAS, 0.5)
+
+
+class TirosYAtajadasOcultos(unittest.TestCase):
+    """PREREGISTRO_tiros_atajadas.md (14/11/2026): los totales de tiros al
+    arco, tiros totales y atajadas, y atajadas por equipo, salen de Top Picks
+    y combinadas; tiros al arco y tiros totales por equipo siguen."""
+
+    def _sim(self):
+        tabla = {ln: ou2(0.9) for ln in (1.5, 2.5, 3.5, 4.5, 6.5, 7.5, 10.5, 11.5, 12.5, 13.5, 23.5, 24.5)}
+        extra = {k: dict(tabla) for k in (
+            "tiros_arco_ou", "tiros_total_ou", "atajadas_ou",
+            "tiros_arco_ou_local", "tiros_arco_ou_visitante",
+            "tiros_total_ou_local", "tiros_total_ou_visitante",
+            "atajadas_ou_local", "atajadas_ou_visitante")}
+        extra["atajadas_ou"] = {4.5: ou2(0.95), 5.5: ou2(0.95)}
+        return sim_base(**extra)
+
+    def _candidatos(self):
+        F_ = F
+        cands = []
+        orig = F_._candidato_oculto
+        def espia(c):
+            cands.append(c)
+            return orig(c)
+        with mock.patch.object(F_, "_candidato_oculto", espia):
+            F_.calcular_top3(self._sim(), None, STATS, STATS, "Local FC", "Visita FC")
+        return [c for c in cands if not orig(c)], [c for c in cands if orig(c)]
+
+    def test_filtro_de_candidatos(self):
+        visibles, ocultos = self._candidatos()
+        nombres_v = [c.nombre for c in visibles]
+        self.assertTrue([n for n in nombres_v if "tiros al arco (Local FC)" in n], nombres_v)
+        self.assertTrue([n for n in nombres_v if "tiros totales (Visita FC)" in n], nombres_v)
+        self.assertFalse([n for n in nombres_v if "atajadas" in n], nombres_v)
+        self.assertFalse([c for c in visibles if c.mercado in ("tiros_arco_ou", "tiros_total_ou") and c.equipo is None])
+        self.assertTrue([c for c in ocultos if c.mercado == "tiros_arco_ou" and c.equipo is None])
+        self.assertTrue([c for c in ocultos if c.mercado == "atajadas_ou" and c.equipo == "local"])
+
+    def test_top3_sin_totales_de_tiros_ni_atajadas(self):
+        top = F.calcular_top3(self._sim(), None, STATS, STATS, "Local FC", "Visita FC")
+        mercados = [p["mercado"] for p in top]
+        self.assertFalse([m for m in mercados if "atajadas" in m], mercados)
+        self.assertFalse([m for m in mercados if ("tiros" in m and "(" not in m)], mercados)
+
+    def test_claves_y_analisis(self):
+        for k in ("tiros_arco_proj", "tiros_arco_ou", "tiros_total_proj", "tiros_total_ou",
+                  "atajadas_proj", "atajadas_local_proj", "atajadas_visitante_proj",
+                  "atajadas_ou", "atajadas_ou_local", "atajadas_ou_visitante"):
+            self.assertIn(k, F.CLAVES_OCULTAS_PARTIDO)
+        for k in ("tiros_arco_ou_local", "tiros_arco_ou_visitante", "tiros_total_ou_local",
+                  "tiros_total_ou_visitante", "tiros_arco_local_proj", "tiros_total_visitante_proj"):
+            self.assertNotIn(k, F.CLAVES_OCULTAS_PARTIDO)
+        for k in ("tiros_arco", "tiros_total", "atajadas_local", "atajadas_visitante"):
+            self.assertIn(k, F.ANALISIS_OCULTOS)
+
