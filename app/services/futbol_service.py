@@ -197,19 +197,43 @@ Candidato = namedtuple("Candidato", ["nombre", "prob", "mercado", "equipo"])
 #   queda oculto entero (por eso va en MERCADOS_OCULTOS).
 # - Tiros al arco y tiros totales POR EQUIPO pasan C5 y C4: siguen, tambien
 #   en Top Picks. Por eso esos dos van en TOTALES_OCULTOS (solo el total).
+#
+# Correccion de tiros del local (17/11/2026, PREREGISTRO_tiros_localia.md,
+# resultados_tiros_localia.json; ver CORRECCION_LOCAL_TIROS_* mas abajo): con
+# la correccion, el TOTAL de tiros totales O24.5 pasa C5 (+0,0037 IC90
+# [+0,0011; +0,0064]) y C4, y vuelve a mostrarse (O/U, proyeccion, Top Picks,
+# value bets, analisis IA). El total de tiros al arco sigue empatando con la
+# liga (+0,0003 [-0,0020; +0,0026]): sigue oculto. OJO MARZO: la evidencia es
+# de 2026, NO independiente de la hipotesis, y mas floja desde abr-2026
+# (+0,0030 [-0,0003; +0,0064]). Si la confirmacion con datos nuevos no lo
+# respalda (mismo C5), tiros_total_ou vuelve a TOTALES_OCULTOS.
+# Correccion de tiros del equipo LOCAL (PREREGISTRO_tiros_localia.md,
+# congelado 74e9dfa; resultados_tiros_localia.json). El modelo se quedaba
+# corto con los tiros del local. La magnitud se midio SOLO en jul-dic 2025
+# (media de real - proyeccion del local: arco +0,19 IC90 [0,11; 0,27], tiros
+# +0,58 [0,43; 0,73]; c = 1 elegido en esa misma eleccion). En la evaluacion
+# 2026 mejora el Brier del local contra el modelo sin correccion (arco
+# +0,0028 IC90 [0,0020; 0,0034], tiros +0,0047 [0,0035; 0,0059]) y las series
+# del local siguen pasando C5 y C4. Se suma a la media del local despues de
+# ajustar_medias_con_rival y antes de los topes; el visitante no se toca y se
+# muestrea con el mismo azar que sin correccion (ver simular_partido_futbol,
+# media_tiros_*_a_azar). Revisar en la confirmacion de marzo 2027.
+CORRECCION_LOCAL_TIROS_ARCO = 0.19
+CORRECCION_LOCAL_TIROS_TOTAL = 0.58
+
 MERCADOS_OCULTOS = frozenset({"ambos_marcan", "goles_ou", "tarjetas_ou", "corners_ou", "atajadas_ou"})   # ids de Candidato (total y por equipo)
-TOTALES_OCULTOS = frozenset({"tiros_arco_ou", "tiros_total_ou"})   # ids de Candidato: solo el total (equipo None)
+TOTALES_OCULTOS = frozenset({"tiros_arco_ou"})   # ids de Candidato: solo el total (equipo None)
 CLAVES_OCULTAS_PARTIDO = ("prob_ambos_marcan", "goles_proj", "goles_ou",
                           "goles_ou_local", "goles_ou_visitante", "goles_1t",
                           "tarjetas_proj", "tarjetas_local_proj", "tarjetas_visitante_proj",
                           "tarjetas_ou", "tarjetas_ou_local", "tarjetas_ou_visitante",
                           "corners_proj", "corners_local_proj", "corners_visitante_proj",
                           "corners_ou", "corners_ou_local", "corners_ou_visitante",
-                          "tiros_arco_proj", "tiros_arco_ou", "tiros_total_proj", "tiros_total_ou",
+                          "tiros_arco_proj", "tiros_arco_ou",
                           "atajadas_proj", "atajadas_local_proj", "atajadas_visitante_proj",
                           "atajadas_ou", "atajadas_ou_local", "atajadas_ou_visitante")
 ANALISIS_OCULTOS = ("ambos_marcan", "goles", "tarjetas", "corners",
-                    "tiros_arco", "tiros_total", "atajadas_local", "atajadas_visitante")     # claves de analisis_ia
+                    "tiros_arco", "atajadas_local", "atajadas_visitante")     # claves de analisis_ia
 # Lo que el frontend no muestra (secciones de /partido). Se manda en la
 # respuesta para que la seccion se esconda aunque el campo pueda venir null
 # por otro motivo (equipo sin datos suficientes -> "Sin datos").
@@ -552,6 +576,14 @@ def get_temporada(liga_nombre):
     return None, temporada_europea
 
 
+def _media_finita(x):
+    """Mismo criterio que simulator._media_valida (numero finito, no None)."""
+    try:
+        return x is not None and bool(np.isfinite(x))
+    except TypeError:
+        return False
+
+
 def simular(df, local, visitante):
     local_resuelto, corr_local = resolver_nombre_equipo(df, local)
     visitante_resuelto, corr_visitante = resolver_nombre_equipo(df, visitante)
@@ -647,6 +679,13 @@ def simular(df, local, visitante):
     goles_a, goles_b, corners_a, corners_b, tarjetas_a, tarjetas_b, tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b, atajadas_a, atajadas_b = ajustar_medias_con_rival(
         stats_a, stats_b, h2h, equipo_local=local, equipo_visitante=visitante
     )
+    # Correccion de tiros del local (ver CORRECCION_LOCAL_TIROS_*). Las medias
+    # sin corregir viajan aparte para muestrear al local con el mismo azar.
+    tiros_arco_a_azar = tiros_total_a_azar = None
+    if all(_media_finita(x) for x in (tiros_arco_a, tiros_arco_b, tiros_total_a, tiros_total_b)):
+        tiros_arco_a_azar, tiros_total_a_azar = tiros_arco_a, tiros_total_a
+        tiros_arco_a = tiros_arco_a + CORRECCION_LOCAL_TIROS_ARCO
+        tiros_total_a = tiros_total_a + CORRECCION_LOCAL_TIROS_TOTAL
     # Sin multiplicador de goles por intensidad ofensiva (x0,95..x1,05, entro el
     # 04/08/2026 sin backtest): PREREGISTRO_multiplicador_goles.md, 07/11/2026.
     # Sacarlo cambia el Brier del 1X2 en -0,0006 (IC90 [-0,0008; -0,0004],
@@ -707,6 +746,7 @@ def simular(df, local, visitante):
         # conversacion de diseno del Bloque 1).
         k_tiros_arco_a=k_corners_a, k_tiros_arco_b=k_corners_b,
         k_tiros_total_a=k_corners_a, k_tiros_total_b=k_corners_b,
+        media_tiros_arco_a_azar=tiros_arco_a_azar, media_tiros_total_a_azar=tiros_total_a_azar,
         k_atajadas_a=k_atajadas_a, k_atajadas_b=k_atajadas_b,
         elo_local=elo_local, elo_visitante=elo_visitante, peso_elo=peso_elo,
     )
@@ -2500,7 +2540,6 @@ def promedio_liga_goles(df, liga, ahora=None):
         "n_partidos": n, "dias": PROMEDIO_LIGA_DIAS,
         "corners": _promedio_liga_corners(sub),
         "tiros_arco": _promedio_liga_stat(sub, "tiros_arco", 8.5),
-        "tiros_total": _promedio_liga_stat(sub, "tiros_total", 24.5),
         "atajadas": _promedio_liga_stat(sub, "atajadas", 5.5),
     }
 

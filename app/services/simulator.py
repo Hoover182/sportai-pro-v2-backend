@@ -84,6 +84,28 @@ def _muestrear_conteo(media, k, sims):
     return np.random.poisson(lam)
 
 
+def _muestrear_con_azar_de(media, media_azar, minimo, maximo, k, sims):
+    """Muestrea con `media` pero dejando la secuencia del azar donde la habria
+    dejado `media_azar` (con el mismo tope), y con los mismos numeros de
+    partida. np.random.poisson consume mas o menos numeros segun la media:
+    sin esto, corregir la media del local (CORRECCION_LOCAL_TIROS_* en
+    futbol_service) cambiaria por puro ruido el muestreo del visitante, que va
+    despues. Es lo mismo que se evaluo (PREREGISTRO_tiros_localia.md,
+    enmienda 1). Con media_azar None o igual a media, es _muestrear_conteo."""
+    if media_azar is None:
+        return _muestrear_conteo(media, k, sims)
+    media_azar = float(np.clip(media_azar, minimo, maximo))
+    if media_azar == media:
+        return _muestrear_conteo(media, k, sims)
+    estado_inicial = np.random.get_state()
+    _muestrear_conteo(media_azar, k, sims)
+    estado_final = np.random.get_state()
+    np.random.set_state(estado_inicial)
+    muestra = _muestrear_conteo(media, k, sims)
+    np.random.set_state(estado_final)
+    return muestra
+
+
 def _ou_desde_pmf(pmf, lineas):
     """Over/under de una pmf discreta indexada 0..N-1 (ej. marginal de
     grid_goles, P(goles_a=k)) para cada linea -- cerrado, sin Monte
@@ -293,6 +315,8 @@ def simular_partido_futbol(
     k_tiros_arco_b=None,
     k_tiros_total_a=None,
     k_tiros_total_b=None,
+    media_tiros_arco_a_azar=None,
+    media_tiros_total_a_azar=None,
     k_atajadas_a=None,
     k_atajadas_b=None,
     elo_local=None,
@@ -383,9 +407,11 @@ def simular_partido_futbol(
     # por partido, solo en una sub-porcion propia del stream).
     if tiene_tiros:
         _rng_state_pre_tiros = np.random.get_state()
-        tiros_arco_a = _muestrear_conteo(media_tiros_arco_a, k_tiros_arco_a, sims)
+        tiros_arco_a = _muestrear_con_azar_de(media_tiros_arco_a, media_tiros_arco_a_azar,
+                                              TIROS_ARCO_MIN, TIROS_ARCO_MAX, k_tiros_arco_a, sims)
         tiros_arco_b = _muestrear_conteo(media_tiros_arco_b, k_tiros_arco_b, sims)
-        tiros_total_a = _muestrear_conteo(media_tiros_total_a, k_tiros_total_a, sims)
+        tiros_total_a = _muestrear_con_azar_de(media_tiros_total_a, media_tiros_total_a_azar,
+                                               TIROS_TOTAL_MIN, TIROS_TOTAL_MAX, k_tiros_total_a, sims)
         tiros_total_b = _muestrear_conteo(media_tiros_total_b, k_tiros_total_b, sims)
         np.random.set_state(_rng_state_pre_tiros)
 
