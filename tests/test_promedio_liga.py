@@ -102,7 +102,7 @@ class PromedioLigaTirosAtajadas(unittest.TestCase):
                        ignore_index=True)
         p = F.promedio_liga_goles(df, "Liga Prueba", ahora=AHORA)
         self.assertEqual(p["tiros_arco"], {"linea": 8.5, "over": 50.0, "under": 50.0, "n_partidos": 60})
-        self.assertEqual(p["tiros_total"], {"linea": 24.5, "over": 50.0, "under": 50.0, "n_partidos": 60})
+        self.assertNotIn("tiros_total", p)   # vuelve a mostrarse (PREREGISTRO_tiros_localia.md)
         self.assertEqual(p["atajadas"], {"linea": 5.5, "over": 50.0, "under": 50.0, "n_partidos": 60})
 
     def test_sin_stats_o_sin_dato_no_cuentan(self):
@@ -115,7 +115,7 @@ class PromedioLigaTirosAtajadas(unittest.TestCase):
 
     def test_ocultos_en_la_app(self):
         self.assertIn("atajadas", F.SECCIONES_OCULTAS)
-        self.assertEqual(F.SECCIONES_TOTAL_OCULTO, ("tiros_arco", "tiros_total"))
+        self.assertEqual(F.SECCIONES_TOTAL_OCULTO, ("tiros_arco",))
         linea = F._chat_linea_sin_pronostico()
         self.assertIn("Over/Under de atajadas", linea)
         self.assertIn("tiros al arco del TOTAL", linea)
