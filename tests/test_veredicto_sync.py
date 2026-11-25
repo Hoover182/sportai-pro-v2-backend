@@ -198,6 +198,56 @@ class Veredicto(unittest.TestCase):
         d = pd.concat([base(), pd.DataFrame([fila(5, "2019-05-01T20:00:00", estado="NS")])])
         self.assertManual(self.evaluar(d), "fila(s) nueva(s)")
 
+    # --- H2H de un partido actual con equipos o liga que main no tiene (25/11) ---
+    def _copa(self, *viejas):
+        actual = fila(6, "2026-09-20T13:00:00", liga="Coupe de France", local="Marseille Endoume", visitante="Toulon")
+        return pd.concat([base(), pd.DataFrame([actual, *viejas])])
+
+    def test_h2h_de_partido_actual_se_acepta(self):
+        d = self._copa(fila(5, "2018-08-25T16:00:00", liga="National 2 - Group A", local="Marseille Endoume", visitante="Toulon"),
+                       fila(7, "2019-01-19T17:00:00", liga="National 2 - Group A", local="Toulon", visitante="Marseille Endoume"))
+        v = self.evaluar(d)
+        self.assertTrue(v["auto_merge"], v["fallos"])
+        self.assertEqual(v["metricas"]["filas_nuevas_h2h_de_partido_actual_aceptadas"], 2)
+        self.assertEqual(v["metricas"]["filas_nuevas_historial_aceptadas"], 0)
+
+    def test_h2h_de_equipos_que_main_solo_tiene_en_copa_se_acepta(self):
+        antes = pd.concat([base(), pd.DataFrame([fila(8, "2025-11-15T13:00:00", liga="Coupe de France",
+                                                       local="Castanet", visitante="Lyon")])])
+        actual = fila(6, "2026-09-20T13:00:00", liga="Coupe de France", local="Castanet", visitante="Balma")
+        h2h = fila(5, "2021-11-06T17:30:00", liga="National 3 - Group H", local="Castanet", visitante="Balma")
+        d = pd.concat([antes, pd.DataFrame([actual, h2h])])
+        v = self.evaluar(d, antes=antes)
+        self.assertTrue(v["auto_merge"], v["fallos"])
+        self.assertEqual(v["metricas"]["filas_nuevas_h2h_de_partido_actual_aceptadas"], 1)
+
+    def test_h2h_de_equipo_nuevo_contra_equipo_de_liga_se_acepta(self):
+        actual = fila(6, "2026-09-20T13:00:00", liga="Coupe de France", local="Gobelins", visitante="Chico")
+        h2h = fila(5, "2022-09-12T16:30:00", liga="Ligue 3", local="Chico", visitante="Gobelins")
+        v = self.evaluar(pd.concat([base(), pd.DataFrame([actual, h2h])]))
+        self.assertTrue(v["auto_merge"], v["fallos"])
+
+    def test_h2h_de_equipos_de_liga_en_liga_desconocida_bloquea(self):
+        # Chico y Pasto ya juegan Liga Colombia en main y tienen partido proximo:
+        # un cruce viejo en otra liga es la forma de una liga mal etiquetada.
+        d = pd.concat([base(), pd.DataFrame([fila(5, "2019-05-01T20:00:00", liga="Primera B")])])
+        self.assertManual(self.evaluar(d), "fila(s) nueva(s)")
+
+    def test_h2h_con_otro_rival_bloquea(self):
+        d = self._copa(fila(5, "2018-08-25T16:00:00", liga="National 2 - Group A", local="Marseille Endoume", visitante="Hyeres"))
+        self.assertManual(self.evaluar(d), "fila(s) nueva(s)")
+
+    def test_h2h_no_finalizado_bloquea(self):
+        d = self._copa(fila(5, "2018-08-25T16:00:00", estado="NS", liga="National 2 - Group A",
+                            local="Marseille Endoume", visitante="Toulon"))
+        self.assertManual(self.evaluar(d), "fila(s) nueva(s)")
+
+    def test_h2h_de_partido_fuera_de_la_ventana_bloquea(self):
+        viejo = fila(6, "2026-06-01T13:00:00", liga="Coupe de France", local="Marseille Endoume", visitante="Toulon")
+        h2h = fila(5, "2018-08-25T16:00:00", liga="National 2 - Group A", local="Marseille Endoume", visitante="Toulon")
+        d = pd.concat([base(), pd.DataFrame([viejo, h2h])])
+        self.assertManual(self.evaluar(d), "fila(s) nueva(s)")
+
     # --- D. caches ---
     def test_team_id_cambiado_bloquea(self):
         self.assertManual(self.evaluar(base(), ids=({"Chico": 1}, {"Chico": 2})), "team_id cambiado")
