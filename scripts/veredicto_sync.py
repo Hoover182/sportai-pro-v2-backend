@@ -36,6 +36,7 @@ Cualquier otro: el script fallo (sin veredicto).
 import argparse
 import json
 import math
+import re
 import os
 import subprocess
 import sys
@@ -80,6 +81,25 @@ ARCHIVOS_PERMITIDOS = {
 # PR #28: 81 filas 2016-2023). Una fila nueva vieja se acepta solo si esta
 # finalizada y su liga y sus DOS equipos ya existen en main: un equipo o una
 # liga desconocidos en datos viejos es justo la forma de la contaminacion.
+#
+# 2026-11-25: excepcion para los cruces directos de un partido ACTUAL. Con
+# equipos que entran por una copa (Coupe de France: amateurs del National 2/3)
+# el pipeline baja su H2H, que trae partidos viejos de equipos y ligas que main
+# no tiene. Eso trabo 13 syncs seguidos (#123-#138, 12 al 24/11) por 33 filas
+# legitimas, ej. Marseille Endoume - Toulon de 2018. Una fila nueva vieja
+# tambien se acepta si esta finalizada y su par de equipos (mismos nombres,
+# sin importar quien es local) es el de un partido del CSV nuevo dentro de la
+# ventana normal (ultimos DIAS_NUEVAS_PASADO dias o proximos
+# DIAS_NUEVAS_FUTURO): es el H2H de ese partido. Ese partido ya pasa los
+# demas chequeos como fila reciente. La contaminacion conocida (team_id de
+# otro equipo, Viking/Vikingur) trae otros nombres y no coincide con el par.
+# Salvo que los DOS equipos ya tengan partidos de liga (no de copa) en main:
+# dos equipos de liga conocidos en una liga que main no tiene siguen
+# bloqueando (es la forma de una liga mal etiquetada). Un equipo nuevo, o que
+# en main aparece solo en copas (amateurs que entraron por una ronda
+# anterior), alcanza para aceptar el cruce.
+PATRON_COPA = re.compile(r"\b(cup|copa|coupe|kupa|kupasi|pokal|pokalen|ta[cç]a|cupen|cupa|beker|trophy|shield|"
+                         r"supercopa|supercup)\b", re.IGNORECASE)
 
 EXIT_AUTO, EXIT_MANUAL = 0, 3
 
@@ -116,6 +136,24 @@ def _es_historial_conocido(nuevas, antes):
     equipos = set(antes["equipo_local"].dropna()) | set(antes["equipo_visitante"].dropna())
     return (nuevas["estado"].isin(ESTADOS_FINALES) & nuevas["liga"].isin(set(antes["liga"].dropna()))
             & nuevas["equipo_local"].isin(equipos) & nuevas["equipo_visitante"].isin(equipos))
+
+
+def _es_h2h_de_partido_actual(nuevas, despues, antes, ahora):
+    """Mascara sobre `nuevas`: partido finalizado cuyo par de equipos es el de
+    algun partido de `despues` dentro de la ventana normal de fechas, salvo que los
+    dos equipos ya tengan partidos de liga (no de copa) en main."""
+    f = pd.to_datetime(despues["fecha"], errors="coerce", utc=True)
+    actuales = despues[(f >= ahora - pd.Timedelta(days=DIAS_NUEVAS_PASADO))
+                       & (f <= ahora + pd.Timedelta(days=DIAS_NUEVAS_FUTURO))]
+    pares = {frozenset((l, v)) for l, v in zip(actuales["equipo_local"], actuales["equipo_visitante"])
+             if pd.notna(l) and pd.notna(v) and l != v}
+    es_par = pd.Series([frozenset((l, v)) in pares for l, v in zip(nuevas["equipo_local"], nuevas["equipo_visitante"])],
+                       index=nuevas.index, dtype=bool)
+    filas = pd.concat([antes[["equipo_local", "liga"]].set_axis(["eq", "liga"], axis=1),
+                       antes[["equipo_visitante", "liga"]].set_axis(["eq", "liga"], axis=1)]).dropna()
+    con_liga = set(filas.loc[~filas["liga"].astype(str).map(lambda x: bool(PATRON_COPA.search(x))), "eq"])
+    ok_equipos = ~(nuevas["equipo_local"].isin(con_liga) & nuevas["equipo_visitante"].isin(con_liga))
+    return nuevas["estado"].isin(ESTADOS_FINALES) & es_par & ok_equipos
 
 
 def evaluar(antes, despues, ids_antes, ids_despues, cuotas_antes, cuotas_despues,
@@ -237,8 +275,11 @@ def evaluar(antes, despues, ids_antes, ids_despues, cuotas_antes, cuotas_despues
 
     f_nuevas = pd.to_datetime(nuevas["fecha"], errors="coerce", utc=True)
     vieja = f_nuevas < ahora - pd.Timedelta(days=DIAS_NUEVAS_PASADO)
-    historial = vieja & _es_historial_conocido(nuevas, antes)
-    m["filas_nuevas_historial_aceptadas"] = int(historial.sum())
+    conocido = vieja & _es_historial_conocido(nuevas, antes)
+    h2h_actual = vieja & ~conocido & _es_h2h_de_partido_actual(nuevas, despues, antes, ahora)
+    historial = conocido | h2h_actual
+    m["filas_nuevas_historial_aceptadas"] = int(conocido.sum())
+    m["filas_nuevas_h2h_de_partido_actual_aceptadas"] = int(h2h_actual.sum())
     raras = nuevas[f_nuevas.isna() | (vieja & ~historial) | (f_nuevas > ahora + pd.Timedelta(days=DIAS_NUEVAS_FUTURO))]
     m["filas_nuevas_fecha_rara"] = len(raras)
     if len(raras):
@@ -300,7 +341,8 @@ def armar_comentario(v):
         f"- Estados hacia atras: {m.get('estados_hacia_atras')} | historia modificada: {m.get('historia_modificada')}",
         f"- Columnas agregadas: {m.get('columnas_agregadas')} | quitadas: {m.get('columnas_quitadas')}",
         f"- Ligas ambiguas nuevas: {m.get('ligas_ambiguas_nuevas')} | team_ids cambiados: {m.get('team_ids_cambiados')}",
-        f"- Filas nuevas con fecha rara: {m.get('filas_nuevas_fecha_rara')} | historial de equipos conocidos aceptado: {m.get('filas_nuevas_historial_aceptadas')}",
+        f"- Filas nuevas con fecha rara: {m.get('filas_nuevas_fecha_rara')} | historial de equipos conocidos aceptado: {m.get('filas_nuevas_historial_aceptadas')}"
+        f" | H2H de partidos actuales aceptado: {m.get('filas_nuevas_h2h_de_partido_actual_aceptadas')}",
         f"- Archivos cambiados: {m.get('archivos_cambiados')}",
         f"- Prueba de humo: {m.get('humo')}",
         "",
